@@ -1,0 +1,64 @@
+
+$table-btn-px: 0.75rem;
+$table-cell-px: 0.5rem;
+
+$table-btn-sm-px: 0.5rem;
+$table-cell-sm-px: 0.25rem;
+
+
+.table-btn-sm > :not(caption) {
+  > * > * {
+    padding-top: $table-cell-sm-px;
+    padding-bottom: $table-cell-sm-px
+  }
+
+  > * > *:not(.table-btn-cell) {
+    padding-top: $table-btn-sm-px;
+    padding-bottom: $table-btn-sm-px
+  }
+}
+
+.table-btn > :not(caption) {
+  > * > * {
+    padding-top: $table-cell-px;
+    padding-bottom: $table-cell-px
+  }
+
+  > * > *:not(.table-btn-cell) {
+    padding-top: $table-btn-px;
+    padding-bottom: $table-btn-px
+  }
+}
+
+.table > .tbody-btn {
+  > * > * {
+    padding-top: $table-cell-px;
+    padding-bottom: $table-cell-px
+  }
+
+  > * > *:not(.table-btn-cell) {
+    padding-top: $table-btn-px;
+    padding-bottom: $table-btn-px
+  }
+}
+
+.table > * {
+  > .tr-btn > * {
+    padding-top: $table-cell-px;
+    padding-bottom: $table-cell-px
+  }
+
+  > .tr-btn > *:not(.table-btn-cell) {
+    padding-top: $table-btn-px;
+    padding-bottom: $table-btn-px
+  }
+}
+
+.table > .tbody-compact,
+.table > .thead-compact{
+  > * > * {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+  }
+}
+

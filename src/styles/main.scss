@@ -1,0 +1,157 @@
+@import "../../node_modules/bootstrap/scss/functions";
+
+$dropdown-border-width: 1px;
+
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66D9b;
+$red: shade-color(#dc3545, 10%);
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+
+$primary: #98b1c2;
+//$secondary: #6c757d;
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
+
+$success-text-emphasis: shade-color($success, 40%);
+$danger-text-emphasis: shade-color($danger, 40%);
+
+$body-tertiary-bg: #e9ecef;
+
+$dropdown-header-padding-y: .2rem;
+$dropdown-divider-margin-y: .2rem;
+
+$spacer: 1rem;
+
+$card-spacer-y: $spacer;
+$card-spacer-x: $spacer;
+
+$card-cap-padding-x: $card-spacer-y * .5;
+$card-cap-padding-y: $card-spacer-y * .5;
+
+$enable-shadows: true;
+
+$toast-background-color: #fff !default;
+$toast-header-background-color: #fff !default;
+$nav-link-padding-y: 0;
+$navbar-padding-y: 0.6rem;
+$navbar-dark-color: #de4000;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import '../../node_modules/bootstrap-vue-next/src/styles/styles';
+@import "./bootstrap/bootstrap-vue-component-styles";
+
+@import "./fonts/text";
+@import "./fonts/icons";
+@import "./bootstrap/dropdown";
+@import "./bootstrap/collapse";
+@import "./print-page";
+@import "./page-cards-print";
+@import "page-reference-print";
+@import "./buttons";
+@import "./cards";
+@import "table";
+
+body {
+  background-color: #602915;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.navbar > .container,
+.navbar > .container-fluid,
+.navbar > .container-sm,
+.navbar > .container-md,
+.navbar > .container-lg,
+.navbar > .container-xl,
+.navbar > .container-xxl {
+  display: block;
+}
+
+.nav-tabs-factions {
+  --bs-nav-link-font-size: 1rem;
+  --bs-nav-link-padding-y: 0.5rem;
+}
+
+.tab-select-faction {
+  font-weight: $font-weight-medium;
+  --bs-nav-link-disabled-color: #000;
+}
+
+.trait-list-p {
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.offcanvas-body {
+  padding-top: 0;
+}
+
+.text-tooltip {
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.mech-stats > .row:nth-child(even) {
+  background-color: var(--bs-light-bg-subtle);
+}
+
+.p-gap {
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.navbar-dark {
+  background-color: #000;
+
+  .nav-link {
+    font-weight: $font-weight-medium;
+  }
+}
+
+.game-card-footer {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  font-size: 7pt;
+}
+
+.form-label-top {
+  padding: 0 $btn-padding-x;
+  margin-bottom: .25rem;
+  font-weight: bold;
+}
+
+.number-cell {
+  text-align: right;
+}
+
+.number-zero {
+  opacity: 0.5;
+}
+
+.number-positive {
+  color: $success-text-emphasis;
+}
+
+.number-negative {
+  color: $danger;
+}

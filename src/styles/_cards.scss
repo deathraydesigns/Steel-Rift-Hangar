@@ -1,0 +1,52 @@
+
+.card {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  --bs-card-box-shadow: #{$box-shadow-sm};
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.card-mech-team {
+  border-color: #000;
+ > .card-body {
+    border-radius: 0 0 $card-inner-border-radius $card-inner-border-radius;
+    background-color:  $dark-bg-subtle;
+  }
+}
+
+.card-dark-border {
+  border-color: shade-color($primary, 15%);
+}
+
+.card-army-list {
+
+  .form-floating {
+    box-shadow: $box-shadow-sm;
+    border-radius: var(--bs-border-radius);
+
+    .form-control,
+    .form-select {
+      --bs-border-color: var(--bs-border-color-translucent);
+    }
+  }
+}
+
+.card-faction-perk {
+  .card-body {
+    font-size: 0.8rem;
+    --bs-body-font-size: 0.5rem;
+  }
+}
+
+.card-mech {
+  .card-body {
+    padding: $card-spacer-y * 0.5 $card-spacer-x * 0.5;
+  }
+}

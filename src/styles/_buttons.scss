@@ -1,0 +1,90 @@
+
+.btn-header-add {
+  $bg: shade-color($primary, 40%);
+  $border: shade-color($primary, 40%);
+  @include button-variant($bg, $border);
+}
+
+.btn-tertiary {
+  --bs-btn-box-shadow: 0;
+  --bs-btn-active-shadow: 0;
+  --bs-btn-focus-shadow: 0;
+  @include button-variant(
+                  rgba(0, 0, 0, 0),
+                  rgba(0, 0, 0, 0),
+                  $gray-800,
+                  rgba(0, 0, 0, 0.1),
+                  rgba(0, 0, 0, 0),
+                  $gray-800,
+                  rgba(0, 0, 0, 0.2),
+                  rgba(0, 0, 0, 0),
+                  $gray-800
+  );
+}
+
+.card-mech-team {
+
+  > .card-header {
+    .btn-tertiary {
+      --bs-btn-box-shadow: 0;
+      --bs-btn-active-shadow: 0;
+      --bs-btn-focus-shadow: 0;
+      @include button-variant(
+                      rgba(255, 255, 255, 0),
+                      rgba(255, 255, 255, 0),
+                      #fff,
+                      rgba(255, 255, 255, 0.1),
+                      rgba(255, 255, 255, 0),
+                      #fff,
+                      rgba(255, 255, 255, 0.2),
+                      rgba(255, 255, 255, 0),
+                      #fff
+      );
+    }
+
+    .btn-light-outline {
+      --bs-btn-box-shadow: 0;
+      --bs-btn-active-shadow: 0;
+      --bs-btn-focus-shadow: 0;
+      @include button-variant(
+                      rgba(255, 255, 255, 0.0),
+                      rgba(255, 255, 255, 0.3),
+                      #fff,
+                      rgba(255, 255, 255, 0.05),
+                      rgba(255, 255, 255, 0.4),
+                      #fff
+      );
+    }
+  }
+}
+
+.btn-orange {
+  @include button-variant(
+                  #de4000,
+                  #de4000,
+                  #fff,
+  );
+}
+
+.btn-danger-light {
+  --bs-btn-bg: #{tint-color($danger, 40%)};
+  --bs-btn-border-color: #{tint-color($danger, 40%)};
+  --bs-btn-hover-bg: #{tint-color($danger, 20%)};
+  --bs-btn-hover-border-color: #{tint-color($danger, 20%)};
+}
+
+.btn-white {
+  --bs-btn-bg: #fff;
+}
+
+.btn-light {
+  --bs-btn-border-color: rgba(0, 0, 0, 0.2);
+}
+
+.btn-grab {
+  border: 1px solid $gray-300;
+
+  &:hover {
+    cursor: ns-resize;
+  }
+}

@@ -1,0 +1,278 @@
+// css spec: 96px = 1 inch
+
+$oneInch: 96px;
+$card-width: 2.5 * $oneInch;
+$card-height: 3.5 * $oneInch;
+
+$page-width: 8.5 * $oneInch;
+$page-height: 11 * $oneInch;
+
+
+$card-padding-x: 5pt;
+
+.page-card-grid {
+  box-sizing: content-box;
+}
+
+.output-container {
+
+  --section-heading-bg: #ddd;
+  --sub-heading-bg: #eee;
+  --card-outline-color: #ccc;
+  --card-bg: #fff;
+
+  .game-card {
+    width: $card-width;
+    height: $card-height;
+    box-sizing: border-box;
+    position: relative;
+    flex-direction: column;
+    font-size: 10pt;
+    line-height: 1.4;
+    font-family: $font-outfit;
+    outline: 1px solid var(--card-outline-color);
+    background: var(--card-bg);
+
+    .card-content-container {
+      padding: 4pt;
+      background: var(--card-bg);
+    }
+  }
+
+  .page-card-grid {
+    $padding-x: ($page-width - $card-width * 3) * 0.5;
+    $padding-y: ($page-height - $card-height * 3) * 0.5;
+
+    display: grid;
+    grid-template-columns: repeat(3, $card-width);
+    grid-template-rows: repeat(3, $card-height);
+    justify-content: center;
+    align-content: normal;
+    gap: 1px;
+    width: $card-width * 3;
+    height: $card-height * 3;
+
+    padding: $padding-y $padding-x;
+  }
+
+  .card-name {
+    margin: 0 $card-padding-x 2pt;
+    font-size: 8pt;
+  }
+
+  .unit-info {
+
+    .hev-size {
+      font-size: 8pt;
+      background: var(--section-heading-bg);
+      padding: 2pt $card-padding-x 2pt;
+      font-family: $font-anta;
+    }
+
+    .hev-team {
+      font-size: 7pt;
+      line-height: 10pt;
+      padding: 2pt $card-padding-x;
+      background: var(--sub-heading-bg);
+    }
+  }
+
+  .table-card-stats {
+    width: 100%;
+
+    th,
+    td {
+      text-align: center;
+      vertical-align: middle;
+      font-size: 8pt;
+    }
+
+    thead th {
+      padding: 2pt 0;
+      background: var(--section-heading-bg);
+      font-weight: normal;
+      font-family: $font-anta;
+    }
+
+    tbody td {
+      padding: 2pt 0;
+    }
+  }
+
+  .row-damage {
+    font-family: $font-anta;
+    text-align: left;
+    display: flex;
+    align-items: start;
+    height: 62px;
+
+    .hp-heading {
+      font-size: 8pt;
+      padding: 0 $card-padding-x;
+    }
+
+    .structure-systems {
+      font-size: 5.5pt;
+      padding: 0 $card-padding-x;
+    }
+
+    .hp-container {
+      font-family: $font-outfit;
+      font-weight: 400;
+      font-size: 1.1rem;
+      line-height: 10pt;
+      text-align: left;
+      padding: 0 ($card-padding-x - 1pt) 0;
+
+      .hp-row {
+        display: flex;
+        align-items: start;
+        justify-content: start;
+      }
+    }
+
+    .hp-structure {
+      .hp-heading,
+      .hp-container {
+        padding-right: 0;
+      }
+
+    }
+
+    .hp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 1;
+      width: 10pt;
+      height: 10pt;
+      border: 1.2pt solid #000;
+      border-radius: 1000px;
+      margin: 0 1px 1px 0;
+      font-size: .5rem;
+      line-height: 10pt;
+      text-align: center;
+
+
+      > span {
+        position: relative;
+        display: inline-block;
+      }
+    }
+  }
+
+  .table-crit td {
+    border-spacing: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .crit-heading {
+    font-size: 8pt;
+    font-weight: normal;
+    font-family: $font-anta;
+    padding-left: 3pt;
+    line-height: 1.2;
+  }
+
+  .crit-content {
+    font-size: 7pt;
+    font-family: $font-outfit;
+    font-weight: 400;
+    padding-left: 3pt;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  .table-stats {
+    width: 100%;
+    margin: 2pt 0;
+
+    thead th {
+      font-family: $font-anta;
+      font-weight: normal;
+      font-size: 8pt;
+      background: var(--section-heading-bg);
+      padding: 1pt 2pt;
+
+      text-align: center;
+
+      &:first-child {
+        text-align: left;
+        padding-left: $card-padding-x;
+      }
+    }
+
+    tbody td {
+      font-size: 7pt;
+      text-align: center;
+      border-bottom: .1pt solid #000;
+      padding: 1pt 2pt;
+
+      vertical-align: top;
+
+      &.small {
+        font-size: 6pt;
+      }
+
+      &:first-child {
+        text-align: left;
+        padding-left: $card-padding-x;
+      }
+    }
+
+    tbody tr:last-child td {
+      border:0;
+    }
+
+    .weapon-uses {
+      .weapon-use {
+        display: inline-block;
+        width: 10pt;
+        height: 10pt;
+        border: 1.2pt solid #000;
+        border-radius: 1000px;
+        margin: 0 1px 1px 0;
+        font-size: .5rem;
+        line-height: 10pt;
+        text-align: center;
+      }
+    }
+  }
+
+  .upgrade-use {
+    display: inline-block;
+    width: 10pt;
+    height: 10pt;
+    border: 1.2pt solid #000;
+    border-radius: 1000px;
+    margin: 0 1px 1px 0;
+    font-size: .5rem;
+    line-height: 10pt;
+    text-align: center;
+  }
+
+  .section-heading {
+    background: var(--section-heading-bg);
+    font-size: 8pt;
+    font-weight: normal;
+    font-family: $font-anta;
+    padding: 1pt $card-padding-x;
+    margin-bottom: 0.25rem;
+  }
+
+  .upgrades {
+    font-size: 7pt;
+    padding: 0 $card-padding-x;
+  }
+
+  .card-description {
+    font-size: 7pt;
+    padding: 0 $card-padding-x;
+    margin-bottom: 0.5rem;
+
+  }
+}
