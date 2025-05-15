@@ -18,6 +18,7 @@ export default defineConfig({
         vue(),
         vueDevTools(),
         Components({
+            dts: false,
             resolvers: [BootstrapVueNextResolver()],
         }),
     ],

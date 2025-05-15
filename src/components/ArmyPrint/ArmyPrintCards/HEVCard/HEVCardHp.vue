@@ -1,7 +1,7 @@
 <script setup>
 
 import {computed} from 'vue';
-import {SIZE_LIGHT, SIZE_ULTRA} from '../../../../data/mech-sizes.js';
+import {SIZE_LIGHT, SIZE_ULTRA} from '../../../../data/unit-sizes.js';
 import {useMechStore} from '../../../../store/mech-store.js';
 import {chunk} from 'lodash';
 import {useFactionStore} from '../../../../store/faction-store.js';

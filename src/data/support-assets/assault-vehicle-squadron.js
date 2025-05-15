@@ -16,7 +16,7 @@ import {
     TRAIT_MINE_SWEEPER,
     TRAIT_SHIELD_PROJECTOR,
 } from '../unit-traits.js';
-import {SIZE_MEDIUM} from '../mech-sizes.js';
+import {SIZE_MEDIUM} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {SUBMUNITIONS} from '../mech-weapons.js';
 

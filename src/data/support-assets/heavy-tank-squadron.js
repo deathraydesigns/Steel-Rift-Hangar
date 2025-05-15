@@ -1,4 +1,4 @@
-import {SIZE_HEAVY} from '../mech-sizes.js';
+import {SIZE_HEAVY} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {
     DOZER_BLADE,

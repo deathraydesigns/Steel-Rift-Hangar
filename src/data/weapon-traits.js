@@ -19,7 +19,6 @@ export const TRAIT_REACH = 'TRAIT_REACH';
 export const TRAIT_STAGGER = 'TRAIT_STAGGER';
 export const TRAIT_TETHER = 'TRAIT_TETHER';
 export const TRAIT_ANTI_AIR = 'TRAIT_ANTI_AIR';
-
 export function numberFormater(name, number) {
     return `${name}(${number})`;
 }
@@ -57,6 +56,12 @@ export const WEAPON_TRAITS = makeWeaponTraits({
     },
     [[TRAIT_KINETIC]]: {
         display_name: 'Kinetic',
+        formatter: (name, size = null) => {
+            if (size) {
+                return `${name}(${size})`;
+            }
+            return name;
+        },
         description: 'If any damage is inflicted by this attack, roll 1D6. Add +1 to the roll for each Class Size larger the Active model is than the target model. Subtract -1 from the roll for each Class Size smaller the Active model is than the target model. On a result of 4+, rotate the target model 45° away from the Active Unit, in a direction chosen by the Active Player.',
     },
     [[TRAIT_LIGHT]]: {
@@ -119,7 +124,6 @@ export const WEAPON_TRAITS = makeWeaponTraits({
         display_name: 'Anti-Air',
         description: 'When targeting a unit with the Flying Trait, the target is at -2 to Defense Rolls from weapons with this trait. (I.e., if the target until would normally remove damage from the Attack Pool on a 2+, it avoids damage from this weapon on a 4+). If a Weapon with this trait destroys the Target Model, you may apply remaining damage to another Model of the Squadron as if the Squadron was not a Flying Squadron. ',
     },
-
 });
 
 export function traitDisplayNames(traits) {

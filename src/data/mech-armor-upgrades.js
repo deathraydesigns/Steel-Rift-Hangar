@@ -1,4 +1,4 @@
-import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from './mech-sizes.js';
+import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from './unit-sizes.js';
 import {listToDropDown, makeFrozenStaticListIds} from './data-helpers.js';
 
 export const NO_ARMOR_UPGRADE = 'NO_ARMOR_UPGRADE';

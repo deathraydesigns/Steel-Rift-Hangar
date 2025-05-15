@@ -8,7 +8,7 @@ import {
     TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES,
     TRAIT_TARGET_DESIGNATOR,
 } from '../unit-traits.js';
-import {SIZE_MEDIUM} from '../mech-sizes.js';
+import {SIZE_MEDIUM} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 
 export const SUPPORT_VEHICLE_SQUADRON = 'SUPPORT_VEHICLE_SQUADRON';

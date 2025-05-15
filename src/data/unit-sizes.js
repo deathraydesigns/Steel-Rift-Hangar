@@ -7,6 +7,26 @@ export const SIZE_MEDIUM = 'SIZE_MEDIUM';
 export const SIZE_HEAVY = 'SIZE_HEAVY';
 export const SIZE_ULTRA = 'SIZE_ULTRA';
 
+
+export const UNIT_SIZES = makeFrozenStaticListIds({
+    [[SIZE_ULTRA_LIGHT]]: {
+        display_name: 'Ultra Light',
+    },
+    [[SIZE_LIGHT]]: {
+        display_name: 'Light',
+    },
+    [[SIZE_MEDIUM]]: {
+        display_name: 'Medium',
+    },
+    [[SIZE_HEAVY]]: {
+        display_name: 'Heavy',
+    },
+    [[SIZE_ULTRA]]: {
+        display_name: 'Ultra',
+    },
+});
+
+
 export const MECH_SIZES = makeFrozenStaticListIds({
     [[SIZE_LIGHT]]: {
         display_name: 'Light',

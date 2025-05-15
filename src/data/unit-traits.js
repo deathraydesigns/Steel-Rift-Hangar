@@ -1,5 +1,4 @@
 import {MECH_UPGRADES, TARGET_DESIGNATOR} from './mech-upgrades.js';
-import {numberFormater} from './weapon-traits.js';
 
 export const TRAIT_ALL_TERRAIN = 'TRAIT_ALL_TERRAIN';
 export const TRAIT_CLOSE_SUPPORT = 'TRAIT_CLOSE_SUPPORT';
@@ -18,6 +17,7 @@ export const TRAIT_SUPPORT_MOED = 'TRAIT_SUPPORT_MOED';
 export const TRAIT_MSOE_LAUNCHER = 'TRAIT_MSOE_LAUNCHER';
 export const TRAIT_SCRAMBLERS = 'TRAIT_SCRAMBLERS';
 export const TRAIT_INFERNO_GEAR = 'TRAIT_INFERNO_GEAR';
+export const TRAIT_SUPPRESSIVE_FIRE = 'TRAIT_SUPPRESSIVE_FIRE';
 
 export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_ALL_TERRAIN]]: {
@@ -30,7 +30,7 @@ export const UNIT_TRAITS = makeUnitTraits({
     },
     [[TRAIT_GARRISON]]: {
         display_name: 'Garrison',
-        formatter: (name, number)=> `${name}(${number} Infantry Squads)`,
+        formatter: (name, number) => `${name}(${number} Infantry Squads)`,
         description: '',
     },
     [[TRAIT_GROUP_COMMAND]]: {
@@ -87,6 +87,10 @@ export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_INFERNO_GEAR]]: {
         display_name: 'Inferno Gear',
         description: '',
+    },
+    [[TRAIT_SUPPRESSIVE_FIRE]]: {
+        display_name: 'Suppressive Fire',
+        description: 'If an enemy Unit within 6” of a friendly model with this Trait performs an Engage Order, the target of that Order receives +1 to their Defense Rolls.',
     },
     //
     // [[FOO]]: {

@@ -1,4 +1,4 @@
-import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from './mech-sizes.js';
+import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from './unit-sizes.js';
 import {SUBMUNITIONS} from './mech-weapons.js';
 import {makeFrozenStaticListIds} from './data-helpers.js';
 import {TRAIT_COMPACT, TRAIT_DASH, TRAIT_UPGRADE_LIMITED, traitDisplayName, UPGRADE_TRAITS} from './upgrade-traits.js';

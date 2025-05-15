@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {MECH_SIZES, SIZE_MEDIUM} from '../data/mech-sizes.js';
+import {MECH_SIZES, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {MECH_BODY_MODS, MOD_STANDARD} from '../data/mech-body.js';
 import {MECH_ARMOR_UPGRADES, NO_ARMOR_UPGRADE} from '../data/mech-armor-upgrades.js';
 import {findById, updateObject} from '../data/data-helpers.js';

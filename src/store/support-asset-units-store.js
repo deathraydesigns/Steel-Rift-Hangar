@@ -8,7 +8,7 @@ import {countBy, each, find, sumBy} from 'lodash';
 import {findItemIndexById} from './helpers/collection-helper.js';
 import {findById} from '../data/data-helpers.js';
 import {UNIT_TRAITS, unitTraitDisplayName} from '../data/unit-traits.js';
-import {MECH_SIZES} from '../data/mech-sizes.js';
+import {UNIT_SIZES} from '../data/unit-sizes.js';
 
 export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
 
@@ -80,7 +80,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 asset.vehicles[vehicleId] = _getUnitVehicleInfo(unitId, vehicleId);
             });
 
-            asset.size = {display_name: MECH_SIZES[asset.size_id].display_name};
+            asset.size = {display_name: UNIT_SIZES[asset.size_id].display_name};
             return readonly(asset);
         });
 

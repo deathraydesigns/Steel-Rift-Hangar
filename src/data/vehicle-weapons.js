@@ -31,6 +31,8 @@ export const TANK_AUTOCANNON = 'TANK_AUTOCANNON';
 export const VEH_ROCKET_PACK = 'VEH_ROCKET_PACK';
 export const TANK_MISSILES = 'TANK_MISSILES';
 export const TANK_HOWITZER = 'TANK_HOWITZER';
+export const MISSILE_POD = 'MISSILE_POD';
+export const ROCKET_POD = 'ROCKET_POD';
 
 export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
     [[VEH_AUTO_CANNON]]: makeWeapon({
@@ -159,6 +161,25 @@ export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
         traits: [
             trait(TRAIT_SMART),
             trait(TRAIT_BLAST, 3),
+            trait(TRAIT_LIMITED, 2),
+        ],
+    }),
+    [[MISSILE_POD]]: makeWeapon({
+        display_name: 'Missile Pod',
+        damage: 2,
+        traits: [
+            trait(TRAIT_SMART),
+            trait(TRAIT_SHORT, 12),
+            trait(TRAIT_LIMITED, 2),
+        ],
+    }),
+    [[ROCKET_POD]]: makeWeapon({
+        display_name: 'Rocket Pod',
+        damage: 3,
+        traits: [
+            trait(TRAIT_SMART),
+            trait(TRAIT_BLAST, 3),
+            trait(TRAIT_LIGHT),
             trait(TRAIT_LIMITED, 2),
         ],
     }),
