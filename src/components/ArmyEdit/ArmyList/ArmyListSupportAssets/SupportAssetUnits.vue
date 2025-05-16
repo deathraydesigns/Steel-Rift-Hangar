@@ -23,7 +23,7 @@ const {
     <div class="card-header" ref="support-asset-drop-down-container">
       <div class="d-flex">
         <div class="col-form-label form-control-sm flex-shrink-1 pe-2 fw-bold">
-          Unit Support Assets
+          On Table Support Assets
         </div>
         <div class="flex-grow-1">
           <IconValidationError size="sm" :message="invalid_number_of_support_assets"/>
