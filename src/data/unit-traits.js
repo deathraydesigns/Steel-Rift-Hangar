@@ -22,6 +22,7 @@ export const TRAIT_SUPPRESSIVE_FIRE = 'TRAIT_SUPPRESSIVE_FIRE';
 export const TRAIT_UL_HEV_LAUNCH_GEAR = 'TRAIT_UL_HEV_LAUNCH_GEAR';
 export const TRAIT_FORTIFICATION = 'TRAIT_FORTIFICATION';
 export const TRAIT_COMMAND = 'TRAIT_COMMAND';
+export const TRAIT_BUNKER_MINE_DRONES = 'TRAIT_BUNKER_MINE_DRONES';
 
 export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_ALL_TERRAIN]]: {
@@ -109,6 +110,11 @@ export const UNIT_TRAITS = makeUnitTraits({
         display_name: 'Command',
         formatter: numberFormater,
         description: 'Units with the Command Trait issue Orders to their Garrison. Once per Activation, when this Unit is issued an Order, instead of performing an Order itself, it will instead issue one of the following Orders to up to (X) Units within its Garrison, or currently deployed on the Battlefield.',
+    },
+    [[TRAIT_BUNKER_MINE_DRONES]]: {
+        display_name: 'Mine Drones',
+        formatter: numberFormater,
+        description: '',
     },
     // [[FOO]]: {
     //     display_name: '',

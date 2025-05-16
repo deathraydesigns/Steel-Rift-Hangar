@@ -10,7 +10,7 @@ import {
     TRAIT_LIMITED,
     TRAIT_MELEE,
     TRAIT_SHORT,
-    TRAIT_SMART,
+    TRAIT_SMART, TRAIT_STAGGER,
 } from './weapon-traits.js';
 import {makeFrozenStaticListIds} from './data-helpers.js';
 import {getRangeFromShortTrait} from './mech-weapons.js';
@@ -39,6 +39,14 @@ export const UL_GRENADES = 'UL_GRENADES';
 export const UL_INCINERATORS = 'UL_INCINERATORS';
 export const SHORT_RANGE_MISSILE_PACK = 'SHORT_RANGE_MISSILE_PACK';
 export const UL_ROCKET_PACK = 'UL_ROCKET_PACK';
+export const INFANTRY_RIFLES = 'INFANTRY_RIFLES';
+export const INFANTRY_MISSILE_LAUNCHER = 'INFANTRY_MISSILE_LAUNCHER';
+export const BUNKER_AUTO_CANNON = 'BUNKER_AUTO_CANNON';
+export const BUNKER_MISSILE_PACK = 'BUNKER_MISSILE_PACK';
+export const BUNKER_ROCKET_PACK = 'BUNKER_ROCKET_PACK';
+export const INFANTRY_ELECTRO_ARC_PULSERS = 'INFANTRY_ELECTRO_ARC_PULSERS';
+export const INFANTRY_HEAVY_MISSILE_LAUNCHER = 'INFANTRY_HEAVY_MISSILE_LAUNCHER';
+export const INFANTRY_HEAVY_RIFLES = 'INFANTRY_HEAVY_RIFLES';
 
 export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
     [[VEH_AUTO_CANNON]]: makeWeapon({
@@ -53,6 +61,14 @@ export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
         damage: 2,
         traits: [
             trait(TRAIT_KINETIC, 'UL'),
+        ],
+    }),
+    [[BUNKER_AUTO_CANNON]]: makeWeapon({
+        display_name: 'Auto-Cannon',
+        damage: 2,
+        traits: [
+            trait(TRAIT_SHORT, 12),
+            trait(TRAIT_KINETIC),
         ],
     }),
     [[AA_ARRAY]]: makeWeapon({
@@ -95,6 +111,14 @@ export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
         traits: [
             trait(TRAIT_SMART),
             trait(TRAIT_BLAST, 3),
+            trait(TRAIT_LIMITED, 3),
+        ],
+    }),
+    [[BUNKER_MISSILE_PACK]]: makeWeapon({
+        display_name: 'Missile Pack',
+        damage: 3,
+        traits: [
+            trait(TRAIT_SMART),
             trait(TRAIT_LIMITED, 3),
         ],
     }),
@@ -164,6 +188,15 @@ export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
     [[VEH_ROCKET_PACK]]: makeWeapon({
         display_name: 'Veh. Rocket Pack',
         damage: 4,
+        traits: [
+            trait(TRAIT_SMART),
+            trait(TRAIT_BLAST, 3),
+            trait(TRAIT_LIMITED, 2),
+        ],
+    }),
+    [[BUNKER_ROCKET_PACK]]: makeWeapon({
+        display_name: 'Rocket Pack',
+        damage: 3,
         traits: [
             trait(TRAIT_SMART),
             trait(TRAIT_BLAST, 3),
@@ -242,7 +275,49 @@ export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
             trait(TRAIT_BLAST, 3),
         ],
     }),
-
+    [[INFANTRY_RIFLES]]: makeWeapon({
+        display_name: 'Infantry Rifles',
+        damage: 2,
+        traits: [
+            trait(TRAIT_SHORT, 6),
+            trait(TRAIT_LIGHT),
+        ],
+    }),
+    [[INFANTRY_MISSILE_LAUNCHER]]: makeWeapon({
+        display_name: 'Missile Launcher',
+        damage: 2,
+        traits: [
+            trait(TRAIT_SMART),
+            trait(TRAIT_LIMITED, 2),
+            trait(TRAIT_SHORT, 12),
+        ],
+    }),
+    [[INFANTRY_ELECTRO_ARC_PULSERS]]: makeWeapon({
+        display_name: 'Electro-Arc Pulser',
+        damage: 1,
+        traits: [
+            trait(TRAIT_STAGGER),
+            trait(TRAIT_SHORT, 6),
+        ],
+    }),
+    [[INFANTRY_HEAVY_MISSILE_LAUNCHER]]: makeWeapon({
+        display_name: 'Heavy Missile Launcher',
+        damage: 2,
+        traits: [
+            trait(TRAIT_STAGGER),
+            trait(TRAIT_SHORT, 12),
+            trait(TRAIT_LIMITED, 2),
+            trait(TRAIT_AP, 2),
+        ],
+    }),
+    [[INFANTRY_HEAVY_RIFLES]]: makeWeapon({
+        display_name: 'Heavy Infantry Rifles',
+        damage: 3,
+        traits: [
+            trait(TRAIT_LIGHT),
+            trait(TRAIT_SHORT, 6),
+        ],
+    }),
 });
 
 function makeWeapon({
