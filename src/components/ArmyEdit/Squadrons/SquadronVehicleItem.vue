@@ -31,7 +31,12 @@ function setWeaponChoice(choiceId, weaponId) {
       {{ unitInfo.display_name }}
     </td>
     <td class="text-end">
-      {{ unitInfo.move }}"
+      <template v-if="unitInfo.move">
+        {{ unitInfo.move }}"
+      </template>
+      <template v-else>
+        -
+      </template>
     </td>
     <td class="text-end">
       <template v-if="unitInfo.jump">
