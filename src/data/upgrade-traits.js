@@ -18,7 +18,7 @@ export const UPGRADE_TRAITS = makeUpgradeTraits({
         display_name: 'Limited',
         description: 'This upgrade may only be used (X) times during a mission.',
         formatter: numberFormater,
-    }
+    },
 });
 
 export function traitDisplayName({id, number}) {

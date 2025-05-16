@@ -1,5 +1,5 @@
 import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from './unit-sizes.js';
-import {listToDropDown, makeFrozenStaticListIds} from './data-helpers.js';
+import {makeFrozenStaticListIds} from './data-helpers.js';
 
 export const NO_ARMOR_UPGRADE = 'NO_ARMOR_UPGRADE';
 export const ABLATIVE_ARMOR_UPGRADE = 'ABLATIVE_ARMOR_UPGRADE';

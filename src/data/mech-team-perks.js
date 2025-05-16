@@ -137,7 +137,7 @@ function renderDescriptionRepeat(baseValue, repeatCount = 1) {
         return ` (+${baseValue} x ${repeatCount} = +${value})`;
     }
     return '';
-};
+}
 
 function makeMini(name) {
     return {

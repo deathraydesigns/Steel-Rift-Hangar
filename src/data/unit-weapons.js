@@ -10,7 +10,8 @@ import {
     TRAIT_LIMITED,
     TRAIT_MELEE,
     TRAIT_SHORT,
-    TRAIT_SMART, TRAIT_STAGGER,
+    TRAIT_SMART,
+    TRAIT_STAGGER,
 } from './weapon-traits.js';
 import {makeFrozenStaticListIds} from './data-helpers.js';
 import {getRangeFromShortTrait} from './mech-weapons.js';

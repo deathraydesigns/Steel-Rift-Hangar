@@ -24,6 +24,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
         size_id: SIZE_ULTRA_LIGHT,
         display_name: 'Ultra-Light HE-V Squadron',
         attached_element_label: 'HEV_ICON',
+        slots: 1,
         cost: 10,
         max_vehicles: 3,
         upgrade_pods: makeStaticListIds({

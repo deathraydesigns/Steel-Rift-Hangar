@@ -96,7 +96,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
             INFANTRY_HEAVY_RIFLES,
         ],
         traits: [
-            trait(TRAIT_TARGET_DESIGNATOR)
+            trait(TRAIT_TARGET_DESIGNATOR),
         ],
     },
 });

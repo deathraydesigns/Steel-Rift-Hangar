@@ -27,6 +27,7 @@ export const HEAVY_TANK_SQUADRON_DATA = {
         size_id: SIZE_HEAVY,
         display_name: 'Heavy Tank Troop',
         attached_element_label: 'Vehicle',
+        slots: 1,
         cost: 20,
         max_vehicles: 2,
         vehicles: makeStaticListIds({

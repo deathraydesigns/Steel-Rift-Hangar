@@ -1,6 +1,6 @@
 import {SIZE_ULTRA_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
-import {MISSILE_POD, CLUSTER_ROCKETS, VEH_AUTO_CANNON, VEH_SUBMUNITIONS} from '../unit-weapons.js';
+import {CLUSTER_ROCKETS, MISSILE_POD, VEH_AUTO_CANNON, VEH_SUBMUNITIONS} from '../unit-weapons.js';
 import {TRAIT_MINE_SWEEPER, TRAIT_OUTRIDER, TRAIT_SUPPRESSIVE_FIRE, TRAIT_TARGET_DESIGNATOR} from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
 
@@ -11,6 +11,7 @@ export const LIGHT_VEHICLE_SQUADRON_DATA = {
         size_id: SIZE_ULTRA_LIGHT,
         display_name: 'Light Unit Squadron',
         attached_element_label: 'Vehicle',
+        slots: 1,
         cost: 10,
         max_armor_tons: 10,
         unit_points_description: 'This Unit can have a total of 10 armor',
