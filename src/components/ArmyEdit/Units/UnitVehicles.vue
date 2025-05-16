@@ -1,7 +1,7 @@
 <script setup>
 import {computed} from 'vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
-import SquadronVehicleItem from './SquadronVehicleItem.vue';
+import UnitVehicleItem from './UnitVehicleItem.vue';
 
 const {supportAssetAttachmentId} = defineProps({
   supportAssetAttachmentId: {
@@ -42,7 +42,7 @@ const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachme
     </tr>
     </thead>
     <tbody>
-    <SquadronVehicleItem
+    <UnitVehicleItem
         v-for="item in unit.vehicles" :key="item.id"
         :support-asset-attachment-id="supportAssetAttachmentId"
         :support-asset-vehicle-attachment-id="item.id"

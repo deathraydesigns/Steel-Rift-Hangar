@@ -3,9 +3,9 @@ import {computed, ref} from 'vue';
 import {BButton, BCollapse, BFormFloatingLabel, BFormSelect} from 'bootstrap-vue-next';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
-import SquadronWeapons from './SquadronWeapons.vue';
-import SquadronVehicles from './SquadronVehicles.vue';
-import SquadronVehicleAdd from './SquadronVehicleAdd.vue';
+import UnitWeapons from './UnitWeapons.vue';
+import UnitVehicles from './UnitVehicles.vue';
+import UnitVehicleAdd from './UnitVehicleAdd.vue';
 import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron.js';
 
 const {supportAssetAttachmentId} = defineProps({
@@ -69,7 +69,7 @@ function setUpgradePodChoice(upgradePodId) {
         </BtnToolTip>
       </div>
       <div class="text-end d-flex">
-        <SquadronVehicleAdd
+        <UnitVehicleAdd
             :options="options"
             :disabled="add_disabled"
             @selected="addVehicle"
@@ -81,7 +81,7 @@ function setUpgradePodChoice(upgradePodId) {
           <template v-else>
             Add Vehicle
           </template>
-        </SquadronVehicleAdd>
+        </UnitVehicleAdd>
         <BButton
             size="sm"
             class="ms-1"
@@ -135,8 +135,8 @@ function setUpgradePodChoice(upgradePodId) {
             </div>
           </template>
         </div>
-        <SquadronVehicles :support-asset-attachment-id="supportAssetAttachmentId"/>
-        <SquadronWeapons :support-asset-attachment-id="supportAssetAttachmentId"/>
+        <UnitVehicles :support-asset-attachment-id="supportAssetAttachmentId"/>
+        <UnitWeapons :support-asset-attachment-id="supportAssetAttachmentId"/>
       </div>
     </BCollapse>
   </div>
