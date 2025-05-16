@@ -14,7 +14,6 @@ const unitStore = useSupportAssetUnitsStore();
 const unit = computed(() => unitStore.getUnitAttachmentInfo(unitAttachmentId));
 </script>
 <template>
-  {{unit.size.display_name}}
   <table class="table-stats">
     <thead>
     <tr>

@@ -21,6 +21,10 @@ const info = computed(() => store.getUnitAttachmentInfo(unitAttachmentId));
 
       <CardHeader :title="info.display_name"/>
 
+      <div class="card-description small ps-2 m-0">
+        Unit Size: {{info.size.display_name}}
+      </div>
+
       <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
       <UnitCardWeapons :unit-attachment-id="unitAttachmentId"/>
 
