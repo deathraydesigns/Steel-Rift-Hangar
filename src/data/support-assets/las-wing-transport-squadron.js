@@ -25,7 +25,6 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
         size_id: SIZE_LIGHT,
         display_name: 'LAS-Wing Transport Squadron',
         attached_element_label: 'Vehicle',
-        slots: 1,
         cost: 10,
         max_vehicles: 1,
         vehicles: makeStaticListIds({
@@ -61,19 +60,18 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
                     INFANTRY_VIPER_SUIT_SQUAD,
                 ],
             },
-
+            UL_HEV_AIR_TRANSPORT: {
+                ...baseStats,
+                display_name: 'UL HE-V Air Transport',
+                weapon_ids: [
+                    VEH_ROTARY_CANNON,
+                ],
+                traits: [
+                    trait(TRAIT_GROUP_COMMAND),
+                    trait(TRAIT_GARRISON, 3, 'UL HE-Vs'),
+                ],
+                garrison_ul_hev: true,
+            },
         }),
     },
-};
-
-export const UL_HEV_AIR_TRANSPORT_DEFINITION = {
-    ...baseStats,
-    display_name: 'UL HE-V Air Transport',
-    weapon_ids: [
-        VEH_ROTARY_CANNON,
-    ],
-    traits: [
-        trait(TRAIT_GROUP_COMMAND),
-        trait(TRAIT_GARRISON, 3, 'UL HE-Vs'),
-    ],
 };

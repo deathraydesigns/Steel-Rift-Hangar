@@ -4,7 +4,7 @@ import {SUPPORT_ASSET_UNITS} from '../data/support-asset-units.js';
 import {TRAIT_LIMITED, TRAIT_SHORT, WEAPON_TRAITS, weaponTraitDisplayName} from '../data/weapon-traits.js';
 import {getter} from './helpers/store-helpers.js';
 import {UNIT_WEAPONS} from '../data/unit-weapons.js';
-import {countBy, each, find, map, sumBy} from 'lodash';
+import {countBy, each, find, map, sortBy, sumBy} from 'lodash';
 import {findItemIndexById} from './helpers/collection-helper.js';
 import {findById} from '../data/data-helpers.js';
 import {TRAIT_GARRISON, TRAIT_UL_HEV_LAUNCH_GEAR, UNIT_TRAITS, unitTraitDisplayName} from '../data/unit-traits.js';
@@ -31,13 +31,17 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         });
 
         const available_support_asset_units_info = computed(() => {
-            return available_support_asset_unit_ids.value
-                .map(id => _getUnitInfo.value(id));
+            let results = available_support_asset_unit_ids.value
+                .map((id) => _getUnitInfo.value(id));
+
+            return sortBy(results, 'display_name');
         });
 
         const support_asset_units_info = computed(() => {
-            return support_asset_units.value
+            let results = support_asset_units.value
                 .map(({id}) => getUnitAttachmentInfo.value(id));
+
+            return sortBy(results, 'display_name');
         });
 
         const used_tons = computed(() => sumBy(support_asset_units_info.value, 'cost'));
@@ -294,6 +298,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 jump,
                 armor,
                 structure,
+                garrison_ul_hev,
             } = vehicleDef;
 
             if (unitAttachmentDef.upgrade_pods) {
@@ -320,6 +325,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 jump,
                 armor,
                 structure,
+                garrison_ul_hev,
                 traits: _getVehicleTraitsInfo(traits),
             });
         });
@@ -420,7 +426,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
                 if (vehicleDef.garrison_choice_unit_ids) {
                     vehicleDef.garrison_choice_unit_ids.forEach(squadId => {
-                        INFANTRY_SQUADS[squadId].weapon_ids.forEach(weaponId => weaponIdMap[weaponId] = true)
+                        INFANTRY_SQUADS[squadId].weapon_ids.forEach(weaponId => weaponIdMap[weaponId] = true);
                     });
                 }
             });

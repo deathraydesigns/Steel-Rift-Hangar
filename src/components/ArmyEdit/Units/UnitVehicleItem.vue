@@ -4,6 +4,8 @@ import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-stor
 import {BButton, BFormSelect} from 'bootstrap-vue-next';
 import TraitList from '../../UI/TraitList.vue';
 import {formatInches} from '../../functional/format-range.js';
+import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron.js';
+import {SUPPORT_ASSET_UNITS} from '../../../data/support-asset-units.js';
 
 const {supportAssetAttachmentId, supportAssetVehicleAttachmentId} = defineProps({
   supportAssetAttachmentId: {
@@ -32,6 +34,10 @@ function setGarrisonChoice(index, squadId) {
   unitStore.setUnitVehicleGarrisonChoice(supportAssetAttachmentId, supportAssetVehicleAttachmentId, index, squadId);
 }
 
+function addUlHev() {
+  unitStore.addSupportAsset(ULTRA_LIGHT_HEV_SQUADRON);
+}
+
 </script>
 <template>
   <tr class="tr-btn">
@@ -57,7 +63,6 @@ function setGarrisonChoice(index, squadId) {
           <VehicleWeaponToolTip :weapon="weapon"/>
           <span v-if="index !== requiredWeapons.length - 1">, </span>
         </template>
-
       </template>
       <template v-if="weaponChoices.length">
         <span v-for="(item) in weaponChoices">
@@ -74,6 +79,24 @@ function setGarrisonChoice(index, squadId) {
       </template>
     </td>
     <td>
+      <template v-if="unitInfo.garrison_ul_hev">
+
+        <template v-if="!unitStore.hasUnitId(ULTRA_LIGHT_HEV_SQUADRON)">
+          <BButton
+              size="sm"
+              @click="addUlHev"
+          >
+            Add
+            {{ SUPPORT_ASSET_UNITS[ULTRA_LIGHT_HEV_SQUADRON].display_name }}
+          </BButton>
+        </template>
+        <template v-else>
+          {{ SUPPORT_ASSET_UNITS[ULTRA_LIGHT_HEV_SQUADRON].display_name }}
+          <br>
+          (separate support asset)
+        </template>
+
+      </template>
       <template v-if="garrisonUnitChoices.length">
         <template v-for="(x, index) in Array(garrisonUnitsMax)">
           <BFormSelect

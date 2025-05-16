@@ -11,7 +11,6 @@ export const LIGHT_VEHICLE_SQUADRON_DATA = {
         size_id: SIZE_ULTRA_LIGHT,
         display_name: 'Light Unit Squadron',
         attached_element_label: 'Vehicle',
-        slots: 1,
         cost: 10,
         max_armor_tons: 10,
         unit_points_description: 'This Unit can have a total of 10 armor',

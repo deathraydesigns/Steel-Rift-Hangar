@@ -11,7 +11,7 @@ const {support_asset_units} = storeToRefs(useSupportAssetUnitsStore());
 <template>
   <div class="container-lg pb-2">
     <ArmyList/>
-    <UnitItem v-for="unit in support_asset_units" :id="unit.id" :support-asset-attachment-id="unit.id"/>
+    <UnitItem v-for="unit in support_asset_units" :key="unit.id" :support-asset-attachment-id="unit.id"/>
     <MechTeamList/>
     <SecondaryAgendas/>
   </div>
