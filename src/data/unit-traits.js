@@ -1,4 +1,5 @@
 import {MECH_UPGRADES, TARGET_DESIGNATOR} from './mech-upgrades.js';
+import {numberFormater} from './weapon-traits.js';
 
 export const TRAIT_ALL_TERRAIN = 'TRAIT_ALL_TERRAIN';
 export const TRAIT_CLOSE_SUPPORT = 'TRAIT_CLOSE_SUPPORT';
@@ -18,7 +19,9 @@ export const TRAIT_MSOE_LAUNCHER = 'TRAIT_MSOE_LAUNCHER';
 export const TRAIT_SCRAMBLERS = 'TRAIT_SCRAMBLERS';
 export const TRAIT_INFERNO_GEAR = 'TRAIT_INFERNO_GEAR';
 export const TRAIT_SUPPRESSIVE_FIRE = 'TRAIT_SUPPRESSIVE_FIRE';
-export const UL_HEV_LAUNCH_GEAR = 'UL_HEV_LAUNCH_GEAR';
+export const TRAIT_UL_HEV_LAUNCH_GEAR = 'TRAIT_UL_HEV_LAUNCH_GEAR';
+export const TRAIT_FORTIFICATION = 'TRAIT_FORTIFICATION';
+export const TRAIT_COMMAND = 'TRAIT_COMMAND';
 
 export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_ALL_TERRAIN]]: {
@@ -73,7 +76,8 @@ export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_SUPPORT_MINE_DRONE_LAYER]]: {
         display_name: 'Support: Mine Drone Layer',
         description: '',
-    }, [[TRAIT_SUPPORT_MOED]]: {
+    },
+    [[TRAIT_SUPPORT_MOED]]: {
         display_name: 'Support: Multi-spectral Obscuration Emitter Deployer',
         description: '',
     },
@@ -87,18 +91,25 @@ export const UNIT_TRAITS = makeUnitTraits({
     },
     [[TRAIT_INFERNO_GEAR]]: {
         display_name: 'Inferno Gear',
-        description: '',
+        description: 'If 50% or more of the Units in a Squadron have this Trait, the Squadron ignores the effects of the Disruptive Trait.',
     },
     [[TRAIT_SUPPRESSIVE_FIRE]]: {
         display_name: 'Suppressive Fire',
         description: 'If an enemy Unit within 6” of a friendly model with this Trait performs an Engage Order, the target of that Order receives +1 to their Defense Rolls.',
     },
-    [[UL_HEV_LAUNCH_GEAR]]: {
+    [[TRAIT_UL_HEV_LAUNCH_GEAR]]: {
         display_name: 'Launch Gear',
         description: 'This Unit may perform the Jump Order at distance of +2” to their Speed value.',
     },
-
-    //
+    [[TRAIT_FORTIFICATION]]: {
+        display_name: 'Fortification',
+        description: 'A Unit with this Trait will only ever perform the following Orders (if eligible): Engage, Lock On, Return Fire. Units with this Trait only ever pass Defense rolls on an unmodifiable roll of 6. Units with this Trait count as Light in Class for the purposes of the Kinetic Trait. Units with this Trait are always targeted as if from the Front Arc. If a Mission uses table quadrants then Units with this Trait must be deployed completely inside of one quadrant and cannot extend into others. For the purposes of calculating Tonnage destroyed or in a Zone, each Fortification contributes 5 Tons for the respective Commander.',
+    },
+    [[TRAIT_COMMAND]]: {
+        display_name: 'Command',
+        formatter: numberFormater,
+        description: 'Units with the Command Trait issue Orders to their Garrison. Once per Activation, when this Unit is issued an Order, instead of performing an Order itself, it will instead issue one of the following Orders to up to (X) Units within its Garrison, or currently deployed on the Battlefield.',
+    },
     // [[FOO]]: {
     //     display_name: '',
     //     description: '',

@@ -2,7 +2,7 @@ import {SIZE_ULTRA_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {
     MISSILE_POD,
-    ROCKET_POD,
+    CLUSTER_ROCKETS,
     SHORT_RANGE_MISSILE_PACK,
     UL_ROCKET_PACK,
     VEH_AUTO_CANNON,
@@ -12,7 +12,7 @@ import {
     TRAIT_MAGNETIC_GRAPPLES,
     TRAIT_MINE_SWEEPER,
     TRAIT_SUPPRESSIVE_FIRE,
-    UL_HEV_LAUNCH_GEAR,
+    TRAIT_UL_HEV_LAUNCH_GEAR,
 } from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
 
@@ -32,7 +32,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
                 weapon_id: UL_ROCKET_PACK,
             },
             POD_LAUNCH_GEAR: {
-                trait: trait(UL_HEV_LAUNCH_GEAR),
+                trait: trait(TRAIT_UL_HEV_LAUNCH_GEAR),
             },
         }),
         vehicles: makeStaticListIds({
@@ -60,7 +60,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
                 ],
                 weapon_choice_ids: {
                     choice_1: [
-                        ROCKET_POD,
+                        CLUSTER_ROCKETS,
                         MISSILE_POD,
                     ],
                 },

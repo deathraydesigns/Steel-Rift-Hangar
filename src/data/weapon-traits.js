@@ -19,6 +19,7 @@ export const TRAIT_REACH = 'TRAIT_REACH';
 export const TRAIT_STAGGER = 'TRAIT_STAGGER';
 export const TRAIT_TETHER = 'TRAIT_TETHER';
 export const TRAIT_ANTI_AIR = 'TRAIT_ANTI_AIR';
+
 export function numberFormater(name, number) {
     return `${name}(${number})`;
 }
@@ -35,7 +36,7 @@ export const WEAPON_TRAITS = makeWeaponTraits({
     },
     [[TRAIT_BLAST]]: {
         display_name: 'Blast',
-        description: 'All units (friend or foe) within (x") of the original target must also make a Defense Roll against this Attack at -1 to the Attack Pool (to a minimum of 1).',
+        description: 'All units (friend or foe) within (x”) of the Target model must also make a Defense Roll. The number of dice in the Defense Roll(s) is equal to the Engage Damage Rating of this Weapon, minus 1, to a minimum of 1. Modify the Defense Roll for each affected unit based on each unit’s weight class, as usual. All units making Defense Rolls due to this trait are not being attacked, nor are they considered “Targeted”',
         formatter: inchFormater,
     },
     [[TRAIT_DISRUPTIVE]]: {
@@ -48,7 +49,7 @@ export const WEAPON_TRAITS = makeWeaponTraits({
     },
     [[TRAIT_FLAK]]: {
         display_name: 'Flak',
-        description: 'Reduce the number of dice in an attack from Mine Drones, Missiles, or Rocket Packs by 2 to a minimum of 1 if this model doesn\'t have a Redlined marker.',
+        description: 'If this unit is targeted by Missiles or Rocket Packs, reduce the attack pool from that weapon by 2. If this unit is targeted by Mine Drones, reduce the attack pool from that weapon by 1. This trait does not apply if this unit has a Redline Marker.',
     },
     [[TRAIT_FRAG]]: {
         display_name: 'Frag',
@@ -127,9 +128,7 @@ export const WEAPON_TRAITS = makeWeaponTraits({
 });
 
 export function traitDisplayNames(traits) {
-    return traits.map((trait) => weaponTraitDisplayName(trait))
-        .join(', ');
-
+    return traits.map((trait) => weaponTraitDisplayName(trait)).join(', ');
 }
 
 export function weaponTraitDisplayName({id, number}) {

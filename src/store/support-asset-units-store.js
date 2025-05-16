@@ -7,7 +7,7 @@ import {VEHICLE_WEAPONS} from '../data/vehicle-weapons.js';
 import {countBy, each, find, map, sumBy} from 'lodash';
 import {findItemIndexById} from './helpers/collection-helper.js';
 import {findById} from '../data/data-helpers.js';
-import {UL_HEV_LAUNCH_GEAR, UNIT_TRAITS, unitTraitDisplayName} from '../data/unit-traits.js';
+import {TRAIT_UL_HEV_LAUNCH_GEAR, UNIT_TRAITS, unitTraitDisplayName} from '../data/unit-traits.js';
 import {UNIT_SIZES} from '../data/unit-sizes.js';
 
 export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
@@ -249,7 +249,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
                 if (pod.trait) {
                     traits.push(pod.trait);
-                    if (pod.trait.id === UL_HEV_LAUNCH_GEAR) {
+                    if (pod.trait.id === TRAIT_UL_HEV_LAUNCH_GEAR) {
                         jump = move + 2;
                     }
                 }

@@ -382,9 +382,9 @@ export const MECH_TEAMS = makeStaticListIds({
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_LIGHT, SIZE_MEDIUM, SIZE_HEAVY, SIZE_ULTRA],
+            [SIZE_LIGHT],
             [SIZE_MEDIUM],
-            [SIZE_HEAVY, SIZE_ULTRA],
+            [SIZE_HEAVY],
         ],
         team_size_perk_rows: {
             2: [
