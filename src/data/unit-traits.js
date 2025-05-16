@@ -116,7 +116,7 @@ export const UNIT_TRAITS = makeUnitTraits({
     // },
 });
 
-export function unitTraitDisplayName({id, number}) {
+export function unitTraitDisplayName({id, number, type}) {
 
     const trait = UNIT_TRAITS[id];
 
@@ -124,7 +124,7 @@ export function unitTraitDisplayName({id, number}) {
         throw new Error('trait not found: '.id);
     }
     if (trait.formatter) {
-        return trait.formatter(trait.display_name, number);
+        return trait.formatter(trait.display_name, number, type);
     }
     return trait.display_name;
 }

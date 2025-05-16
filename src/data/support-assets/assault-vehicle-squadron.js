@@ -68,7 +68,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA = {
                 ],
                 traits: [
                     trait(TRAIT_GROUP_COMMAND),
-                    trait(TRAIT_GARRISON, 3),
+                    trait(TRAIT_GARRISON, 3, 'Infantry Squads'),
                 ],
             },
             COMBAT_ENGINEERING_VEHICLE: {

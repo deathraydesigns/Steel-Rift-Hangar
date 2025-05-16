@@ -131,7 +131,7 @@ export function traitDisplayNames(traits) {
     return traits.map((trait) => weaponTraitDisplayName(trait)).join(', ');
 }
 
-export function weaponTraitDisplayName({id, number}) {
+export function weaponTraitDisplayName({id, number, type}) {
 
     const trait = WEAPON_TRAITS[id];
 
@@ -139,7 +139,7 @@ export function weaponTraitDisplayName({id, number}) {
         throw new Error('trait not found: '.id);
     }
     if (trait.formatter) {
-        return trait.formatter(trait.display_name, number);
+        return trait.formatter(trait.display_name, number, type);
     }
     return trait.display_name;
 }
@@ -156,9 +156,10 @@ function makeWeaponTraits(items) {
     return Object.freeze(items);
 }
 
-export function trait(id, number = null) {
+export function trait(id, number = null, type = null) {
     return Object.freeze({
         id,
         number,
+        type,
     });
 }

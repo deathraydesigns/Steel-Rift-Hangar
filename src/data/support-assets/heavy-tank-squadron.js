@@ -67,7 +67,7 @@ export const HEAVY_TANK_SQUADRON_DATA = {
                     SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_GARRISON, 4),
+                    trait(TRAIT_GARRISON, 4, 'Infantry Squads'),
                 ],
             },
         }),
