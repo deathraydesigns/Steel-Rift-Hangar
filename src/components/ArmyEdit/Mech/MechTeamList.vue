@@ -38,6 +38,7 @@ function addGeneralMech() {
   </div>
   <MechTeam
       v-for="team in special_teams"
+      :key="team.id"
       :team-id="team.id"
   />
   <div class="d-flex">

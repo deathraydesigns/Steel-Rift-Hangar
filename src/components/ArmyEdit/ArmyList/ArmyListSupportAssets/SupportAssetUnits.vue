@@ -43,7 +43,7 @@ const {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in support_asset_units_info" :id="item.id">
+        <tr v-for="item in support_asset_units_info" :key="item.id">
           <td>
             {{ item.display_name }}
           </td>

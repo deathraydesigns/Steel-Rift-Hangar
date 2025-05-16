@@ -100,6 +100,7 @@ const {
     <div class="card-body">
       <MechTeamGroup
           v-for="group in teamInfo.groups"
+          :key="group.id"
           :team-id="teamId"
           :group-id="group.id"
       />

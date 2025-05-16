@@ -41,7 +41,7 @@ const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarriso
     </tr>
     </thead>
     <tbody>
-    <tr v-for="unitInfo in garrisonUnitChoices">
+    <tr v-for="unitInfo in garrisonUnitChoices" :key="unitInfo.id">
       <td class="text-nowrap">
         {{ unitInfo.display_name }}
       </td>
@@ -56,7 +56,7 @@ const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarriso
       </td>
       <td :class="{'table-btn-cell': unitInfo.weapons.length}">
         <template v-if="unitInfo.weapons.length">
-          <template v-for="(weapon, index) in unitInfo.weapons">
+          <template v-for="(weapon, index) in unitInfo.weapons" :key="weapon.id">
             <UnitWeaponToolTip :weapon="weapon"/>
             <span v-if="index !== unitInfo.weapons.length - 1">, </span>
           </template>

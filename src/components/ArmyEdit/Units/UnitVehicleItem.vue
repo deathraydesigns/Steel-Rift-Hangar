@@ -59,7 +59,7 @@ function addUlHev() {
     <td :class="{'table-btn-cell': weaponChoices.length}">
       <template v-if="requiredWeapons.length">
 
-        <template v-for="(weapon, index) in requiredWeapons">
+        <template v-for="(weapon, index) in requiredWeapons" :key="weapon.id">
           <VehicleWeaponToolTip :weapon="weapon"/>
           <span v-if="index !== requiredWeapons.length - 1">, </span>
         </template>

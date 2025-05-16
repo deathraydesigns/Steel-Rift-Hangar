@@ -9,7 +9,7 @@ const {weapon_support_assets} = storeToRefs(supportAssetStore);
   <div v-if="weapon_support_assets.length">
     <div class="divider"></div>
     <div class="ref-heading">Support Assets</div>
-    <div v-for="item in weapon_support_assets">
+    <div v-for="item in weapon_support_assets" :key="item.id">
       <p class="p-gap">
         <span class="fw-bold">
           {{ item.display_name }}:

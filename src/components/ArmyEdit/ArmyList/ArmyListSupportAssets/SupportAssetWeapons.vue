@@ -47,7 +47,7 @@ const {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in support_asset_weapons_info">
+        <tr v-for="item in support_asset_weapons_info" :key="item.id">
           <td>
             <BtnToolTip>
               <template #target="{mouseover, mouseleave}">
