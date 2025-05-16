@@ -25,6 +25,9 @@ const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachme
         Move
       </th>
       <th class="text-end">
+        Jump
+      </th>
+      <th class="text-end">
         Armor
       </th>
       <th class="text-end">

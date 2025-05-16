@@ -1,34 +1,57 @@
 import {SIZE_ULTRA_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
-import {MISSILE_POD, ROCKET_POD, VEH_AUTO_CANNON, VEH_SUBMUNITIONS} from '../vehicle-weapons.js';
-import {TRAIT_MINE_SWEEPER, TRAIT_OUTRIDER, TRAIT_SUPPRESSIVE_FIRE, TRAIT_TARGET_DESIGNATOR} from '../unit-traits.js';
+import {
+    MISSILE_POD,
+    ROCKET_POD,
+    SHORT_RANGE_MISSILE_PACK,
+    UL_ROCKET_PACK,
+    VEH_AUTO_CANNON,
+    VEH_SUBMUNITIONS,
+} from '../vehicle-weapons.js';
+import {
+    TRAIT_MAGNETIC_GRAPPLES,
+    TRAIT_MINE_SWEEPER,
+    TRAIT_SUPPRESSIVE_FIRE,
+    UL_HEV_LAUNCH_GEAR,
+} from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
 
-export const LIGHT_VEHICLE_SQUADRON = 'LIGHT_VEHICLE_SQUADRON';
+export const ULTRA_LIGHT_HEV_SQUADRON = 'ULTRA_LIGHT_HEV_SQUADRON';
 
-export const LIGHT_VEHICLE_SQUADRON_DATA = {
-    [[LIGHT_VEHICLE_SQUADRON]]: {
+export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
+    [[ULTRA_LIGHT_HEV_SQUADRON]]: {
         size_id: SIZE_ULTRA_LIGHT,
-        display_name: 'Light Unit Squadron',
+        display_name: 'Ultra-Light HE-V Squadron',
         cost: 10,
-        max_armor_tons: 10,
-        unit_points_description: 'This Unit can have a total of 10 armor',
+        max_vehicles: 3,
+        upgrade_pods: makeStaticListIds({
+            POD_MISSILE_PACK: {
+                weapon_id: SHORT_RANGE_MISSILE_PACK,
+            },
+            POD_ROCKET_PACK: {
+                weapon_id: UL_ROCKET_PACK,
+            },
+            POD_LAUNCH_GEAR: {
+                trait: trait(UL_HEV_LAUNCH_GEAR),
+            },
+        }),
         vehicles: makeStaticListIds({
-            RECON: {
-                move: 12,
-                armor: 1,
+            BRAWLER: {
+                move: 7,
+                jump: 0,
+                armor: 3,
                 structure: 0,
-                display_name: 'Recon',
+                display_name: 'Brawler',
                 weapon_ids: [
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_TARGET_DESIGNATOR),
-                    trait(TRAIT_OUTRIDER),
+                    trait(TRAIT_MAGNETIC_GRAPPLES),
                 ],
             },
             FIRE_SUPPORT: {
                 move: 8,
+                jump: 0,
                 armor: 2,
                 structure: 0,
                 display_name: 'Fire Support',
@@ -45,6 +68,7 @@ export const LIGHT_VEHICLE_SQUADRON_DATA = {
             },
             TACTICAL: {
                 move: 10,
+                jump: 0,
                 armor: 2,
                 structure: 0,
                 display_name: 'Tactical',
@@ -57,6 +81,7 @@ export const LIGHT_VEHICLE_SQUADRON_DATA = {
             },
             ENGINEERING: {
                 move: 8,
+                jump: 0,
                 armor: 3,
                 structure: 0,
                 display_name: 'Engineering',

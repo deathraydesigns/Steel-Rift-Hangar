@@ -18,6 +18,7 @@ export const TRAIT_MSOE_LAUNCHER = 'TRAIT_MSOE_LAUNCHER';
 export const TRAIT_SCRAMBLERS = 'TRAIT_SCRAMBLERS';
 export const TRAIT_INFERNO_GEAR = 'TRAIT_INFERNO_GEAR';
 export const TRAIT_SUPPRESSIVE_FIRE = 'TRAIT_SUPPRESSIVE_FIRE';
+export const UL_HEV_LAUNCH_GEAR = 'UL_HEV_LAUNCH_GEAR';
 
 export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_ALL_TERRAIN]]: {
@@ -92,6 +93,11 @@ export const UNIT_TRAITS = makeUnitTraits({
         display_name: 'Suppressive Fire',
         description: 'If an enemy Unit within 6” of a friendly model with this Trait performs an Engage Order, the target of that Order receives +1 to their Defense Rolls.',
     },
+    [[UL_HEV_LAUNCH_GEAR]]: {
+        display_name: 'Launch Gear',
+        description: 'This Unit may perform the Jump Order at distance of +2” to their Speed value.',
+    },
+
     //
     // [[FOO]]: {
     //     display_name: '',

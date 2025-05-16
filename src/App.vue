@@ -3,6 +3,8 @@ import Toaster from './components/UI/Toaster.vue';
 import {computed, onMounted, provide, ref} from 'vue';
 import AppHeader from './components/AppHeader.vue';
 import {ROUTE_PRINT} from './routes.js';
+import ArmyPrint from './components/ArmyPrint.vue';
+import ArmyEdit from './components/ArmyEdit.vue';
 
 onMounted(() => {
   document.getElementById('failsafe-container')?.remove();

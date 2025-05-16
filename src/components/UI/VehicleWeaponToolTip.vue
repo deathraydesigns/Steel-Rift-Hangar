@@ -20,18 +20,25 @@ const {weapon} = defineProps({
       </span>
     </template>
     <template #content>
-      <table class="table table-sm">
+      <table class="table table-sm m-0">
         <thead>
         <tr>
-          <th>Damage</th>
-          <th>Range</th>
-          <th>Traits</th>
+          <th class="text-center pt-0">Damage</th>
+          <th class="text-center pt-0">Range</th>
+          <th class=" pt-0">Traits</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td>{{weapon.damage}}</td>
-          <td>{{weapon.range}}</td>
+          <td class="text-center">{{weapon.damage}}</td>
+          <td class="text-center">
+            <template v-if="weapon.range">
+            {{weapon.range}}"
+            </template>
+            <template v-else>
+              -
+            </template>
+          </td>
           <td>{{weapon.traits.map(t => t.display_name).join(', ')}}</td>
         </tr>
         </tbody>

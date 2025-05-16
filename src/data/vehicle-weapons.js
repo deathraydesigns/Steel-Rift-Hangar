@@ -33,6 +33,12 @@ export const TANK_MISSILES = 'TANK_MISSILES';
 export const TANK_HOWITZER = 'TANK_HOWITZER';
 export const MISSILE_POD = 'MISSILE_POD';
 export const ROCKET_POD = 'ROCKET_POD';
+export const UL_MELEE_WEAPON = 'UL_MELEE_WEAPON';
+export const UL_AUTO_CANNON = 'UL_AUTO_CANNON';
+export const UL_GRENADES = 'UL_GRENADES';
+export const UL_INCINERATORS = 'UL_INCINERATORS';
+export const SHORT_RANGE_MISSILE_PACK = 'SHORT_RANGE_MISSILE_PACK';
+export const UL_ROCKET_PACK = 'UL_ROCKET_PACK';
 
 export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
     [[VEH_AUTO_CANNON]]: makeWeapon({
@@ -55,7 +61,7 @@ export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
         traits: [
             trait(TRAIT_LIGHT),
             trait(TRAIT_FLAK),
-            trait(TRAIT_KINETIC, 'M'),
+            trait(TRAIT_KINETIC),
         ],
     }),
     [[DOZER_BLADE]]: makeWeapon({
@@ -67,7 +73,7 @@ export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
         ],
     }),
     [[VEH_HOWITZER]]: makeWeapon({
-        display_name: 'Dozer Blade',
+        display_name: 'Veh. Howitzer',
         damage: 3,
         traits: [
             trait(TRAIT_BLAST, 3),
@@ -183,6 +189,60 @@ export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
             trait(TRAIT_LIMITED, 2),
         ],
     }),
+    [[UL_MELEE_WEAPON]]: makeWeapon({
+        display_name: 'UL Melee Weapon',
+        damage: 3,
+        traits: [
+            trait(TRAIT_MELEE, 'X'),
+            trait(TRAIT_AP, 'X'),
+        ],
+    }),
+    [[UL_AUTO_CANNON]]: makeWeapon({
+        display_name: 'UL Auto-Cannon',
+        damage: 2,
+        traits: [
+            trait(TRAIT_SHORT, 10),
+            trait(TRAIT_KINETIC),
+        ],
+    }),
+    [[UL_GRENADES]]: makeWeapon({
+        display_name: 'UL Grenades',
+        damage: 3,
+        traits: [
+            trait(TRAIT_SHORT, 6),
+            trait(TRAIT_BLAST, 2),
+            trait(TRAIT_LIGHT),
+            trait(TRAIT_LIMITED, 1),
+        ],
+    }),
+    [[UL_INCINERATORS]]: makeWeapon({
+        display_name: 'UL Incinerators',
+        damage: 3,
+        traits: [
+            trait(TRAIT_SHORT, 4),
+            trait(TRAIT_DISRUPTIVE),
+            trait(TRAIT_LIGHT),
+        ],
+    }),
+    [[SHORT_RANGE_MISSILE_PACK]]: makeWeapon({
+        display_name: 'Short Range Missile Pack',
+        damage: 3,
+        traits: [
+            trait(TRAIT_SMART),
+            trait(TRAIT_LIMITED, 2),
+            trait(TRAIT_SHORT, 12),
+        ],
+    }),
+    [[UL_ROCKET_PACK]]: makeWeapon({
+        display_name: 'Rocket Pack',
+        damage: 2,
+        traits: [
+            trait(TRAIT_SMART),
+            trait(TRAIT_LIMITED, 2),
+            trait(TRAIT_BLAST, 3),
+        ],
+    }),
+
 });
 
 function makeWeapon({

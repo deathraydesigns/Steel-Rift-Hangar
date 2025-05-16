@@ -16,7 +16,7 @@ export const LAS_WING_ATTACK_SQUADRON_DATA = {
     [[LAS_WING_ATTACK_SQUADRON]]: {
         size_id: SIZE_LIGHT,
         display_name: 'LAS-Wing Attack Squadron',
-        cost: 20,
+        cost: 10,
         max_vehicles: 4,
         vehicles: makeStaticListIds({
             STRIKE_LAS_WING: {

@@ -26,12 +26,14 @@ function select(id, valid) {
 <template>
   <BDropdown
       class="dropdown-table d-inline-block"
-      text="Add Vehicle"
       size="sm"
       variant="header-add"
       placement="bottom-end"
       :disabled="disabled"
   >
+    <template #button-content>
+      <slot></slot>
+    </template>
     <div class="position-relative">
       <table class="table table-hover table-borderless table-striped">
         <thead class="sticky-top top-0 shadow">
@@ -82,14 +84,14 @@ function select(id, valid) {
             <template v-if="item.weapons">
               <span v-for="(weapon, index) in item.weapons">
                 <VehicleWeaponToolTip :weapon="weapon"/>
-                <template v-if="index !== item.weapons.length - 1">,</template>
+                <template v-if="index !== item.weapons.length - 1">, </template>
               </span>
             </template>
-
+            <template v-if="item.weapons && item.weapon_choices">, </template>
             <template v-if="item.weapon_choices">
               <span v-for="(choices, index1) in item.weapon_choices">
-                <span v-for="(weapon, index2) in choices" class="text-nowrap">{{ weapon.display_name }}
-                  <template v-if="index2 !== choices.length - 1"> or</template>
+                <span v-for="(weapon, index2) in choices" class="text-nowrap"> <VehicleWeaponToolTip :weapon="weapon"/>
+                  <template v-if="index2 !== choices.length - 1"> or </template>
                 </span><span v-if="index1 !== item.weapon_choices.length - 1">, </span>
               </span>
             </template>
