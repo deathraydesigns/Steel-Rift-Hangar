@@ -34,7 +34,7 @@ export const UNIT_TRAITS = makeUnitTraits({
     },
     [[TRAIT_GARRISON]]: {
         display_name: 'Garrison',
-        formatter: (name, number) => `${name}(${number} Infantry Squads)`,
+        formatter: (name, number, type = null) => `${name}(${number} ${type})`,
         description: '',
     },
     [[TRAIT_GROUP_COMMAND]]: {
