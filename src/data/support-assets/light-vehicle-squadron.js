@@ -1,6 +1,6 @@
 import {SIZE_ULTRA_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
-import {MISSILE_POD, CLUSTER_ROCKETS, VEH_AUTO_CANNON, VEH_SUBMUNITIONS} from '../vehicle-weapons.js';
+import {MISSILE_POD, CLUSTER_ROCKETS, VEH_AUTO_CANNON, VEH_SUBMUNITIONS} from '../unit-weapons.js';
 import {TRAIT_MINE_SWEEPER, TRAIT_OUTRIDER, TRAIT_SUPPRESSIVE_FIRE, TRAIT_TARGET_DESIGNATOR} from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
 

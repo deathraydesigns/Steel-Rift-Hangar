@@ -3,7 +3,7 @@ import {computed, readonly, ref} from 'vue';
 import {SUPPORT_ASSET_UNITS} from '../data/support-asset-units.js';
 import {TRAIT_LIMITED, TRAIT_SHORT, WEAPON_TRAITS, weaponTraitDisplayName} from '../data/weapon-traits.js';
 import {getter} from './helpers/store-helpers.js';
-import {VEHICLE_WEAPONS} from '../data/vehicle-weapons.js';
+import {VEHICLE_WEAPONS} from '../data/unit-weapons.js';
 import {countBy, each, find, map, sumBy} from 'lodash';
 import {findItemIndexById} from './helpers/collection-helper.js';
 import {findById} from '../data/data-helpers.js';

@@ -6,7 +6,7 @@ import {
     VEH_AUTO_CANNON,
     VEH_HOWITZER,
     VEH_SUBMUNITIONS,
-} from '../vehicle-weapons.js';
+} from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
 import {
     TRAIT_CLOSE_SUPPORT,

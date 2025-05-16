@@ -1,4 +1,4 @@
-import {VEH_AGM_MISSILES, VEH_BARRAGE_ROCKETS, VEH_LES_AUTO_CANNON, VEH_ROTARY_CANNON} from '../vehicle-weapons.js';
+import {VEH_AGM_MISSILES, VEH_BARRAGE_ROCKETS, VEH_LES_AUTO_CANNON, VEH_ROTARY_CANNON} from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
 import {TRAIT_MINE_SWEEPER, TRAIT_MSOE_LAUNCHER, TRAIT_SCRAMBLERS} from '../unit-traits.js';
 import {SIZE_LIGHT} from '../unit-sizes.js';

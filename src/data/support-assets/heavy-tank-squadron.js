@@ -9,7 +9,7 @@ import {
     VEH_ROCKET_PACK,
     VEH_ROTARY_CANNON,
     VEH_SUBMUNITIONS,
-} from '../vehicle-weapons.js';
+} from '../unit-weapons.js';
 import {SUBMUNITIONS} from '../mech-weapons.js';
 import {TRAIT_GARRISON} from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';

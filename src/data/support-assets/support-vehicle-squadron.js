@@ -1,4 +1,4 @@
-import {VEH_AUTO_CANNON} from '../vehicle-weapons.js';
+import {VEH_AUTO_CANNON} from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
 import {
     TRAIT_OUTRIDER,

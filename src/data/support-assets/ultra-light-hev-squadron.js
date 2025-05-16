@@ -7,7 +7,7 @@ import {
     UL_ROCKET_PACK,
     VEH_AUTO_CANNON,
     VEH_SUBMUNITIONS,
-} from '../vehicle-weapons.js';
+} from '../unit-weapons.js';
 import {
     TRAIT_MAGNETIC_GRAPPLES,
     TRAIT_MINE_SWEEPER,
