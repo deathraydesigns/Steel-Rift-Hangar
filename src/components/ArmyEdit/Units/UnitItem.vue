@@ -7,6 +7,7 @@ import UnitWeapons from './UnitWeapons.vue';
 import UnitVehicles from './UnitVehicles.vue';
 import UnitVehicleAdd from './UnitVehicleAdd.vue';
 import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron.js';
+import UnitGarrisonUnits from './UnitGarrisonUnits.vue';
 
 const {supportAssetAttachmentId} = defineProps({
   supportAssetAttachmentId: {
@@ -27,8 +28,12 @@ const unit_points_valid = computed(() => unitStore.getUnitAttachmentPointsValid(
 
 const used_points = computed(() => unitStore.getUnitAttachmentUsedPoints(supportAssetAttachmentId));
 const max_points = computed(() => unitStore.getUnitAttachmentMaxPoints(supportAssetAttachmentId));
+const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarrisonChoicesInfo(supportAssetAttachmentId));
 
 function addVehicle(id) {
+  if (!visible.value) {
+    visible.value = true;
+  }
   unitStore.addVehicle(supportAssetAttachmentId, id);
 }
 
@@ -79,7 +84,7 @@ function setUpgradePodChoice(upgradePodId) {
             <Icon name="hev" color="#fff"/>
           </template>
           <template v-else>
-            Add Vehicle
+            Add {{info.attached_element_label}}
           </template>
         </UnitVehicleAdd>
         <BButton
@@ -135,8 +140,9 @@ function setUpgradePodChoice(upgradePodId) {
             </div>
           </template>
         </div>
-        <UnitVehicles :support-asset-attachment-id="supportAssetAttachmentId"/>
+        <UnitVehicles :support-asset-attachment-id="supportAssetAttachmentId" v-if="info.vehicles.length"/>
         <UnitWeapons :support-asset-attachment-id="supportAssetAttachmentId"/>
+        <UnitGarrisonUnits :support-asset-attachment-id="supportAssetAttachmentId" v-if="garrisonUnitChoices.length"/>
       </div>
     </BCollapse>
   </div>

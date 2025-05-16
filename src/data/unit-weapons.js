@@ -48,7 +48,7 @@ export const INFANTRY_ELECTRO_ARC_PULSERS = 'INFANTRY_ELECTRO_ARC_PULSERS';
 export const INFANTRY_HEAVY_MISSILE_LAUNCHER = 'INFANTRY_HEAVY_MISSILE_LAUNCHER';
 export const INFANTRY_HEAVY_RIFLES = 'INFANTRY_HEAVY_RIFLES';
 
-export const VEHICLE_WEAPONS = makeFrozenStaticListIds({
+export const UNIT_WEAPONS = makeFrozenStaticListIds({
     [[VEH_AUTO_CANNON]]: makeWeapon({
         display_name: 'Veh. Auto-Cannon',
         damage: 2,

@@ -19,7 +19,7 @@ const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachme
     <thead>
     <tr>
       <th>
-        Vehicles
+        {{unit.attached_element_label}}
       </th>
       <th class="text-end">
         Move
@@ -35,6 +35,9 @@ const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachme
       </th>
       <th>
         Weapons
+      </th>
+      <th>
+        Garrison
       </th>
       <th>
         Traits

@@ -16,6 +16,7 @@ export const INFANTRY_OUTPOST_DATA = {
     [[INFANTRY_OUTPOST]]: {
         size_id: SIZE_LIGHT,
         display_name: 'Infantry Outpost',
+        attached_element_label: 'Building',
         cost: 10,
         max_vehicles: 2,
         vehicles: makeStaticListIds({

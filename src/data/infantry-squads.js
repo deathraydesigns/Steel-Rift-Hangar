@@ -1,5 +1,10 @@
 import {makeFrozenStaticListIds} from './data-helpers.js';
-import {INFANTRY_MISSILE_LAUNCHER, INFANTRY_RIFLES} from './unit-weapons.js';
+import {
+    INFANTRY_HEAVY_MISSILE_LAUNCHER,
+    INFANTRY_HEAVY_RIFLES,
+    INFANTRY_MISSILE_LAUNCHER,
+    INFANTRY_RIFLES,
+} from './unit-weapons.js';
 import {trait} from './weapon-traits.js';
 import {TRAIT_MINE_SWEEPER, TRAIT_SUPPRESSIVE_FIRE, TRAIT_TARGET_DESIGNATOR} from './unit-traits.js';
 
@@ -63,12 +68,35 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
         move: 4,
         armor: 0,
         structure: 4,
-        display_name: 'Arc Suit Squad',
+        display_name: 'Arc Suits',
         weapon_ids: [
             INFANTRY_RIFLES,
         ],
         traits: [
             trait(TRAIT_MINE_SWEEPER),
+        ],
+    },
+    [[INFANTRY_REAPER_SUIT_SQUAD]]: {
+        move: 4,
+        armor: 0,
+        structure: 4,
+        display_name: 'Reaper Suits',
+        weapon_ids: [
+            INFANTRY_RIFLES,
+            INFANTRY_HEAVY_MISSILE_LAUNCHER,
+        ],
+        traits: [],
+    },
+    [[INFANTRY_VIPER_SUIT_SQUAD]]: {
+        move: 5,
+        armor: 0,
+        structure: 4,
+        display_name: 'Viper Suits',
+        weapon_ids: [
+            INFANTRY_HEAVY_RIFLES,
+        ],
+        traits: [
+            trait(TRAIT_TARGET_DESIGNATOR)
         ],
     },
 });

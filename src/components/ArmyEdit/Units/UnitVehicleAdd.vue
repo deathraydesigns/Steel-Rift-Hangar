@@ -1,6 +1,7 @@
 <script setup>
 
-import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
+import UnitWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
+import {formatInches} from '../../functional/format-range.js';
 
 const {disabled} = defineProps({
   disabled: {
@@ -72,7 +73,7 @@ function select(id, valid) {
             {{ item.display_name }}
           </td>
           <td>
-            {{ item.move }}"
+            {{formatInches(item.move)}}
           </td>
           <td>
             {{ item.armor }}

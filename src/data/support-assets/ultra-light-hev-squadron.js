@@ -1,8 +1,8 @@
 import {SIZE_ULTRA_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {
-    MISSILE_POD,
     CLUSTER_ROCKETS,
+    MISSILE_POD,
     SHORT_RANGE_MISSILE_PACK,
     UL_ROCKET_PACK,
     VEH_AUTO_CANNON,
@@ -15,6 +15,7 @@ import {
     TRAIT_UL_HEV_LAUNCH_GEAR,
 } from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
+import {UL_HEV_AIR_TRANSPORT_DEFINITION} from './las-wing-transport-squadron.js';
 
 export const ULTRA_LIGHT_HEV_SQUADRON = 'ULTRA_LIGHT_HEV_SQUADRON';
 
@@ -22,6 +23,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
     [[ULTRA_LIGHT_HEV_SQUADRON]]: {
         size_id: SIZE_ULTRA_LIGHT,
         display_name: 'Ultra-Light HE-V Squadron',
+        attached_element_label: 'HEV_ICON',
         cost: 10,
         max_vehicles: 3,
         upgrade_pods: makeStaticListIds({
@@ -93,5 +95,6 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
                 ],
             },
         }),
+        transport_upgrade: UL_HEV_AIR_TRANSPORT_DEFINITION,
     },
 };

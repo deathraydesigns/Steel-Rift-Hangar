@@ -32,6 +32,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA = {
     [[ASSAULT_VEHICLE_SQUADRON]]: {
         size_id: SIZE_MEDIUM,
         display_name: 'Assault Vehicle Squadron',
+        attached_element_label: 'Vehicle',
         cost: 20,
         max_vehicles: 4,
         vehicles: makeStaticListIds({
