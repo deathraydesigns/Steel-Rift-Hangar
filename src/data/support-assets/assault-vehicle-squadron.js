@@ -20,6 +20,12 @@ import {
 import {SIZE_MEDIUM} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {SUBMUNITIONS} from '../mech-weapons.js';
+import {
+    INFANTRY_ANTI_TANK_SQUAD,
+    INFANTRY_ENGINEER_SQUAD,
+    INFANTRY_RECON_SQUAD,
+    INFANTRY_RIFLE_SQUAD,
+} from '../infantry-squads.js';
 
 export const ASSAULT_VEHICLE_SQUADRON = 'ASSAULT_VEHICLE_SQUADRON';
 
@@ -71,6 +77,12 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA = {
                 traits: [
                     trait(TRAIT_GROUP_COMMAND),
                     trait(TRAIT_GARRISON, 3, 'Infantry Squads'),
+                ],
+                garrison_choice_unit_ids: [
+                    INFANTRY_RIFLE_SQUAD,
+                    INFANTRY_ANTI_TANK_SQUAD,
+                    INFANTRY_RECON_SQUAD,
+                    INFANTRY_ENGINEER_SQUAD,
                 ],
             },
             COMBAT_ENGINEERING_VEHICLE: {

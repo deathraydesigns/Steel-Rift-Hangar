@@ -1,5 +1,6 @@
 import {makeFrozenStaticListIds} from './data-helpers.js';
 import {
+    INFANTRY_ELECTRO_ARC_PULSERS,
     INFANTRY_HEAVY_MISSILE_LAUNCHER,
     INFANTRY_HEAVY_RIFLES,
     INFANTRY_MISSILE_LAUNCHER,
@@ -71,9 +72,10 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
         display_name: 'Arc Suits',
         weapon_ids: [
             INFANTRY_RIFLES,
+            INFANTRY_ELECTRO_ARC_PULSERS,
         ],
         traits: [
-            trait(TRAIT_MINE_SWEEPER),
+            trait(TRAIT_SUPPRESSIVE_FIRE),
         ],
     },
     [[INFANTRY_REAPER_SUIT_SQUAD]]: {

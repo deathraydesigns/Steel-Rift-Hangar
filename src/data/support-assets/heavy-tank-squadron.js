@@ -13,6 +13,12 @@ import {
 import {SUBMUNITIONS} from '../mech-weapons.js';
 import {TRAIT_GARRISON} from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
+import {
+    INFANTRY_ANTI_TANK_SQUAD,
+    INFANTRY_ENGINEER_SQUAD,
+    INFANTRY_RECON_SQUAD,
+    INFANTRY_RIFLE_SQUAD,
+} from '../infantry-squads.js';
 
 export const HEAVY_TANK_SQUADRON = 'HEAVY_TANK_SQUADRON';
 
@@ -69,6 +75,12 @@ export const HEAVY_TANK_SQUADRON_DATA = {
                 ],
                 traits: [
                     trait(TRAIT_GARRISON, 4, 'Infantry Squads'),
+                ],
+                garrison_choice_unit_ids: [
+                    INFANTRY_RIFLE_SQUAD,
+                    INFANTRY_ANTI_TANK_SQUAD,
+                    INFANTRY_RECON_SQUAD,
+                    INFANTRY_ENGINEER_SQUAD,
                 ],
             },
         }),
