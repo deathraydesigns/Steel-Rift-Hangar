@@ -78,7 +78,7 @@ const {
             <TraitList :traits="item.off_table_weapon.traits"/>
           </td>
           <td>
-            <small>{{item.notes.join(', ')}}</small>
+            <small>{{ item.notes.join(', ') }}</small>
           </td>
           <td class="table-btn-cell text-end">
             <BButton @click="store.removeSupportAssetId(item.id)" variant="danger" size="sm"><span

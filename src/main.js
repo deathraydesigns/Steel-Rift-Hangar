@@ -10,7 +10,7 @@ const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
-app.config.performance = true
+app.config.performance = true;
 app.use(createBootstrap());
 app.use(pinia);
 app.mount('#app');

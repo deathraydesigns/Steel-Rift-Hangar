@@ -14,7 +14,7 @@ const {secondary_agendas, max_secondary_agendas} = storeToRefs(useSecondaryAgend
         Secondary Agendas
       </span>
       <small>
-      (Choose {{ max_secondary_agendas }} at game start)
+        (Choose {{ max_secondary_agendas }} at game start)
       </small>
     </div>
 

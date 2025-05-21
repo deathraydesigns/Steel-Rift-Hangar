@@ -84,7 +84,7 @@ function setUpgradePodChoice(upgradePodId) {
             <Icon name="hev" color="#fff"/>
           </template>
           <template v-else>
-            Add {{info.attached_element_label}}
+            Add {{ info.attached_element_label }}
           </template>
         </UnitVehicleAdd>
         <BButton

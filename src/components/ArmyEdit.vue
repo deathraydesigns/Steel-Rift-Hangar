@@ -5,6 +5,7 @@ import MechTeamList from './ArmyEdit/Mech/MechTeamList.vue';
 import {storeToRefs} from 'pinia';
 import {useSupportAssetUnitsStore} from '../store/support-asset-units-store.js';
 import UnitItem from './ArmyEdit/Units/UnitItem.vue';
+
 const {support_asset_units} = storeToRefs(useSupportAssetUnitsStore());
 
 </script>

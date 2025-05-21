@@ -42,7 +42,7 @@ const {
 
           <Icon :name="teamInfo.icon" color="#fff"/>
           <span class="ms-2">
-          {{ teamInfo.display_name }}
+            {{ teamInfo.display_name }}
           </span>
         </span>
         <BtnToolTip>

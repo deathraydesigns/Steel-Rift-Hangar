@@ -19,7 +19,7 @@ const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachme
     <thead>
     <tr>
       <th>
-        {{unit.attached_element_label}}
+        {{ unit.attached_element_label }}
       </th>
       <th class="text-end">
         Move

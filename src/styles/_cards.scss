@@ -15,9 +15,10 @@
 
 .card-mech-team {
   border-color: #000;
- > .card-body {
+
+  > .card-body {
     border-radius: 0 0 $card-inner-border-radius $card-inner-border-radius;
-    background-color:  $dark-bg-subtle;
+    background-color: $dark-bg-subtle;
   }
 }
 

@@ -59,7 +59,7 @@ const unit = computed(() => unitStore.getUnitAttachmentInfo(unitAttachmentId));
         </template>
       </td>
       <td class="text-start small">
-      {{ item.traits.map(t => unitTraitDisplayName(t)).join(', ')}}
+        {{ item.traits.map(t => unitTraitDisplayName(t)).join(', ') }}
       </td>
     </tr>
     </tbody>

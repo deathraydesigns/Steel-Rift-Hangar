@@ -29,13 +29,13 @@ const {
       :delay="{show: 0, hide: 0}"
   >
     <template #target><span
-          v-show="perks && perks.length"
-          :class="`btn btn-${size} btn-light ${props.class}`">
+        v-show="perks && perks.length"
+        :class="`btn btn-${size} btn-light ${props.class}`">
 
-        <span class="material-symbols-outlined">
-          flag
-        </span>
-      </span></template>
+      <span class="material-symbols-outlined">
+        flag
+      </span>
+    </span></template>
 
     <template #title>
       Faction Perks

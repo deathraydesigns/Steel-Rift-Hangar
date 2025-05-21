@@ -33,7 +33,8 @@ import {BCollapse, BNavbarToggle} from 'bootstrap-vue-next';
                   <a class="nav-link" href="https://www.steelrift.com/faq">FAQ</a>
                 </li>
               </ul>
-              <a class="btn btn-orange btn-sm ms-2" href="https://deathraydesigns.com/product-category/minis/steel-rift/">Buy
+              <a class="btn btn-orange btn-sm ms-2"
+                 href="https://deathraydesigns.com/product-category/minis/steel-rift/">Buy
                 Now</a>
             </BCollapse>
           </div>

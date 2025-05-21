@@ -19,8 +19,8 @@ window.addEventListener('hashchange', () => {
 });
 
 const showPrint = computed(() => {
-  return currentPath.value.slice(1) === ROUTE_PRINT
-})
+  return currentPath.value.slice(1) === ROUTE_PRINT;
+});
 </script>
 <template>
   <Toaster/>

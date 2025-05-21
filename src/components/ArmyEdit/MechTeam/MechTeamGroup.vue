@@ -10,7 +10,7 @@ import {useValidationStore} from '../../../store/validation-store.js';
 import {BButton} from 'bootstrap-vue-next';
 
 const teamStore = useTeamStore();
-const validationStore = useValidationStore()
+const validationStore = useValidationStore();
 
 const {teamId, groupId} = defineProps({
   teamId: {

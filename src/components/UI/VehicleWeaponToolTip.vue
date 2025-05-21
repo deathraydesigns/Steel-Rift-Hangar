@@ -30,16 +30,16 @@ const {weapon} = defineProps({
         </thead>
         <tbody>
         <tr>
-          <td class="text-center">{{weapon.damage}}</td>
+          <td class="text-center">{{ weapon.damage }}</td>
           <td class="text-center">
             <template v-if="weapon.range">
-            {{weapon.range}}"
+              {{ weapon.range }}"
             </template>
             <template v-else>
               -
             </template>
           </td>
-          <td>{{weapon.traits.map(t => t.display_name).join(', ')}}</td>
+          <td>{{ weapon.traits.map(t => t.display_name).join(', ') }}</td>
         </tr>
         </tbody>
       </table>

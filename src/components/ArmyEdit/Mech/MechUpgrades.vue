@@ -14,6 +14,7 @@ const {mechId} = defineProps({
 });
 
 const mech = computed(() => mechStore.getMech(mechId));
+
 function onSortableChange(event) {
   let moved = event.moved;
   if (!moved) {

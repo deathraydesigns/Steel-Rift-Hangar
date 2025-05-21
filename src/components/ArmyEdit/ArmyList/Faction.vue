@@ -49,7 +49,7 @@ const modal = ref(false);
 
     </template>
     <template #content>
-      {{perk_1_info?.description}}
+      {{ perk_1_info?.description }}
     </template>
   </BtnToolTip>
 
@@ -67,7 +67,7 @@ const modal = ref(false);
 
     </template>
     <template #content>
-      {{perk_2_info?.description}}
+      {{ perk_2_info?.description }}
     </template>
   </BtnToolTip>
 

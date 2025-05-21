@@ -36,7 +36,9 @@ function setFactionId(factionId) {
     <ul class="nav nav-tabs nav-tabs-factions">
       <button class="nav-link disabled tab-select-faction" role="tab" tabindex="-1">Select Faction:</button>
       <li class="nav-item" v-for="faction in factions_info">
-        <button :class="{'nav-link': true, 'active': faction.id === faction_id}" @click="setFactionId(faction.id)">{{ faction.display_name }}</button>
+        <button :class="{'nav-link': true, 'active': faction.id === faction_id}" @click="setFactionId(faction.id)">
+          {{ faction.display_name }}
+        </button>
       </li>
     </ul>
 

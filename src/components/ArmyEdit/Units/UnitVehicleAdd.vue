@@ -1,11 +1,9 @@
 <script setup>
 
-import UnitWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
+import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
 import {formatInches} from '../../functional/format-range.js';
 import IconNotAvailable from '../../UI/IconNotAvailable.vue';
 import TraitList from '../../UI/TraitList.vue';
-import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
-import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 
 const {disabled} = defineProps({
@@ -78,7 +76,7 @@ function select(id, valid) {
             {{ item.display_name }}
           </td>
           <td>
-            {{formatInches(item.move)}}
+            {{ formatInches(item.move) }}
           </td>
           <td>
             {{ item.armor }}
@@ -90,14 +88,14 @@ function select(id, valid) {
             <template v-if="item.weapons">
               <span v-for="(weapon, index) in item.weapons">
                 <VehicleWeaponToolTip :weapon="weapon"/>
-                <template v-if="index !== item.weapons.length - 1">, </template>
+                <template v-if="index !== item.weapons.length - 1">,</template>
               </span>
             </template>
-            <template v-if="item.weapons && item.weapon_choices">, </template>
+            <template v-if="item.weapons && item.weapon_choices">,</template>
             <template v-if="item.weapon_choices">
               <span v-for="(choices, index1) in item.weapon_choices">
                 <span v-for="(weapon, index2) in choices" class="text-nowrap"> <VehicleWeaponToolTip :weapon="weapon"/>
-                  <template v-if="index2 !== choices.length - 1"> or </template>
+                  <template v-if="index2 !== choices.length - 1"> or</template>
                 </span><span v-if="index1 !== item.weapon_choices.length - 1">, </span>
               </span>
             </template>
