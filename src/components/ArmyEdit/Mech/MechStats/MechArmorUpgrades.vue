@@ -117,6 +117,21 @@ function selectOption(value) {
           size="md"
           :perks="armorUpgrade.team_perks"
       />
+      <BtnToolTip
+          :enabled="!!armorUpgrade.description">
+        <template #target="{mouseover, mouseleave}">
+          <span
+              @mouseover="mouseover"
+              @mouseleave="mouseleave"
+              class="btn btn-md btn-light ms-1"
+          >
+            <span class="material-symbols-outlined">shield_question</span>
+          </span>
+        </template>
+        <template #content>
+          {{ armorUpgrade.description }}
+        </template>
+      </BtnToolTip>
     </td>
     <td class="text-end">
       <div class="col-form-label">
