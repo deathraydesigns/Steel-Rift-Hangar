@@ -23,7 +23,7 @@ export const usePrintSettingsStore = defineStore('print-settings', () => {
         const one_team_per_page = ref(false);
         const include_army_name_on_cards = ref(true);
 
-        const include_mine_drone_card = ref(true);
+        const include_mine_drone_card = ref(false);
         const include_faction_perk_1_card = ref(false);
         const include_faction_perk_2_card = ref(false);
         const separate_reference_cards_page = ref(false);
@@ -33,7 +33,7 @@ export const usePrintSettingsStore = defineStore('print-settings', () => {
 
         function $reset() {
             one_team_per_page.value = false;
-            include_army_name_on_cards.value = true;
+            include_army_name_on_cards.value = false;
             include_mine_drone_card.value = false;
             include_faction_perk_1_card.value = false;
             include_faction_perk_2_card.value = false;
