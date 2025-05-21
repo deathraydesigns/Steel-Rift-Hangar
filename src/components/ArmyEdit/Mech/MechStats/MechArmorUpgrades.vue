@@ -5,18 +5,15 @@ import {useMechStore} from '../../../../store/mech-store.js';
 import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
+import {BDropdown} from 'bootstrap-vue-next';
 
 const mechStore = useMechStore();
 
 const {
   label,
-  sizeId,
   mechId,
 } = defineProps({
   label: {
-    type: String,
-  },
-  sizeId: {
     type: String,
   },
   mechId: {
@@ -36,7 +33,6 @@ function selectOption(value) {
   model.value = value;
 }
 
-const open = ref(false);
 </script>
 
 <template>

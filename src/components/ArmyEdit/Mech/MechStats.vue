@@ -96,7 +96,6 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId))
       <MechArmorUpgrades
           label="Armor Upgrades"
           v-model="mech.armor_upgrade_id"
-          :size-id="mech.size_id"
           :mech-id="mech.id"
       />
       <MechFactionPerkRow
@@ -116,6 +115,7 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId))
       <MechWeapons :mech-id="mech.id"/>
       <tfoot>
       <tr>
+        <td></td>
         <td>
 
         </td>
@@ -141,6 +141,7 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId))
         <td></td>
       </tr>
       <tr class="table-light">
+        <td></td>
         <td></td>
         <th colspan="3" class="text-end">
           Totals
