@@ -1,6 +1,8 @@
 <script setup>
 import {storeToRefs} from 'pinia';
 import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store.js';
+import Number from '../../../functional/number.vue';
+import {BDropdown} from 'bootstrap-vue-next';
 
 const store = useSupportAssetUnitsStore();
 

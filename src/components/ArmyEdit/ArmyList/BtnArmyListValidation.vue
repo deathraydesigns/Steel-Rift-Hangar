@@ -1,6 +1,6 @@
 <script setup>
 
-import {BModal} from 'bootstrap-vue-next';
+import {BButton, BModal} from 'bootstrap-vue-next';
 import {useValidationStore} from '../../../store/validation-store.js';
 import {storeToRefs} from 'pinia';
 import {ref} from 'vue';

@@ -10,6 +10,10 @@ import {
 import {storeToRefs} from 'pinia';
 import {useFactionStore} from '../store/faction-store.js';
 import {useArmyListStore} from '../store/army-list-store.js';
+import {BFormCheckbox} from 'bootstrap-vue-next';
+import ArmyPrintCards from './ArmyPrint/ArmyPrintCards.vue';
+import ArmyPrintRef from './ArmyPrint/ArmyPrintRef.vue';
+import ArmyPrintAll from './ArmyPrint/ArmyPrintAll.vue';
 
 const printSettingsStore = usePrintSettingsStore();
 const factionStore = useFactionStore();

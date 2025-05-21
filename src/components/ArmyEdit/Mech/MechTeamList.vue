@@ -6,6 +6,7 @@ import {computed} from 'vue';
 import {TEAM_GENERAL} from '../../../data/mech-teams.js';
 import MechTeamGroup from '../MechTeam/MechTeamGroup.vue';
 import BtnAddTeam from '../../UI/BtnAddTeam.vue';
+import {BButton} from 'bootstrap-vue-next';
 
 const teamStore = useTeamStore();
 const {teams, special_teams} = storeToRefs(teamStore);

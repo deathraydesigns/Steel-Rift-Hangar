@@ -1,5 +1,5 @@
 <script setup>
-import {BFormInput} from 'bootstrap-vue-next';
+import {BFormCheckbox, BFormInput} from 'bootstrap-vue-next';
 import {storeToRefs} from 'pinia';
 import {useSupportAssetCountsStore} from '../../../store/support-asset-count-store.js';
 

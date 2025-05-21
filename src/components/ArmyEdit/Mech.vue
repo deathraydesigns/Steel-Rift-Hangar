@@ -2,9 +2,11 @@
 import {useMechStore} from '../../store/mech-store.js';
 import Fraction from '../functional/fraction.vue';
 import {computed, ref, watch} from 'vue';
-import {BButton} from 'bootstrap-vue-next';
+import {BButton, BCollapse} from 'bootstrap-vue-next';
 import {useExpandCollapseAll} from '../functional/expand-collapse.js';
 import {useValidationStore} from '../../store/validation-store.js';
+import IconValidationError from '../UI/IconValidationError.vue';
+import MechStats from './Mech/MechStats.vue';
 
 const mechStore = useMechStore();
 const validationStore = useValidationStore();

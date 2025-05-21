@@ -11,7 +11,8 @@ import {ROUTE_HOME, ROUTE_PRINT} from '../routes.js';
 import Navbar from './Navbar.vue';
 import Fraction from './functional/fraction.vue';
 import {resetStores} from '../store/helpers/store-save-load.js';
-import {BModal} from 'bootstrap-vue-next';
+import {BButton, BModal} from 'bootstrap-vue-next';
+import BtnArmyListValidation from './ArmyEdit/ArmyList/BtnArmyListValidation.vue';
 
 const {used_teams_count, max_teams_count} = storeToRefs(useTeamStore());
 const {used_support_assets, max_support_assets} = storeToRefs(useSupportAssetCountsStore());

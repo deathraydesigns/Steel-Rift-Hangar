@@ -1,4 +1,7 @@
-<script setup></script>
+<script setup>
+import CardHeader from './CardParts/CardHeader.vue';
+import CardFooter from './CardParts/CardFooter.vue';
+</script>
 <template>
   <div class="game-card">
     <div class="card-content-container">

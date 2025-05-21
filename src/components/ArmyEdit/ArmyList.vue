@@ -4,6 +4,7 @@ import ArmyListSize from './ArmyList/ArmyListSize.vue';
 import ArmyListSupportAssetCount from './ArmyList/ArmyListSupportAssetCount.vue';
 import SupportAssetWeapons from './ArmyList/ArmyListSupportAssets/SupportAssetWeapons.vue';
 import ArmyListTeams from './ArmyList/ArmyListTeams.vue';
+import SupportAssetUnits from './ArmyList/ArmyListSupportAssets/SupportAssetUnits.vue';
 </script>
 <template>
   <div class="card text-bg-light card-army-list">

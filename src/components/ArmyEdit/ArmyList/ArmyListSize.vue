@@ -41,7 +41,7 @@ watch(armyTypeMaxTons, () => {
 });
 
 function syncArmyType() {
-  const result = find(options, (option) => option.value == max_tons.value);
+  const result = find(options, (option) => option.value === max_tons.value);
 
   if (result) {
     armyTypeMaxTons.value = result.value;

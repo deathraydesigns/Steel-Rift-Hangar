@@ -2,7 +2,7 @@
 import {useTeamStore} from '../../../store/team-store.js';
 import {computed, ref} from 'vue';
 import MechTeamGroup from './MechTeamGroup.vue';
-import {BButton} from 'bootstrap-vue-next';
+import {BButton, BOffcanvas} from 'bootstrap-vue-next';
 import {MECH_SIZES} from '../../../data/unit-sizes.js';
 import {MECH_TEAM_PERKS} from '../../../data/mech-team-perks.js';
 import {useExpandCollapseAll} from '../../functional/expand-collapse.js';

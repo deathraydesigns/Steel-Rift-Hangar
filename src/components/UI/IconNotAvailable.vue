@@ -1,5 +1,7 @@
 <script setup>
 
+import {BPopover} from 'bootstrap-vue-next';
+
 const {valid, validation_message} = defineProps({
   valid: {
     type: Boolean,

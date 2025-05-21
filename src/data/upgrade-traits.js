@@ -46,10 +46,3 @@ function makeUpgradeTraits(items) {
     return Object.freeze(items);
 }
 
-export function makeTrait(id, number = null) {
-    return Object.freeze({
-        id,
-        number,
-    });
-}
-

@@ -7,6 +7,7 @@ import HEVCardUpgrades from './HEVCard/HEVCardUpgrades.vue';
 import HEVCardStats from './HEVCard/HEVCardStats.vue';
 import HEVCardHp from './HEVCard/HEVCardHp.vue';
 import CardHeader from './CardParts/CardHeader.vue';
+import CardFooter from './CardParts/CardFooter.vue';
 
 const mechStore = useMechStore();
 

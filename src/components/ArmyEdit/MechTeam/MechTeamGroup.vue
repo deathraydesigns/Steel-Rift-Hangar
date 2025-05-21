@@ -7,6 +7,7 @@ import {TEAM_GENERAL} from '../../../data/mech-teams.js';
 import {useExpandCollapseAll} from '../../functional/expand-collapse.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../store/validation-store.js';
+import {BButton} from 'bootstrap-vue-next';
 
 const teamStore = useTeamStore();
 const validationStore = useValidationStore()

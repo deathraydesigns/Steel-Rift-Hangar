@@ -173,22 +173,3 @@ function makeTeamPerks(perks) {
 
     return Object.freeze(perks);
 }
-
-export function makePerkItem(perkId) {
-    const perkInfo = MECH_TEAM_PERKS[perkId];
-    return {
-        perk_id: perkId,
-        display_name: perkInfo.display_name,
-        display_name_short: perkInfo.display_name_short,
-        description: perkInfo.description,
-        value: perkInfo.value,
-    };
-}
-
-export const SPECIAL_ABILITY_PERK_IDS = [
-    TEAM_PERK_RECON_INITIATIVE,
-    TEAM_PERK_SUPPORT_ASSET_DAMAGE,
-    TEAM_PERK_DIRECTIONAL_ASSETS,
-    TEAM_PERK_EXTRA_TONNAGE,
-    TEAM_PERK_SIDE_DEFENSE,
-];

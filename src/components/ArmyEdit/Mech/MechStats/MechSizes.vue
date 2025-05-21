@@ -3,6 +3,7 @@ import {useMechStore} from '../../../../store/mech-store.js';
 import Number from '../../../functional/number.vue';
 import {computed} from 'vue';
 import {useTeamStore} from '../../../../store/team-store.js';
+import {BDropdown} from 'bootstrap-vue-next';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();

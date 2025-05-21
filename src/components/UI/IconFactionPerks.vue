@@ -1,5 +1,7 @@
 <script setup>
 
+import {BPopover} from 'bootstrap-vue-next';
+
 const props = defineProps({
   class: {
     type: String,

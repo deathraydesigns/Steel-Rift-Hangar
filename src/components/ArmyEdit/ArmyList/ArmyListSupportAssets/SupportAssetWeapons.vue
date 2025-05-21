@@ -5,6 +5,9 @@ import TraitList from '../../../UI/TraitList.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../../store/validation-store.js';
 import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapons-store.js';
+import {BButton} from 'bootstrap-vue-next';
+import Number from '../../../functional/number.vue';
+import IconValidationError from '../../../UI/IconValidationError.vue';
 
 const store = useSupportAssetWeaponsStore();
 const validationStore = useValidationStore();

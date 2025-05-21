@@ -6,6 +6,8 @@ import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import TraitList from '../../../UI/TraitList.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
+import {BButton} from 'bootstrap-vue-next';
+import Number from '../../../functional/number.vue';
 
 const mechStore = useMechStore();
 

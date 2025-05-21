@@ -5,6 +5,7 @@ import {storeToRefs} from 'pinia';
 import {useMechStore} from '../../../store/mech-store.js';
 import draggable from 'vuedraggable';
 import {ref} from 'vue';
+import {BButton} from 'bootstrap-vue-next';
 
 const dragging = ref(false);
 

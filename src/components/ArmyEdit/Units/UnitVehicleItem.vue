@@ -6,6 +6,7 @@ import TraitList from '../../UI/TraitList.vue';
 import {formatInches} from '../../functional/format-range.js';
 import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron.js';
 import {SUPPORT_ASSET_UNITS} from '../../../data/support-asset-units.js';
+import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
 
 const {supportAssetAttachmentId, supportAssetVehicleAttachmentId} = defineProps({
   supportAssetAttachmentId: {

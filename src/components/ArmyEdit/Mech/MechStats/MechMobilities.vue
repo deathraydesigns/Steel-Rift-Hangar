@@ -3,6 +3,7 @@ import {computed} from 'vue';
 import {useMechStore} from '../../../../store/mech-store.js';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {MECH_MOBILITIES} from '../../../../data/mech-mobility.js';
+import {BDropdown} from 'bootstrap-vue-next';
 
 const mechStore = useMechStore();
 

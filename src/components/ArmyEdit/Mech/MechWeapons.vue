@@ -3,6 +3,7 @@ import {useMechStore} from '../../../store/mech-store.js';
 import {computed} from 'vue';
 import MechWeaponItem from './MechWeapons/MechWeaponItem.vue';
 import draggable from 'vuedraggable';
+import MechWeaponAdd from './MechWeapons/MechWeaponAdd.vue';
 
 const mechStore = useMechStore();
 

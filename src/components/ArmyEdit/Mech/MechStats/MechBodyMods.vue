@@ -2,6 +2,8 @@
 import {MECH_BODY_MODS} from '../../../../data/mech-body.js';
 import {computed} from 'vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
+import Number from '../../../functional/number.vue';
+import {BDropdown} from 'bootstrap-vue-next';
 
 const {
   formId,

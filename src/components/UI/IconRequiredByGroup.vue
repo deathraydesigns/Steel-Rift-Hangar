@@ -1,5 +1,6 @@
 <script setup>
 import {computed} from 'vue';
+import {BPopover} from 'bootstrap-vue-next';
 
 const {required, reason} = defineProps({
   required: {

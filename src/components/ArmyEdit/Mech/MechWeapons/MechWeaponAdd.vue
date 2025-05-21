@@ -4,6 +4,8 @@ import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
 import TraitList from '../../../UI/TraitList.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
+import {BDropdown} from 'bootstrap-vue-next';
+import Number from '../../../functional/number.vue';
 
 const {
   mechId,

@@ -1,6 +1,7 @@
 <script setup>
 
 import {computed} from 'vue';
+import {BPopover} from 'bootstrap-vue-next';
 
 const {messageArray, message, size} = defineProps({
   message: {

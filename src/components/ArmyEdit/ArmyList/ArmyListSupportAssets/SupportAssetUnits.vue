@@ -3,6 +3,9 @@ import {storeToRefs} from 'pinia';
 import {useValidationStore} from '../../../../store/validation-store.js';
 import SupportAssetUnitAdd from './SupportAssetUnitAdd.vue';
 import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store.js';
+import {BButton} from 'bootstrap-vue-next';
+import Number from '../../../functional/number.vue';
+import IconValidationError from '../../../UI/IconValidationError.vue';
 
 const store = useSupportAssetUnitsStore();
 const validationStore = useValidationStore();

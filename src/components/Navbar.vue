@@ -1,6 +1,7 @@
 <script setup>
 
 import logoSvg from '/steel-rift-logo.svg';
+import {BCollapse, BNavbarToggle} from 'bootstrap-vue-next';
 </script>
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark">
@@ -41,5 +42,3 @@ import logoSvg from '/steel-rift-logo.svg';
     </div>
   </nav>
 </template>
-<script setup lang="ts">
-</script>

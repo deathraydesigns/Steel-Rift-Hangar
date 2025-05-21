@@ -1,4 +1,4 @@
-import {listToDropDown, makeFrozenStaticListIds} from './data-helpers.js';
+import {makeFrozenStaticListIds} from './data-helpers.js';
 import {SA_ASSET_PROTECTION, SA_TERRITORIAL, SA_WILDCARDS} from './secondary-agendas.js';
 import {
     BLO_DISGRACED_TRILLIONAIRE_OUTRAGEOUS_SUPPORT_BUDGET,
@@ -154,5 +154,3 @@ export const FACTIONS = makeFrozenStaticListIds({
         }),
     },
 });
-
-export const FACTIONS_DROP_DOWN = listToDropDown(FACTIONS);

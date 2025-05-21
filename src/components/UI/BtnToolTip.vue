@@ -1,5 +1,7 @@
 <script setup>
 
+import {BPopover} from 'bootstrap-vue-next';
+
 const open = defineModel(false);
 
 const {enabled} = defineProps({

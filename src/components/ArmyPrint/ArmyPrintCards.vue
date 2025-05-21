@@ -8,6 +8,10 @@ import {useTeamStore} from '../../store/team-store.js';
 import {useFactionStore} from '../../store/faction-store.js';
 import {useSupportAssetWeaponsStore} from '../../store/support-asset-weapons-store.js';
 import {useSupportAssetUnitsStore} from '../../store/support-asset-units-store.js';
+import MineDroneCard from './ArmyPrintCards/MineDroneCard.vue';
+import FactionPerkCard from './ArmyPrintCards/FactionPerkCard.vue';
+import SupportAssetWeaponCard from './ArmyPrintCards/SupportAssetWeaponCard.vue';
+import SupportAssetUnitCard from './ArmyPrintCards/SupportAssetUnitCard.vue';
 
 const printSettingsStore = usePrintSettingsStore();
 const teamStore = useTeamStore();
