@@ -13,6 +13,7 @@ import {useTeamStore} from '../../../store/team-store.js';
 import MechArmorUpgrades from './MechStats/MechArmorUpgrades.vue';
 import MechBodyMods from './MechStats/MechBodyMods.vue';
 import MechSizes from './MechStats/MechSizes.vue';
+import MechMobilities from './MechStats/MechMobilities.vue';
 
 const mechStore = useMechStore();
 const factionStore = useFactionStore();
@@ -96,6 +97,11 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId))
       <MechArmorUpgrades
           label="Armor Upgrades"
           v-model="mech.armor_upgrade_id"
+          :mech-id="mech.id"
+      />
+      <MechMobilities
+          label="Mobility"
+          v-model="mech.mobility_id"
           :mech-id="mech.id"
       />
       <MechFactionPerkRow

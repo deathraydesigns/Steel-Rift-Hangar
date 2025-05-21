@@ -5,6 +5,7 @@ import {useMechStore} from '../../../../store/mech-store.js';
 import {useTeamStore} from '../../../../store/team-store.js';
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
 import {TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
+import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../../../../data/mech-mobility.js';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();
@@ -32,9 +33,17 @@ const upgrades = computed(() => {
   const teamPerks = teamStore.getTeamPerksInfoByMech(mechId).filter(({is_ability}) => is_ability);
   teamPerks.forEach(item => item.is_team_perk = true);
 
+  const mobility = [];
+  const mech = mechStore.getMech(mechId);
+  if (mech.mobility_id !== MOBILITY_BI_PEDAL) {
+    mobility.push({
+      display_name: MECH_MOBILITIES[mech.mobility_id].display_name,
+    });
+  }
   return [].concat(
       upgradesAttachments,
       teamPerks,
+      mobility,
   );
 });
 </script>

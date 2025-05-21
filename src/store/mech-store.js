@@ -9,8 +9,8 @@ import {
     TRAIT_MELEE,
     TRAIT_SHORT,
     TRAIT_SMART,
-    weaponTraitDisplayName,
     WEAPON_TRAITS,
+    weaponTraitDisplayName,
 } from '../data/weapon-traits.js';
 import {HOWITZER, MECH_WEAPONS, MISSILES, ROCKET_PACK} from '../data/mech-weapons.js';
 import {readonly} from 'vue';
@@ -53,6 +53,7 @@ import {
 } from '../data/mech-team-perks.js';
 import {TRAIT_UPGRADE_LIMITED} from '../data/upgrade-traits.js';
 import {DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS} from '../data/factions.js';
+import {MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
 
 export const useMechStore = defineStore('mech', {
         state() {
@@ -87,6 +88,7 @@ export const useMechStore = defineStore('mech', {
                     upgrades: [],
                     upgrades_id_increment: 1,
                     display_order: null,
+                    mobility_id: MOBILITY_BI_PEDAL,
                 };
 
                 this.mechs.push(mech);
@@ -201,7 +203,6 @@ export const useMechStore = defineStore('mech', {
                     }
                 });
 
-
                 mech.weapons.forEach((weaponAttachment) => {
                     const info = this.getMechWeaponAttachmentInfo(mechId, weaponAttachment.id);
                     if (!info.valid) {
@@ -211,7 +212,7 @@ export const useMechStore = defineStore('mech', {
                             `${info.display_name} removed: (${info.validation_message})`);
                         this.removeMechWeaponAttachment(mechId, weaponAttachment.id);
                     }
-                })
+                });
 
             },
         },
