@@ -214,6 +214,9 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         }
 
         function _getVehicleTraitsInfo(traits) {
+            if (!traits) {
+                return [];
+            }
             return traits.map(trait => Object.assign({},
                 trait,
                 UNIT_TRAITS[trait.id],
@@ -238,7 +241,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 });
             }
 
-            vehicle.traits = _getVehicleTraitsInfo(vehicle.traits || []);
+            vehicle.traits = _getVehicleTraitsInfo(vehicle.traits);
 
             return readonly(vehicle);
         }
@@ -287,7 +290,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 });
             }
 
-            let traits = [].concat(vehicleDef.traits) || [];
+            let traits = [].concat(vehicleDef.traits || []);
 
             const {
                 id,
@@ -332,18 +335,18 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             });
         });
 
-        const getUnitAttachmentUsedPoints = getter((supportAssetAttachmentId) => {
-            const info = getUnitAttachmentInfo.value(supportAssetAttachmentId);
+        const getUnitAttachmentUsedPoints = getter((unitAttachmentId) => {
+            const info = getUnitAttachmentInfo.value(unitAttachmentId);
 
             if (info.max_armor_tons) {
-                return getUnitAttachmentArmorTotal.value(supportAssetAttachmentId);
+                return getUnitAttachmentArmorTotal.value(unitAttachmentId);
             }
 
-            return getUnitVehicleCount.value(supportAssetAttachmentId);
+            return getUnitVehicleCount.value(unitAttachmentId);
         });
 
-        const getUnitAttachmentMaxPoints = getter((supportAssetAttachmentId) => {
-            const info = getUnitAttachmentInfo.value(supportAssetAttachmentId);
+        const getUnitAttachmentMaxPoints = getter((unitAttachmentId) => {
+            const info = getUnitAttachmentInfo.value(unitAttachmentId);
 
             if (info.max_armor_tons) {
                 return info.max_armor_tons;
@@ -352,9 +355,9 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return info.max_vehicles;
         });
 
-        const getUnitAttachmentPointsValid = getter((supportAssetAttachmentId) => {
-            const used = getUnitAttachmentUsedPoints.value(supportAssetAttachmentId);
-            const max = getUnitAttachmentMaxPoints.value(supportAssetAttachmentId);
+        const getUnitAttachmentPointsValid = getter((unitAttachmentId) => {
+            const used = getUnitAttachmentUsedPoints.value(unitAttachmentId);
+            const max = getUnitAttachmentMaxPoints.value(unitAttachmentId);
             return used === max;
         });
 
@@ -440,6 +443,28 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             const unit = getUnitAttachment.value(unitAttachmentId);
             const selectedVehicleIds = unit.vehicles.map(vehicle => vehicle.vehicle_id);
             return countBy(selectedVehicleIds);
+        });
+
+        const validation_messages = computed(() => {
+            let messages = [];
+            support_asset_units.value.forEach(unit => {
+                const info = getUnitAttachmentInfo.value(unit.id);
+
+                if (info.max_vehicles) {
+                    if (unit.vehicles.length < info.max_vehicles) {
+                        messages.push(`${info.display_name} has ${unit.vehicles.length} of ${info.max_vehicles} required ${info.attached_element_label}(s)`);
+                    }
+                }
+
+                if (info.max_armor_tons) {
+                    const usedPoints = getUnitAttachmentUsedPoints.value(unit.id);
+                    const maxPoints = getUnitAttachmentMaxPoints.value(unit.id);
+
+                    messages.push(`${info.display_name} has used ${usedPoints} armor points of ${maxPoints} required`);
+                }
+            });
+
+            return messages;
         });
 
         const getAvailableVehiclesInfo = getter(unitAttachmentId => {
@@ -565,6 +590,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
             available_support_asset_units_info,
             support_asset_units_info,
+            validation_messages,
 
             getUnitAttachmentArmorTotal,
             getAvailableVehiclesInfo,

@@ -19,6 +19,7 @@ export const INFANTRY_OUTPOST_DATA = {
         attached_element_label: 'Building',
         cost: 10,
         max_vehicles: 2,
+        all_vehicle_must_be_the_same: true,
         vehicles: makeStaticListIds({
             BUNKER: {
                 display_name: 'Bunker',

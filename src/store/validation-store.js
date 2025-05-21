@@ -10,6 +10,7 @@ import {MECH_WEAPONS} from '../data/mech-weapons.js';
 import {countBy, find, max, min} from 'lodash';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
 import {GAME_SIZE_BATTLE, GAME_SIZE_DUEL, GAME_SIZE_RECON, GAME_SIZE_STRIKE} from '../data/game-sizes.js';
+import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
 
 export const useValidationStore = defineStore('validation', () => {
 
@@ -17,6 +18,7 @@ export const useValidationStore = defineStore('validation', () => {
     const teamStore = useTeamStore();
     const mechStore = useMechStore();
     const supportAssetCountStore = useSupportAssetCountsStore();
+    const supportAssetUnitsStore = useSupportAssetUnitsStore();
 
     function $reset() {
 
@@ -57,6 +59,8 @@ export const useValidationStore = defineStore('validation', () => {
                 });
             });
         });
+
+        messages = messages.concat(supportAssetUnitsStore.validation_messages);
         return messages.filter(i => i);
     });
 
