@@ -46,7 +46,7 @@ const PERKS = makeStaticListIds({
     },
     [[MT_ELITE_PILOT_PROGRAM]]: {
         display_name: 'Elite Pilot Program',
-        description: 'Once per Game Turn,after the opposing Commander selects a unit to Activate and declares their Order, you may rotate a single HE-V up to 90°.',
+        description: 'Once per Game Turn, after the opposing Commander selects a unit to Activate and declares their Order, you may rotate a single HE-V up to 90°.',
     },
     // Political Priority
     [[PP_EXPANSIONIST]]: {
