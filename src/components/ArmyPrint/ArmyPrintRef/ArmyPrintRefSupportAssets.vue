@@ -3,13 +3,13 @@ import {storeToRefs} from 'pinia';
 import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store.js';
 
 const supportAssetStore = useSupportAssetWeaponsStore();
-const {weapon_support_assets} = storeToRefs(supportAssetStore);
+const {support_asset_weapons_info} = storeToRefs(supportAssetStore);
 </script>
 <template>
-  <div v-if="weapon_support_assets.length">
+  <div v-if="support_asset_weapons_info.length">
     <div class="divider"></div>
     <div class="ref-heading">Support Assets</div>
-    <div v-for="item in weapon_support_assets" :key="item.id">
+    <div v-for="item in support_asset_weapons_info" :key="item.id">
       <p class="p-gap">
         <span class="fw-bold">
           {{ item.display_name }}:

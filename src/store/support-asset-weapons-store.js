@@ -2,7 +2,7 @@ import {defineStore, storeToRefs} from 'pinia';
 import {computed, readonly, ref, watch} from 'vue';
 import {indexOf, sumBy} from 'lodash';
 import {useFactionStore} from './faction-store.js';
-import {TRAIT_LIMITED, weaponTraitDisplayName, WEAPON_TRAITS} from '../data/weapon-traits.js';
+import {TRAIT_LIMITED, WEAPON_TRAITS, weaponTraitDisplayName} from '../data/weapon-traits.js';
 import {DWC_OUTRAGEOUS_SUPPORT_BUDGET, FACTION_PERKS, OI_ORBITAL_STOCKPILES} from '../data/faction-perks.js';
 import {getter} from './helpers/store-helpers.js';
 import {SUPPORT_ASSET_WEAPONS} from '../data/support-asset-weapons.js';
@@ -37,19 +37,23 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
         const getSupportAssetInfo = getter(supportAssetId => {
             let asset = SUPPORT_ASSET_WEAPONS[supportAssetId];
             asset = Object.assign({}, asset);
+            asset.notes = [];
 
             const weapon = Object.assign({}, asset.off_table_weapon);
             weapon.traits = weapon.traits.map((trait) => Object.assign({}, trait));
 
             if (factionStore.hasPerk(OI_ORBITAL_STOCKPILES)) {
+                let hasLimitedTrait = false;
                 weapon.traits.forEach((trait) => {
                     if (trait.id === TRAIT_LIMITED) {
                         trait.number += 1;
+                        hasLimitedTrait = true;
                     }
                 });
-                const note = FACTION_PERKS[OI_ORBITAL_STOCKPILES].display_name;
-
-                asset.notes.push(`${note} Limit(+1)`);
+                if (hasLimitedTrait) {
+                    const note = FACTION_PERKS[OI_ORBITAL_STOCKPILES].display_name;
+                    asset.notes.push(`Faction Perk: ${note} Limit(+1) applied`);
+                }
             }
 
             if (factionStore.hasPerk(DWC_OUTRAGEOUS_SUPPORT_BUDGET)) {
@@ -67,7 +71,7 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
 
                     const note = FACTION_PERKS[DWC_OUTRAGEOUS_SUPPORT_BUDGET].display_name;
 
-                    asset.notes.push(note);
+                    asset.notes.push(`Faction Perk: ${note} applied`);
                 }
             }
 

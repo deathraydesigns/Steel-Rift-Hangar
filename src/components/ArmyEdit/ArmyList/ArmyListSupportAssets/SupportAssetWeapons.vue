@@ -43,6 +43,7 @@ const {
           <th class="text-end pe-1">Damage</th>
           <th class="text-end pe-1">Tons</th>
           <th>Traits</th>
+          <th>Notes</th>
           <th></th>
         </tr>
         </thead>
@@ -72,6 +73,9 @@ const {
           </td>
           <td>
             <TraitList :traits="item.off_table_weapon.traits"/>
+          </td>
+          <td>
+            <small>{{item.notes.join(', ')}}</small>
           </td>
           <td class="table-btn-cell text-end">
             <BButton @click="store.removeSupportAssetId(item.id)" variant="danger" size="sm"><span

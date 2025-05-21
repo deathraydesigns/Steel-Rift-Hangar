@@ -16,7 +16,7 @@ const {
 } = storeToRefs(factionStore);
 
 const {
-  weapon_support_assets,
+  support_asset_weapons_info,
   outrageous_budget_perk_support_asset_id,
 } = storeToRefs(supportAssetWeaponsStore);
 
@@ -76,7 +76,7 @@ const modal = ref(false);
       class="form-floating mb-1"
   >
     <BFormSelect
-        :options="weapon_support_assets"
+        :options="support_asset_weapons_info"
         text-field="display_name"
         value-field="id"
         id="outrageous_budget_perk_support_asset_id"

@@ -69,7 +69,14 @@ const max_uses = computed(() => {
         </tr>
         </tbody>
       </table>
-
+      <template v-if="info.notes?.length">
+        <div class="section-heading">
+          Notes
+        </div>
+        <div class="card-description">
+          <p v-for="i in info.notes">{{ i }}</p>
+        </div>
+      </template>
       <CardFooter/>
     </div>
   </div>
