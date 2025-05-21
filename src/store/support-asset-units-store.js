@@ -66,6 +66,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 unit_points_description,
                 attached_element_label,
                 transport_upgrade,
+                all_vehicle_must_be_the_same,
             } = _getUnitInfo.value(supportAssetId);
 
             vehicles = vehicles.map(vehicleAttachment => getUnitAttachmentVehicleInfo.value(unitAttachmentId, vehicleAttachment.id));
@@ -83,6 +84,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 upgrade_pod_id,
                 transport_upgrade,
                 vehicles,
+                all_vehicle_must_be_the_same,
             });
         });
 
@@ -459,6 +461,15 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                         validation_message = `Each vehicle may only be included ${maxDuplicates} times in a ${unitInfo.display_name}`;
                     }
                 }
+
+                if (unitInfo.all_vehicle_must_be_the_same) {
+                    const existingVehicleId = unit.vehicles[0]?.vehicle_id;
+                    if (existingVehicleId && vehicleId !== existingVehicleId) {
+                        valid = false;
+                        validation_message = `All vehicles must be the same type in a ${unitInfo.display_name}`;
+                    }
+                }
+
                 vehicles[vehicleId] = Object.assign({}, vehicles[vehicleId], {
                     valid,
                     validation_message,
@@ -501,10 +512,9 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
             let addCount = 1;
 
-            if (unitDef.vehicle_group_size) {
-                addCount = unitDef.vehicle_group_size;
+            if (unitDef.all_vehicle_must_be_the_same) {
+                addCount = unitDef.max_vehicles - supportAssetUnit.vehicles.length;
             }
-
             Array(addCount).fill(0).forEach(i => {
 
                 const vehicleAttachment = {
