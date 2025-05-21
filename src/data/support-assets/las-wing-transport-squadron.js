@@ -27,6 +27,7 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
         attached_element_label: 'Vehicle',
         cost: 10,
         max_vehicles: 1,
+        vehicle_group_size: 3,
         vehicles: makeStaticListIds({
             INFANTRY_AIR_TRANSPORT: {
                 ...baseStats,

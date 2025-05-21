@@ -496,30 +496,40 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         function addVehicle(unitAttachmentId, vehicleId) {
             const supportAssetUnit = getUnitAttachment.value(unitAttachmentId);
             const supportAssetUnitId = supportAssetUnit.support_asset_unit_id;
-            const vehicleDef = SUPPORT_ASSET_UNITS[supportAssetUnitId].vehicles[vehicleId];
+            const unitDef = SUPPORT_ASSET_UNITS[supportAssetUnitId];
+            const vehicleDef = unitDef.vehicles[vehicleId];
 
-            const vehicleAttachment = {
-                id: supportAssetUnit.vehicles_id_increment++,
-                vehicle_id: vehicleId,
-            };
+            let addCount = 1;
 
-            if (vehicleDef.weapon_choice_ids) {
-                const weaponChoices = {};
-                Object.keys(vehicleDef.weapon_choice_ids).forEach(key => {
-                    weaponChoices[key] = vehicleDef.weapon_choice_ids[key][0];
-                });
-                vehicleAttachment.weapon_choices = weaponChoices;
-            }
-            if (vehicleDef.garrison_choice_unit_ids) {
-                const garrisonTrait = find(vehicleDef.traits, {id: TRAIT_GARRISON});
-                const garrisonChoices = [];
-                Array(garrisonTrait.number).fill(0).forEach((i, index) => {
-                    garrisonChoices[index] = vehicleDef.garrison_choice_unit_ids[0];
-                });
-                vehicleAttachment.garrison_choices = garrisonChoices;
+            if (unitDef.vehicle_group_size) {
+                addCount = unitDef.vehicle_group_size;
             }
 
-            supportAssetUnit.vehicles.push(vehicleAttachment);
+            Array(addCount).fill(0).forEach(i => {
+
+                const vehicleAttachment = {
+                    id: supportAssetUnit.vehicles_id_increment++,
+                    vehicle_id: vehicleId,
+                };
+
+                if (vehicleDef.weapon_choice_ids) {
+                    const weaponChoices = {};
+                    Object.keys(vehicleDef.weapon_choice_ids).forEach(key => {
+                        weaponChoices[key] = vehicleDef.weapon_choice_ids[key][0];
+                    });
+                    vehicleAttachment.weapon_choices = weaponChoices;
+                }
+                if (vehicleDef.garrison_choice_unit_ids) {
+                    const garrisonTrait = find(vehicleDef.traits, {id: TRAIT_GARRISON});
+                    const garrisonChoices = [];
+                    Array(garrisonTrait.number).fill(0).forEach((i, index) => {
+                        garrisonChoices[index] = vehicleDef.garrison_choice_unit_ids[0];
+                    });
+                    vehicleAttachment.garrison_choices = garrisonChoices;
+                }
+
+                supportAssetUnit.vehicles.push(vehicleAttachment);
+            });
         }
 
         function setUnitVehicleWeaponChoice(unitAttachmentId, vehicleAttachmentId, choiceId, weaponId) {
