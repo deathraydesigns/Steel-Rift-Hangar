@@ -18,7 +18,7 @@ const {label, size_id} = defineProps({
       <div class="flex-grow-1">
         {{label}}
       </div>
-      <div class="flex-shrink-1">
+      <div class="flex-shrink-1" v-if="size_id">
         <span class="fw-medium">Size:</span> {{ UNIT_SIZES[size_id].display_name }}
       </div>
     </div>

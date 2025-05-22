@@ -58,6 +58,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
             let {
                 display_name,
+                size_id,
                 size,
                 cost,
                 max_armor_tons,
@@ -88,6 +89,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 id,
                 support_asset_unit_id,
                 display_name,
+                size_id,
                 size,
                 cost,
                 max_armor_tons,
