@@ -127,7 +127,7 @@ export const useTeamStore = defineStore('team', () => {
 
                     return {
                         required: true,
-                        required_reason: `${teamDisplayName} ${groupInfo.display_name} requires at least one weapon with the of the ${traitDisplayName} trait.`,
+                        required_reason: `${teamDisplayName} ${groupInfo.display_name} requires at least one weapon with the ${traitDisplayName} trait.`,
                     };
                 }
             }
