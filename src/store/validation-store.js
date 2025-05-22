@@ -102,10 +102,9 @@ export const useValidationStore = defineStore('validation', () => {
             });
 
             if (!result) {
-                const teamDisplayName = teamStore.getTeamInfo(teamId).display_name;
                 const traitDisplayName = WEAPON_TRAITS[requiredAtLeastOneWithTraitId].display_name;
 
-                messages.push(`${teamDisplayName} ${groupInfo.display_name} requires at least one weapon with the of the ${traitDisplayName} trait.`);
+                messages.push(`requires at least one weapon with the ${traitDisplayName} trait.`);
             }
         }
 
