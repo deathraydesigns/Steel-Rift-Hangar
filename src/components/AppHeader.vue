@@ -83,7 +83,7 @@ const resetModal = ref(false);
             <div class="btn-group d-inline-block ms-1" role="group">
               <a :href="`#${ROUTE_HOME}`" :class="{
                   'btn btn-sm btn-light': true,
-                  'active': currentPath === `#${ROUTE_HOME}`
+                  'active': currentPath === `#${ROUTE_HOME}` || currentPath === ''
                 }">
                 Edit
               </a>
