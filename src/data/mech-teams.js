@@ -35,7 +35,6 @@ import {
     HEAVY_PLATING_ARMOR_UPGRADE,
     REACTIVE_ARMOR_UPGRADE,
 } from './mech-armor-upgrades.js';
-import {each} from 'lodash';
 import {
     SA_DEATH_FROM_ABOVE,
     SA_DONT_GIVE_AN_INCH,
@@ -47,6 +46,7 @@ import {
 } from './secondary-agendas.js';
 
 import {TRAIT_MELEE, TRAIT_REACH, TRAIT_SHORT} from './weapon-traits.js';
+import {each} from 'es-toolkit/compat';
 
 export const TEAM_SIZE_SMALL = 'TEAM_SIZE_SMALL';
 export const TEAM_SIZE_MEDIUM = 'TEAM_SIZE_MEDIUM';

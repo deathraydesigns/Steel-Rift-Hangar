@@ -3,7 +3,7 @@ import {computed} from 'vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
 import TraitList from '../../UI/TraitList.vue';
 import UnitWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
-import {formatInches} from '../../functional/format-range.js';
+import {formatInches} from '../../functional/formatters.js';
 
 const {supportAssetAttachmentId} = defineProps({
   supportAssetAttachmentId: {

@@ -1,10 +1,10 @@
-import {each} from 'lodash';
 import {
     DIRECTIONAL_THRUSTER,
     ELECTRONIC_COUNTERMEASURES,
     TARGET_DESIGNATOR,
     upgradeDisplayName,
 } from './mech-upgrades.js';
+import {each} from 'es-toolkit/compat';
 
 export const TEAM_PERK_EXTRA_MISSILE_AMMO = 'TEAM_PERK_EXTRA_MISSILE_AMMO';
 export const TEAM_PERK_0_SLOT_TARGET_DESIGNATORS = 'TEAM_PERK_0_SLOT_TARGET_DESIGNATORS';

@@ -1,7 +1,7 @@
 <script setup>
 
 import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
-import {formatInches} from '../../functional/format-range.js';
+import {formatInches} from '../../functional/formatters.js';
 import IconNotAvailable from '../../UI/IconNotAvailable.vue';
 import TraitList from '../../UI/TraitList.vue';
 import {BDropdown} from 'bootstrap-vue-next';

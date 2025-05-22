@@ -21,7 +21,7 @@ import {
     TRAIT_TETHER,
 } from './weapon-traits.js';
 import {makeFrozenStaticListIds} from './data-helpers.js';
-import {find} from 'lodash';
+import {find} from 'es-toolkit/compat';
 
 export const AUTO_CANNON = 'AUTO_CANNON';
 export const HOWITZER = 'HOWITZER';

@@ -3,7 +3,6 @@ import {BFormFloatingLabel, BFormInput} from 'bootstrap-vue-next';
 import {useArmyListStore} from '../../../store/army-list-store.js';
 import {storeToRefs} from 'pinia';
 import {onMounted, ref, watch} from 'vue';
-import {find} from 'lodash';
 
 const store = useArmyListStore();
 
@@ -41,7 +40,7 @@ watch(armyTypeMaxTons, () => {
 });
 
 function syncArmyType() {
-  const result = find(options, (option) => option.value === max_tons.value);
+  const result = options.find((option) => option.value === max_tons.value);
 
   if (result) {
     armyTypeMaxTons.value = result.value;

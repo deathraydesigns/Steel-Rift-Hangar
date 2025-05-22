@@ -2,7 +2,7 @@
 import {computed} from 'vue';
 import {useMechStore} from '../../../store/mech-store.js';
 import {MECH_UPGRADES} from '../../../data/mech-upgrades.js';
-import {sortBy} from 'lodash';
+import {sortBy} from 'es-toolkit/compat';
 
 const mechStore = useMechStore();
 

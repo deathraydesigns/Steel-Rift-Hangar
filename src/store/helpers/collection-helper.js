@@ -1,19 +1,18 @@
-import {findIndex} from 'lodash';
-
-export function findItemById(items, id) {
-    let index = findItemIndexById(items, id);
-    if (index === false) {
-        throw Error('Item not found with id', id);
-    }
-    return items[index];
-}
-
 export function findItemIndexById(items, id) {
-    let index = findIndex(items, ['id', id]);
+    let index = items.findIndex(item => item.id === id);
     if (index === -1) {
         return false;
     }
     return index;
+}
+
+export function filterUniqueById(items) {
+    const idMap = {};
+    items.forEach(item => {
+        idMap[item.id] = item;
+    });
+
+    return Object.values(idMap);
 }
 
 export function findItemIndex(items, item) {
@@ -71,3 +70,6 @@ export function setDisplayOrders(items) {
     });
 }
 
+export function findById(collection, id) {
+    return collection.find((item) => id === item.id);
+}

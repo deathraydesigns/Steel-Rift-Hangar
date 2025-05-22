@@ -1,7 +1,7 @@
 <script setup>
 import {computed} from 'vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
-import {formatInches} from '../../functional/format-range.js';
+import {formatInches} from '../../functional/formatters.js';
 import TraitList from '../../UI/TraitList.vue';
 
 const {supportAssetAttachmentId} = defineProps({

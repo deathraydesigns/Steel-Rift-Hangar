@@ -2,9 +2,9 @@
 import {computed} from 'vue';
 import {useMechStore} from '../../../../store/mech-store.js';
 import {TRAIT_LIMITED, TRAIT_MELEE, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
-import {find} from 'lodash';
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
 import {TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
+import {find} from 'es-toolkit/compat';
 
 const mechStore = useMechStore();
 const {mechId} = defineProps({

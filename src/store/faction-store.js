@@ -9,7 +9,6 @@ import {
     RD_ADVANCED_HARDPOINT_DESIGN,
     UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN,
 } from '../data/faction-perks.js';
-import {find} from 'lodash';
 import {getter} from './helpers/store-helpers.js';
 import {
     DWC_TOP_END_HARDWARE_BONUS_TONS,
@@ -17,6 +16,7 @@ import {
     NO_FACTION,
     RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS,
 } from '../data/factions.js';
+import {find} from 'es-toolkit/compat';
 
 export const useFactionStore = defineStore('faction', () => {
 

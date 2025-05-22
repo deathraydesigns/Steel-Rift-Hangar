@@ -2,8 +2,8 @@ import {defineStore} from 'pinia';
 import {MECH_SIZES, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {MECH_BODY_MODS, MOD_STANDARD} from '../data/mech-body.js';
 import {MECH_ARMOR_UPGRADES, NO_ARMOR_UPGRADE} from '../data/mech-armor-upgrades.js';
-import {findById, updateObject} from '../data/data-helpers.js';
-import {cloneDeep, find, groupBy, map, sortBy, sumBy} from 'lodash';
+import {updateObject} from '../data/data-helpers.js';
+import {cloneDeep, find, groupBy, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {
     TRAIT_LIMITED,
     TRAIT_MELEE,
@@ -25,7 +25,7 @@ import {
     NITRO_BOOST,
     TARGET_DESIGNATOR,
 } from '../data/mech-upgrades.js';
-import {deleteItemById, findItemIndex, moveItem} from './helpers/collection-helper.js';
+import {deleteItemById, findById, findItemIndex, moveItem} from './helpers/collection-helper.js';
 import {useToastStore} from './toast-store.js';
 import {useFactionStore} from './faction-store.js';
 import {

@@ -4,12 +4,12 @@ import {SUPPORT_ASSET_UNITS} from '../data/support-asset-units.js';
 import {TRAIT_LIMITED, TRAIT_SHORT, WEAPON_TRAITS, weaponTraitDisplayName} from '../data/weapon-traits.js';
 import {getter} from './helpers/store-helpers.js';
 import {UNIT_WEAPONS} from '../data/unit-weapons.js';
-import {countBy, each, find, map, sortBy, sumBy} from 'lodash';
-import {findItemIndexById} from './helpers/collection-helper.js';
-import {findById} from '../data/data-helpers.js';
+import {each, find, map, sortBy, sumBy} from 'es-toolkit/compat';
+import {findById, findItemIndexById} from './helpers/collection-helper.js';
 import {TRAIT_GARRISON, TRAIT_UL_HEV_LAUNCH_GEAR, UNIT_TRAITS, unitTraitDisplayName} from '../data/unit-traits.js';
 import {UNIT_SIZES} from '../data/unit-sizes.js';
 import {INFANTRY_SQUADS} from '../data/infantry-squads.js';
+import {countBy} from 'es-toolkit';
 
 export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
 
@@ -442,7 +442,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         const getAttachmentVehicleIdCounts = getter(unitAttachmentId => {
             const unit = getUnitAttachment.value(unitAttachmentId);
             const selectedVehicleIds = unit.vehicles.map(vehicle => vehicle.vehicle_id);
-            return countBy(selectedVehicleIds);
+            return countBy(selectedVehicleIds, id => id);
         });
 
         const validation_messages = computed(() => {

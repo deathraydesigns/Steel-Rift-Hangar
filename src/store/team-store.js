@@ -3,7 +3,7 @@ import {computed, readonly, ref} from 'vue';
 import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-helper.js';
 import {MECH_TEAM_SIZES, MECH_TEAMS, TEAM_FIRE_SUPPORT, TEAM_GENERAL, TEAM_RECON} from '../data/mech-teams.js';
 import {useMechStore} from './mech-store.js';
-import {difference, each, find, findIndex, groupBy, map, sortBy, sumBy} from 'lodash';
+import {difference, each, find, groupBy, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {getter} from './helpers/store-helpers.js';
 import {MECH_BODY_MODS_DROP_DOWN} from '../data/mech-body.js';
 import {MECH_WEAPONS} from '../data/mech-weapons.js';
@@ -144,7 +144,7 @@ export const useTeamStore = defineStore('team', () => {
 
             if (groupInfo.prohibited_weapons_with_trait_ids?.length) {
 
-                const prohibited = find(traits, (trait) => groupInfo.prohibited_weapons_with_trait_ids.includes(trait.id));
+                const prohibited = traits.find((trait) => groupInfo.prohibited_weapons_with_trait_ids.includes(trait.id));
                 if (prohibited) {
                     const teamDisplayName = getTeamInfo.value(teamId).display_name;
                     const prohibitedTraits = groupInfo.prohibited_weapons_with_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
@@ -170,9 +170,9 @@ export const useTeamStore = defineStore('team', () => {
             let teamId = null;
             let groupId = null;
 
-            find(teams.value, (team) => {
-                find(team.groups, (group) => {
-                    const found = find(group.mechs, {mech_id: mechId});
+            teams.value.find((team) => {
+                team.groups.find((group) => {
+                    const found = group.mechs.find(mech => mech.mech_id === mechId);
 
                     if (!!found) {
                         teamId = team.id;
@@ -288,7 +288,7 @@ export const useTeamStore = defineStore('team', () => {
         }
 
         const getTeamMechCount = getter((teamId) => {
-            let team = find(teams.value, {id: teamId});
+            const team = find(teams.value, {id: teamId});
             return sumBy(team.groups, (group) => group.mechs.length);
         });
 
@@ -486,7 +486,7 @@ export const useTeamStore = defineStore('team', () => {
         function removeMechFromTeam(mechId) {
             const {teamId, groupId} = getMechTeamAndGroupIds.value(mechId);
             const group = findGroup.value(teamId, groupId);
-            const index = findIndex(group.mechs, {'mech_id': mechId});
+            const index = group.mechs.findIndex(mech => mech.mech_id === mechId);
             group.mechs.splice(index, 1);
         }
 
@@ -500,7 +500,7 @@ export const useTeamStore = defineStore('team', () => {
         function moveGroupMech(teamId, groupId, mechId, toIndex) {
             const group = findGroup.value(teamId, groupId);
 
-            const index = findIndex(group.mechs, {mech_id: mechId});
+            const index = group.mechs.findIndex(mech => mech.mech_id === mechId);
             move(group.mechs, index, toIndex);
 
         }

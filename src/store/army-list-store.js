@@ -2,11 +2,11 @@ import {defineStore} from 'pinia';
 import {computed, ref} from 'vue';
 import {useMechStore} from './mech-store.js';
 import {GAME_SIZES, getGameSizeId} from '../data/game-sizes.js';
-import {find} from 'lodash';
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../data/mech-upgrades.js';
 import {MINE_DRONE_BARRAGE} from '../data/support-asset-weapons.js';
 import {useSupportAssetWeaponsStore} from './support-asset-weapons-store.js';
 import {useSupportAssetCountsStore} from './support-asset-count-store.js';
+import {find} from 'es-toolkit/compat';
 
 export const useArmyListStore = defineStore('army-list', () => {
         const supportAssetWeaponsStore = useSupportAssetWeaponsStore();

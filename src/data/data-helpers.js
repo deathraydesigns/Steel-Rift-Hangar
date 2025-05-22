@@ -1,4 +1,4 @@
-import {find, pick} from 'lodash';
+import {pick} from 'es-toolkit/compat';
 
 export function listToDropDown(list) {
     return Object.keys(list)
@@ -12,10 +12,6 @@ export function listToDropDown(list) {
 
 export function updateObject(existing, data, validKeys) {
     return Object.assign(existing, pick(data, validKeys));
-}
-
-export function findById(collection, id) {
-    return find(collection, (item) => id == item.id);
 }
 
 export function makeStaticListIds(obj) {

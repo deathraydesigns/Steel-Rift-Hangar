@@ -7,7 +7,8 @@ import {useMechStore} from './mech-store.js';
 import {MECH_TEAMS, TEAM_GENERAL} from '../data/mech-teams.js';
 import {useSupportAssetCountsStore} from './support-asset-count-store.js';
 import {MECH_WEAPONS} from '../data/mech-weapons.js';
-import {countBy, find, max, min} from 'lodash';
+import {countBy} from 'es-toolkit';
+import {max, min} from 'es-toolkit/compat';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
 import {GAME_SIZE_BATTLE, GAME_SIZE_DUEL, GAME_SIZE_RECON, GAME_SIZE_STRIKE} from '../data/game-sizes.js';
 import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
@@ -95,7 +96,7 @@ export const useValidationStore = defineStore('validation', () => {
 
         const requiredAtLeastOneWithTraitId = groupInfo.required_at_least_one_weapon_with_trait_id;
         if (requiredAtLeastOneWithTraitId) {
-            const result = find(mech.weapons, (weapon) => {
+            const result = mech.weapons.find((weapon) => {
                 const traitIds = MECH_WEAPONS[weapon.weapon_id].traits_by_size[mech.size_id];
                 return traitIds.includes(requiredAtLeastOneWithTraitId);
             });

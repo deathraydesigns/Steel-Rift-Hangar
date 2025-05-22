@@ -1,7 +1,7 @@
 <script setup>
 import {useMechStore} from '../../store/mech-store.js';
 import {computed} from 'vue';
-import {chunk} from 'lodash';
+import {chunk} from 'es-toolkit/compat';
 import HEVCard from './ArmyPrintCards/HEVCard.vue';
 import {usePrintSettingsStore} from '../../store/print-settings-store.js';
 import {useTeamStore} from '../../store/team-store.js';

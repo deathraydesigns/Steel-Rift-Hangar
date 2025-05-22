@@ -1,4 +1,3 @@
-import {find} from 'lodash';
 import {TEAM_SIZE_LARGE, TEAM_SIZE_MEDIUM, TEAM_SIZE_SMALL} from './mech-teams.js';
 
 export const GAME_SIZE_DUEL = 'GAME_SIZE_DUEL';
@@ -74,7 +73,7 @@ export function getGameSizeId(maxTons) {
         GAME_SIZE_DUEL,
     ];
 
-    return find(sizes, (sizeId) => {
+    return sizes.find((sizeId) => {
         return maxTons >= GAME_SIZES[sizeId].min_tons;
     });
 }

@@ -2,7 +2,7 @@
 import {computed} from 'vue';
 import {useMechStore} from '../../../store/mech-store.js';
 import {WEAPON_TRAITS, weaponTraitDisplayName} from '../../../data/weapon-traits.js';
-import {sortBy} from 'lodash';
+import {sortBy} from 'es-toolkit/compat';
 
 const mechStore = useMechStore();
 

@@ -3,7 +3,7 @@
 import {computed} from 'vue';
 import {SIZE_LIGHT, SIZE_ULTRA} from '../../../../data/unit-sizes.js';
 import {useMechStore} from '../../../../store/mech-store.js';
-import {chunk} from 'lodash';
+import {chunk} from 'es-toolkit/compat';
 import {useFactionStore} from '../../../../store/faction-store.js';
 import {RD_ADVANCED_STRUCTURAL_COMPONENTS} from '../../../../data/faction-perks.js';
 

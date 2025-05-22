@@ -1,6 +1,6 @@
 import {defineStore, storeToRefs} from 'pinia';
 import {computed, readonly, ref, watch} from 'vue';
-import {indexOf, sumBy} from 'lodash';
+import {sumBy} from 'es-toolkit/compat';
 import {useFactionStore} from './faction-store.js';
 import {TRAIT_LIMITED, WEAPON_TRAITS, weaponTraitDisplayName} from '../data/weapon-traits.js';
 import {DWC_OUTRAGEOUS_SUPPORT_BUDGET, FACTION_PERKS, OI_ORBITAL_STOCKPILES} from '../data/faction-perks.js';
@@ -92,7 +92,7 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
         const used_count = computed(() => support_asset_weapon_ids.value.length);
 
         function removeSupportAssetId(id) {
-            let index = indexOf(support_asset_weapon_ids.value, id);
+            let index = support_asset_weapon_ids.value.indexOf(id);
             support_asset_weapon_ids.value.splice(index, 1);
 
             syncOutrageousSupportBudget();
