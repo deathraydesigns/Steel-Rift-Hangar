@@ -41,9 +41,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
             INFANTRY_RIFLES,
             INFANTRY_MISSILE_LAUNCHER,
         ],
-        traits: [
-            trait(TRAIT_SUPPRESSIVE_FIRE),
-        ],
+        traits: [],
     },
     [[INFANTRY_RECON_SQUAD]]: {
         ...baseInfantryStats,
