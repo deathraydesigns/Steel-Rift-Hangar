@@ -118,8 +118,8 @@ export const useTeamStore = defineStore('team', () => {
             const requiredAtLeastOneWithTraitId = groupInfo.required_at_least_one_weapon_with_trait_id;
             if (requiredAtLeastOneWithTraitId) {
                 const otherInstances = mech.weapons.filter((item) => {
-                    const traitIds = MECH_WEAPONS[item.weapon_id].traits_by_size[mech.size_id];
-                    return weaponAttachment.id !== item.id && traitIds.includes(requiredAtLeastOneWithTraitId);
+                    const traits = MECH_WEAPONS[item.weapon_id].traits_by_size[mech.size_id];
+                    return weaponAttachment.id !== item.id && traits.find(trait => trait.id === requiredAtLeastOneWithTraitId);
                 }).length;
 
                 if (otherInstances === 0) {
@@ -127,7 +127,7 @@ export const useTeamStore = defineStore('team', () => {
 
                     return {
                         required: true,
-                        required_reason: `${teamDisplayName} ${groupInfo.display_name} requires at least one weapon with the ${traitDisplayName} trait.`,
+                        required_reason: `${teamDisplayName} ${groupInfo.display_name} Requires at least one weapon with the ${traitDisplayName} trait.`,
                     };
                 }
             }

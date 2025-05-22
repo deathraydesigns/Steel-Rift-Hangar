@@ -23,7 +23,7 @@ const {
 const visible = ref(false);
 const info = computed(() => mechStore.getMechInfo(mechId));
 
-const invalid_mech_messages = computed(() => validationStore.invalid_mech_messages(mechId));
+const invalid_mech_messages = computed(() => validationStore.getInvalidMechMessages(mechId));
 
 const {
   collapseSignal,

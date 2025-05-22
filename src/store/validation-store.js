@@ -52,7 +52,7 @@ export const useValidationStore = defineStore('validation', () => {
                 const mechIds = teamStore.getTeamGroupMechIds(team.id, group.id);
 
                 mechIds.map(mechId => {
-                    let mechMessages = invalid_mech_messages.value(mechId);
+                    let mechMessages = getInvalidMechMessages.value(mechId);
                     if (team.id !== TEAM_GENERAL) {
                         mechMessages = mechMessages.map(message => `[${teamDisplayName} ${groupDisplayName}] ${message}`);
                     }
@@ -74,7 +74,7 @@ export const useValidationStore = defineStore('validation', () => {
         return false;
     });
 
-    const invalid_mech_messages = getter(mechId => {
+    const getInvalidMechMessages = getter(mechId => {
         const teamStore = useTeamStore();
         const mech = mechStore.getMech(mechId);
         const mechDisplayName = mechStore.getMechInfo(mechId).display_name;
@@ -97,21 +97,20 @@ export const useValidationStore = defineStore('validation', () => {
         const requiredAtLeastOneWithTraitId = groupInfo.required_at_least_one_weapon_with_trait_id;
         if (requiredAtLeastOneWithTraitId) {
             const result = mech.weapons.find((weapon) => {
-                const traitIds = MECH_WEAPONS[weapon.weapon_id].traits_by_size[mech.size_id];
-                return traitIds.includes(requiredAtLeastOneWithTraitId);
+                const traits = MECH_WEAPONS[weapon.weapon_id].traits_by_size[mech.size_id];
+                return traits.find(trait => trait.id === requiredAtLeastOneWithTraitId);
             });
-
             if (!result) {
                 const traitDisplayName = WEAPON_TRAITS[requiredAtLeastOneWithTraitId].display_name;
 
-                messages.push(`requires at least one weapon with the ${traitDisplayName} trait.`);
+                messages.push(`Requires at least one weapon with the ${traitDisplayName} trait.`);
             }
         }
 
         return messages;
     });
 
-    const invalid_mech = getter(mechId => invalid_mech_messages.value(mechId).join('. ') + '.');
+    const invalid_mech = getter(mechId => getInvalidMechMessages.value(mechId).join('. ') + '.');
 
     const invalid_mech_tons = getter(mechId => {
         const {max_tons, used_tons} = mechStore.getMechInfo(mechId);
@@ -237,7 +236,7 @@ export const useValidationStore = defineStore('validation', () => {
     return {
         list_validation,
         invalid_mech,
-        invalid_mech_messages,
+        getInvalidMechMessages,
         list_is_valid,
         invalid_number_of_support_assets,
         team_size_count_validation,
