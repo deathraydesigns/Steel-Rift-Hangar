@@ -104,7 +104,7 @@ function addUlHev() {
               :options="garrisonUnitChoices"
               value-field="id"
               text-field="display_name"
-              :model-value="vehicleAttachment.garrison_choices[index]"
+              :model-value="vehicleAttachment.garrison_units[index]"
               @update:model-value="setGarrisonChoice(index, $event)"
               size="sm"
               class="d-inline-block w-auto ms-1"

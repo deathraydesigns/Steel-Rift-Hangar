@@ -8,6 +8,7 @@ import {
 } from './unit-weapons.js';
 import {trait} from './weapon-traits.js';
 import {TRAIT_MINE_SWEEPER, TRAIT_SUPPRESSIVE_FIRE, TRAIT_TARGET_DESIGNATOR} from './unit-traits.js';
+import {SIZE_ULTRA_LIGHT} from './unit-sizes.js';
 
 export const INFANTRY_RIFLE_SQUAD = 'INFANTRY_RIFLE_SQUAD';
 export const INFANTRY_ANTI_TANK_SQUAD = 'INFANTRY_ANTI_TANK_SQUAD';
@@ -21,6 +22,7 @@ const baseInfantryStats = {
     move: 3,
     armor: 0,
     structure: 3,
+    size_id: SIZE_ULTRA_LIGHT,
 };
 
 export const INFANTRY_SQUADS = makeFrozenStaticListIds({

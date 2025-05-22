@@ -64,9 +64,9 @@ function filterTraits(traits) {
         </div>
       </td>
       <td class="text-start">
-        <div class="weapon-uses" v-if="weapon.max_uses">
-          <div class="weapon-use" v-for="i in Array(weapon.max_uses)">&nbsp;</div>
-        </div>
+        <span class="text-nowrap" v-if="weapon.max_uses">
+          <span class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span>
+        </span>
       </td>
       <td>
         <template v-if="weapon.base_melee_damage">

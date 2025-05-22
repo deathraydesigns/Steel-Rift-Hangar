@@ -71,7 +71,7 @@ export const HEAVY_TANK_SQUADRON_DATA = {
                     TANK_HOWITZER,
                     VEH_ROTARY_CANNON,
                     DOZER_BLADE,
-                    SUBMUNITIONS,
+                    VEH_SUBMUNITIONS,
                 ],
                 traits: [
                     trait(TRAIT_GARRISON, 4, 'Infantry Squads'),

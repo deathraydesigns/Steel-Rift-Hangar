@@ -9,6 +9,7 @@ $page-height: 11 * $oneInch;
 
 
 $card-padding-x: 5pt;
+$armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
 
 .page-card-grid {
   box-sizing: content-box;
@@ -33,15 +34,21 @@ $card-padding-x: 5pt;
     outline: 1px solid var(--card-outline-color);
     background: var(--card-bg);
 
+    &.card-support-asset-unit {
+      width: $card-width * 3;
+    }
+
     .card-content-container {
       padding: 4pt;
       background: var(--card-bg);
     }
   }
 
+  $page-padding-x: ($page-width - $card-width * 3) * 0.5;
+  $page-padding-y: ($page-height - $card-height * 3) * 0.5;
+
   .page-card-grid {
-    $padding-x: ($page-width - $card-width * 3) * 0.5;
-    $padding-y: ($page-height - $card-height * 3) * 0.5;
+
 
     display: grid;
     grid-template-columns: repeat(3, $card-width);
@@ -52,7 +59,14 @@ $card-padding-x: 5pt;
     width: $card-width * 3;
     height: $card-height * 3;
 
-    padding: $padding-y $padding-x;
+    padding: $page-padding-y $page-padding-x;
+  }
+
+  .page-card-grid-flex {
+    display: flex;
+    align-content: flex-start;
+    flex-flow: row wrap;
+    padding: $page-padding-y $page-padding-x;
   }
 
   .card-name {
@@ -148,12 +162,18 @@ $card-padding-x: 5pt;
       width: 10pt;
       height: 10pt;
       border: 1.2pt solid #000;
-      border-radius: 1000px;
       margin: 0 1px 1px 0;
       font-size: .5rem;
       line-height: 10pt;
       text-align: center;
 
+      &.hp-structure {
+        border-radius: 1000px;
+      }
+
+      &.hp-armor {
+        border-radius: $armor-border-radius;
+      }
 
       > span {
         position: relative;
@@ -227,19 +247,29 @@ $card-padding-x: 5pt;
     tbody tr:last-child td {
       border: 0;
     }
+  }
 
-    .weapon-uses {
-      .weapon-use {
-        display: inline-block;
-        width: 10pt;
-        height: 10pt;
-        border: 1.2pt solid #000;
-        border-radius: 1000px;
-        margin: 0 1px 1px 0;
-        font-size: .5rem;
-        line-height: 10pt;
-        text-align: center;
-      }
+  .use {
+    display: inline-block;
+    width: 10pt;
+    height: 10pt;
+    border: 1.2pt solid #000;
+    margin: 0 1px 1px 0;
+    font-size: .5rem;
+    line-height: 10pt;
+    text-align: center;
+
+    &.use-structure {
+      border-radius: 1000px;
+    }
+
+    &.use-armor {
+      border-radius: $armor-border-radius;
+    }
+
+    &.use-weapon,
+    &.use-upgrade {
+      border-radius: 0;
     }
   }
 

@@ -56,9 +56,9 @@ const max_uses = computed(() => {
             {{ info.display_name }}
           </td>
           <td class="text-start" v-if="max_uses">
-            <div class="weapon-uses">
-              <div class="weapon-use" v-for="i in Array(max_uses)">&nbsp;</div>
-            </div>
+            <span class="text-nowrap">
+              <span class="use use-weapon" v-for="i in Array(max_uses)">&nbsp;</span>
+            </span>
           </td>
           <td v-if="weapon.damage">
             {{ weapon.damage }}

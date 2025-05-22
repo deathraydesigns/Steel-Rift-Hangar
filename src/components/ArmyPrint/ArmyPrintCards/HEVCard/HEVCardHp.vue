@@ -89,7 +89,7 @@ const structureHp = computed(() => {
       </div>
       <div class="hp-container">
         <div class="hp-row" v-for="row in armorHp">
-          <span class="hp" v-for="i in row"></span>
+          <span class="hp hp-armor" v-for="i in row"></span>
         </div>
       </div>
     </div>
@@ -101,7 +101,7 @@ const structureHp = computed(() => {
           </div>
           <div class="hp-container">
             <div class="hp-row" v-for="row in structureHp">
-              <span class="hp" v-for="i in row">
+              <span class="hp hp-structure" v-for="i in row">
                 <span v-if="i">{{ i }}</span>
                 <span v-else>&nbsp;</span>
               </span>

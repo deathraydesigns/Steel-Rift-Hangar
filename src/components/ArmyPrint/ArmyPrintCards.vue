@@ -87,21 +87,49 @@ const referenceCards = computed(() => {
     }
   }
 
-  supportAssetWeaponsStore.support_asset_weapon_ids.forEach(supportAssetId => {
-    cards.push({
-      type: 'support_asset_weapon',
-      supportAssetId,
-    });
-  });
+  return cards;
+});
 
+const supportAssetPages = computed(() => {
+
+  const cards = [];
   supportAssetUnitsStore.support_asset_units.forEach(unit => {
     cards.push({
       type: 'support_asset_unit',
       unitAttachmentId: unit.id,
+      cardSize: 3,
+    });
+
+  });
+
+  supportAssetWeaponsStore.support_asset_weapon_ids.forEach(supportAssetId => {
+    cards.push({
+      type: 'support_asset_weapon',
+      supportAssetId,
+      cardSize: 1,
     });
   });
 
-  return cards;
+  const pages = [];
+
+  let currentPage = [];
+  let currentPageSize = 0;
+  cards.forEach(card => {
+
+    if (currentPageSize === 9 || currentPageSize + card.cardSize > 9) {
+      pages.push(currentPage);
+      currentPage = [];
+      currentPageSize = 0;
+    }
+
+    currentPage.push(card);
+    currentPageSize += card.cardSize;
+  });
+
+  if (currentPage.length) {
+    pages.push(currentPage);
+  }
+  return pages;
 });
 
 </script>
@@ -116,6 +144,17 @@ const referenceCards = computed(() => {
         <HEVCard v-if="item.type === 'hev'" :mech-id="item.mechId"/>
         <MineDroneCard v-if="item.type === 'mine_drone'"/>
         <FactionPerkCard v-if="item.type === 'faction_perk'" :perk-id="item.perkId"/>
+      </template>
+    </div>
+  </div>
+
+  <div
+      v-for="page in supportAssetPages"
+      class="page-preview page-letter"
+      style="background-color:white"
+  >
+    <div class="page-card-grid-flex d-flex">
+      <template v-for="item in page">
         <SupportAssetWeaponCard
             v-if="item.type === 'support_asset_weapon'"
             :support-asset-id="item.supportAssetId"
