@@ -1,10 +1,10 @@
 <script setup>
 
 import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
-import {formatInches} from '../../functional/formatters.js';
 import IconNotAvailable from '../../UI/IconNotAvailable.vue';
 import TraitList from '../../UI/TraitList.vue';
 import {BDropdown} from 'bootstrap-vue-next';
+import FormatInches from '../../functional/format-inches.vue';
 
 const {disabled} = defineProps({
   disabled: {
@@ -76,7 +76,7 @@ function select(id, valid) {
             {{ item.display_name }}
           </td>
           <td>
-            {{ formatInches(item.move) }}
+            <format-inches :value="item.move"/>
           </td>
           <td>
             {{ item.armor }}

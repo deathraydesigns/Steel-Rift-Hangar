@@ -3,7 +3,7 @@ import {computed} from 'vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
 import TraitList from '../../UI/TraitList.vue';
 import UnitWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
-import {formatInches} from '../../functional/formatters.js';
+import FormatInches from '../../functional/format-inches.vue';
 
 const {supportAssetAttachmentId} = defineProps({
   supportAssetAttachmentId: {
@@ -46,7 +46,7 @@ const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarriso
         {{ unitInfo.display_name }}
       </td>
       <td class="text-end">
-        {{ formatInches(unitInfo.move) }}
+        <format-inches :value="unitInfo.move"/>
       </td>
       <td class="text-end">
         {{ unitInfo.armor }}

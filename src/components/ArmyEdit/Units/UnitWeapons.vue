@@ -1,8 +1,8 @@
 <script setup>
 import {computed} from 'vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
-import {formatInches} from '../../functional/formatters.js';
 import TraitList from '../../UI/TraitList.vue';
+import FormatInches from '../../functional/format-inches.vue';
 
 const {supportAssetAttachmentId} = defineProps({
   supportAssetAttachmentId: {
@@ -41,7 +41,7 @@ const weapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttac
         {{ item.display_name }}
       </td>
       <td class="text-end">
-        {{ formatInches(item.range) }}
+        <format-inches :value="item.range"/>
       </td>
       <td class="text-end">
         <template v-if="item.damage">

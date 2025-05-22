@@ -3,10 +3,10 @@ import {computed} from 'vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
 import {BButton, BFormSelect} from 'bootstrap-vue-next';
 import TraitList from '../../UI/TraitList.vue';
-import {formatInches} from '../../functional/formatters.js';
 import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron.js';
 import {SUPPORT_ASSET_UNITS} from '../../../data/support-asset-units.js';
 import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
+import FormatInches from '../../functional/format-inches.vue';
 
 const {supportAssetAttachmentId, supportAssetVehicleAttachmentId} = defineProps({
   supportAssetAttachmentId: {
@@ -38,7 +38,6 @@ function setGarrisonChoice(index, squadId) {
 function addUlHev() {
   unitStore.addSupportAsset(ULTRA_LIGHT_HEV_SQUADRON);
 }
-
 </script>
 <template>
   <tr class="tr-btn">
@@ -46,10 +45,10 @@ function addUlHev() {
       {{ unitInfo.display_name }}
     </td>
     <td class="text-end">
-      {{ formatInches(unitInfo.move) }}
+      <format-inches :value="unitInfo.move" />
     </td>
     <td class="text-end">
-      {{ formatInches(unitInfo.jump) }}
+      <format-inches :value="unitInfo.jump" />
     </td>
     <td class="text-end">
       {{ unitInfo.armor }}
