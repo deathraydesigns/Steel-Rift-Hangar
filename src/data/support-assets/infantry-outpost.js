@@ -1,6 +1,12 @@
 import {BUNKER_AUTO_CANNON, BUNKER_MISSILE_PACK, BUNKER_ROCKET_PACK} from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
-import {TRAIT_BUNKER_MINE_DRONES, TRAIT_FORTIFICATION, TRAIT_GARRISON} from '../unit-traits.js';
+import {
+    TRAIT_ALL_TERRAIN,
+    TRAIT_BUNKER_MINE_DRONES,
+    TRAIT_FORTIFICATION,
+    TRAIT_GARRISON,
+    TRAIT_SQUADRON,
+} from '../unit-traits.js';
 import {SIZE_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {
@@ -42,6 +48,10 @@ export const INFANTRY_OUTPOST_DATA = {
                     INFANTRY_ANTI_TANK_SQUAD,
                     INFANTRY_RECON_SQUAD,
                     INFANTRY_ENGINEER_SQUAD,
+                ],
+                garrison_unit_traits: [
+                    trait(TRAIT_SQUADRON),
+                    trait(TRAIT_ALL_TERRAIN),
                 ],
             },
         }),

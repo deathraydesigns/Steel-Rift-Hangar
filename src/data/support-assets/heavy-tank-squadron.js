@@ -11,7 +11,7 @@ import {
     VEH_SUBMUNITIONS,
 } from '../unit-weapons.js';
 import {SUBMUNITIONS} from '../mech-weapons.js';
-import {TRAIT_GARRISON} from '../unit-traits.js';
+import {TRAIT_HEAVY_SUPPORT_ASSET, TRAIT_ALL_TERRAIN, TRAIT_GARRISON, TRAIT_GROUP_COMMAND} from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
@@ -19,6 +19,7 @@ import {
     INFANTRY_RECON_SQUAD,
     INFANTRY_RIFLE_SQUAD,
 } from '../infantry-squads.js';
+import {TYPE_VEHICLE} from '../unit-types.js';
 
 export const HEAVY_TANK_SQUADRON = 'HEAVY_TANK_SQUADRON';
 
@@ -30,11 +31,17 @@ const baseStats = {
 
 export const HEAVY_TANK_SQUADRON_DATA = {
     [[HEAVY_TANK_SQUADRON]]: {
+        unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_HEAVY,
         display_name: 'Heavy Tank Troop',
         attached_element_label: 'Vehicle',
         cost: 20,
         max_vehicles: 2,
+        traits: [
+            trait(TRAIT_HEAVY_SUPPORT_ASSET),
+            trait(TRAIT_GROUP_COMMAND),
+            trait(TRAIT_ALL_TERRAIN),
+        ],
         vehicles: makeStaticListIds({
             DIRECT_FIRE_TANK: {
                 ...baseStats,

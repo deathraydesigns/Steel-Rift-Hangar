@@ -9,6 +9,7 @@ import {
 } from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
 import {
+    TRAIT_ALL_TERRAIN,
     TRAIT_CLOSE_SUPPORT,
     TRAIT_GARRISON,
     TRAIT_GROUP_COMMAND,
@@ -16,6 +17,7 @@ import {
     TRAIT_MAGNETIC_GRAPPLES,
     TRAIT_MINE_SWEEPER,
     TRAIT_SHIELD_PROJECTOR,
+    TRAIT_SQUADRON,
 } from '../unit-traits.js';
 import {SIZE_MEDIUM} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
@@ -26,6 +28,7 @@ import {
     INFANTRY_RECON_SQUAD,
     INFANTRY_RIFLE_SQUAD,
 } from '../infantry-squads.js';
+import {TYPE_VEHICLE} from '../unit-types.js';
 
 export const ASSAULT_VEHICLE_SQUADRON = 'ASSAULT_VEHICLE_SQUADRON';
 
@@ -34,14 +37,19 @@ const baseStats = {
     armor: 3,
     structure: 2,
 };
-
+//Unit Type: Medium Vehicle, Squadron, All Terrain
 export const ASSAULT_VEHICLE_SQUADRON_DATA = {
     [[ASSAULT_VEHICLE_SQUADRON]]: {
+        unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_MEDIUM,
         display_name: 'Assault Vehicle Squadron',
         attached_element_label: 'Vehicle',
         cost: 20,
         max_vehicles: 4,
+        traits: [
+            trait(TRAIT_SQUADRON),
+            trait(TRAIT_ALL_TERRAIN),
+        ],
         vehicles: makeStaticListIds({
             NETTER_VEHICLE: {
                 ...baseStats,

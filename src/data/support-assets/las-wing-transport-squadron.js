@@ -1,6 +1,13 @@
 import {VEH_ROTARY_CANNON} from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
-import {TRAIT_GARRISON, TRAIT_GROUP_COMMAND} from '../unit-traits.js';
+import {
+    TRAIT_ALL_TERRAIN,
+    TRAIT_FLYING,
+    TRAIT_FLYING_SQUADRON,
+    TRAIT_GARRISON,
+    TRAIT_GROUP_COMMAND,
+    TRAIT_SQUADRON,
+} from '../unit-traits.js';
 import {SIZE_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {
@@ -11,6 +18,7 @@ import {
     INFANTRY_RIFLE_SQUAD,
     INFANTRY_VIPER_SUIT_SQUAD,
 } from '../infantry-squads.js';
+import {TYPE_VEHICLE} from '../unit-types.js';
 
 export const LAS_WING_TRANSPORT_SQUADRON = 'LAS_WING_TRANSPORT_SQUADRON';
 
@@ -22,12 +30,17 @@ const baseStats = {
 
 export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
     [[LAS_WING_TRANSPORT_SQUADRON]]: {
+        unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_LIGHT,
         display_name: 'LAS-Wing Transport Squadron',
         attached_element_label: 'Vehicle',
         cost: 10,
         max_vehicles: 3,
         all_vehicle_must_be_the_same: true,
+        traits: [
+            trait(TRAIT_FLYING),
+            trait(TRAIT_FLYING_SQUADRON),
+        ],
         vehicles: makeStaticListIds({
             INFANTRY_AIR_TRANSPORT: {
                 ...baseStats,
@@ -43,6 +56,10 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
                     INFANTRY_RIFLE_SQUAD,
                     INFANTRY_ANTI_TANK_SQUAD,
                     INFANTRY_RECON_SQUAD,
+                ],
+                garrison_unit_traits: [
+                    trait(TRAIT_SQUADRON),
+                    trait(TRAIT_ALL_TERRAIN),
                 ],
             },
             POWER_SUIT_AIR_TRANSPORT: {
@@ -60,6 +77,10 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
                     INFANTRY_REAPER_SUIT_SQUAD,
                     INFANTRY_VIPER_SUIT_SQUAD,
                 ],
+                garrison_unit_traits: [
+                    trait(TRAIT_SQUADRON),
+                    trait(TRAIT_ALL_TERRAIN),
+                ],
             },
             UL_HEV_AIR_TRANSPORT: {
                 ...baseStats,
@@ -69,7 +90,7 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
                 ],
                 traits: [
                     trait(TRAIT_GROUP_COMMAND),
-                    trait(TRAIT_GARRISON, 3, 'UL HE-Vs'),
+                    trait(TRAIT_GARRISON, 1, 'UL HE-Vs'),
                 ],
                 garrison_ul_hev: true,
             },

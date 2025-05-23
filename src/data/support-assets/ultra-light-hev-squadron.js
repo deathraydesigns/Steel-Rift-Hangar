@@ -9,22 +9,31 @@ import {
     VEH_SUBMUNITIONS,
 } from '../unit-weapons.js';
 import {
+    TRAIT_ALL_TERRAIN,
+    TRAIT_CLOSE_SUPPORT,
     TRAIT_MAGNETIC_GRAPPLES,
     TRAIT_MINE_SWEEPER,
+    TRAIT_SQUADRON,
     TRAIT_SUPPRESSIVE_FIRE,
     TRAIT_UL_HEV_LAUNCH_GEAR,
 } from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
+import {TYPE_HEV} from '../unit-types.js';
 
 export const ULTRA_LIGHT_HEV_SQUADRON = 'ULTRA_LIGHT_HEV_SQUADRON';
-
 export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
     [[ULTRA_LIGHT_HEV_SQUADRON]]: {
+        unit_type_id: TYPE_HEV,
         size_id: SIZE_ULTRA_LIGHT,
         display_name: 'Ultra-Light HE-V Squadron',
         attached_element_label: 'UL HE-V',
         cost: 10,
         max_vehicles: 3,
+        traits: [
+            trait(TRAIT_SQUADRON),
+            trait(TRAIT_CLOSE_SUPPORT),
+            trait(TRAIT_ALL_TERRAIN),
+        ],
         upgrade_pods: makeStaticListIds({
             POD_MISSILE_PACK: {
                 weapon_id: SHORT_RANGE_MISSILE_PACK,

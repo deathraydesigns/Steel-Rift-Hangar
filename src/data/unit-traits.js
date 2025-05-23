@@ -23,6 +23,12 @@ export const TRAIT_UL_HEV_LAUNCH_GEAR = 'TRAIT_UL_HEV_LAUNCH_GEAR';
 export const TRAIT_FORTIFICATION = 'TRAIT_FORTIFICATION';
 export const TRAIT_COMMAND = 'TRAIT_COMMAND';
 export const TRAIT_BUNKER_MINE_DRONES = 'TRAIT_BUNKER_MINE_DRONES';
+export const TRAIT_SQUADRON = 'TRAIT_SQUADRON';
+export const TRAIT_FLYING = 'TRAIT_FLYING';
+export const TRAIT_FLYING_SQUADRON = 'TRAIT_FLYING_SQUADRON';
+export const TRAIT_SUPPORT_ORDERS = 'TRAIT_SUPPORT_ORDERS';
+export const TRAIT_HEAVY_SUPPORT_ASSET = 'TRAIT_HEAVY_SUPPORT_ASSET';
+export const TRAIT_HAULER = 'TRAIT_HAULER';
 
 export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_ALL_TERRAIN]]: {
@@ -31,12 +37,12 @@ export const UNIT_TRAITS = makeUnitTraits({
     },
     [[TRAIT_CLOSE_SUPPORT]]: {
         display_name: 'Close Support',
-        description: 'If a friendly unit with this trait is within 6” of an enemy target of a Engage or Smash Order, add one to the Damage Rating of each weapon used in that Engage or Smash Order. This bonus is only applied once, regardless of the number of units with this Trait in range.',
+        description: 'If a friendly unit with this trait is within 6” of an enemy target of an Engage or Smash Order, add one to the Damage Rating of each weapon used in that Engage or Smash Order. This bonus is only applied once, regardless of the number of units with this Trait in range.',
     },
     [[TRAIT_GARRISON]]: {
         display_name: 'Garrison',
         formatter: (name, number, type = null) => `${name}(${number} ${type})`,
-        description: '',
+        description: 'A model with this Trait contains assigned Units, Models and/or Tokens as listed in its (X). For example, a model with the trait Garrison (2 Air Infantry models, 2 Mine Drone tokens) may contain 2 models from the Air Infantry table and 2 Mine Drone tokens. Note what specific models are selected when this model is recruited during the Recruit Forces step. The selected Units, Models and/or Tokens are known as its Garrisoned Units, Garrisoned Models and/or Garrisoned Tokens, respectively. The Garrisoned Units/Models/Tokens will not be Deployed during the Deploy Forces step, and will instead be placed on the table during the game. If a model with the Garrison trait is destroyed, and its Garrisoned Units/Models/Tokens have not yet Mustered, those Units/Models/Tokens are considered destroyed as well.',
     },
     [[TRAIT_GROUP_COMMAND]]: {
         display_name: 'Group Command',
@@ -61,6 +67,10 @@ export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_OUTRIDER]]: {
         display_name: 'Outrider',
         description: 'If these models are part of a Squadron, they may be deployed and end moves within 12” of the Squadron Leader (instead of 3”). However, all models with this Trait in a Squadron must deploy and end moves within 3” of all other models with this Trait in the Squadron.',
+    },
+    [[TRAIT_SUPPORT_ORDERS]]: {
+        display_name: 'Support Orders',
+        description: 'Units with this trait possess unusual equipment that is intended to support other units, but must be actively operated to take effect. These traits will be prefixed with the term “Support:”. Units with these traits may perform the Support Order. Support: The unit may activate the effect of any or all “Support:” traits. See each trait entry for the effects of the “Support:” trait. Note that if a model (or models) in a Squadron have a “Support:” trait, the entire Squadron must perform the Support Order. However, each model with a “Support:” will activate that trait during the Order, in any order its Commander wishes.',
     },
     [[TRAIT_SUPPORT_ORDER_CNC]]: {
         display_name: 'Support: Command and Control Station',
@@ -116,6 +126,26 @@ export const UNIT_TRAITS = makeUnitTraits({
         formatter: numberFormater,
         description: '',
     },
+    [[TRAIT_SQUADRON]]: {
+        display_name: 'Squadron',
+        description: 'A Squadron is a Unit made up of multiple Models. These Models will Activate together and perform the same Orders together during that Activation.',
+    },
+    [[TRAIT_FLYING]]: {
+        display_name: 'Flying',
+        description: 'When this unit performs a Move Order, it instead performs a Flying Move Order.',
+    },
+    [[TRAIT_FLYING_SQUADRON]]: {
+        display_name: 'Flying Squadron',
+        description: 'This unit has all rules from the Squadron trait, with the following exceptions: All other models in the Squadron must end their deployment or movement within 6” of the Leader Model. When targeted by an engage order, If enough damage is dealt by a Weapon to destroy the Target Model, do not apply any remaining damage to another Model of the squadron. Do not add 2 to the Attack Pool of a Blast Weapon during an Engage Order against a unit with this trait.',
+    },
+    [[TRAIT_HEAVY_SUPPORT_ASSET]]: {
+        display_name: 'Heavy Support Asset',
+        description: 'When a Heavy Support Asset is deployed, all units of the Heavy Support Asset must deploy within 3” of another Model from the same Heavy Support Asset. They must deploy in the same area as HE-Vs, and may not use any extended range available to other Support Assets. Note: member models of a Heavy Support Asset are not necessarily a Squadron.',
+    },
+    [[TRAIT_HAULER]]: {
+        display_name: 'Hauler',
+        description: `This unit Garrisons a Unit from a separate Asset, and is not in its Group Command. The Garrisoned Unit must be purchased as a separate Asset, following all rules for its selection. The Garrisoned Unit must still be Activated during the turn, but it may not perform any order other than the following until it has performed this order: Muster: This is the only order that a Garrisoned Unit may perform. The Garrisoned Unit is placed within 1” of its Garrison. If the Garrisoned Unit has the Squadron Trait, place one model within 1” of the Garrison, then place the other models within 3” of that initial model. This Unit is no longer considered Garrisoned, and is now “Mustered”.`,
+    },
     // [[FOO]]: {
     //     display_name: '',
     //     description: '',
@@ -145,4 +175,15 @@ function makeUnitTraits(items) {
         });
 
     return Object.freeze(items);
+}
+
+export function getUnitTrait(trait) {
+    return Object.assign(
+        {},
+        trait,
+        UNIT_TRAITS[trait.id],
+        {
+            display_name: unitTraitDisplayName(trait),
+        },
+    );
 }

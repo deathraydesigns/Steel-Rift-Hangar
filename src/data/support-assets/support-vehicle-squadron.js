@@ -2,14 +2,17 @@ import {VEH_AUTO_CANNON} from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
 import {
     TRAIT_OUTRIDER,
+    TRAIT_SQUADRON,
     TRAIT_SUPPORT_GUIDANCE_SUITE,
     TRAIT_SUPPORT_MINE_DRONE_LAYER,
     TRAIT_SUPPORT_ORDER_CNC,
     TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES,
+    TRAIT_SUPPORT_ORDERS,
     TRAIT_TARGET_DESIGNATOR,
 } from '../unit-traits.js';
 import {SIZE_MEDIUM} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
+import {TYPE_VEHICLE} from '../unit-types.js';
 
 export const SUPPORT_VEHICLE_SQUADRON = 'SUPPORT_VEHICLE_SQUADRON';
 
@@ -21,12 +24,17 @@ const baseStats = {
 
 export const SUPPORT_VEHICLE_SQUADRON_DATA = {
     [[SUPPORT_VEHICLE_SQUADRON]]: {
+        unit_type_id: TYPE_VEHICLE,
+        size_id: SIZE_MEDIUM,
         display_name: 'Support Vehicle Squadron',
         attached_element_label: 'Vehicle',
-        size_id: SIZE_MEDIUM,
         cost: 20,
         max_duplicate_vehicles: 2,
         max_vehicles: 4,
+        traits: [
+            trait(TRAIT_SQUADRON),
+            trait(TRAIT_SUPPORT_ORDERS),
+        ],
         vehicles: makeStaticListIds({
             RECON_VEHICLE: {
                 ...baseStats,

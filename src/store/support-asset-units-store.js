@@ -1,14 +1,14 @@
 import {defineStore} from 'pinia';
 import {computed, readonly, ref} from 'vue';
 import {SUPPORT_ASSET_UNITS} from '../data/support-asset-units.js';
-import {TRAIT_LIMITED, TRAIT_SHORT, WEAPON_TRAITS, weaponTraitDisplayName} from '../data/weapon-traits.js';
+import {getWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT} from '../data/weapon-traits.js';
 import {getter} from './helpers/store-helpers.js';
 import {UNIT_WEAPONS} from '../data/unit-weapons.js';
 import {each, find, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {filterUniqueById, findById, findItemIndexById} from './helpers/collection-helper.js';
-import {TRAIT_GARRISON, TRAIT_UL_HEV_LAUNCH_GEAR, UNIT_TRAITS, unitTraitDisplayName} from '../data/unit-traits.js';
-import {UNIT_SIZES} from '../data/unit-sizes.js';
-import {INFANTRY_SQUADS} from '../data/infantry-squads.js';
+import {getUnitTrait, TRAIT_GARRISON, TRAIT_UL_HEV_LAUNCH_GEAR, unitTraitDisplayName} from '../data/unit-traits.js';
+import {getUnitSize} from '../data/unit-sizes.js';
+import {getInfantrySquad, INFANTRY_SQUADS} from '../data/infantry-squads.js';
 import {countBy, flatMap} from 'es-toolkit';
 
 export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
@@ -113,7 +113,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 asset.vehicles[vehicleId] = _getUnitVehicleInfo(unitId, vehicleId);
             });
 
-            asset.size = {display_name: UNIT_SIZES[asset.size_id].display_name};
+            asset.size = getUnitSize(asset.size_id);
             return readonly(asset);
         });
 
@@ -233,11 +233,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             if (!traits) {
                 return [];
             }
-            return traits.map(trait => Object.assign({},
-                trait,
-                UNIT_TRAITS[trait.id],
-                {display_name: unitTraitDisplayName(trait)},
-            ));
+            return traits.map(trait => getUnitTrait(trait));
         }
 
         function _getUnitVehicleInfo(unitId, vehicleId) {
@@ -263,13 +259,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         }
 
         function _getInfantryUnitInfo(infantrySquadId) {
-            let garrisonUnit = Object.assign({}, INFANTRY_SQUADS[infantrySquadId]);
-
+            let garrisonUnit = getInfantrySquad(infantrySquadId);
+            garrisonUnit.size = getUnitSize(garrisonUnit.size_id);
             garrisonUnit.weapons = garrisonUnit.weapon_ids.map(weaponId => _getWeaponInfo(weaponId));
-            garrisonUnit.traits = garrisonUnit.traits.map(trait => Object.assign({},
-                trait,
-                UNIT_TRAITS[trait.id],
-                {display_name: unitTraitDisplayName(trait)}));
+            garrisonUnit.traits = garrisonUnit.traits.map(trait => getUnitTrait(trait));
 
             return garrisonUnit;
         }
@@ -278,11 +271,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             let weapon = UNIT_WEAPONS[weaponId];
             weapon = Object.assign({}, weapon);
 
-            weapon.traits = weapon?.traits?.map(trait => Object.assign({},
-                trait,
-                WEAPON_TRAITS[trait.id],
-                {display_name: weaponTraitDisplayName(trait)},
-            )).filter(weapon => weapon.id !== TRAIT_SHORT) || [];
+            weapon.traits = weapon?.traits?.map(trait => getWeaponTrait(trait)).filter(weapon => weapon.id !== TRAIT_SHORT) || [];
             const limitedTrait = findById(weapon.traits, TRAIT_LIMITED);
 
             if (limitedTrait) {
@@ -296,11 +285,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             let squad = INFANTRY_SQUADS[infantrySquadId];
             squad = Object.assign({}, squad);
             squad.weapons = squad.weapon_ids.map(weaponId => _getWeaponInfo(weaponId));
-            squad.traits = squad?.traits?.map(trait => Object.assign({},
-                trait,
-                UNIT_TRAITS[trait.id],
-                {display_name: unitTraitDisplayName(trait)},
-            )) || [];
+            squad.traits = squad?.traits?.map(trait => getUnitTrait(trait)) || [];
 
             return readonly(squad);
         }

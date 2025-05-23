@@ -9,6 +9,7 @@ import {
 import {trait} from './weapon-traits.js';
 import {TRAIT_MINE_SWEEPER, TRAIT_SUPPRESSIVE_FIRE, TRAIT_TARGET_DESIGNATOR} from './unit-traits.js';
 import {SIZE_ULTRA_LIGHT} from './unit-sizes.js';
+import {TYPE_INFANTRY} from './unit-types.js';
 
 export const INFANTRY_RIFLE_SQUAD = 'INFANTRY_RIFLE_SQUAD';
 export const INFANTRY_ANTI_TANK_SQUAD = 'INFANTRY_ANTI_TANK_SQUAD';
@@ -19,10 +20,11 @@ export const INFANTRY_REAPER_SUIT_SQUAD = 'INFANTRY_REAPER_SUIT_SQUAD';
 export const INFANTRY_VIPER_SUIT_SQUAD = 'INFANTRY_VIPER_SUIT_SQUAD';
 
 const baseInfantryStats = {
+    unit_type_id: TYPE_INFANTRY,
+    size_id: SIZE_ULTRA_LIGHT,
     move: 3,
     armor: 0,
     structure: 3,
-    size_id: SIZE_ULTRA_LIGHT,
 };
 
 export const INFANTRY_SQUADS = makeFrozenStaticListIds({
@@ -102,3 +104,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
         ],
     },
 });
+
+export function getInfantrySquad(id) {
+    return Object.assign({}, INFANTRY_SQUADS[id]);
+}
