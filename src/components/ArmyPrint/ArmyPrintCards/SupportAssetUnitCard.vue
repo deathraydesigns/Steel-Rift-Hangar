@@ -21,9 +21,17 @@ const info = computed(() => store.getUnitAttachmentInfo(unitAttachmentId));
 const vehicleWeapons = computed(() => store.getUnitAttachmentVehicleWeaponsCardInfo(unitAttachmentId));
 const infantryWeapons = computed(() => store.getUnitAttachmentVehicleGarrisonWeaponsCardInfo(unitAttachmentId));
 const infantryTraits = computed(() => store.getUnitAttachmentGarrisonUnitTraitsCardInfo(unitAttachmentId));
+const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitCardInfo(unitAttachmentId).length);
+
 </script>
 <template>
-  <div class="game-card card-support-asset-unit">
+  <div
+      :class="{
+        'game-card': true,
+        'card-support-asset-size-1': !hasGarrison,
+        'card-support-asset-size-2': hasGarrison
+      }"
+  >
     <div class="card-content-container">
 
       <CardHeader
@@ -31,32 +39,44 @@ const infantryTraits = computed(() => store.getUnitAttachmentGarrisonUnitTraitsC
           :sub-title="`(Support Asset ${info.cost} Tons)`"
       />
 
-      <div class="row g-2">
-        <div class="col-6">
-
-          <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
-          <div class="row g-1">
-            <div class="col-6">
-              <UnitCardWeapons :weapons="vehicleWeapons"/>
+      <template v-if="hasGarrison">
+        <div class="row g-2">
+          <div class="col-6">
+            <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
+            <div class="row g-1">
+              <div class="col-6">
+                <UnitCardWeapons :weapons="vehicleWeapons"/>
+              </div>
+              <div class="col-6">
+                <UnitCardTraits :traits="info.traits"/>
+              </div>
             </div>
-            <div class="col-6">
-              <UnitCardTraits :traits="info.traits"/>
+          </div>
+          <div class="col-6">
+            <UnitCardGarrisonInfantry :unit-attachment-id="unitAttachmentId"/>
+            <div class="row g-1">
+              <div class="col-6">
+                <UnitCardWeapons :weapons="infantryWeapons" damage-suffix=" x (X)"/>
+              </div>
+              <div class="col-6">
+                <UnitCardTraits :traits="infantryTraits"/>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-6">
-          <UnitCardGarrisonInfantry :unit-attachment-id="unitAttachmentId"/>
-          <div class="row g-1">
-            <div class="col-6">
-              <UnitCardWeapons :weapons="infantryWeapons" damage-suffix=" x (X)"/>
-            </div>
-            <div class="col-6">
-              <UnitCardTraits :traits="infantryTraits"/>
-            </div>
+
+      </template>
+      <template v-else>
+        <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
+        <div class="row g-1">
+          <div class="col-6">
+            <UnitCardWeapons :weapons="vehicleWeapons"/>
+          </div>
+          <div class="col-6">
+            <UnitCardTraits :traits="info.traits"/>
           </div>
         </div>
-      </div>
-
+      </template>
       <CardFooter/>
     </div>
   </div>

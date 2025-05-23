@@ -113,7 +113,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             });
             asset.unit_type = UNIT_TYPES[asset.unit_type_id];
             asset.size = UNIT_SIZES[asset.size_id];
-            asset.traits = asset.traits || []
+            asset.traits = asset.traits || [];
             asset.traits = asset.traits.map(getUnitTrait);
 
             return readonly(asset);
@@ -302,10 +302,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
         const getUnitAttachmentGarrisonUnitTraitsCardInfo = getter((unitAttachmentId) => {
             const info = getUnitAttachmentInfo.value(unitAttachmentId);
-            let unitTraits = flatMap(info.vehicles, vehicle => {
-                console.log(vehicle.display_name, vehicle.garrison_unit_traits)
-                return vehicle.garrison_unit_traits || []
-            });
+            let unitTraits = flatMap(info.vehicles, vehicle => vehicle.garrison_unit_traits || []);
             unitTraits = filterUniqueById(unitTraits);
             return readonly(unitTraits);
         });
@@ -420,6 +417,11 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 unitAttachment,
                 vehicleAttachment,
             };
+        });
+
+        const getUnitAttachmentHasGarrisonUnits = getter((unitAttachmentId) => {
+            const info = getUnitAttachmentInfo.value(unitAttachmentId);
+            return !!info.vehicles.find((vehicle) => vehicle.garrison_units.length);
         });
 
         const getUnitVehicleAttachment = getter((unitAttachmentId, vehicleAttachmentId) => {
@@ -654,6 +656,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             getUnitAttachmentGarrisonUnitCardInfo,
             getUnitAttachmentGarrisonUnitTraitsCardInfo,
             getUnitAttachmentVehicleGarrisonWeaponsCardInfo,
+            getUnitAttachmentHasGarrisonUnits,
 
             setUnitVehicleGarrisonChoice,
             setUnitUpgradePod,

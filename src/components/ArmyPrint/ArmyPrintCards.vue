@@ -94,10 +94,12 @@ const supportAssetPages = computed(() => {
 
   const cards = [];
   supportAssetUnitsStore.support_asset_units.forEach(unit => {
+    const hasGarrison = supportAssetUnitsStore.getUnitAttachmentHasGarrisonUnits(unit.id);
+
     cards.push({
       type: 'support_asset_unit',
       unitAttachmentId: unit.id,
-      cardSize: 3,
+      cardSize: hasGarrison ? 2 : 1,
     });
 
   });
@@ -110,13 +112,15 @@ const supportAssetPages = computed(() => {
     });
   });
 
+  const slotsPerPage = 6;
   const pages = [];
 
   let currentPage = [];
   let currentPageSize = 0;
+
   cards.forEach(card => {
 
-    if (currentPageSize === 9 || currentPageSize + card.cardSize > 9) {
+    if (currentPageSize === slotsPerPage || currentPageSize + card.cardSize > slotsPerPage) {
       pages.push(currentPage);
       currentPage = [];
       currentPageSize = 0;

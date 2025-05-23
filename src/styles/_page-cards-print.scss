@@ -11,6 +11,12 @@ $page-height: 11 * $oneInch;
 $card-padding-x: 5pt;
 $armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
 
+$card-area-width: $card-width * 3;
+$card-area-height: $card-height * 3;
+
+$page-padding-x: ($page-width - $card-area-width) * 0.5;
+$page-padding-y: ($page-height -$card-area-height) * 0.5;
+
 .page-card-grid {
   box-sizing: content-box;
 }
@@ -34,22 +40,14 @@ $armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
     outline: 1px solid var(--card-outline-color);
     background: var(--card-bg);
 
-    &.card-support-asset-unit {
-      width: $card-width * 3;
-    }
-
     .card-content-container {
       padding: 4pt;
       background: var(--card-bg);
     }
   }
 
-  $page-padding-x: ($page-width - $card-width * 3) * 0.5;
-  $page-padding-y: ($page-height - $card-height * 3) * 0.5;
 
   .page-card-grid {
-
-
     display: grid;
     grid-template-columns: repeat(3, $card-width);
     grid-template-rows: repeat(3, $card-height);
@@ -58,15 +56,27 @@ $armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
     gap: 1px;
     width: $card-width * 3;
     height: $card-height * 3;
-
     padding: $page-padding-y $page-padding-x;
   }
 
   .page-card-grid-flex {
-    display: flex;
-    align-content: flex-start;
+    display: inline-flex;
     flex-flow: row wrap;
     padding: $page-padding-y $page-padding-x;
+
+    .game-card {
+      outline: 0;
+      border: 1px solid var(--card-outline-color);
+      margin: -1px 0 0 -1px;
+
+      &.card-support-asset-size-2 {
+        width: $card-area-width - 1px;
+      }
+
+      &.card-support-asset-size-1 {
+        width: $card-area-width * 0.5;
+      }
+    }
   }
 
   .card-name {
@@ -265,7 +275,7 @@ $armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
     display: inline-block;
     width: 10pt;
     height: 10pt;
-    border: 1.2pt solid #000;
+    border: 1.2pt solid #444;
     margin: 0 1px 1px 0;
     font-size: .5rem;
     line-height: 10pt;

@@ -32,9 +32,12 @@ const max_uses = computed(() => {
 });
 </script>
 <template>
-  <div class="game-card">
+  <div class="game-card card-support-asset-size-1">
     <div class="card-content-container">
-      <CardHeader :title="info.display_name"/>
+      <CardHeader
+          :title="info.display_name"
+          :sub-title="`(Support Asset ${info.cost} Tons)`"
+      />
 
       <div class="section-heading">Support Asset</div>
       <div class="card-description">
