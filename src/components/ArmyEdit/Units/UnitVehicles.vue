@@ -26,7 +26,7 @@ provide('has_structure', has_structure);
     <thead>
     <tr>
       <th>
-        {{ unit.attached_element_label }}
+        {{ unit.unit_type.display_name }}
       </th>
       <th class="text-end">
         Move

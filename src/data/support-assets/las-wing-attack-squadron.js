@@ -24,7 +24,6 @@ export const LAS_WING_ATTACK_SQUADRON_DATA = {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_LIGHT,
         display_name: 'LAS-Wing Attack Squadron',
-        attached_element_label: 'Vehicle',
         cost: 10,
         max_vehicles: 4,
         traits: [

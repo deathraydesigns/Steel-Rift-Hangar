@@ -37,13 +37,11 @@ const baseStats = {
     armor: 3,
     structure: 2,
 };
-//Unit Type: Medium Vehicle, Squadron, All Terrain
 export const ASSAULT_VEHICLE_SQUADRON_DATA = {
     [[ASSAULT_VEHICLE_SQUADRON]]: {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_MEDIUM,
         display_name: 'Assault Vehicle Squadron',
-        attached_element_label: 'Vehicle',
         cost: 20,
         max_vehicles: 4,
         traits: [
@@ -91,6 +89,10 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA = {
                     INFANTRY_ANTI_TANK_SQUAD,
                     INFANTRY_RECON_SQUAD,
                     INFANTRY_ENGINEER_SQUAD,
+                ],
+                garrison_unit_traits: [
+                    trait(TRAIT_SQUADRON),
+                    trait(TRAIT_ALL_TERRAIN),
                 ],
             },
             COMBAT_ENGINEERING_VEHICLE: {

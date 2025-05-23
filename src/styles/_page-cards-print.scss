@@ -231,23 +231,30 @@ $armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
       }
     }
 
-    tbody td {
-      font-size: 7pt;
-      text-align: center;
-      border-bottom: .1pt solid #444;
-      padding: 1pt 2pt;
-
-      vertical-align: top;
-
-      &.small {
-        font-size: 6pt;
+    tbody {
+      > tr:first-child > td {
+        padding-top: 2pt;
       }
 
-      &:first-child {
-        text-align: left;
-        padding-left: $card-padding-x;
+      td {
+        font-size: 7pt;
+        text-align: center;
+        border-bottom: .1pt solid #444;
+        padding: 1pt 2pt;
+
+        vertical-align: top;
+
+        &.small {
+          font-size: 6pt;
+        }
+
+        &:first-child {
+          text-align: left;
+          padding-left: $card-padding-x;
+        }
       }
     }
+
 
     tbody tr:last-child td {
       border: 0;
@@ -296,7 +303,7 @@ $armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
     font-weight: normal;
     font-family: $font-anta;
     padding: 1pt $card-padding-x;
-    margin-bottom: 0.25rem;
+    margin: 2pt 0;
   }
 
   .upgrades {

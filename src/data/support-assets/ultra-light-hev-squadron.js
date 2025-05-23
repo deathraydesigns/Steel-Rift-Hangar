@@ -26,7 +26,6 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
         unit_type_id: TYPE_HEV,
         size_id: SIZE_ULTRA_LIGHT,
         display_name: 'Ultra-Light HE-V Squadron',
-        attached_element_label: 'UL HE-V',
         cost: 10,
         max_vehicles: 3,
         traits: [

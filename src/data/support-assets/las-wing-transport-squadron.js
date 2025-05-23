@@ -33,7 +33,6 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_LIGHT,
         display_name: 'LAS-Wing Transport Squadron',
-        attached_element_label: 'Vehicle',
         cost: 10,
         max_vehicles: 3,
         all_vehicle_must_be_the_same: true,

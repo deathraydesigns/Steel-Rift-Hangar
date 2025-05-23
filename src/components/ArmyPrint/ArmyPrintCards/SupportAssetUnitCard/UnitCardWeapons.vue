@@ -4,10 +4,7 @@ import {sortBy} from 'es-toolkit';
 import {computed} from 'vue';
 import FormatInches from '../../../functional/format-inches.vue';
 
-const {label, weapons, damageSuffix} = defineProps({
-  label: {
-    type: String,
-  },
+const {weapons, damageSuffix} = defineProps({
   weapons: {
     type: Array,
     require: true,
@@ -29,7 +26,7 @@ const sortedWeapons = computed(() => sortBy(weapons, 'display_name').reverse());
   <table v-if="weapons.length" class="table-stats">
     <thead>
     <tr>
-      <th class="text-start">{{ label }} Weapon</th>
+      <th class="text-start">Weapons</th>
       <th class="text-end">Dmg</th>
       <th class="text-end">Rng</th>
       <th class="text-start">Traits</th>
@@ -40,7 +37,7 @@ const sortedWeapons = computed(() => sortBy(weapons, 'display_name').reverse());
       <td class="text-start">
         {{ weapon.display_name }}
       </td>
-      <td class="text-end">
+      <td class="text-end text-nowrap">
         <template v-if="weapon.base_melee_damage">
           <span class="fw-light">
             {{ weapon.base_melee_damage }} + {{ weapon.melee_trait_damage }} =

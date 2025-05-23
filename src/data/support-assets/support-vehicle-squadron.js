@@ -27,7 +27,6 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA = {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_MEDIUM,
         display_name: 'Support Vehicle Squadron',
-        attached_element_label: 'Vehicle',
         cost: 20,
         max_duplicate_vehicles: 2,
         max_vehicles: 4,

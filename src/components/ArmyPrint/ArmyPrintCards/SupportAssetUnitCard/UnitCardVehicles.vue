@@ -47,7 +47,7 @@ function filterTraits(traits) {
       <thead>
       <tr>
         <th class="text-start text-nowrap">
-          {{ unit.attached_element_label || 'Vehicle' }}
+          {{ unit.unit_type.display_name }}
         </th>
         <th class="text-end">
           Mov

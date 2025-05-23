@@ -34,7 +34,6 @@ export const HEAVY_TANK_SQUADRON_DATA = {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_HEAVY,
         display_name: 'Heavy Tank Troop',
-        attached_element_label: 'Vehicle',
         cost: 20,
         max_vehicles: 2,
         traits: [

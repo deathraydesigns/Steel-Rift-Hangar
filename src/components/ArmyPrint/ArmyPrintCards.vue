@@ -153,7 +153,7 @@ const supportAssetPages = computed(() => {
       class="page-preview page-letter"
       style="background-color:white"
   >
-    <div class="page-card-grid-flex d-flex">
+    <div class="page-card-grid-flex">
       <template v-for="item in page">
         <SupportAssetWeaponCard
             v-if="item.type === 'support_asset_weapon'"

@@ -6,6 +6,7 @@ import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-stor
 import UnitCardWeapons from './SupportAssetUnitCard/UnitCardWeapons.vue';
 import CardFooter from './CardParts/CardFooter.vue';
 import UnitCardGarrisonInfantry from './SupportAssetUnitCard/UnitCardGarrisonInfantry.vue';
+import UnitCardTraits from './SupportAssetUnitCard/UnitCardTraits.vue';
 
 const store = useSupportAssetUnitsStore();
 
@@ -19,7 +20,7 @@ const {unitAttachmentId} = defineProps({
 const info = computed(() => store.getUnitAttachmentInfo(unitAttachmentId));
 const vehicleWeapons = computed(() => store.getUnitAttachmentVehicleWeaponsCardInfo(unitAttachmentId));
 const infantryWeapons = computed(() => store.getUnitAttachmentVehicleGarrisonWeaponsCardInfo(unitAttachmentId));
-
+const infantryTraits = computed(() => store.getUnitAttachmentGarrisonUnitTraitsCardInfo(unitAttachmentId));
 </script>
 <template>
   <div class="game-card card-support-asset-unit">
@@ -32,13 +33,27 @@ const infantryWeapons = computed(() => store.getUnitAttachmentVehicleGarrisonWea
 
       <div class="row g-2">
         <div class="col-6">
+
           <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
-          <UnitCardWeapons :weapons="vehicleWeapons" label="Vehicle"/>
+          <div class="row g-1">
+            <div class="col-6">
+              <UnitCardWeapons :weapons="vehicleWeapons"/>
+            </div>
+            <div class="col-6">
+              <UnitCardTraits :traits="info.traits"/>
+            </div>
+          </div>
         </div>
         <div class="col-6">
-
           <UnitCardGarrisonInfantry :unit-attachment-id="unitAttachmentId"/>
-          <UnitCardWeapons :weapons="infantryWeapons" label="Infantry" damage-suffix=" x (X)"/>
+          <div class="row g-1">
+            <div class="col-6">
+              <UnitCardWeapons :weapons="infantryWeapons" damage-suffix=" x (X)"/>
+            </div>
+            <div class="col-6">
+              <UnitCardTraits :traits="infantryTraits"/>
+            </div>
+          </div>
         </div>
       </div>
 

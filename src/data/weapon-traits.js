@@ -156,12 +156,16 @@ function makeWeaponTraits(items) {
     return Object.freeze(items);
 }
 
-export function trait(id, number = null, type = null) {
-    return Object.freeze({
-        id,
-        number,
-        type,
-    });
+export function trait(id, number = undefined, type = undefined) {
+    const obj = {id};
+    if (number !== undefined) {
+        obj.number = number;
+    }
+    if (type !== undefined) {
+        obj.type = type;
+    }
+
+    return Object.freeze(obj);
 }
 
 export function getWeaponTrait(trait) {

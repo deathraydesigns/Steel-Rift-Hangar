@@ -71,7 +71,7 @@ function setUpgradePodChoice(upgradePodId) {
             </span>
           </template>
           <template #content>
-            {{ info.unit_points_description || `This unit can have a total of ${max_points} models` }}
+            {{ info.unit_points_description || `This unit must have a total of ${max_points} models` }}
           </template>
         </BtnToolTip>
       </div>
@@ -86,7 +86,7 @@ function setUpgradePodChoice(upgradePodId) {
             <Icon name="hev" color="#fff"/>
           </template>
           <template v-else>
-            Add {{ info.attached_element_label }}
+            Add {{ info.unit_type.display_name }}
           </template>
         </UnitVehicleAdd>
         <BButton

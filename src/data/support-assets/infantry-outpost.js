@@ -15,17 +15,21 @@ import {
     INFANTRY_RECON_SQUAD,
     INFANTRY_RIFLE_SQUAD,
 } from '../infantry-squads.js';
+import {TYPE_FORTIFICATION} from '../unit-types.js';
 
 export const INFANTRY_OUTPOST = 'INFANTRY_OUTPOST';
 
 export const INFANTRY_OUTPOST_DATA = {
     [[INFANTRY_OUTPOST]]: {
+        unit_type_id: TYPE_FORTIFICATION,
         size_id: SIZE_LIGHT,
         display_name: 'Infantry Outpost',
-        attached_element_label: 'Building',
         cost: 10,
         max_vehicles: 2,
         all_vehicle_must_be_the_same: true,
+        traits: [
+            trait(TRAIT_FORTIFICATION),
+        ],
         vehicles: makeStaticListIds({
             BUNKER: {
                 display_name: 'Bunker',
@@ -39,7 +43,6 @@ export const INFANTRY_OUTPOST_DATA = {
                     ],
                 },
                 traits: [
-                    trait(TRAIT_FORTIFICATION),
                     trait(TRAIT_GARRISON, 6, 'Infantry Squads'),
                     trait(TRAIT_BUNKER_MINE_DRONES, 2),
                 ],

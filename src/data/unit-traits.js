@@ -122,8 +122,9 @@ export const UNIT_TRAITS = makeUnitTraits({
         description: 'Units with the Command Trait issue Orders to their Garrison. Once per Activation, when this Unit is issued an Order, instead of performing an Order itself, it will instead issue one of the following Orders to up to (X) Units within its Garrison, or currently deployed on the Battlefield.',
     },
     [[TRAIT_BUNKER_MINE_DRONES]]: {
-        display_name: 'Mine Drones',
-        formatter: numberFormater,
+        display_name: 'Garrison',
+        formatter: (name, number, type = null) => `${name}(${number} ${type})`,
+        type: 'Mine Drones',
         description: '',
     },
     [[TRAIT_SQUADRON]]: {
@@ -178,12 +179,8 @@ function makeUnitTraits(items) {
 }
 
 export function getUnitTrait(trait) {
-    return Object.assign(
-        {},
-        trait,
-        UNIT_TRAITS[trait.id],
-        {
-            display_name: unitTraitDisplayName(trait),
-        },
-    );
+    trait = Object.assign({}, UNIT_TRAITS[trait.id], trait);
+    trait.display_name = unitTraitDisplayName(trait);
+
+    return trait;
 }

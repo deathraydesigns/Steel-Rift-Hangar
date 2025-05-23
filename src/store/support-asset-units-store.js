@@ -7,7 +7,7 @@ import {UNIT_WEAPONS} from '../data/unit-weapons.js';
 import {each, find, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {filterUniqueById, findById, findItemIndexById} from './helpers/collection-helper.js';
 import {getUnitTrait, TRAIT_GARRISON, TRAIT_UL_HEV_LAUNCH_GEAR, unitTraitDisplayName} from '../data/unit-traits.js';
-import {getUnitSize} from '../data/unit-sizes.js';
+import {UNIT_SIZES} from '../data/unit-sizes.js';
 import {getInfantrySquad, INFANTRY_SQUADS} from '../data/infantry-squads.js';
 import {countBy, flatMap} from 'es-toolkit';
 import {UNIT_TYPES} from '../data/unit-types.js';
@@ -66,8 +66,8 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 max_vehicles,
                 max_duplicate_vehicles,
                 unit_points_description,
-                attached_element_label,
                 all_vehicle_must_be_the_same,
+                traits,
             } = _getUnitInfo.value(supportAssetId);
 
             vehicles = vehicles.map(vehicleAttachment => getUnitAttachmentVehicleInfo.value(unitAttachmentId, vehicleAttachment.id));
@@ -96,9 +96,9 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 max_vehicles,
                 max_duplicate_vehicles,
                 unit_points_description,
-                attached_element_label,
                 upgrade_pod_id,
                 vehicles,
+                traits,
                 all_vehicle_must_be_the_same,
             });
         });
@@ -111,8 +111,11 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             Object.keys(asset.vehicles).forEach(vehicleId => {
                 asset.vehicles[vehicleId] = _getUnitVehicleInfo(unitId, vehicleId);
             });
+            asset.unit_type = UNIT_TYPES[asset.unit_type_id];
+            asset.size = UNIT_SIZES[asset.size_id];
+            asset.traits = asset.traits || []
+            asset.traits = asset.traits.map(getUnitTrait);
 
-            asset.size = getUnitSize(asset.size_id);
             return readonly(asset);
         });
 
@@ -228,7 +231,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             unitAttachment.upgrade_pod_id = upgradePodId;
         }
 
-        function _getVehicleTraitsInfo(traits) {
+        function _getUnitTraitsInfo(traits) {
             if (!traits) {
                 return [];
             }
@@ -252,14 +255,15 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 });
             }
 
-            vehicle.traits = _getVehicleTraitsInfo(vehicle.traits);
+            vehicle.traits = _getUnitTraitsInfo(vehicle.traits);
 
             return readonly(vehicle);
         }
 
         function _getInfantryUnitInfo(infantrySquadId) {
             let garrisonUnit = getInfantrySquad(infantrySquadId);
-            garrisonUnit.size = getUnitSize(garrisonUnit.size_id);
+            garrisonUnit.unit_type = UNIT_TYPES[garrisonUnit.unit_type_id];
+            garrisonUnit.size = UNIT_SIZES[garrisonUnit.size_id];
             garrisonUnit.weapons = garrisonUnit.weapon_ids.map(weaponId => _getWeaponInfo(weaponId));
             garrisonUnit.traits = garrisonUnit.traits.map(trait => getUnitTrait(trait));
 
@@ -289,12 +293,21 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return readonly(squad);
         }
 
-        const getUnitAttachmentGarrisonCardInfo = getter((unitAttachmentId) => {
+        const getUnitAttachmentGarrisonUnitCardInfo = getter((unitAttachmentId) => {
             const info = getUnitAttachmentInfo.value(unitAttachmentId);
             const units = flatMap(info.vehicles, vehicle => vehicle.garrison_units);
-            const unitTraits = flatMap(info.vehicles, vehicle => vehicle.garrison_unit_traits);
 
             return readonly(units);
+        });
+
+        const getUnitAttachmentGarrisonUnitTraitsCardInfo = getter((unitAttachmentId) => {
+            const info = getUnitAttachmentInfo.value(unitAttachmentId);
+            let unitTraits = flatMap(info.vehicles, vehicle => {
+                console.log(vehicle.display_name, vehicle.garrison_unit_traits)
+                return vehicle.garrison_unit_traits || []
+            });
+            unitTraits = filterUniqueById(unitTraits);
+            return readonly(unitTraits);
         });
 
         const getUnitAttachmentVehicleInfo = getter((unitAttachmentId, vehicleAttachmentId) => {
@@ -316,6 +329,8 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             }
             let garrison_units = vehicleAttachment.garrison_units || [];
             garrison_units = garrison_units.map((infantrySquadId) => _getInfantryUnitInfo(infantrySquadId));
+            let garrison_unit_traits = vehicleDef.garrison_unit_traits || [];
+            garrison_unit_traits = garrison_unit_traits.map((trait) => getUnitTrait(trait));
 
             let traits = [].concat(vehicleDef.traits || []);
 
@@ -347,7 +362,6 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                     }
                 }
             }
-
             return readonly({
                 id,
                 vehicle_id: vehicleDef.id,
@@ -360,7 +374,8 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 structure,
                 garrison_ul_hev,
                 garrison_units,
-                traits: _getVehicleTraitsInfo(traits),
+                garrison_unit_traits,
+                traits: _getUnitTraitsInfo(traits),
             });
         });
 
@@ -476,7 +491,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
                 if (info.max_vehicles) {
                     if (unit.vehicles.length < info.max_vehicles) {
-                        messages.push(`${info.display_name} has ${unit.vehicles.length} of ${info.max_vehicles} required ${info.attached_element_label}(s)`);
+                        messages.push(`${info.display_name} has ${unit.vehicles.length} of ${info.max_vehicles} required ${info.unit_type.display_name}(s)`);
                     }
                 }
 
@@ -636,7 +651,8 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             getUnitVehicleAttachmentAvailableGarrisonChoicesInfo,
             getUnitVehicleAttachmentGarrisonMax,
             getUnitAttachmentAllGarrisonChoicesInfo,
-            getUnitAttachmentGarrisonCardInfo,
+            getUnitAttachmentGarrisonUnitCardInfo,
+            getUnitAttachmentGarrisonUnitTraitsCardInfo,
             getUnitAttachmentVehicleGarrisonWeaponsCardInfo,
 
             setUnitVehicleGarrisonChoice,

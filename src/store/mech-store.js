@@ -54,6 +54,7 @@ import {
 import {TRAIT_UPGRADE_LIMITED} from '../data/upgrade-traits.js';
 import {DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS} from '../data/factions.js';
 import {MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
+import {TYPE_HEV} from '../data/unit-types.js';
 
 export const useMechStore = defineStore('mech', {
         state() {
@@ -89,6 +90,7 @@ export const useMechStore = defineStore('mech', {
                     upgrades_id_increment: 1,
                     display_order: null,
                     mobility_id: MOBILITY_BI_PEDAL,
+                    unit_type_id: TYPE_HEV,
                 };
 
                 this.mechs.push(mech);
