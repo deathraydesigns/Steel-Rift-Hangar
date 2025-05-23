@@ -7,7 +7,6 @@ import TraitList from '../../../UI/TraitList.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {BDropdown} from 'bootstrap-vue-next';
-import Number from '../../../functional/number.vue';
 
 const {mechId} = defineProps({
   mechId: {
