@@ -13,7 +13,6 @@ export const SA_BRAWLERS = 'SA_BRAWLERS';
 export const SA_ENFORCERS = 'SA_ENFORCERS';
 export const SA_TITAN_KILLERS = 'SA_TITAN_KILLERS';
 
-
 export const SECONDARY_AGENDAS = {
     [[SA_MISSION_MOMENTUM]]: {
         display_name: 'Mission Momentum',
@@ -57,18 +56,18 @@ export const SECONDARY_AGENDAS = {
     },
     [[SA_STALKERS]]: {
         display_name: 'Stalkers',
-        description: 'You may select this Secondary Agenda if your Force contains two or more Light HE-Vs. Every time a Light HE-V destroys a non-Support Asset Unit, or any unit with the Unit Type: Fortification trait, mark a Kill. If Light HE-Vs you control have earned 2 or more Kills over the course of the MIssion, and at least one of your Light HE-Vs is still Operational, score 1 VP.'
+        description: 'You may select this Secondary Agenda if your Force contains two or more Light HE-Vs. Every time a Light HE-V destroys a non-Support Asset Unit, or any unit with the Unit Type: Fortification trait, mark a Kill. If Light HE-Vs you control have earned 2 or more Kills over the course of the MIssion, and at least one of your Light HE-Vs is still Operational, score 1 VP.',
     },
     [[SA_BRAWLERS]]: {
         display_name: 'Brawlers',
-        description: 'You may select this Secondary Agenda if your Force contains two or more Medium HE-Vs. Every time a Medium HE-V destroys a non-Support Asset Unit or any Unit with the Unit Type: Fortification trait, mark a Kill. If Medium HE-Vs you control have earned 3 or more Kills over the course of the Mission, and at least one of your Medium HE-Vs is still operational, score 1 VP.'
+        description: 'You may select this Secondary Agenda if your Force contains two or more Medium HE-Vs. Every time a Medium HE-V destroys a non-Support Asset Unit or any Unit with the Unit Type: Fortification trait, mark a Kill. If Medium HE-Vs you control have earned 3 or more Kills over the course of the Mission, and at least one of your Medium HE-Vs is still operational, score 1 VP.',
     },
     [[SA_ENFORCERS]]: {
         display_name: 'Enforcers',
-        description: 'You may select this Secondary Agenda if your Force contains two or more Heavy HE-Vs. Every time a Heavy HE-V destroys a non-Support Asset Unit or any Unit with the Unit Type: Fortification trait, mark a Kill. If Heavy HE-Vs you control have earned 3 or more Kills over the course of the Mission, and at least one of your Heavy HE-Vs is still operational, score 1 VP.'
+        description: 'You may select this Secondary Agenda if your Force contains two or more Heavy HE-Vs. Every time a Heavy HE-V destroys a non-Support Asset Unit or any Unit with the Unit Type: Fortification trait, mark a Kill. If Heavy HE-Vs you control have earned 3 or more Kills over the course of the Mission, and at least one of your Heavy HE-Vs is still operational, score 1 VP.',
     },
     [[SA_TITAN_KILLERS]]: {
         display_name: 'Titan-Killers',
-        description: 'You may select this Secondary Agenda if your Opponent’s Force contains two or more Heavy HE-Vs or at least one Ultra-Heavy HE-V. Every time an HE-V in your force of a Class Medium or smaller destroys a Heavy HE-V, mark a Kill. Every time an HE-V in your Force of a Class Heavy or smaller destroys an Ultra-Heavy HE-V, mark two Kills. If your force has earned 2 or more Kills over the course of the Mission and there are any HE-Vs you control surviving of a Class smaller than Heavy or Ultra-Heavy, score 1 VP.'
-    }
+        description: 'You may select this Secondary Agenda if your Opponent’s Force contains two or more Heavy HE-Vs or at least one Ultra-Heavy HE-V. Every time an HE-V in your force of a Class Medium or smaller destroys a Heavy HE-V, mark a Kill. Every time an HE-V in your Force of a Class Heavy or smaller destroys an Ultra-Heavy HE-V, mark two Kills. If your force has earned 2 or more Kills over the course of the Mission and there are any HE-Vs you control surviving of a Class smaller than Heavy or Ultra-Heavy, score 1 VP.',
+    },
 };
