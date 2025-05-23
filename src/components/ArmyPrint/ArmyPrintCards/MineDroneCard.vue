@@ -10,7 +10,9 @@ import CardFooter from './CardParts/CardFooter.vue';
       <div class="section-heading">Battlefield Asset</div>
 
       <div class="card-description">
-        <div><strong>Placing:</strong> May not be placed within 6” of another friendly Mine Drone token.</div>
+        <div><strong>Placing:</strong> May not be placed within 6” of another friendly Mine Drone token (unless deployed
+          from a Garrison unit). When placed from a Garrison unit, tokens are placed within 3” of the unit.
+        </div>
 
         <div><strong>Triggered:</strong>
           If an enemy model ends any Order within 4”, the Commander may remove the token to make an Engage Order with an
