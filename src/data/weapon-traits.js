@@ -163,3 +163,14 @@ export function trait(id, number = null, type = null) {
         type,
     });
 }
+
+export function getWeaponTrait(trait) {
+    return Object.assign(
+        {},
+        trait,
+        WEAPON_TRAITS[trait.id],
+        {
+            display_name: weaponTraitDisplayName(trait),
+        },
+    );
+}
