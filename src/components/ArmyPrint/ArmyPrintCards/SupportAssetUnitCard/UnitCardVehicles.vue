@@ -40,6 +40,7 @@ function filterTraits(traits) {
   <template v-if="unit.vehicles.length">
     <UnitCardHalfHeader
         label="Unit Models"
+        :type-display-name="unit.unit_type.display_name"
         :size-display-name="unit.size.display_name"
     />
 

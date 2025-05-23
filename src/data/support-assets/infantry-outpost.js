@@ -7,7 +7,7 @@ import {
     TRAIT_GARRISON,
     TRAIT_SQUADRON,
 } from '../unit-traits.js';
-import {SIZE_LIGHT} from '../unit-sizes.js';
+import {SIZE_LIGHT, SIZE_ULTRA} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
@@ -22,7 +22,7 @@ export const INFANTRY_OUTPOST = 'INFANTRY_OUTPOST';
 export const INFANTRY_OUTPOST_DATA = {
     [[INFANTRY_OUTPOST]]: {
         unit_type_id: TYPE_FORTIFICATION,
-        size_id: SIZE_LIGHT,
+        size_id: SIZE_ULTRA,
         display_name: 'Infantry Outpost',
         cost: 10,
         max_vehicles: 2,

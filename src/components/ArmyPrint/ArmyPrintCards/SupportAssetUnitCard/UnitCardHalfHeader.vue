@@ -3,8 +3,13 @@
 const {
   label,
   sizeDisplayName,
+  typeDisplayName,
 } = defineProps({
   label: {
+    type: String,
+    required: true,
+  },
+  typeDisplayName: {
     type: String,
     required: true,
   },
@@ -21,7 +26,8 @@ const {
         {{ label }}
       </div>
       <div class="flex-shrink-1">
-        <span class="fw-medium">Size:</span> {{ sizeDisplayName }}
+        <span class="fw-medium">Size:</span> {{ sizeDisplayName }},
+        <span class="fw-medium">Type:</span> {{ typeDisplayName }}
       </div>
     </div>
   </div>
