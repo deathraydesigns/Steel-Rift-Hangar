@@ -4,6 +4,7 @@ import {computed} from 'vue';
 import {unitTraitDisplayName} from '../../../../data/unit-traits.js';
 import {formatCardRef} from '../../../functional/formatters.js';
 import UnitCardHalfHeader from './UnitCardHalfHeader.vue';
+import FormatInches from '../../../functional/format-inches.vue';
 
 const {unitAttachmentId} = defineProps({
   unitAttachmentId: {
@@ -62,7 +63,7 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
           {{ item.display_name }}
         </td>
         <td class="text-end">
-          {{ item.move }}"
+          <format-inches :value="item.move"/>
         </td>
         <td
             v-if="hasArmor"
@@ -82,9 +83,9 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
               class=" text-nowrap"
               v-for="(weapon, index) in item.weapons"
           >
-            {{ weapon.display_name }} <span class="text-nowrap" v-if="weapon.max_uses"><span
-              class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span></span>
-            <span v-if="index !== item.weapons.length - 1">, </span>
+            {{ weapon.display_name }}<span class="text-nowrap" v-if="weapon.max_uses">&nbsp;<span
+              class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span></span><span
+              v-if="index !== item.weapons.length - 1">, </span>
           </span>
         </td>
         <td class="text-start small">

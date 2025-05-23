@@ -1,9 +1,9 @@
 <script setup>
-
 import {computed} from 'vue';
 import {useTeamStore} from '../../../../store/team-store.js';
 import {useMechStore} from '../../../../store/mech-store.js';
 import {TEAM_GENERAL} from '../../../../data/mech-teams.js';
+import FormatInches from '../../../functional/format-inches.vue';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();
@@ -19,7 +19,6 @@ const team = computed(() => {
   const {teamId} = teamStore.getMechTeamAndGroupIds(mechId);
   return teamStore.getTeamInfo(teamId);
 });
-
 </script>
 <template>
   <div class="row g-1">
@@ -47,10 +46,11 @@ const team = computed(() => {
         <tbody>
         <tr>
           <td>{{ info.tonnage_stat }}</td>
-          <td>{{ info.move }}"</td>
           <td>
-            <template v-if="info.jump">{{ info.jump }}"</template>
-            <template v-else>-</template>
+            <format-inches :value="info.move"/>
+          </td>
+          <td>
+            <format-inches :value="info.jump"/>
           </td>
           <td>{{ info.defense }}+</td>
         </tr>
