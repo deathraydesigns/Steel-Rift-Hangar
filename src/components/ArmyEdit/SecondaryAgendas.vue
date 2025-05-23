@@ -19,7 +19,7 @@ const {secondary_agendas, max_secondary_agendas} = storeToRefs(useSecondaryAgend
           <span class="fw-bold">
             {{ item.display_name }}
           </span>
-          (<span class="fw-medium" v-if="item.type !== 'Team'">{{ item.type }}: </span>{{ item.type_display_name }})
+          (<span class="fw-medium" v-if="item.type">{{ item.type }}: </span>{{ item.type_display_name }})
         </div>
         <p>{{ item.description }}</p>
       </div>

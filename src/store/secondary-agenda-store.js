@@ -4,14 +4,24 @@ import {useFactionStore} from './faction-store.js';
 import {FACTIONS} from '../data/factions.js';
 import {useTeamStore} from './team-store.js';
 import {MECH_TEAMS} from '../data/mech-teams.js';
-import {SECONDARY_AGENDAS} from '../data/secondary-agendas.js';
+import {
+    SA_BRAWLERS,
+    SA_ENFORCERS,
+    SA_STALKERS,
+    SA_TITAN_KILLERS,
+    SECONDARY_AGENDAS,
+} from '../data/secondary-agendas.js';
 import {useArmyListStore} from './army-list-store.js';
+import {useMechStore} from './mech-store.js';
+import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from '../data/unit-sizes.js';
+import {countBy} from 'es-toolkit';
 
 export const useSecondaryAgendaStore = defineStore('secondary-agenda', () => {
 
     const factionStore = useFactionStore();
     const teamStore = useTeamStore();
     const armyListStore = useArmyListStore();
+    const mechStore = useMechStore();
 
     function $reset() {
 
@@ -44,13 +54,55 @@ export const useSecondaryAgendaStore = defineStore('secondary-agenda', () => {
                     result.push(Object.assign({},
                         SECONDARY_AGENDAS[agendaId],
                         {
-                            type: 'Team',
+                            type: null,
                             type_display_name: MECH_TEAMS[team.id].display_name,
                         },
                     ));
                 }
             }
         });
+
+        const sizesByCount = countBy(mechStore.mechs, mech => mech.size_id);
+
+        if (sizesByCount[SIZE_LIGHT] === 2) {
+            result.push(Object.assign({},
+                SECONDARY_AGENDAS[SA_STALKERS],
+                {
+                    type: null,
+                    type_display_name: 'Universal',
+                },
+            ));
+        }
+        if (sizesByCount[SIZE_MEDIUM] === 2) {
+            result.push(Object.assign({},
+                SECONDARY_AGENDAS[SA_BRAWLERS],
+                {
+                    type: null,
+                    type_display_name: 'Universal',
+                },
+            ));
+        }
+
+        if (sizesByCount[SIZE_HEAVY] === 2) {
+            result.push(Object.assign({},
+                SECONDARY_AGENDAS[SA_ENFORCERS],
+                {
+                    type: null,
+                    type_display_name: 'Universal',
+                },
+            ));
+        }
+
+        if (sizesByCount[SIZE_ULTRA] === 2) {
+            result.push(Object.assign({},
+                SECONDARY_AGENDAS[SA_TITAN_KILLERS],
+                {
+                    type: 'Opponent Eligible',
+                    type_display_name: 'Universal',
+                },
+            ));
+        }
+
         return result;
     });
 
