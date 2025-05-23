@@ -9,6 +9,7 @@ import {
     TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES,
     TRAIT_SUPPORT_ORDERS,
     TRAIT_TARGET_DESIGNATOR,
+    TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_MEDIUM} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
@@ -31,6 +32,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA = {
         max_duplicate_vehicles: 2,
         max_vehicles: 4,
         traits: [
+            trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Medium Vehicle'),
             trait(TRAIT_SQUADRON),
             trait(TRAIT_SUPPORT_ORDERS),
         ],

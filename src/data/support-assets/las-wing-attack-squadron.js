@@ -5,7 +5,8 @@ import {
     TRAIT_FLYING_SQUADRON,
     TRAIT_MINE_SWEEPER,
     TRAIT_MSOE_LAUNCHER,
-    TRAIT_SCRAMBLERS, TRAIT_SQUADRON,
+    TRAIT_SCRAMBLERS,
+    TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
@@ -27,6 +28,7 @@ export const LAS_WING_ATTACK_SQUADRON_DATA = {
         cost: 10,
         max_vehicles: 4,
         traits: [
+            trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Light Vehicle'),
             trait(TRAIT_FLYING),
             trait(TRAIT_FLYING_SQUADRON),
         ],

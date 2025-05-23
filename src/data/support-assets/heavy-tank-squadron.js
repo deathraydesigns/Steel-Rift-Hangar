@@ -11,7 +11,13 @@ import {
     VEH_SUBMUNITIONS,
 } from '../unit-weapons.js';
 import {SUBMUNITIONS} from '../mech-weapons.js';
-import {TRAIT_HEAVY_SUPPORT_ASSET, TRAIT_ALL_TERRAIN, TRAIT_GARRISON, TRAIT_GROUP_COMMAND} from '../unit-traits.js';
+import {
+    TRAIT_ALL_TERRAIN,
+    TRAIT_GARRISON,
+    TRAIT_GROUP_COMMAND,
+    TRAIT_HEAVY_SUPPORT_ASSET,
+    TRAIT_UNIT_SIZE_AND_TYPE,
+} from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
@@ -37,6 +43,7 @@ export const HEAVY_TANK_SQUADRON_DATA = {
         cost: 20,
         max_vehicles: 2,
         traits: [
+            trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Heavy Vehicle'),
             trait(TRAIT_HEAVY_SUPPORT_ASSET),
             trait(TRAIT_GROUP_COMMAND),
             trait(TRAIT_ALL_TERRAIN),

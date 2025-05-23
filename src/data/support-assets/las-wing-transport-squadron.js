@@ -7,6 +7,7 @@ import {
     TRAIT_GARRISON,
     TRAIT_GROUP_COMMAND,
     TRAIT_SQUADRON,
+    TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
@@ -37,6 +38,7 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
         max_vehicles: 3,
         all_vehicle_must_be_the_same: true,
         traits: [
+            trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Light Vehicle'),
             trait(TRAIT_FLYING),
             trait(TRAIT_FLYING_SQUADRON),
         ],

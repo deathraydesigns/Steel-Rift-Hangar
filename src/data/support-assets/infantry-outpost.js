@@ -3,11 +3,12 @@ import {trait} from '../weapon-traits.js';
 import {
     TRAIT_ALL_TERRAIN,
     TRAIT_BUNKER_MINE_DRONES,
-    TRAIT_FORTIFICATION,
     TRAIT_GARRISON,
+    TRAIT_GROUP_COMMAND,
     TRAIT_SQUADRON,
+    TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
-import {SIZE_LIGHT, SIZE_ULTRA} from '../unit-sizes.js';
+import {SIZE_ULTRA} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
@@ -28,7 +29,8 @@ export const INFANTRY_OUTPOST_DATA = {
         max_vehicles: 2,
         all_vehicle_must_be_the_same: true,
         traits: [
-            trait(TRAIT_FORTIFICATION),
+            trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Fortification'),
+            trait(TRAIT_GROUP_COMMAND),
         ],
         vehicles: makeStaticListIds({
             BUNKER: {

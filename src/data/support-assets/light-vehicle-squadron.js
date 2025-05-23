@@ -8,6 +8,7 @@ import {
     TRAIT_SQUADRON,
     TRAIT_SUPPRESSIVE_FIRE,
     TRAIT_TARGET_DESIGNATOR,
+    TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
 import {TYPE_VEHICLE} from '../unit-types.js';
@@ -23,6 +24,7 @@ export const LIGHT_VEHICLE_SQUADRON_DATA = {
         max_armor_tons: 10,
         unit_points_description: 'This Unit must have a total of 10 armor',
         traits: [
+            trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Light Vehicle'),
             trait(TRAIT_SQUADRON),
             trait(TRAIT_CLOSE_SUPPORT),
         ],

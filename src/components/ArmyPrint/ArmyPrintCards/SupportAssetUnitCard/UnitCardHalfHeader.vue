@@ -11,11 +11,9 @@ const {
   },
   typeDisplayName: {
     type: String,
-    required: true,
   },
   sizeDisplayName: {
     type: String,
-    required: true,
   },
 });
 </script>
@@ -26,8 +24,12 @@ const {
         {{ label }}
       </div>
       <div class="flex-shrink-1">
-        <span class="fw-medium">Size:</span> {{ sizeDisplayName }},
-        <span class="fw-medium">Type:</span> {{ typeDisplayName }}
+        <template v-if="sizeDisplayName">
+          <span class="fw-medium">Size:</span> {{ sizeDisplayName }},
+        </template>
+        <template v-if="typeDisplayName">
+          <span class="fw-medium">Type:</span> {{ typeDisplayName }}
+        </template>
       </div>
     </div>
   </div>

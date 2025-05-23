@@ -41,7 +41,6 @@ function filterTraits(traits) {
     <UnitCardHalfHeader
         label="Unit Models"
         :type-display-name="unit.unit_type.display_name"
-        :size-display-name="unit.size.display_name"
     />
 
     <table class="table-stats">

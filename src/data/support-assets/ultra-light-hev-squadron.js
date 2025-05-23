@@ -16,6 +16,7 @@ import {
     TRAIT_SQUADRON,
     TRAIT_SUPPRESSIVE_FIRE,
     TRAIT_UL_HEV_LAUNCH_GEAR,
+    TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {trait} from '../weapon-traits.js';
 import {TYPE_HEV} from '../unit-types.js';
@@ -29,6 +30,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
         cost: 10,
         max_vehicles: 3,
         traits: [
+            trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'UL HE-V'),
             trait(TRAIT_SQUADRON),
             trait(TRAIT_CLOSE_SUPPORT),
             trait(TRAIT_ALL_TERRAIN),

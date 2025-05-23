@@ -29,6 +29,7 @@ export const TRAIT_FLYING_SQUADRON = 'TRAIT_FLYING_SQUADRON';
 export const TRAIT_SUPPORT_ORDERS = 'TRAIT_SUPPORT_ORDERS';
 export const TRAIT_HEAVY_SUPPORT_ASSET = 'TRAIT_HEAVY_SUPPORT_ASSET';
 export const TRAIT_HAULER = 'TRAIT_HAULER';
+export const TRAIT_UNIT_SIZE_AND_TYPE = 'TRAIT_UNIT_SIZE_AND_TYPE';
 
 export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_ALL_TERRAIN]]: {
@@ -146,6 +147,12 @@ export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_HAULER]]: {
         display_name: 'Hauler',
         description: `This unit Garrisons a Unit from a separate Asset, and is not in its Group Command. The Garrisoned Unit must be purchased as a separate Asset, following all rules for its selection. The Garrisoned Unit must still be Activated during the turn, but it may not perform any order other than the following until it has performed this order: Muster: This is the only order that a Garrisoned Unit may perform. The Garrisoned Unit is placed within 1” of its Garrison. If the Garrisoned Unit has the Squadron Trait, place one model within 1” of the Garrison, then place the other models within 3” of that initial model. This Unit is no longer considered Garrisoned, and is now “Mustered”.`,
+    },
+    // temporary until unit types and sizes are separate stats
+    [[TRAIT_UNIT_SIZE_AND_TYPE]]: {
+        display_name: 'Unit Type: ',
+        description: null,
+        formatter: (name, number, type) => `${name} ${type}`,
     },
     // [[FOO]]: {
     //     display_name: '',

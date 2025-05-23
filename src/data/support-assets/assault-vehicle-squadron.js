@@ -18,6 +18,7 @@ import {
     TRAIT_MINE_SWEEPER,
     TRAIT_SHIELD_PROJECTOR,
     TRAIT_SQUADRON,
+    TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_MEDIUM} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
@@ -45,6 +46,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA = {
         cost: 20,
         max_vehicles: 4,
         traits: [
+            trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Medium Vehicle'),
             trait(TRAIT_SQUADRON),
             trait(TRAIT_ALL_TERRAIN),
         ],
