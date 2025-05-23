@@ -15,7 +15,7 @@ $card-area-width: $card-width * 3;
 $card-area-height: $card-height * 3;
 
 $page-padding-x: ($page-width - $card-area-width) * 0.5;
-$page-padding-y: ($page-height -$card-area-height) * 0.5;
+$page-padding-y: ($page-height - $card-area-height) * 0.5;
 
 .page-card-grid {
   box-sizing: content-box;
