@@ -10,6 +10,7 @@ import {getUnitTrait, TRAIT_GARRISON, TRAIT_UL_HEV_LAUNCH_GEAR, unitTraitDisplay
 import {getUnitSize} from '../data/unit-sizes.js';
 import {getInfantrySquad, INFANTRY_SQUADS} from '../data/infantry-squads.js';
 import {countBy, flatMap} from 'es-toolkit';
+import {UNIT_TYPES} from '../data/unit-types.js';
 
 export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
 
@@ -58,7 +59,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
             let {
                 display_name,
-                size_id,
+                unit_type_id,
                 size,
                 cost,
                 max_armor_tons,
@@ -66,7 +67,6 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 max_duplicate_vehicles,
                 unit_points_description,
                 attached_element_label,
-                transport_upgrade,
                 all_vehicle_must_be_the_same,
             } = _getUnitInfo.value(supportAssetId);
 
@@ -88,8 +88,8 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return readonly({
                 id,
                 support_asset_unit_id,
+                unit_type: UNIT_TYPES[unit_type_id],
                 display_name,
-                size_id,
                 size,
                 cost,
                 max_armor_tons,
@@ -98,7 +98,6 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 unit_points_description,
                 attached_element_label,
                 upgrade_pod_id,
-                transport_upgrade,
                 vehicles,
                 all_vehicle_must_be_the_same,
             });
@@ -293,6 +292,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         const getUnitAttachmentGarrisonCardInfo = getter((unitAttachmentId) => {
             const info = getUnitAttachmentInfo.value(unitAttachmentId);
             const units = flatMap(info.vehicles, vehicle => vehicle.garrison_units);
+            const unitTraits = flatMap(info.vehicles, vehicle => vehicle.garrison_unit_traits);
 
             return readonly(units);
         });

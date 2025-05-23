@@ -1,12 +1,14 @@
 <script setup>
-import {UNIT_SIZES} from '../../../../data/unit-sizes.js';
 
-const {label, size_id} = defineProps({
+const {
+  label,
+  sizeDisplayName,
+} = defineProps({
   label: {
     type: String,
     required: true,
   },
-  size_id: {
+  sizeDisplayName: {
     type: String,
     required: true,
   },
@@ -16,10 +18,10 @@ const {label, size_id} = defineProps({
   <div class="card-description small m-0">
     <div class="d-flex">
       <div class="flex-grow-1">
-        {{label}}
+        {{ label }}
       </div>
-      <div class="flex-shrink-1" v-if="size_id">
-        <span class="fw-medium">Size:</span> {{ UNIT_SIZES[size_id].display_name }}
+      <div class="flex-shrink-1">
+        <span class="fw-medium">Size:</span> {{ sizeDisplayName }}
       </div>
     </div>
   </div>

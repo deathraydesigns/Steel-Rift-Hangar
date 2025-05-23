@@ -24,7 +24,7 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
   <template v-if="units.length">
     <UnitCardHalfHeader
         label="Garrisoned Units"
-        :size_id="units[0].size_id"
+        :size-display-name="units[0].size.display_name"
     />
     <table class="table-stats">
       <thead>

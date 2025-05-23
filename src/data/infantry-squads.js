@@ -27,6 +27,11 @@ const baseInfantryStats = {
     structure: 3,
 };
 
+const baseSuitStats = {
+    unit_type_id: TYPE_INFANTRY,
+    size_id: SIZE_ULTRA_LIGHT,
+};
+
 export const INFANTRY_SQUADS = makeFrozenStaticListIds({
     [[INFANTRY_RIFLE_SQUAD]]: {
         ...baseInfantryStats,
@@ -68,6 +73,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
         ],
     },
     [[INFANTRY_ARC_SUIT_SQUAD]]: {
+        ...baseSuitStats,
         move: 4,
         armor: 0,
         structure: 4,
@@ -81,6 +87,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
         ],
     },
     [[INFANTRY_REAPER_SUIT_SQUAD]]: {
+        ...baseSuitStats,
         move: 4,
         armor: 0,
         structure: 4,
@@ -92,6 +99,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
         traits: [],
     },
     [[INFANTRY_VIPER_SUIT_SQUAD]]: {
+        ...baseSuitStats,
         move: 5,
         armor: 0,
         structure: 4,
