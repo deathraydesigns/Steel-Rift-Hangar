@@ -27,7 +27,7 @@ export const UNIT_SIZES = makeFrozenStaticListIds({
 
 export const MECH_SIZES = makeFrozenStaticListIds({
     [[SIZE_LIGHT]]: {
-        display_name: 'Light',
+        display_name: UNIT_SIZES[SIZE_LIGHT].display_name,
         armor: 6,
         structure: 4,
         max_slots: 4,
@@ -38,7 +38,7 @@ export const MECH_SIZES = makeFrozenStaticListIds({
         smash_damage: 3,
     },
     [[SIZE_MEDIUM]]: {
-        display_name: 'Medium',
+        display_name: UNIT_SIZES[SIZE_MEDIUM].display_name,
         armor: 8,
         structure: 6,
         max_slots: 5,
@@ -49,7 +49,7 @@ export const MECH_SIZES = makeFrozenStaticListIds({
         smash_damage: 4,
     },
     [[SIZE_HEAVY]]: {
-        display_name: 'Heavy',
+        display_name: UNIT_SIZES[SIZE_HEAVY].display_name,
         armor: 10,
         structure: 8,
         max_slots: 6,
@@ -60,7 +60,7 @@ export const MECH_SIZES = makeFrozenStaticListIds({
         smash_damage: 5,
     },
     [[SIZE_ULTRA]]: {
-        display_name: 'Ultra',
+        display_name: UNIT_SIZES[SIZE_ULTRA].display_name,
         armor: 12,
         structure: 10,
         max_slots: 7,
