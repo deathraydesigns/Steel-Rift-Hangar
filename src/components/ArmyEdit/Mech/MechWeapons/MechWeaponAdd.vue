@@ -5,6 +5,7 @@ import TraitList from '../../../UI/TraitList.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import {BDropdown} from 'bootstrap-vue-next';
+import FormatInches from '../../../functional/format-inches.vue';
 
 const {
   mechId,
@@ -93,7 +94,7 @@ function addWeapon(upgradeId, valid) {
             {{ item.damage }}
           </td>
           <td class="text-end">
-            {{ item.range_formatted }}
+            <format-inches :value="item.range"/>
           </td>
           <td>
             <TraitList :traits="item.traits"/>

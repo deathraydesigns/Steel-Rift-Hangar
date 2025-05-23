@@ -5,6 +5,7 @@ import {TRAIT_LIMITED, TRAIT_MELEE, TRAIT_SHORT} from '../../../../data/weapon-t
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
 import {TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
 import {find} from 'es-toolkit/compat';
+import FormatInches from '../../../functional/format-inches.vue';
 
 const mechStore = useMechStore();
 const {mechId} = defineProps({
@@ -79,7 +80,9 @@ function filterTraits(traits) {
           {{ weapon.damage }}
         </template>
       </td>
-      <td>{{ weapon.range || '-' }}</td>
+      <td>
+        <format-inches :value="weapon.range"/>
+      </td>
       <td class="text-start">
         <div v-for="(trait, index) in filterTraits(weapon.traits)">
           {{ trait.display_name }}<span v-if="index !== filterTraits(weapon.traits).length - 1">, </span>

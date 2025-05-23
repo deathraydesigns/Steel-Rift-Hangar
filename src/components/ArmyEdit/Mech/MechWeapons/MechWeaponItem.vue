@@ -7,6 +7,7 @@ import TraitList from '../../../UI/TraitList.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import {BButton} from 'bootstrap-vue-next';
 import Number from '../../../functional/number.vue';
+import FormatInches from '../../../functional/format-inches.vue';
 
 const mechStore = useMechStore();
 
@@ -38,7 +39,7 @@ function remove() {
       {{ weapon.damage }}
     </td>
     <td class="text-end">
-      {{ weapon.range_formatted }}
+      <format-inches :value="weapon.range"/>
     </td>
     <td>
       <TraitList :traits="weapon.traits"/>

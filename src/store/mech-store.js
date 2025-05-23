@@ -354,11 +354,6 @@ export const useMechStore = defineStore('mech', {
                         limited_size_ids,
                     } = weapon;
 
-                    let range_formatted = '-';
-                    if (range) {
-                        range_formatted = range + '"';
-                    }
-
                     const {traits, team_perks, faction_perks} = this.getWeaponTraitInfo(mechId, weaponId);
                     const traitLimited = find(traits, {id: TRAIT_LIMITED});
 
@@ -391,7 +386,6 @@ export const useMechStore = defineStore('mech', {
                         slots,
                         cost,
                         range,
-                        range_formatted,
                         traits,
                         team_perks,
                         faction_perks,

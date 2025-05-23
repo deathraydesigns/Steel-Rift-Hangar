@@ -1,6 +1,7 @@
 <script setup>
 
 import BtnToolTip from './BtnToolTip.vue';
+import FormatInches from '../functional/format-inches.vue';
 
 const {weapon} = defineProps({
   weapon: {
@@ -32,12 +33,7 @@ const {weapon} = defineProps({
         <tr>
           <td class="text-center">{{ weapon.damage }}</td>
           <td class="text-center">
-            <template v-if="weapon.range">
-              {{ weapon.range }}"
-            </template>
-            <template v-else>
-              -
-            </template>
+            <format-inches :value="weapon.range"/>
           </td>
           <td>{{ weapon.traits.map(t => t.display_name).join(', ') }}</td>
         </tr>
