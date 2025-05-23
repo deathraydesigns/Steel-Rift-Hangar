@@ -74,7 +74,7 @@ function print() {
 
         <div class="mb-1">
           <div class="fw-bold">
-            Teams
+            HE-V Teams
           </div>
           <BFormCheckbox
               v-model="one_team_per_page"
