@@ -97,7 +97,7 @@ function filterTraits(traits) {
         </td>
         <td class="text-start small">
           <div v-for="(weapon, index) in item.weapons">
-            {{ weapon.display_name }}<span class="text-nowrap" v-if="weapon.max_uses"> <span
+            {{ weapon.display_name }}<span class="text-nowrap" v-if="weapon.max_uses">&nbsp;<span
               class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span></span><span
               v-if="index !== item.weapons.length - 1">, </span>
           </div>

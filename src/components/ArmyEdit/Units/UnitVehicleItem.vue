@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from 'vue';
+import {computed, inject} from 'vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
 import {BButton, BFormSelect} from 'bootstrap-vue-next';
 import TraitList from '../../UI/TraitList.vue';
@@ -27,6 +27,11 @@ const requiredWeapons = computed(() => unitStore.getUnitVehicleAttachmentRequire
 const garrisonUnitChoices = computed(() => unitStore.getUnitVehicleAttachmentAvailableGarrisonChoicesInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 const garrisonUnitsMax = computed(() => unitStore.getUnitVehicleAttachmentGarrisonMax(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 
+const add_disabled = inject('add_disabled');
+const has_armor = inject('has_armor');
+const has_structure = inject('has_structure');
+const has_jump = inject('has_jump');
+
 function setWeaponChoice(choiceId, weaponId) {
   unitStore.setUnitVehicleWeaponChoice(supportAssetAttachmentId, supportAssetVehicleAttachmentId, choiceId, weaponId);
 }
@@ -45,15 +50,15 @@ function addUlHev() {
       {{ unitInfo.display_name }}
     </td>
     <td class="text-end">
-      <format-inches :value="unitInfo.move" />
+      <format-inches :value="unitInfo.move"/>
     </td>
-    <td class="text-end">
-      <format-inches :value="unitInfo.jump" />
+    <td class="text-end" v-if="has_jump">
+      <format-inches :value="unitInfo.jump"/>
     </td>
-    <td class="text-end">
+    <td class="text-end" v-if="has_armor">
       {{ unitInfo.armor }}
     </td>
-    <td class="text-end">
+    <td class="text-end" v-if="has_structure">
       {{ unitInfo.structure }}
     </td>
     <td :class="{'table-btn-cell': weaponChoices.length}">
@@ -114,7 +119,16 @@ function addUlHev() {
     <td>
       <TraitList :traits="unitInfo.traits"/>
     </td>
-    <td class="table-btn-cell">
+    <td class="table-btn-cell text-nowrap">
+      <BButton
+          size="sm"
+          class="ms-1"
+          variant="primary"
+          :disabled="add_disabled"
+          @click="unitStore.addVehicle(supportAssetAttachmentId, unitInfo.vehicle_id)"
+      >
+        <span class="material-symbols-outlined">content_copy</span>
+      </BButton>
       <BButton
           size="sm"
           class="ms-1"

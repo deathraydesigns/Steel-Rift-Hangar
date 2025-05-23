@@ -25,9 +25,10 @@ const infantryWeapons = computed(() => store.getUnitAttachmentVehicleGarrisonWea
   <div class="game-card card-support-asset-unit">
     <div class="card-content-container">
 
-      <CardHeader :title="info.display_name"/>
-
-
+      <CardHeader
+          :title="info.display_name"
+          :sub-title="`(Support Asset ${info.cost} Tons)`"
+      />
 
       <div class="row g-2">
         <div class="col-6">

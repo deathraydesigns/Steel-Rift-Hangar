@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from 'vue';
+import {computed, provide, ref} from 'vue';
 import {BButton, BCollapse, BFormFloatingLabel, BFormSelect} from 'bootstrap-vue-next';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
@@ -29,6 +29,8 @@ const unit_points_valid = computed(() => unitStore.getUnitAttachmentPointsValid(
 const used_points = computed(() => unitStore.getUnitAttachmentUsedPoints(supportAssetAttachmentId));
 const max_points = computed(() => unitStore.getUnitAttachmentMaxPoints(supportAssetAttachmentId));
 const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarrisonChoicesInfo(supportAssetAttachmentId));
+
+provide('add_disabled', add_disabled);
 
 function addVehicle(id) {
   if (!visible.value) {

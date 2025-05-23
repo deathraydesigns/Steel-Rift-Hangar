@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from 'vue';
+import {computed, provide} from 'vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
 import UnitVehicleItem from './UnitVehicleItem.vue';
 
@@ -12,6 +12,13 @@ const {supportAssetAttachmentId} = defineProps({
 
 const unitStore = useSupportAssetUnitsStore();
 const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachmentId));
+const has_armor = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.armor));
+const has_structure = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.structure));
+const has_jump = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.jump));
+
+provide('has_armor', has_armor);
+provide('has_jump', has_jump);
+provide('has_structure', has_structure);
 
 </script>
 <template>
@@ -24,13 +31,13 @@ const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachme
       <th class="text-end">
         Move
       </th>
-      <th class="text-end">
+      <th class="text-end" v-if="has_jump">
         Jump
       </th>
-      <th class="text-end">
+      <th class="text-end" v-if="has_armor">
         Armor
       </th>
-      <th class="text-end">
+      <th class="text-end" v-if="has_structure">
         Structure
       </th>
       <th>

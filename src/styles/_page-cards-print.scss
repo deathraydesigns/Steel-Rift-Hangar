@@ -74,6 +74,11 @@ $armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
     font-size: 8pt;
   }
 
+  .game-card-subtitle {
+    font-weight: $font-weight-light;
+    color: rgb(84, 84, 84);
+  }
+
   .unit-info {
 
     .hev-size {
@@ -229,7 +234,7 @@ $armor-border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
     tbody td {
       font-size: 7pt;
       text-align: center;
-      border-bottom: .1pt solid #000;
+      border-bottom: .1pt solid #444;
       padding: 1pt 2pt;
 
       vertical-align: top;
