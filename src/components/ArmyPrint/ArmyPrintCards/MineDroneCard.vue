@@ -18,7 +18,7 @@ import CardFooter from './CardParts/CardFooter.vue';
           Target Model to itself (therefore it is never obstructed). The token and Active Unit do not require Line of
           Sight to each other, as the Drones will attack using their sensors. Units may not Return Fire during this
           attack. Once this Engage Order is resolved remove the token. Once this is complete the Active Player may
-          continue issuing any remaining orders to the Active Model.
+          continue issuing any remaining orders to the Active Model. A Mine Drone never damages an Outpost.
         </div>
 
         <div><strong>Targeted:</strong> When targeted by an attack from <span class="fw-medium">Mine Drone Tracking
