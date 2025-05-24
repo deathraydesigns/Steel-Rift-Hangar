@@ -16,7 +16,7 @@ const {
       class="dropdown-table d-inline-block"
       text="Add"
       size="sm"
-      variant="header-add"
+      variant="secondary"
       placement="bottom-end"
   >
     <div class="position-relative">

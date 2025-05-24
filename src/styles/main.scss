@@ -19,6 +19,8 @@ $teal: #4dc0b5;
 $cyan: #6cb2eb;
 
 $primary: #98b1c2;
+$secondary: shade-color($primary, 40%);
+$border: shade-color($primary, 40%);
 $success: $green;
 $info: $cyan;
 $warning: $yellow;
@@ -50,6 +52,7 @@ $nav-link-padding-y: 0;
 $accordion-icon-color-dark: #fff;
 $accordion-icon-active-color-dark: #fff;
 
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import '../../node_modules/bootstrap-vue-next/src/styles/styles';
 
@@ -67,6 +70,10 @@ $accordion-icon-active-color-dark: #fff;
 @import "page-cards-print";
 @import "page-reference-print";
 
+
+@include color-mode(dark) {
+  --bs-border-color-translucent: #{rgba($white, 0.3)};
+}
 
 body {
   $color: #602915;

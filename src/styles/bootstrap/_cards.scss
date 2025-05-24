@@ -68,12 +68,6 @@ $mech-team-group-bg: mix($dark-bg-subtle, $body-bg, 50%);
   }
 }
 
-@include color-mode(dark) {
-  .card-mech {
-    --bs-card-border-color: #000;
-  }
-}
-
 .card-army-list {
 
   border-top-left-radius: 0;

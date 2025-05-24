@@ -31,7 +31,7 @@ function select(id, valid) {
   <BDropdown
       class="dropdown-table d-inline-block"
       size="sm"
-      variant="header-add"
+      variant="secondary"
       placement="bottom-end"
       :disabled="disabled"
   >

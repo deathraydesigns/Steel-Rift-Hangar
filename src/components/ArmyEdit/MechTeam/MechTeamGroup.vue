@@ -141,7 +141,7 @@ const {
       </div>
       <div class="text-end">
         <button
-            class="btn btn-sm ms-1 btn-header-add"
+            class="btn btn-sm ms-1 btn-secondary"
             @click="teamStore.addMechToTeam(teamId, groupId)"
         >
           Add

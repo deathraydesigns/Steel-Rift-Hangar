@@ -64,7 +64,7 @@ const {
         <BButton
             size="sm"
             class="ms-1"
-            variant="header-add"
+            variant="secondary"
             @click="show = !show"
         >
           Show Team Perks
