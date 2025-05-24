@@ -5,24 +5,7 @@
   @include button-variant($bg, $border);
 }
 
-.btn-transparent {
-  --bs-btn-box-shadow: 0;
-  --bs-btn-active-shadow: 0;
-  --bs-btn-focus-shadow: 0;
-  @include button-variant(
-                  rgba(0, 0, 0, 0),
-                  rgba(0, 0, 0, 0),
-                  $gray-800,
-                  rgba(0, 0, 0, 0.1),
-                  rgba(0, 0, 0, 0),
-                  $gray-800,
-                  rgba(0, 0, 0, 0.2),
-                  rgba(0, 0, 0, 0),
-                  $gray-800
-  );
-}
-
-.btn-transparent-light {
+@mixin btn-transparent-light() {
   --bs-btn-box-shadow: 0;
   --bs-btn-active-shadow: 0;
   --bs-btn-focus-shadow: 0;
@@ -39,7 +22,7 @@
   );
 }
 
-.btn-transparent-dark {
+@mixin btn-transparent-dark() {
   --bs-btn-box-shadow: 0;
   --bs-btn-active-shadow: 0;
   --bs-btn-focus-shadow: 0;
@@ -56,42 +39,22 @@
   );
 }
 
-@include color-mode(dark) {
-  .btn-transparent {
-    --bs-btn-box-shadow: 0;
-    --bs-btn-active-shadow: 0;
-    --bs-btn-focus-shadow: 0;
-    @include button-variant(
-                    rgba(0, 0, 0, 0),
-                    rgba(0, 0, 0, 0),
-                    #fff,
-                    rgba(255, 255, 255, 0.1),
-                    rgba(0, 0, 0, 0),
-                    #fff,
-                    rgba(255, 255, 255, 0.2),
-                    rgba(0, 0, 0, 0),
-                    #fff
-    );
-  }
+.btn-transparent {
+  @include btn-transparent-dark();
 }
 
-.card-mech-team {
-  > .card-header {
-    .btn-tertiary {
-      --bs-btn-box-shadow: 0;
-      --bs-btn-active-shadow: 0;
-      --bs-btn-focus-shadow: 0;
-      @include button-variant(
-                      rgba(255, 255, 255, 0),
-                      rgba(255, 255, 255, 0),
-                      #fff,
-                      rgba(255, 255, 255, 0.1),
-                      rgba(255, 255, 255, 0),
-                      #fff,
-                      rgba(255, 255, 255, 0.2),
-                      rgba(255, 255, 255, 0),
-                      #fff
-      );
+@include color-mode(dark) {
+  .btn-transparent {
+    @include btn-transparent-light();
+  }
+  }
+
+.btn-transparent-light {
+  @include btn-transparent-light();
+}
+
+.btn-transparent-dark {
+  @include btn-transparent-dark();
     }
 
     .btn-light-outline {
@@ -107,8 +70,6 @@
                       #fff
       );
     }
-  }
-}
 
 .btn-orange {
   @include button-variant(
@@ -150,8 +111,19 @@
 }
 
 .btn-grab {
-  --bs-btn-border-color: #{$gray-300};
-  background-color: rgba(0,0,0, 0.05);
+  $bg: rgba(0, 0, 0, 0.075);
+  $border: $border-color-translucent;
+  $color: #000;
+  @include button-variant(
+                  $bg,
+                  $border,
+                  $color,
+          $hover-background: shade-color($bg, $btn-hover-bg-tint-amount),
+          $hover-border: shade-color($bg, $btn-hover-border-tint-amount),
+          $active-background: shade-color($bg, $btn-active-bg-tint-amount),
+          $active-border: shade-color($bg, $btn-active-border-tint-amount)
+  );
+
   &:hover {
     cursor: ns-resize;
   }
@@ -159,7 +131,17 @@
 
 @include color-mode(dark) {
   .btn-grab {
-    --bs-btn-border-color: #{invert($gray-300, 100%)};
-    background-color: rgba(255,255,255, 0.075);
+    $bg: rgba(255, 255, 255, 0.075);
+    $border: $border-color-translucent-dark;
+    $color: #fff;
+    @include button-variant(
+                    $bg,
+                    $border,
+                    $color,
+            $hover-background: tint-color($bg, $btn-hover-bg-tint-amount),
+            $hover-border: tint-color($bg, $btn-hover-border-tint-amount),
+            $active-background: tint-color($bg, $btn-active-bg-tint-amount),
+            $active-border: tint-color($bg, $btn-active-border-tint-amount)
+    );
   }
 }

@@ -21,10 +21,9 @@ function click() {
   <BButton
       @click="click"
       size="sm"
+      :variant="list_is_valid ? 'transparent' : 'danger'"
       :class="{
                   'btn ms-2 position-relative': true,
-                  'btn-danger': !list_is_valid,
-                  'btn-tertiary': list_is_valid,
                 }"
   >
     <template v-if="list_is_valid">
