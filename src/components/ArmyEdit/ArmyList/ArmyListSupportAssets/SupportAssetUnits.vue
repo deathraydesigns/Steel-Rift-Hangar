@@ -23,7 +23,7 @@ const {
         'border-danger': invalid_number_of_support_assets
       }"
   >
-    <div class="card-header" ref="support-asset-drop-down-container">
+    <div class="card-header">
       <div class="d-flex">
         <div class="col-form-label form-control-sm flex-shrink-1 pe-2 fw-bold">
           On Table Support Assets
