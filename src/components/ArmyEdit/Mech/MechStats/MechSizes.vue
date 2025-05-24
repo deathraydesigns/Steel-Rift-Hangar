@@ -32,7 +32,7 @@ function selectOption(size_id) {
           :id="'mech-input-size-' + mechId"
           class="dropdown-form dropdown-table"
           :text="info.size.display_name"
-          variant="light"
+          variant="default"
           lazy
       >
         <table class="table table-hover table-borderless">

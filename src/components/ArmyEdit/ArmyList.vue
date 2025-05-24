@@ -7,7 +7,7 @@ import ArmyListTeams from './ArmyList/ArmyListTeams.vue';
 import SupportAssetUnits from './ArmyList/ArmyListSupportAssets/SupportAssetUnits.vue';
 </script>
 <template>
-  <div class="card text-bg-light card-army-list">
+  <div class="card body-bg card-army-list">
     <div class="card-body">
       <div class="row">
         <div class="col-md-3">

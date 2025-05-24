@@ -26,8 +26,8 @@ function onSortableChange(event) {
 
 </script>
 <template>
-  <thead class="tbody-btn table-primary">
-  <tr class="">
+  <thead class="tbody-btn table-tinted">
+  <tr>
     <th></th>
     <th>
       Upgrades

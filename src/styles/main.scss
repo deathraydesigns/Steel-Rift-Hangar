@@ -48,25 +48,36 @@ $nav-link-padding-y: 0;
 $navbar-padding-y: 0.6rem;
 $navbar-dark-color: #de4000;
 
+$accordion-icon-color-dark: #fff;
+$accordion-icon-active-color-dark: #fff;
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import '../../node_modules/bootstrap-vue-next/src/styles/styles';
+
 @import "./bootstrap/bootstrap-vue-component-styles";
+@import "bootstrap/dropdown";
+@import "bootstrap/collapse";
+@import "bootstrap/buttons";
+@import "bootstrap/cards";
+@import "bootstrap/table";
 
 @import "./fonts/text";
 @import "./fonts/icons";
-@import "./bootstrap/dropdown";
-@import "./bootstrap/collapse";
+
 @import "./print-page";
 @import "./page-cards-print";
-@import "page-reference-print";
-@import "./buttons";
-@import "./cards";
-@import "table";
+@import "./page-reference-print";
+
 
 body {
-  background-color: #602915;
+  $color: #602915;
+  background-color: $color;
   font-optical-sizing: auto;
   font-style: normal;
+
+  &.body-dark {
+    background-color: mix($color, #000, 50%);
+  }
 }
 
 .navbar > .container,

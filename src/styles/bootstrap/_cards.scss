@@ -1,0 +1,129 @@
+
+.card {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  --bs-card-box-shadow: #{$box-shadow-sm};
+
+  .card-header {
+    border-bottom: 0;
+  }
+
+  .card-body {
+    border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
+  }
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.card-mech-team {
+  border-color: #000;
+
+  > .card-body {
+    border-radius: 0 0 $card-inner-border-radius $card-inner-border-radius;
+    background-color: $dark-bg-subtle;
+  }
+}
+
+@include color-mode(dark) {
+  .card-mech-team {
+    > .card-body {
+      background-color: invert($dark-bg-subtle, 100%);
+    }
+  }
+}
+
+
+.card-mech-team-group {
+  $border-color: shade-color($primary, 15%);
+  --bs-card-border-color: #{$border-color};
+
+  background-color: mix($dark-bg-subtle, $body-bg, 50%);
+
+  > .card-body {
+  }
+}
+
+@include color-mode(dark) {
+  .card-mech-team-group {
+    $border-color: tint-color($primary, 15%);
+    --bs-card-border-color: #{$border-color};
+
+    background-color: mix(invert($dark-bg-subtle, 100%), $body-bg-dark, 50%);
+
+    > .card-body {
+    }
+  }
+}
+
+//
+//.card {
+//  background: var(--bs-body-bg);
+//
+//  .card {
+//    background-color: $dark-bg-subtle;
+//
+//    .card {
+//      background: var(--bs-body-bg);
+//    }
+//  }
+//}
+//
+//
+//@include color-mode(dark) {
+//  .card {
+//    background: var(--bs-body-bg);
+//
+//    .card {
+//      background-color: invert($dark-bg-subtle, 100%);
+//
+//      .card {
+//        background: var(--bs-body-bg);
+//      }
+//    }
+//  }
+//}
+
+
+.card-dark-border {
+  border-color: shade-color($primary, 15%);
+}
+
+.card-army-list {
+
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top:0;
+  .card-body {
+    border-top: 0;
+  }
+
+  .form-floating {
+    box-shadow: $box-shadow-sm;
+    border-radius: var(--bs-border-radius);
+
+    .form-control,
+    .form-select {
+      --bs-border-color: var(--bs-border-color-translucent);
+    }
+  }
+}
+
+.card-faction-perk {
+  .card-body {
+    font-size: 0.8rem;
+    --bs-body-font-size: 0.5rem;
+  }
+}
+
+.card-mech {
+  .card-body {
+    padding: $card-spacer-y * 0.5 $card-spacer-x * 0.5;
+    border: 0;
+  }
+}

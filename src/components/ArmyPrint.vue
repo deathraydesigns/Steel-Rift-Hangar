@@ -47,7 +47,7 @@ function print() {
         <template v-for="(item, key) in PRINT_MODES">
           <button
               :class="{
-                        'btn btn-sm btn-light': true,
+                        'btn btn-sm btn-default': true,
                         'active': print_mode === key
                       }"
               @click="print_mode = key"

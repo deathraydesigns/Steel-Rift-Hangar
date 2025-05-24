@@ -25,7 +25,7 @@ const {
         'border-danger': invalid_number_of_support_assets
       }"
   >
-    <div class="card-header">
+    <div class="card-header text-bg-primary">
       <div class="d-flex">
         <div class="col-form-label form-control-sm flex-shrink-1 pe-2 fw-bold">
           Off Table Support Assets
@@ -41,7 +41,7 @@ const {
     <div class="card-body p-2" v-if="support_asset_weapons_info.length">
       <table class="table table-btn-sm m-0">
         <thead>
-        <tr class="table-light">
+        <tr class="table-tinted">
           <th>Name</th>
           <th class="text-end pe-1">Damage</th>
           <th class="text-end pe-1">Tons</th>

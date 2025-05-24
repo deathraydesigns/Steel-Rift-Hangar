@@ -56,7 +56,7 @@ function selectOption(value) {
       <BDropdown
           :id="formId"
           class="dropdown-form dropdown-table"
-          variant="light"
+          variant="default"
           :text="selectedValueLabel"
           lazy
       >

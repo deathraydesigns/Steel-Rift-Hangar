@@ -31,7 +31,7 @@ const modal = ref(false);
       class="btn btn-primary text-start mb-1 w-100"
       @click="modal = !modal"
   >
-    <span class="small text-muted d-block">Faction</span>
+    <span class="small text-muted-custom d-block">Faction</span>
     <span>{{ faction_display_name }}</span>
   </button>
 
@@ -41,9 +41,9 @@ const modal = ref(false);
           @mouseover="mouseover"
           @mouseleave="mouseleave"
           v-show="perk_1_info?.display_name"
-          class="btn btn-light btn-white text-start mb-1 w-100"
+          class="btn btn-default text-start mb-1 w-100"
       >
-        <span class="small text-muted d-block">Perk 1</span>
+        <span class="small text-muted-custom d-block">Perk 1</span>
         <span>{{ perk_1_info?.display_name }}</span>
       </button>
 
@@ -59,7 +59,7 @@ const modal = ref(false);
           @mouseover="mouseover"
           @mouseleave="mouseleave"
           v-show="perk_2_info?.display_name"
-          class="btn btn-light btn-white text-start mb-1 w-100"
+          class="btn btn-default text-start mb-1 w-100"
       >
         <span class="small text-muted d-block">Perk 2</span>
         <span>{{ perk_2_info?.display_name }}</span>

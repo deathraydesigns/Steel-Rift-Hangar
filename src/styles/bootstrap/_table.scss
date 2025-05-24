@@ -61,3 +61,10 @@ $table-cell-sm-px: 0.25rem;
   }
 }
 
+
+@include table-variant('tinted', $light);
+
+@include color-mode(dark) {
+  @include table-variant('tinted', lighten($dark, 5%));
+
+}

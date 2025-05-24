@@ -35,7 +35,7 @@ const {
   >
     <template #target><span
         v-show="perks && perks.length"
-        :class="`btn btn-${size} btn-light ${props.class}`">
+        :class="`btn btn-${size} btn-default ${props.class}`">
 
       <Icon name="team-perk"/>
     </span></template>

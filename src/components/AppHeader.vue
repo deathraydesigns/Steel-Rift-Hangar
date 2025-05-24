@@ -20,9 +20,11 @@ const {used_tons, max_tons, name} = storeToRefs(useArmyListStore());
 
 const currentPath = inject('currentPath');
 const resetModal = ref(false);
+const mode = inject('color_mode');
+
 </script>
 <template>
-  <div class="sticky-top text-bg-light border-bottom shadow app-header">
+  <div class="sticky-top bg-body text-body border-bottom shadow app-header" :data-bs-theme="mode">
     <Navbar/>
     <div class="container-lg">
       <div class="pt-2 px-3 pb-2">
@@ -82,13 +84,13 @@ const resetModal = ref(false);
             </BButton>
             <div class="btn-group d-inline-block ms-1" role="group">
               <a :href="`#${ROUTE_HOME}`" :class="{
-                  'btn btn-sm btn-light': true,
+                  'btn btn-sm btn-default': true,
                   'active': currentPath === `#${ROUTE_HOME}` || currentPath === ''
                 }">
                 Edit
               </a>
               <a :href="`#${ROUTE_PRINT}`" :class="{
-                  'btn btn-sm btn-light': true,
+                  'btn btn-sm btn-default': true,
                   'active': currentPath === `#${ROUTE_PRINT}`
                 }">
                 Print

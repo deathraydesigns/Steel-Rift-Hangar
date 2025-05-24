@@ -35,12 +35,11 @@ const {
 } = useExpandCollapseAll();
 </script>
 <template>
-  <div class="card text-bg-dark card-mech-team">
+  <div class="card card-mech-team">
     <div class="card-header d-flex text-bg-dark">
       <div class="flex-grow-1">
         <span class="d-inline-block py-1 ps-2 pe-1 fw-bold">
-
-          <Icon :name="teamInfo.icon" color="#fff"/>
+          <Icon :name="teamInfo.icon"/>
           <span class="ms-2">
             {{ teamInfo.display_name }}
           </span>
@@ -53,7 +52,7 @@ const {
                 class="btn btn-sm mx-1 btn-light-outline"
             >
               {{ teamMechCount }}
-              <Icon name="hev" color="#fff"/>
+              <Icon name="hev"/>
             </span>
           </template>
           <template #content>
@@ -64,12 +63,12 @@ const {
       <div class="text-end">
         <BButton
             size="sm"
-            class="ms-1 btn-header-add"
-            variant="primary"
+            class="ms-1"
+            variant="header-add"
             @click="show = !show"
         >
           Show Team Perks
-          <Icon name="team-perk" color="#fff"/>
+          <Icon name="team-perk"/>
         </BButton>
         <BButton
             size="sm"
@@ -82,7 +81,7 @@ const {
         <BButton
             size="sm"
             class="ms-1"
-            variant="transparent"
+            variant="transparent-light"
             @click="collapseAll"
         >
           <span class="material-symbols-outlined">keyboard_double_arrow_up</span>
@@ -90,7 +89,7 @@ const {
         <BButton
             size="sm"
             class="ms-1"
-            variant="transparent"
+            variant="transparent-light"
             @click="expandAll"
         >
           <span class="material-symbols-outlined">keyboard_double_arrow_down</span>

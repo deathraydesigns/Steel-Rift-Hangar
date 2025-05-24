@@ -48,7 +48,7 @@ const {
           <span
               @mouseover="mouseover"
               @mouseleave="mouseleave"
-              class="btn btn-light"
+              class="btn btn-default"
           >
             {{ text }}
             <span class="material-symbols-outlined">flag</span>

@@ -33,7 +33,7 @@ function addGeneralMech() {
         v-if="!generalMechCount"
     >
       Add
-      <Icon name="hev" color="#000"/>
+      <Icon name="hev"/>
     </BButton>
     <BtnAddTeam/>
   </div>

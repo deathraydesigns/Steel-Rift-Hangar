@@ -46,7 +46,7 @@ function selectOption(value) {
           :id="'mech-input-armor-upgrade-' + mechId"
           class="dropdown-form dropdown-table d-inline-block"
           :text="armorUpgrade.display_name"
-          variant="light"
+          variant="default"
           lazy
       >
         <table class="table table-hover table-borderless">
@@ -123,7 +123,7 @@ function selectOption(value) {
           <span
               @mouseover="mouseover"
               @mouseleave="mouseleave"
-              class="btn btn-md btn-light ms-1"
+              class="btn btn-md btn-default ms-1"
           >
             <span class="material-symbols-outlined">shield_question</span>
           </span>

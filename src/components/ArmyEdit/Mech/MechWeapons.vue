@@ -29,7 +29,7 @@ const weapons = computed(() => mechStore.getMechAvailableWeaponsInfo(mechId));
 </script>
 <template>
   <tbody class="tbody-btn">
-  <tr class="table-light">
+  <tr class="table-tinted">
     <th></th>
     <th>
       Weapons

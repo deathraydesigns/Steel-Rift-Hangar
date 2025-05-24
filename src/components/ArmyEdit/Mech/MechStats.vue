@@ -122,12 +122,8 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId))
       <tfoot>
       <tr>
         <td></td>
-        <td>
-
-        </td>
-        <td colspan="3" class="text-end">
-
-        </td>
+        <td></td>
+        <td colspan="3" class="text-end"></td>
         <td class="text-end pe-1 border-bottom">
           <div class="fw-bold">Armor</div>
           <small>Stat</small>
@@ -146,7 +142,7 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId))
         </td>
         <td></td>
       </tr>
-      <tr class="table-light">
+      <tr class="table-tinted">
         <td></td>
         <td></td>
         <th colspan="3" class="text-end">

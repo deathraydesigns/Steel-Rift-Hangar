@@ -57,7 +57,7 @@ function setUpgradePodChoice(upgradePodId) {
                 @mouseleave="mouseleave"
                 :class="{
                   'btn btn-sm mx-1': true,
-                  'btn-light': unit_points_valid,
+                  'btn-default': unit_points_valid,
                   'btn-danger': !unit_points_valid
                 }"
             >
@@ -83,7 +83,7 @@ function setUpgradePodChoice(upgradePodId) {
         >
           <template v-if="info.support_asset_unit_id === ULTRA_LIGHT_HEV_SQUADRON">
             Add
-            <Icon name="hev" color="#fff"/>
+            <Icon name="hev"/>
           </template>
           <template v-else>
             Add {{ info.unit_type.display_name }}
@@ -102,7 +102,7 @@ function setUpgradePodChoice(upgradePodId) {
               'btn-sm btn-collapse ms-1': true,
               'collapsed': !visible
             }"
-            variant="transparent"
+            variant="transparent-dark"
             :aria-expanded="visible ? 'true' : 'false'"
             :aria-controls="'collapse-support-asset-unit-' + supportAssetAttachmentId"
             @click="visible = !visible"

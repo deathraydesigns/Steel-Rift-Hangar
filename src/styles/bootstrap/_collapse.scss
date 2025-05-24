@@ -1,12 +1,4 @@
-
-.collapse-header {
-  padding: $btn-padding-y $btn-padding-x;
-}
-
-//$accordion-button-bg: $accordion-button-active-bg;
 .btn-collapse {
-  //$accordion-border-width: 0;
-
   --#{$prefix}accordion-color: #{$accordion-color};
   --#{$prefix}accordion-bg: #{$accordion-bg};
   --#{$prefix}accordion-transition: #{$accordion-transition};
@@ -33,16 +25,13 @@
   display: flex;
   align-items: center;
   text-align: left; // Reset button style
-  //background-color: $primary;
-  //border:0;
-  //border: 1px solid $gray-500;
+  //background-color: var(--#{$prefix}accordion-btn-bg);
   overflow-anchor: none;
   @include transition(var(--#{$prefix}accordion-transition));
 
   &:not(.collapsed) {
     //color: var(--#{$prefix}accordion-active-color);
     //background-color: var(--#{$prefix}accordion-active-bg);
-    //box-shadow: inset 0 calc(-1 * var(--#{$prefix}accordion-border-width)) 0 var(--#{$prefix}accordion-border-color); // stylelint-disable-line function-disallowed-list
 
     &::after {
       background-image: var(--#{$prefix}accordion-btn-active-icon);
@@ -65,12 +54,17 @@
 
   &:hover {
     z-index: 2;
-    //background-color: $cyan-400;
   }
 
   &:focus {
     z-index: 3;
     outline: 0;
-    //box-shadow: var(--#{$prefix}accordion-btn-focus-box-shadow);
+  }
+}
+
+@include color-mode(dark) {
+  .btn-collapse:not(.btn-transparent-dark)::after {
+    --#{$prefix}accordion-btn-icon: #{escape-svg($accordion-button-icon-dark)};
+    --#{$prefix}accordion-btn-active-icon: #{escape-svg($accordion-button-active-icon-dark)};
   }
 }

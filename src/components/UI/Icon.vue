@@ -1,10 +1,27 @@
 <script>
+import {computed, defineComponent} from 'vue';
+import 'virtual:svg-icon';
 
-import svgIcon from 'virtual:svg-icon';
-
-svgIcon.props.size.default = '20px';
-svgIcon.props.color.default = '#000';
-
-export default svgIcon;
-
+export default defineComponent({
+  name: 'SvgIcon',
+  props: {
+    prefix: {
+      type: String,
+      default: 'icona',
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+  },
+  setup(props) {
+    const symbolId = computed(() => `#${props.prefix}-${props.name}`);
+    return {symbolId};
+  },
+});
 </script>
+<template>
+  <svg aria-hidden="true" width="20px" height="20px" class="app-svg-icon">
+    <use :href="symbolId"/>
+  </svg>
+</template>

@@ -55,19 +55,19 @@ const {
 </script>
 <template>
   <div :class="{
-    'card text-bg-light card-dark-border': true,
+    'card card-mech-team-group': true,
     'border-danger': !size.size_valid,
   }">
-    <div class="card-header d-flex text-bg-primary">
+    <div class="card-header d-flex bg-primary">
       <div class="flex-grow-1">
         <BtnToolTip>
           <template #target="{mouseover, mouseleave}">
             <div
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
-                class="btn btn-transparent d-inline-block py-1 me-1 fw-bold"
+                class="btn btn-transparent-dark d-inline-block py-1 me-1 fw-bold"
             >
-              <Icon v-if="teamInfo.icon" :name="teamInfo.icon" color="#000" class="me-2"/>
+              <Icon v-if="teamInfo.icon" :name="teamInfo.icon" class="me-2"/>
               {{ groupInfo.display_name }}
             </div>
           </template>
@@ -81,10 +81,10 @@ const {
             <span
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
-                class="btn btn-sm btn-outline mx-1 btn-light"
+                class="btn btn-sm btn-default mx-1"
             >
               {{ groupCount }}
-              <Icon name="hev" color="#000"/>
+              <Icon name="hev"/>
             </span>
           </template>
           <template #content>
@@ -98,7 +98,7 @@ const {
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
                 :class="{
-                  'btn btn-sm btn-light btn-outline mx-1': true,
+                  'btn btn-sm btn-default mx-1': true,
                   'btn-outline-danger border-danger': !size.size_valid,
                 }"
             >
@@ -117,7 +117,7 @@ const {
                 v-show="!isGeneralGroup && teamGroupPerkCount"
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
-                class="btn btn-sm btn-outline mx-1 btn-light"
+                class="btn btn-sm btn-default mx-1"
             >
               Group Perks
               <Icon name="team-perk"/>
@@ -145,11 +145,11 @@ const {
             @click="teamStore.addMechToTeam(teamId, groupId)"
         >
           Add
-          <Icon name="hev" color="#fff"/>
+          <Icon name="hev"/>
         </button>
         <BButton
             size="sm"
-            variant="transparent"
+            variant="transparent-dark"
             class="ms-1"
             @click="collapseAll"
         >
@@ -157,7 +157,7 @@ const {
         </BButton>
         <BButton
             size="sm"
-            variant="transparent"
+            variant="transparent-dark"
             class="ms-1"
             @click="expandAll"
         >
