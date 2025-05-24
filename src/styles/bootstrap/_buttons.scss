@@ -29,13 +29,13 @@
   @include button-variant(
                   rgba(0, 0, 0, 0),
                   rgba(0, 0, 0, 0),
-                  $gray-800,
+                  #000,
                   rgba(0, 0, 0, 0.1),
                   rgba(0, 0, 0, 0),
-                  $gray-800,
+                  #000,
                   rgba(0, 0, 0, 0.2),
                   rgba(0, 0, 0, 0),
-                  $gray-800
+                  #000
   );
 }
 
@@ -114,49 +114,27 @@
 }
 
 .btn-overlay {
+  $border: $border-color-translucent;
+  $bg: $border-color-translucent-dark;
   @include button-variant(
-          $background: $border-color-translucent-dark,
-          $border: $border-color-translucent,
-          $hover-background: rgba(shade-color($light, $btn-hover-bg-shade-amount), 0.1),
-          $hover-border: rgba(tint-color($light, $btn-hover-border-shade-amount), 0.2),
-          $active-background: tint-color($light, $btn-active-bg-shade-amount),
-          $active-border: tint-color($light, $btn-active-border-shade-amount)
+          $background: rgba($bg, 0.35),
+          $border: rgba($border, 0.35),
+          $hover-background: rgba($bg, 0.4),
+          $hover-border: rgba($border, 0.4),
+          $active-background: rgba($bg, 0.5),
+          $active-border: rgba($border, 0.5)
   );
-  --bs-btn-color: var(--bs-bg-body);
+  --bs-btn-color: var(--bs-bg-body-color);
 }
 
 .btn-grab {
-  $bg: rgba(0, 0, 0, 0.075);
-  $border: $border-color-translucent;
-  $color: #000;
-  @include button-variant(
-                  $bg,
-                  $border,
-                  $color,
-          $hover-background: shade-color($bg, $btn-hover-bg-tint-amount),
-          $hover-border: shade-color($bg, $btn-hover-border-tint-amount),
-          $active-background: shade-color($bg, $btn-active-bg-tint-amount),
-          $active-border: shade-color($bg, $btn-active-border-tint-amount)
-  );
-
-  &:hover {
-    cursor: ns-resize;
-  }
+  --bs-btn-bg: #{rgba($black, 0.05)};
+  font-weight: $font-weight-medium;
 }
 
 @include color-mode(dark) {
   .btn-grab {
-    $bg: rgba(255, 255, 255, 0.075);
-    $border: $border-color-translucent-dark;
-    $color: #fff;
-    @include button-variant(
-                    $bg,
-                    $border,
-                    $color,
-            $hover-background: tint-color($bg, $btn-hover-bg-tint-amount),
-            $hover-border: tint-color($bg, $btn-hover-border-tint-amount),
-            $active-background: tint-color($bg, $btn-active-bg-tint-amount),
-            $active-border: tint-color($bg, $btn-active-border-tint-amount)
-    );
+    --bs-btn-bg: #{rgba($white, 0.05)};
+    --bs-btn-color: rgba(var(--bs-body-color-rgb), 0.75);
   }
 }

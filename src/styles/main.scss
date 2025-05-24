@@ -1,6 +1,7 @@
 @import "../../node_modules/bootstrap/scss/functions";
 
 $dropdown-border-width: 1px;
+$border-color-translucent: rgba(#000, 0.25);
 
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
@@ -18,7 +19,6 @@ $teal: #4dc0b5;
 $cyan: #6cb2eb;
 
 $primary: #98b1c2;
-//$secondary: #6c757d;
 $success: $green;
 $info: $cyan;
 $warning: $yellow;
@@ -26,8 +26,6 @@ $danger: $red;
 
 $success-text-emphasis: shade-color($success, 40%);
 $danger-text-emphasis: shade-color($danger, 40%);
-
-$body-tertiary-bg: #e9ecef;
 
 $dropdown-header-padding-y: .2rem;
 $dropdown-divider-margin-y: .2rem;
@@ -44,9 +42,10 @@ $enable-shadows: true;
 
 $toast-background-color: #fff !default;
 $toast-header-background-color: #fff !default;
-$nav-link-padding-y: 0;
+
 $navbar-padding-y: 0.6rem;
 $navbar-dark-color: #de4000;
+$nav-link-padding-y: 0;
 
 $accordion-icon-color-dark: #fff;
 $accordion-icon-active-color-dark: #fff;
@@ -54,19 +53,19 @@ $accordion-icon-active-color-dark: #fff;
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import '../../node_modules/bootstrap-vue-next/src/styles/styles';
 
-@import "./bootstrap/bootstrap-vue-component-styles";
+@import "bootstrap/bootstrap-vue-component-styles";
 @import "bootstrap/dropdown";
 @import "bootstrap/collapse";
 @import "bootstrap/buttons";
 @import "bootstrap/cards";
 @import "bootstrap/table";
 
-@import "./fonts/text";
-@import "./fonts/icons";
+@import "fonts/text";
+@import "fonts/icons";
 
-@import "./print-page";
-@import "./page-cards-print";
-@import "./page-reference-print";
+@import "print-page";
+@import "page-cards-print";
+@import "page-reference-print";
 
 
 body {

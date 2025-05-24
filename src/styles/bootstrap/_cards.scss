@@ -1,15 +1,11 @@
-
 .card {
   margin-top: .5rem;
   margin-bottom: .5rem;
   --bs-card-box-shadow: #{$box-shadow-sm};
 
-  .card-header {
+  .card-header:last-child {
     border-bottom: 0;
-  }
-
-  .card-body {
-    border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
+    border-radius: $card-inner-border-radius;
   }
 
   &:first-child {
@@ -21,87 +17,68 @@
   }
 }
 
-.card-mech-team {
-  border-color: #000;
+$primary-border: shade-color($primary, 20%);
+$primary-border-dark: tint-color($primary, 15%);
 
-  > .card-body {
-    border-radius: 0 0 $card-inner-border-radius $card-inner-border-radius;
-    background-color: $dark-bg-subtle;
+$mech-team-bg-dark: mix($dark, $body-bg, 80%);
+$mech-team-group-bg: mix($dark-bg-subtle, $body-bg, 50%);
+
+.card-mech-team {
+  --bs-card-border-color: #000;
+  --bs-card-bg: #{mix($dark, $body-bg, 30%)};
+
+  > .card-header {
+    --bs-card-cap-bg: #{$dark};
+    --bs-card-cap-color: #{$body-color-dark};
   }
 }
 
 @include color-mode(dark) {
   .card-mech-team {
-    > .card-body {
-      background-color: invert($dark-bg-subtle, 100%);
-    }
+    --bs-card-bg: #{$mech-team-bg-dark};
   }
 }
 
-
 .card-mech-team-group {
-  $border-color: shade-color($primary, 15%);
-  --bs-card-border-color: #{$border-color};
-
-  background-color: mix($dark-bg-subtle, $body-bg, 50%);
-
-  > .card-body {
-  }
+  --bs-card-bg: #{$mech-team-group-bg};
+  --bs-card-border-color: #{$primary-border};
 }
 
 @include color-mode(dark) {
   .card-mech-team-group {
-    $border-color: tint-color($primary, 15%);
-    --bs-card-border-color: #{$border-color};
-
-    background-color: mix(invert($dark-bg-subtle, 100%), $body-bg-dark, 50%);
-
-    > .card-body {
-    }
+    --bs-card-bg: #{mix($mech-team-bg-dark, $body-bg-dark, 50%)};
+    --bs-card-border-color: #{$primary-border-dark};
   }
 }
 
-//
-//.card {
-//  background: var(--bs-body-bg);
-//
-//  .card {
-//    background-color: $dark-bg-subtle;
-//
-//    .card {
-//      background: var(--bs-body-bg);
-//    }
-//  }
-//}
-//
-//
-//@include color-mode(dark) {
-//  .card {
-//    background: var(--bs-body-bg);
-//
-//    .card {
-//      background-color: invert($dark-bg-subtle, 100%);
-//
-//      .card {
-//        background: var(--bs-body-bg);
-//      }
-//    }
-//  }
-//}
-
-
 .card-dark-border {
-  border-color: shade-color($primary, 15%);
+  --bs-card-border-color: #{$primary-border};
+}
+
+@include color-mode(dark) {
+  .card-dark-border {
+    --bs-card-border-color: #{$primary-border-dark};
+  }
+}
+
+.card-mech {
+  .card-body {
+    padding: $card-spacer-y * 0.5 $card-spacer-x * 0.5;
+    border: 0;
+  }
+}
+
+@include color-mode(dark) {
+  .card-mech {
+    --bs-card-border-color: #000;
+  }
 }
 
 .card-army-list {
 
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-top:0;
-  .card-body {
-    border-top: 0;
-  }
+  border-top: 0;
 
   .form-floating {
     box-shadow: $box-shadow-sm;
@@ -118,12 +95,5 @@
   .card-body {
     font-size: 0.8rem;
     --bs-body-font-size: 0.5rem;
-  }
-}
-
-.card-mech {
-  .card-body {
-    padding: $card-spacer-y * 0.5 $card-spacer-x * 0.5;
-    border: 0;
   }
 }

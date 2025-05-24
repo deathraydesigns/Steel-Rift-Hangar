@@ -81,7 +81,7 @@ const {
             <span
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
-                class="btn btn-sm btn-default mx-1"
+                class="btn btn-sm btn-overlay mx-1"
             >
               {{ groupCount }}
               <Icon name="hev"/>
@@ -98,12 +98,12 @@ const {
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
                 :class="{
-                  'btn btn-sm btn-default mx-1': true,
+                  'btn btn-sm btn-overlay mx-1': true,
                   'btn-outline-danger border-danger': !size.size_valid,
                 }"
             >
               Size: {{ size.min_count }}-{{ size.max_count }}
-              <span class="material-symbols-outlined" v-if="!size.size_valid">warning</span>
+              <span class="material-symbols-outlined text-danger" v-if="!size.size_valid">warning</span>
             </span>
           </template>
           <template #content>
@@ -117,7 +117,7 @@ const {
                 v-show="!isGeneralGroup && teamGroupPerkCount"
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
-                class="btn btn-sm btn-default mx-1"
+                class="btn btn-sm btn-overlay mx-1"
             >
               Group Perks
               <Icon name="team-perk"/>

@@ -19,7 +19,7 @@ const {
 <template>
   <div
       :class="{
-        'card': true,
+        'card card-dark-border': true,
         'border-danger': invalid_number_of_support_assets
       }"
   >

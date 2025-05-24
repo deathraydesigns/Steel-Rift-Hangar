@@ -36,10 +36,10 @@ const {
 </script>
 <template>
   <div class="card card-mech-team">
-    <div class="card-header d-flex text-bg-dark">
+    <div class="card-header d-flex">
       <div class="flex-grow-1">
         <span class="d-inline-block py-1 ps-2 pe-1 fw-bold">
-          <Icon :name="teamInfo.icon"/>
+          <Icon :name="teamInfo.icon" color="#fff" />
           <span class="ms-2">
             {{ teamInfo.display_name }}
           </span>

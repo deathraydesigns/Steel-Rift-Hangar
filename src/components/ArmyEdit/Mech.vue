@@ -44,7 +44,7 @@ watch(expandSignal, () => visible.value = true);
     <div class="card-body">
       <div class="row">
         <div class="col-auto col-md-auto col-lg-2 ">
-          <span class="btn btn-sm btn-grab">:::</span>
+          <span class="btn btn-sm btn-grab btn-transparent">:::</span>
           <div class="d-inline-block py-1 ps-3">
             HE-V {{ info.size.display_name }}
           </div>
