@@ -58,7 +58,7 @@ const {
     'card card-mech-team-group': true,
     'border-danger': !size.size_valid,
   }">
-    <div class="card-header d-flex bg-primary">
+    <div class="card-header d-flex text-bg-primary">
       <div class="flex-grow-1">
         <BtnToolTip>
           <template #target="{mouseover, mouseleave}">
