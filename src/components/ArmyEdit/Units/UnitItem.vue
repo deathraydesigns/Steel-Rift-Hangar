@@ -102,7 +102,7 @@ function setUpgradePodChoice(upgradePodId) {
               'btn-sm btn-collapse ms-1': true,
               'collapsed': !visible
             }"
-            variant="tertiary"
+            variant="transparent"
             :aria-expanded="visible ? 'true' : 'false'"
             :aria-controls="'collapse-support-asset-unit-' + supportAssetAttachmentId"
             @click="visible = !visible"

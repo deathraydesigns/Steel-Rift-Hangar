@@ -96,7 +96,7 @@ watch(expandSignal, () => visible.value = true);
           <BButton
               :class="'btn-collapse ' + (visible ? null : 'collapsed')"
               size="sm"
-              variant="tertiary"
+              variant="transparent"
               :aria-expanded="visible ? 'true' : 'false'"
               :aria-controls="'collapse-' + mechId"
               @click="visible = !visible"

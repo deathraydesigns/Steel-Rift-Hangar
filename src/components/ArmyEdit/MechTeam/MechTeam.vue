@@ -82,7 +82,7 @@ const {
         <BButton
             size="sm"
             class="ms-1"
-            variant="tertiary"
+            variant="transparent"
             @click="collapseAll"
         >
           <span class="material-symbols-outlined">keyboard_double_arrow_up</span>
@@ -90,7 +90,7 @@ const {
         <BButton
             size="sm"
             class="ms-1"
-            variant="tertiary"
+            variant="transparent"
             @click="expandAll"
         >
           <span class="material-symbols-outlined">keyboard_double_arrow_down</span>

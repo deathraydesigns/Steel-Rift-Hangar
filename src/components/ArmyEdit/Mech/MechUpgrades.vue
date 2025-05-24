@@ -26,8 +26,8 @@ function onSortableChange(event) {
 
 </script>
 <template>
-  <tbody class="tbody-btn">
-  <tr class="table-light">
+  <thead class="tbody-btn table-primary">
+  <tr class="">
     <th></th>
     <th>
       Upgrades
@@ -48,7 +48,7 @@ function onSortableChange(event) {
     </th>
     <th></th>
   </tr>
-  </tbody>
+  </thead>
 
   <draggable
       :list="mech.upgrades"

@@ -65,7 +65,7 @@ const {
             <div
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
-                class="btn btn-tertiary d-inline-block py-1 me-1 fw-bold"
+                class="btn btn-transparent d-inline-block py-1 me-1 fw-bold"
             >
               <Icon v-if="teamInfo.icon" :name="teamInfo.icon" color="#000" class="me-2"/>
               {{ groupInfo.display_name }}
@@ -149,7 +149,7 @@ const {
         </button>
         <BButton
             size="sm"
-            variant="tertiary"
+            variant="transparent"
             class="ms-1"
             @click="collapseAll"
         >
@@ -157,7 +157,7 @@ const {
         </BButton>
         <BButton
             size="sm"
-            variant="tertiary"
+            variant="transparent"
             class="ms-1"
             @click="expandAll"
         >
