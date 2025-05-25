@@ -2,7 +2,6 @@
 import {useFactionStore} from '../../../store/faction-store.js';
 import {storeToRefs} from 'pinia';
 import {BButton, BModal} from 'bootstrap-vue-next';
-import {inject} from 'vue';
 
 const model = defineModel();
 const store = useFactionStore();
@@ -19,8 +18,6 @@ const {
 
 const {addPerk, removePerk} = store;
 
-const modalContainer = inject('modal_container');
-
 function setFactionId(factionId) {
   faction_id.value = factionId;
   clearInvalidPerks();
@@ -35,7 +32,6 @@ function setFactionId(factionId) {
       title="Faction Perks"
       ok-variant="secondary"
       size="xl"
-      :teleport-to="modalContainer"
   >
     <ul class="nav nav-tabs nav-tabs-factions">
       <button class="nav-link disabled tab-select-faction" role="tab" tabindex="-1">Select Faction:</button>

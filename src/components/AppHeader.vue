@@ -20,12 +20,10 @@ const {used_tons, max_tons, name} = storeToRefs(useArmyListStore());
 
 const currentPath = inject('currentPath');
 const resetModal = ref(false);
-const mode = inject('color_mode');
-const modalContainer = inject('modal_container');
 
 </script>
 <template>
-  <div class="sticky-top bg-body text-body border-bottom shadow app-header" :data-bs-theme="mode">
+  <div class="sticky-top bg-body text-body border-bottom shadow app-header">
     <Navbar/>
     <div class="container-lg">
       <div class="pt-2 px-3 pb-2">
@@ -108,7 +106,6 @@ const modalContainer = inject('modal_container');
       @ok="resetStores()"
       ok-variant="danger"
       title="Reset Army List?"
-      :teleport-to="modalContainer"
   >
     <div class="lead">
       Are you sure you want to clear all army list data?

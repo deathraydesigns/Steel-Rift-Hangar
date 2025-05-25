@@ -24,30 +24,8 @@ const showPrint = computed(() => {
 const mode = useColorMode({
   emitAuto: true,
   persist: true,
-  selector: false,
 });
 provide('color_mode', mode);
-
-const modal = useTemplateRef('modal');
-provide('modal_container', modal);
-
-function updateBodyColorMode() {
-  const bodyEl = document.body;
-  if (mode.value === 'dark') {
-    bodyEl.classList.add('body-dark');
-    bodyEl.classList.remove('body-light');
-  } else {
-    bodyEl.classList.remove('body-dark');
-    bodyEl.classList.add('body-light');
-  }
-}
-
-onMounted(() => {
-  updateBodyColorMode();
-});
-watch(mode, () => {
-  updateBodyColorMode();
-});
 
 </script>
 <template>
@@ -55,7 +33,6 @@ watch(mode, () => {
   <AppHeader/>
   <ArmyPrint v-show="showPrint"/>
   <ArmyEdit v-show="!showPrint"/>
-  <div id="app-modal-container" class="no-print" ref="modal" :data-bs-theme="mode"></div>
 
   <div class="no-print text-bg-dark py-4">
     <div class="container text-center">

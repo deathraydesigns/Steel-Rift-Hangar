@@ -1,11 +1,6 @@
-<script setup>
-import {inject} from 'vue';
-
-const mode = inject('color_mode');
-
-</script>
+<script setup></script>
 <template>
-  <div class="print-settings-container m-auto" :data-bs-theme="mode">
+  <div class="print-settings-container m-auto">
     <div class="container">
       <div class="card my-3">
         <div class="card-header">

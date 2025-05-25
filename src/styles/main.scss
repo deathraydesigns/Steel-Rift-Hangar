@@ -74,25 +74,32 @@ $accordion-icon-active-color-dark: #fff;
 :root {
   --bs-popover-header-color: var(--bs-body-color);
 }
+
 @include color-mode(dark) {
   --bs-border-color-translucent: #{rgba($white, 0.3)};
   --bs-popover-header-color: var(--bs-body-color);
 }
 
 body {
-  $color: #602915;
-  background-color: $color;
   font-optical-sizing: auto;
   font-style: normal;
+}
 
-  &.body-dark {
-    background-color: mix($color, #000, 50%);
-  }
+$body-bg-color: #602915;
+$body-bg-color-dark: mix($body-bg-color, #000, 50%);
+
+body {
+  background-color: $body-bg-color;
+}
+
+body[data-bs-theme="dark"] {
+  background-color: $body-bg-color-dark;
 }
 
 .navbar-toggler-icon {
   height: 1em;
 }
+
 .navbar > .container,
 .navbar > .container-fluid,
 .navbar > .container-sm,
@@ -189,6 +196,5 @@ body {
 @include color-mode(dark) {
   .number-negative {
     color: var(--bs-danger-text-emphasis);
-
   }
 }
