@@ -20,13 +20,19 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
 .page-card-grid {
   box-sizing: content-box;
 }
-
+@include color-mode(dark) {
+  body .output-container {
+    --bs-body-color: #000;
+  }
+}
 .output-container {
 
   --section-heading-bg: #ddd;
   --sub-heading-bg: #eee;
   --card-outline-color: #ccc;
   --card-bg: #fff;
+  --bs-body-color: #000;
+  color: #000;
 
   .game-card {
     width: $card-width;
