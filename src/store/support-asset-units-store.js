@@ -424,6 +424,13 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return !!info.vehicles.find((vehicle) => vehicle.garrison_units.length);
         });
 
+        const getUnitHasGarrisonableVehicles = getter((supportAssetUnitId) => {
+            const unitDef = SUPPORT_ASSET_UNITS[supportAssetUnitId];
+            return !!Object.values(unitDef.vehicles).find(vehicleDef => {
+                return vehicleDef.garrison_choice_unit_ids?.length || vehicleDef.garrison_ul_hev;
+            });
+        });
+
         const getUnitVehicleAttachment = getter((unitAttachmentId, vehicleAttachmentId) => {
             const unitAttachment = getUnitAttachment.value(unitAttachmentId);
             return find(unitAttachment.vehicles, {id: vehicleAttachmentId});
@@ -458,7 +465,8 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         });
 
         const getUnitAllWeaponsInfo = getter(unitAttachmentId => {
-            const vehicleDefs = getUnitAttachmentDef.value(unitAttachmentId).vehicles;
+            const unitDef = getUnitAttachmentDef.value(unitAttachmentId);
+            const vehicleDefs = unitDef.vehicles;
 
             const weaponIdMap = {};
             each(vehicleDefs, (vehicleDef) => {
@@ -476,6 +484,14 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                     });
                 }
             });
+
+            if (unitDef.upgrade_pods) {
+                Object.values(unitDef.upgrade_pods).forEach(pod => {
+                    if (pod.weapon_id) {
+                        weaponIdMap[pod.weapon_id] = true;
+                    }
+                });
+            }
 
             return Object.keys(weaponIdMap).map(weaponId => _getWeaponInfo(weaponId));
         });
@@ -657,6 +673,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             getUnitAttachmentGarrisonUnitTraitsCardInfo,
             getUnitAttachmentVehicleGarrisonWeaponsCardInfo,
             getUnitAttachmentHasGarrisonUnits,
+            getUnitHasGarrisonableVehicles,
 
             setUnitVehicleGarrisonChoice,
             setUnitUpgradePod,

@@ -31,6 +31,7 @@ const add_disabled = inject('add_disabled');
 const has_armor = inject('has_armor');
 const has_structure = inject('has_structure');
 const has_jump = inject('has_jump');
+const has_garrison = inject('has_garrison');
 
 function setWeaponChoice(choiceId, weaponId) {
   unitStore.setUnitVehicleWeaponChoice(supportAssetAttachmentId, supportAssetVehicleAttachmentId, choiceId, weaponId);
@@ -83,9 +84,8 @@ function addUlHev() {
         </span>
       </template>
     </td>
-    <td>
+    <td v-if="has_garrison">
       <template v-if="unitInfo.garrison_ul_hev">
-
         <template v-if="!unitStore.hasUnitId(ULTRA_LIGHT_HEV_SQUADRON)">
           <BButton
               size="sm"
@@ -100,8 +100,8 @@ function addUlHev() {
           <br>
           (separate support asset)
         </template>
-
       </template>
+
       <template v-if="garrisonUnitChoices.length">
         <template v-for="(x, index) in Array(garrisonUnitsMax)">
           <BFormSelect

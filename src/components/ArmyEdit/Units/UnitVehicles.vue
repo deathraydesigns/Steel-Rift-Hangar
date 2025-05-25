@@ -15,10 +15,12 @@ const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachme
 const has_armor = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.armor));
 const has_structure = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.structure));
 const has_jump = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.jump));
+const has_garrison = computed(() => !!unitStore.getUnitHasGarrisonableVehicles(unit.value.support_asset_unit_id));
 
 provide('has_armor', has_armor);
 provide('has_jump', has_jump);
 provide('has_structure', has_structure);
+provide('has_structure', has_garrison);
 
 </script>
 <template>
@@ -43,7 +45,7 @@ provide('has_structure', has_structure);
       <th>
         Weapons
       </th>
-      <th>
+      <th v-if="has_garrison">
         Garrison
       </th>
       <th>
