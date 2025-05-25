@@ -27,7 +27,7 @@ function addGeneralMech() {
 
   <div class="text-end">
     <BButton
-        variant="primary"
+        variant="secondary"
         class="me-1"
         @click="addGeneralMech"
         v-if="!generalMechCount"

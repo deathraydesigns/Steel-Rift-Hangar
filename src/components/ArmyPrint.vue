@@ -125,7 +125,7 @@ function print() {
 
       </template>
       <template #footer>
-        <button class="btn btn-sm btn-primary" @click="print">
+        <button class="btn btn-sm btn-secondary" @click="print">
           {{ print_mode_display_name }}
           <span class="material-symbols-outlined">print</span>
         </button>

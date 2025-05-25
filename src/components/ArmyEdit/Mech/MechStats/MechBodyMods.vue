@@ -80,7 +80,7 @@ function selectOption(value) {
               :class="{
                 'disabled': !item.valid,
                 'dropdown-row': true,
-                'table-primary':   (item.value == model)
+                'table-selected':   (item.value == model)
               }"
               v-for="item in options" :key="item.value"
               @click="selectOption(item.value)"

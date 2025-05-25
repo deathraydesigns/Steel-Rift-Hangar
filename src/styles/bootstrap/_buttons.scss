@@ -85,6 +85,14 @@
   --bs-btn-hover-bg: #{tint-color($danger, 20%)};
   --bs-btn-hover-border-color: #{tint-color($danger, 20%)};
 }
+@include color-mode(dark) {
+  .btn-danger-light {
+    --bs-btn-bg: #{shade-color($danger, 40%)};
+    --bs-btn-border-color: #{shade-color($danger, 40%)};
+    --bs-btn-hover-bg: #{shade-color($danger, 20%)};
+    --bs-btn-hover-border-color: #{shade-color($danger, 20%)};
+  }
+}
 
 .btn-default {
   @include button-variant(

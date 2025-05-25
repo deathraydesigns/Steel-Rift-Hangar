@@ -60,3 +60,14 @@
     }
   }
 }
+
+@include color-mode(dark) {
+  .dropdown {
+    &.dropdown-table {
+      table > thead > tr > td {
+        background-color: lighten($dark, 7%);
+        --bs-dropdown-header-color: #{$gray-500};
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@
 import {useFactionStore} from '../../../store/faction-store.js';
 import {storeToRefs} from 'pinia';
 import {BButton, BModal} from 'bootstrap-vue-next';
+import {inject} from 'vue';
 
 const model = defineModel();
 const store = useFactionStore();
@@ -18,6 +19,8 @@ const {
 
 const {addPerk, removePerk} = store;
 
+const modalContainer = inject('modal_container');
+
 function setFactionId(factionId) {
   faction_id.value = factionId;
   clearInvalidPerks();
@@ -30,8 +33,9 @@ function setFactionId(factionId) {
       no-trap
       centered
       title="Faction Perks"
+      ok-variant="secondary"
       size="xl"
-      cl
+      :teleport-to="modalContainer"
   >
     <ul class="nav nav-tabs nav-tabs-factions">
       <button class="nav-link disabled tab-select-faction" role="tab" tabindex="-1">Select Faction:</button>
@@ -65,26 +69,23 @@ function setFactionId(factionId) {
                 {{ perk.description }}
               </div>
               <div class="card-footer text-end">
-                <label class="form-label"></label>
-                <div class="btn-group ms-2" role="group" aria-label="Basic example">
-                  <BButton
-                      class="btn"
-                      variant="primary"
-                      :disabled="perks_full || hasPerkInGroupId(group.id)"
-                      v-if="!hasPerk(perk.id)"
-                      @click="addPerk(perk.id)"
-                  >
-                    Add Perk
-                  </BButton>
-                  <BButton
-                      class="btn"
-                      variant="danger"
-                      v-if="hasPerk(perk.id)"
-                      @click="removePerk(perk.id)"
-                  >
-                    Remove Perk
-                  </BButton>
-                </div>
+                <BButton
+                    class="btn"
+                    variant="secondary"
+                    :disabled="perks_full || hasPerkInGroupId(group.id)"
+                    v-if="!hasPerk(perk.id)"
+                    @click="addPerk(perk.id)"
+                >
+                  Add Perk
+                </BButton>
+                <BButton
+                    class="btn"
+                    variant="danger"
+                    v-if="hasPerk(perk.id)"
+                    @click="removePerk(perk.id)"
+                >
+                  Remove Perk
+                </BButton>
               </div>
             </div>
           </div>

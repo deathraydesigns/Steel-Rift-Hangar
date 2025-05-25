@@ -3,12 +3,14 @@
 import {BButton, BModal} from 'bootstrap-vue-next';
 import {useValidationStore} from '../../../store/validation-store.js';
 import {storeToRefs} from 'pinia';
-import {ref} from 'vue';
+import {inject, ref} from 'vue';
 
 const modal = ref(false);
 const validationStore = useValidationStore();
 
 const {list_is_valid, list_validation} = storeToRefs(validationStore);
+
+const modalContainer = inject('modal_container');
 
 function click() {
   if (!list_is_valid.value) {
@@ -39,6 +41,8 @@ function click() {
   <BModal
       v-model="modal"
       size="lg"
+      :teleport-to="modalContainer"
+      ok-variant="secondary"
   >
     <template #title>
       List Validation Errors

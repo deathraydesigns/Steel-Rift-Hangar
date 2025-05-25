@@ -71,8 +71,12 @@ $accordion-icon-active-color-dark: #fff;
 @import "page-reference-print";
 
 
+:root {
+  --bs-popover-header-color: var(--bs-body-color);
+}
 @include color-mode(dark) {
   --bs-border-color-translucent: #{rgba($white, 0.3)};
+  --bs-popover-header-color: var(--bs-body-color);
 }
 
 body {
@@ -104,6 +108,12 @@ body {
 .tab-select-faction {
   font-weight: $font-weight-medium;
   --bs-nav-link-disabled-color: #000;
+}
+
+@include color-mode(dark) {
+  .tab-select-faction {
+    --bs-nav-link-disabled-color: #fff;
+  }
 }
 
 .trait-list-p {
@@ -166,9 +176,16 @@ body {
 }
 
 .number-positive {
-  color: $success-text-emphasis;
+  color: var(--bs-success-text-emphasis);
 }
 
 .number-negative {
-  color: $danger;
+  color: var(--bs-danger);
+}
+
+@include color-mode(dark) {
+  .number-negative {
+    color: var(--bs-danger-text-emphasis);
+
+  }
 }

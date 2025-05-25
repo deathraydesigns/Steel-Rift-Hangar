@@ -42,7 +42,7 @@ function addWeapon(upgradeId, valid) {
       class="dropdown-table"
       :text="text"
       size="sm"
-      variant="primary"
+      variant="secondary"
       lazy
   >
     <div class="position-relative">

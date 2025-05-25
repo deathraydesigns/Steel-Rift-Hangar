@@ -123,7 +123,7 @@ function addUlHev() {
       <BButton
           size="sm"
           class="ms-1"
-          variant="primary"
+          variant="secondary"
           :disabled="add_disabled"
           @click="unitStore.addVehicle(supportAssetAttachmentId, unitInfo.vehicle_id)"
       >

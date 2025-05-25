@@ -78,7 +78,7 @@ watch(expandSignal, () => visible.value = true);
           <BButton
               size="sm"
               class="mx-1"
-              variant="primary"
+              variant="secondary"
               @click="mechStore.duplicateMech(mechId)"
           >
             <span class="material-symbols-outlined">content_copy</span>

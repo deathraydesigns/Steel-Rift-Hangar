@@ -1,6 +1,6 @@
 <script setup>
 import Toaster from './components/UI/Toaster.vue';
-import {computed, onMounted, provide, ref, watch} from 'vue';
+import {computed, onMounted, provide, ref, useTemplateRef, watch} from 'vue';
 import AppHeader from './components/AppHeader.vue';
 import {ROUTE_PRINT} from './routes.js';
 import ArmyPrint from './components/ArmyPrint.vue';
@@ -13,13 +13,10 @@ onMounted(() => {
 });
 
 const currentPath = ref(window.location.hash);
-
 provide('currentPath', currentPath);
-
 window.addEventListener('hashchange', () => {
   currentPath.value = window.location.hash;
 });
-
 const showPrint = computed(() => {
   return currentPath.value.slice(1) === ROUTE_PRINT;
 });
@@ -29,8 +26,10 @@ const mode = useColorMode({
   persist: true,
   selector: false,
 });
-
 provide('color_mode', mode);
+
+const modal = useTemplateRef('modal');
+provide('modal_container', modal);
 
 function updateBodyColorMode() {
   const bodyEl = document.body;
@@ -46,7 +45,6 @@ function updateBodyColorMode() {
 onMounted(() => {
   updateBodyColorMode();
 });
-
 watch(mode, () => {
   updateBodyColorMode();
 });
@@ -57,4 +55,5 @@ watch(mode, () => {
   <AppHeader/>
   <ArmyPrint v-show="showPrint"/>
   <ArmyEdit v-show="!showPrint"/>
+  <div id="app-modal-container" ref="modal" :data-bs-theme="mode">></div>
 </template>

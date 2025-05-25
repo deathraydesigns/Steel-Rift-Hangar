@@ -62,9 +62,10 @@ $table-cell-sm-px: 0.25rem;
 }
 
 
-@include table-variant('tinted', $light);
+@include table-variant('tinted', darken($light, 0%));
+@include table-variant('selected', darken($light, 7%));
 
 @include color-mode(dark) {
-  @include table-variant('tinted', lighten($dark, 5%));
-
+  @include table-variant('tinted', lighten($dark, 7%));
+  @include table-variant('selected', lighten($dark, 7%));
 }

@@ -59,7 +59,7 @@ function selectOption(value) {
           <tr
               :class="{
                 'dropdown-row': true,
-                'table-primary': item.id === model
+                'table-selected': item.id === model
               }"
               v-for="item in options" :key="item.id"
               @click="selectOption(item.id)"

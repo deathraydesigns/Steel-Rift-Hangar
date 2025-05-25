@@ -31,7 +31,7 @@ function addUpgrade(upgradeId, valid) {
       class="dropdown-table"
       text="Add"
       size="sm"
-      variant="primary"
+      variant="secondary"
       lazy
   >
     <div class="position-relative">
