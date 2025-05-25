@@ -55,5 +55,14 @@ watch(mode, () => {
   <AppHeader/>
   <ArmyPrint v-show="showPrint"/>
   <ArmyEdit v-show="!showPrint"/>
-  <div id="app-modal-container" ref="modal" :data-bs-theme="mode">></div>
+  <div id="app-modal-container" class="no-print" ref="modal" :data-bs-theme="mode"></div>
+
+  <div class="no-print text-bg-dark py-4">
+    <div class="container text-center">
+      <div class="lead">
+        Created by <a href="https://github.com/unstoppablecarl" class="link-primary">UnstoppableCarl</a>
+      </div>
+      <div>Steel Rift: Hangar <a href="https://github.com/deathraydesigns/Steel-Rift-Hangar" class="link-primary">GitHub Project</a></div>
+    </div>
+  </div>
 </template>
