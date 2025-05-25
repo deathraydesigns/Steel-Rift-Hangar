@@ -9,7 +9,7 @@ const {addable_teams} = storeToRefs(teamStore);
 <template>
   <BDropdown
       text="Add Team"
-      variant="primary"
+      variant="secondary"
       class="d-inline-block"
   >
     <BDropdownItem
