@@ -83,7 +83,7 @@ const modalContainer = inject('modal_container');
             >
               Reset
             </BButton>
-            <div class="btn-group d-inline-block ms-1" role="group">
+            <div class="btn-group d-inline-block ms-1 mt-2 mt-xl-0" role="group">
               <a :href="`#${ROUTE_HOME}`" :class="{
                   'btn btn-sm btn-default': true,
                   'active': currentPath === `#${ROUTE_HOME}` || currentPath === ''
