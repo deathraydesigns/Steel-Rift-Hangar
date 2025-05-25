@@ -17,7 +17,10 @@ import {makeFrozenStaticListIds} from './data-helpers.js';
 import {getRangeFromShortTrait} from './mech-weapons.js';
 
 export const VEH_AUTO_CANNON = 'VEH_AUTO_CANNON';
-export const VEH_LES_AUTO_CANNON = 'VEH_LES_AUTO_CANNON';
+export const VEH_LAS_AUTO_CANNON = 'VEH_LES_AUTO_CANNON';
+export const UL_AUTO_CANNON = 'UL_AUTO_CANNON';
+export const BUNKER_AUTO_CANNON = 'BUNKER_AUTO_CANNON';
+export const TANK_AUTOCANNON = 'TANK_AUTOCANNON';
 export const AA_ARRAY = 'AA_ARRAY';
 export const DOZER_BLADE = 'DOZER_BLADE';
 export const VEH_HOWITZER = 'VEH_HOWITZER';
@@ -28,21 +31,18 @@ export const VEH_ROTARY_CANNON = 'VEH_ROTARY_CANNON';
 export const VEH_AGM_MISSILES = 'VEH_AGM_MISSILES';
 export const VEH_BARRAGE_ROCKETS = 'VEH_BARRAGE_ROCKETS';
 export const TANK_LASER = 'TANK_LASER';
-export const TANK_AUTOCANNON = 'TANK_AUTOCANNON';
 export const VEH_ROCKET_PACK = 'VEH_ROCKET_PACK';
 export const TANK_MISSILES = 'TANK_MISSILES';
 export const TANK_HOWITZER = 'TANK_HOWITZER';
 export const MISSILE_POD = 'MISSILE_POD';
 export const CLUSTER_ROCKETS = 'CLUSTER_ROCKETS';
 export const UL_MELEE_WEAPON = 'UL_MELEE_WEAPON';
-export const UL_AUTO_CANNON = 'UL_AUTO_CANNON';
 export const UL_GRENADES = 'UL_GRENADES';
 export const UL_INCINERATORS = 'UL_INCINERATORS';
 export const SHORT_RANGE_MISSILE_PACK = 'SHORT_RANGE_MISSILE_PACK';
 export const UL_ROCKET_PACK = 'UL_ROCKET_PACK';
 export const INFANTRY_RIFLES = 'INFANTRY_RIFLES';
 export const INFANTRY_MISSILE_LAUNCHER = 'INFANTRY_MISSILE_LAUNCHER';
-export const BUNKER_AUTO_CANNON = 'BUNKER_AUTO_CANNON';
 export const BUNKER_MISSILE_PACK = 'BUNKER_MISSILE_PACK';
 export const BUNKER_ROCKET_PACK = 'BUNKER_ROCKET_PACK';
 export const INFANTRY_ELECTRO_ARC_PULSERS = 'INFANTRY_ELECTRO_ARC_PULSERS';
@@ -57,7 +57,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds({
             trait(TRAIT_KINETIC),
         ],
     }),
-    [[VEH_LES_AUTO_CANNON]]: makeWeapon({
+    [[VEH_LAS_AUTO_CANNON]]: makeWeapon({
         display_name: 'Veh. Auto-Cannon',
         damage: 2,
         traits: [
@@ -69,6 +69,21 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds({
         damage: 2,
         traits: [
             trait(TRAIT_SHORT, 12),
+            trait(TRAIT_KINETIC),
+        ],
+    }),
+    [[TANK_AUTOCANNON]]: makeWeapon({
+        display_name: 'Tank Auto-Cannon',
+        damage: 4,
+        traits: [
+            trait(TRAIT_KINETIC),
+        ],
+    }),
+    [[UL_AUTO_CANNON]]: makeWeapon({
+        display_name: 'UL Auto-Cannon',
+        damage: 2,
+        traits: [
+            trait(TRAIT_SHORT, 10),
             trait(TRAIT_KINETIC),
         ],
     }),
@@ -163,13 +178,6 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds({
             trait(TRAIT_AP, 1),
         ],
     }),
-    [[TANK_AUTOCANNON]]: makeWeapon({
-        display_name: 'Tank Auto-Cannon',
-        damage: 4,
-        traits: [
-            trait(TRAIT_KINETIC),
-        ],
-    }),
     [[TANK_MISSILES]]: makeWeapon({
         display_name: 'Tank Missiles',
         damage: 4,
@@ -229,14 +237,6 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds({
         traits: [
             trait(TRAIT_MELEE, 'X'),
             trait(TRAIT_AP, 'X'),
-        ],
-    }),
-    [[UL_AUTO_CANNON]]: makeWeapon({
-        display_name: 'UL Auto-Cannon',
-        damage: 2,
-        traits: [
-            trait(TRAIT_SHORT, 10),
-            trait(TRAIT_KINETIC),
         ],
     }),
     [[UL_GRENADES]]: makeWeapon({

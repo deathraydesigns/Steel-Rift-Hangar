@@ -1,4 +1,4 @@
-import {VEH_AGM_MISSILES, VEH_BARRAGE_ROCKETS, VEH_LES_AUTO_CANNON, VEH_ROTARY_CANNON} from '../unit-weapons.js';
+import {VEH_AGM_MISSILES, VEH_BARRAGE_ROCKETS, VEH_LAS_AUTO_CANNON, VEH_ROTARY_CANNON} from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
 import {
     TRAIT_FLYING,
@@ -38,7 +38,7 @@ export const LAS_WING_ATTACK_SQUADRON_DATA = {
                 display_name: 'Strike LAS-Wing',
                 weapon_choice_ids: {
                     choice_1: [
-                        VEH_LES_AUTO_CANNON,
+                        VEH_LAS_AUTO_CANNON,
                         VEH_ROTARY_CANNON,
                     ],
                     choice_2: [
@@ -53,7 +53,7 @@ export const LAS_WING_ATTACK_SQUADRON_DATA = {
                 display_name: 'Recon and Disruption LAS-Wing',
                 weapon_choice_ids: {
                     choice_1: [
-                        VEH_LES_AUTO_CANNON,
+                        VEH_LAS_AUTO_CANNON,
                         VEH_ROTARY_CANNON,
                     ],
                 },

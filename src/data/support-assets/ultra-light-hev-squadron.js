@@ -4,8 +4,8 @@ import {
     CLUSTER_ROCKETS,
     MISSILE_POD,
     SHORT_RANGE_MISSILE_PACK,
+    UL_AUTO_CANNON,
     UL_ROCKET_PACK,
-    VEH_AUTO_CANNON,
     VEH_SUBMUNITIONS,
 } from '../unit-weapons.js';
 import {
@@ -67,7 +67,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
                 structure: 0,
                 display_name: 'Fire Support',
                 weapon_ids: [
-                    VEH_AUTO_CANNON,
+                    UL_AUTO_CANNON,
                 ],
                 weapon_choice_ids: {
                     choice_1: [
@@ -84,7 +84,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
                 structure: 0,
                 display_name: 'Tactical',
                 weapon_ids: [
-                    VEH_AUTO_CANNON,
+                    UL_AUTO_CANNON,
                 ],
                 traits: [
                     trait(TRAIT_SUPPRESSIVE_FIRE),
