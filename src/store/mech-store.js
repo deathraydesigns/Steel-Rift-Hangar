@@ -28,12 +28,7 @@ import {
 import {deleteItemById, findById, findItemIndex, moveItem} from './helpers/collection-helper.js';
 import {useToastStore} from './toast-store.js';
 import {useFactionStore} from './faction-store.js';
-import {
-    DWC_TOP_END_HARDWARE,
-    OI_MATERIEL_STOCKPILES,
-    RD_ADVANCED_HARDPOINT_DESIGN,
-    UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN,
-} from '../data/faction-perks.js';
+import {OI_MATERIEL_STOCKPILES} from '../data/faction-perks.js';
 import {useTeamStore} from './team-store.js';
 import {
     TEAM_PERK_0_SLOT_ARMOR_UPGRADES,
@@ -276,8 +271,7 @@ export const useMechStore = defineStore('mech', {
                         upgrade_used_slots +
                         armorUpgradeInfo.slots;
 
-                    if (factionStore.hasPerk(RD_ADVANCED_HARDPOINT_DESIGN) ||
-                        factionStore.hasPerk(UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN)) {
+                    if (factionStore.hasAdvancedHardPoints) {
                         used_slots += RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS;
                     }
 
@@ -287,7 +281,7 @@ export const useMechStore = defineStore('mech', {
                         structure_stat +
                         armorUpgradeInfo.cost;
 
-                    if (factionStore.hasPerk(DWC_TOP_END_HARDWARE)) {
+                    if (factionStore.hasTopEndHardware) {
                         used_tons += DWC_TOP_END_HARDWARE_BONUS_TONS;
                     }
 
