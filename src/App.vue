@@ -1,6 +1,6 @@
 <script setup>
 import Toaster from './components/UI/Toaster.vue';
-import {computed, onMounted, provide, ref, useTemplateRef, watch} from 'vue';
+import {computed, onMounted, provide, ref} from 'vue';
 import AppHeader from './components/AppHeader.vue';
 import {ROUTE_PRINT} from './routes.js';
 import ArmyPrint from './components/ArmyPrint.vue';
@@ -29,17 +29,22 @@ provide('color_mode', mode);
 
 </script>
 <template>
-  <Toaster/>
-  <AppHeader/>
-  <ArmyPrint v-show="showPrint"/>
-  <ArmyEdit v-show="!showPrint"/>
+  <div class="d-flex flex-column vh-100">
 
-  <div class="no-print text-bg-dark py-4">
-    <div class="container text-center">
-      <div class="lead">
-        Created by <a href="https://github.com/unstoppablecarl" class="link-primary">UnstoppableCarl</a>
+    <Toaster/>
+    <AppHeader/>
+    <ArmyPrint v-show="showPrint"/>
+    <ArmyEdit v-show="!showPrint"/>
+
+    <div class="no-print text-bg-dark py-4 mt-auto">
+      <div class="container text-center">
+        <div class="lead">
+          Created by <a href="https://github.com/unstoppablecarl" class="link-primary">UnstoppableCarl</a>
+        </div>
+        <div>Steel Rift: Hangar <a href="https://github.com/deathraydesigns/Steel-Rift-Hangar" class="link-primary">GitHub
+          Project</a></div>
       </div>
-      <div>Steel Rift: Hangar <a href="https://github.com/deathraydesigns/Steel-Rift-Hangar" class="link-primary">GitHub Project</a></div>
     </div>
+
   </div>
 </template>
