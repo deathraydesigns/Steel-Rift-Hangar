@@ -20,11 +20,13 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
 .page-card-grid {
   box-sizing: content-box;
 }
+
 @include color-mode(dark) {
   body .output-container {
     --bs-body-color: #000;
   }
 }
+
 .output-container {
 
   --section-heading-bg: #ddd;
@@ -332,5 +334,11 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     padding: 0 $card-padding-x;
     margin-bottom: 0.5rem;
 
+  }
+
+  .shrink-text {
+    .card-description {
+      font-size: 6pt;
+    }
   }
 }

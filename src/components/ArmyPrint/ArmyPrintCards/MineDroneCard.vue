@@ -3,7 +3,7 @@ import CardHeader from './CardParts/CardHeader.vue';
 import CardFooter from './CardParts/CardFooter.vue';
 </script>
 <template>
-  <div class="game-card">
+  <div class="game-card shrink-text">
     <div class="card-content-container">
       <CardHeader title="Mine Drone"/>
 
