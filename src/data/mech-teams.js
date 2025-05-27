@@ -46,7 +46,6 @@ import {
 } from './secondary-agendas.js';
 
 import {TRAIT_MELEE, TRAIT_REACH, TRAIT_SHORT} from './weapon-traits.js';
-import {each} from 'es-toolkit/compat';
 
 export const TEAM_SIZE_SMALL = 'TEAM_SIZE_SMALL';
 export const TEAM_SIZE_MEDIUM = 'TEAM_SIZE_MEDIUM';
@@ -472,25 +471,6 @@ function makeGroup(obj) {
         result.display_name = obj.size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name)
             .join(' & ');
     }
-
-    each(result.groups, (group) => {
-        const mechOptions = {};
-
-        if (group?.size_ids.length) {
-            mechOptions.size_id = group.size_ids[0];
-        }
-        if (group?.limited_structure_mod_ids.length) {
-            mechOptions.structure_mod_id = group.limited_structure_mod_ids[0];
-        }
-        if (group?.limited_armor_mod_ids.length) {
-            mechOptions.armor_mod_id = group.limited_armor_mod_ids[0];
-        }
-        if (group?.limited_armor_upgrade_ids.length) {
-            mechOptions.armor_upgrade_id = group.limited_armor_upgrade_ids[0];
-        }
-
-        group.new_mech_defaults = mechOptions;
-    });
 
     return result;
 }

@@ -64,12 +64,14 @@ export const useMechStore = defineStore('mech', {
                         structure_mod_id,
                         armor_mod_id,
                         armor_upgrade_id,
+                        mobility_id,
                     }) {
 
                 size_id = size_id ?? SIZE_MEDIUM;
                 structure_mod_id = structure_mod_id ?? MOD_STANDARD;
                 armor_mod_id = armor_mod_id ?? MOD_STANDARD;
                 armor_upgrade_id = armor_upgrade_id ?? NO_ARMOR_UPGRADE;
+                mobility_id = mobility_id ?? MOBILITY_BI_PEDAL;
 
                 let id = this.mechs_id_increment++;
                 let mech = {
@@ -79,12 +81,12 @@ export const useMechStore = defineStore('mech', {
                     structure_mod_id,
                     armor_mod_id,
                     armor_upgrade_id,
+                    mobility_id,
                     weapons: [],
                     weapons_id_increment: 1,
                     upgrades: [],
                     upgrades_id_increment: 1,
                     display_order: null,
-                    mobility_id: MOBILITY_BI_PEDAL,
                     unit_type_id: TYPE_HEV,
                 };
 
@@ -101,6 +103,7 @@ export const useMechStore = defineStore('mech', {
                     'structure_mod_id',
                     'armor_mod_id',
                     'armor_upgrade_id',
+                    'mobility_id',
                 ]);
 
                 if (data.size_id) {
@@ -125,6 +128,8 @@ export const useMechStore = defineStore('mech', {
                     structure_mod_id,
                     armor_mod_id,
                     armor_upgrade_id,
+                    mobility_id,
+                    size_id,
                     weapons,
                     upgrades,
                 } = mech;
@@ -133,6 +138,8 @@ export const useMechStore = defineStore('mech', {
                     structure_mod_id,
                     armor_mod_id,
                     armor_upgrade_id,
+                    mobility_id,
+                    size_id,
                 });
 
                 weapons.forEach(weapon => {
