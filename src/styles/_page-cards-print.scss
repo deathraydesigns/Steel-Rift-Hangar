@@ -34,7 +34,13 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
   --card-outline-color: #ccc;
   --card-bg: #fff;
   --bs-body-color: #000;
+
   color: #000;
+  font-size: 10pt;
+
+  .shrink-text-90 {
+    font-size: 9pt;
+  }
 
   .game-card {
     width: $card-width;
@@ -42,7 +48,6 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     box-sizing: border-box;
     position: relative;
     flex-direction: column;
-    font-size: 10pt;
     line-height: 1.4;
     font-family: $font-outfit;
     outline: 1px solid var(--card-outline-color);
@@ -87,9 +92,10 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     }
   }
 
+
   .card-name {
     margin: 0 $card-padding-x 2pt;
-    font-size: 8pt;
+    font-size: 80%;
   }
 
   .game-card-subtitle {
@@ -100,14 +106,14 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
   .unit-info {
 
     .hev-size {
-      font-size: 8pt;
+      font-size: 80%;
       background: var(--section-heading-bg);
       padding: 2pt $card-padding-x 2pt;
       font-family: $font-anta;
     }
 
     .hev-team {
-      font-size: 7pt;
+      font-size: 70%;
       line-height: 10pt;
       padding: 2pt $card-padding-x;
       background: var(--sub-heading-bg);
@@ -121,7 +127,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     td {
       text-align: center;
       vertical-align: middle;
-      font-size: 8pt;
+      font-size: 80%;
     }
 
     thead th {
@@ -144,12 +150,12 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     height: 62px;
 
     .hp-heading {
-      font-size: 8pt;
+      font-size: 80%;
       padding: 0 $card-padding-x;
     }
 
     .structure-systems {
-      font-size: 5.5pt;
+      font-size: 55%;
       padding: 0 $card-padding-x;
     }
 
@@ -186,7 +192,8 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
       height: 10pt;
       border: 1.2pt solid #000;
       margin: 0 1px 1px 0;
-      font-size: .5rem;
+      // shouldn't change size with shrink
+      font-size: 6pt;
       line-height: 10pt;
       text-align: center;
 
@@ -212,7 +219,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
   }
 
   .crit-heading {
-    font-size: 8pt;
+    font-size: 80%;
     font-weight: normal;
     font-family: $font-anta;
     padding-left: 3pt;
@@ -220,7 +227,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
   }
 
   .crit-content {
-    font-size: 7pt;
+    font-size: 70%;
     font-family: $font-outfit;
     font-weight: 400;
     padding-left: 3pt;
@@ -237,7 +244,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     thead th {
       font-family: $font-anta;
       font-weight: normal;
-      font-size: 8pt;
+      font-size: 80%;
       background: var(--section-heading-bg);
       padding: 1pt 2pt;
 
@@ -255,7 +262,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
       }
 
       td {
-        font-size: 7pt;
+        font-size: 70%;
         text-align: center;
         border-bottom: .1pt solid #444;
         padding: 1pt 2pt;
@@ -263,7 +270,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
         vertical-align: top;
 
         &.small {
-          font-size: 6pt;
+          font-size: 60%;
         }
 
         &:first-child {
@@ -285,7 +292,8 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     height: 10pt;
     border: 1.2pt solid #444;
     margin: 0 1px 1px 0;
-    font-size: .5rem;
+    // shouldn't change size
+    font-size: 6pt;
     line-height: 10pt;
     text-align: center;
 
@@ -310,14 +318,15 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     border: 1.2pt solid #000;
     border-radius: 1000px;
     margin: 0 1px 1px 0;
-    font-size: .5rem;
+    // shouldn't change size
+    font-size: 6pt;
     line-height: 10pt;
     text-align: center;
   }
 
   .section-heading {
     background: var(--section-heading-bg);
-    font-size: 8pt;
+    font-size: 80%;
     font-weight: normal;
     font-family: $font-anta;
     padding: 1pt $card-padding-x;
@@ -325,20 +334,14 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
   }
 
   .upgrades {
-    font-size: 7pt;
+    font-size: 70%;
     padding: 0 $card-padding-x;
   }
 
   .card-description {
-    font-size: 7pt;
+    font-size: 70%;
     padding: 0 $card-padding-x;
     margin-bottom: 0.5rem;
 
-  }
-
-  .shrink-text {
-    .card-description {
-      font-size: 6pt;
-    }
   }
 }
