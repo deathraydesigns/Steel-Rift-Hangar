@@ -6,6 +6,7 @@ import {useArmyListStore} from '../army-list-store.js';
 import {usePrintSettingsStore} from '../print-settings-store.js';
 import {useSupportAssetWeaponsStore} from '../support-asset-weapons-store.js';
 import {useSupportAssetUnitsStore} from '../support-asset-units-store.js';
+import {MOBILITY_BI_PEDAL} from '../../data/mech-mobility.js';
 
 function getStores() {
     return [
@@ -29,7 +30,7 @@ export function resetStores() {
 export function makeSaveFileData() {
 
     const result = {
-        save_schema_version: 1,
+        save_schema_version: 2,
     };
 
     getStores().forEach((store) => {
@@ -45,8 +46,22 @@ export function makeSaveFileData() {
 
 export function loadSaveFileData(data) {
 
+    data = migrateLoadData(data);
+
     getStores().forEach((store) => {
         store.$reset();
         store.$patch(data[store.$id]);
     });
+}
+
+function migrateLoadData(data) {
+    if (data.save_schema_version === 1) {
+        data?.mech?.mechs?.forEach(mech => {
+            if (!mech.mobility_id) {
+                mech.mobility_id = MOBILITY_BI_PEDAL;
+            }
+        });
+    }
+
+    return data;
 }
