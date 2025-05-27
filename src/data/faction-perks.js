@@ -188,7 +188,6 @@ function makePerkCopy(prefix, perkId) {
 }
 
 export function isMatchingPerkOrCopy(equalToPerkId, targetPerkId) {
-    console.log({ equalToPerkId, targetPerkId });
     if (!targetPerkId) {
         return false;
     }
@@ -197,6 +196,5 @@ export function isMatchingPerkOrCopy(equalToPerkId, targetPerkId) {
     }
 
     const {copied_perk_id} = FACTION_PERKS[targetPerkId];
-    console.log({ equalToPerkId, targetPerkId });
     return equalToPerkId === copied_perk_id;
 }
