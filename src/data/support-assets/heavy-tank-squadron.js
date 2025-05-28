@@ -10,7 +10,6 @@ import {
     VEH_ROTARY_CANNON,
     VEH_SUBMUNITIONS,
 } from '../unit-weapons.js';
-import {SUBMUNITIONS} from '../mech-weapons.js';
 import {
     TRAIT_ALL_TERRAIN,
     TRAIT_GARRISON,
@@ -54,7 +53,7 @@ export const HEAVY_TANK_SQUADRON_DATA = {
                 display_name: 'Direct Fire Tank',
                 weapon_ids: [
                     TANK_LASER,
-                    SUBMUNITIONS,
+                    VEH_SUBMUNITIONS,
                 ],
                 traits: [],
             },

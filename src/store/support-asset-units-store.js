@@ -272,6 +272,9 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
         function _getWeaponInfo(weaponId) {
             let weapon = UNIT_WEAPONS[weaponId];
+            if (!weapon) {
+                throw new Error(`unit weapon id: ${weaponId} not found`);
+            }
             weapon = Object.assign({}, weapon);
 
             weapon.traits = weapon?.traits?.map(trait => getWeaponTrait(trait)).filter(weapon => weapon.id !== TRAIT_SHORT) || [];
@@ -471,6 +474,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             const weaponIdMap = {};
             each(vehicleDefs, (vehicleDef) => {
                 vehicleDef.weapon_ids?.forEach(weaponId => {
+
                     weaponIdMap[weaponId] = true;
                 });
 
@@ -480,6 +484,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
                 if (vehicleDef.garrison_choice_unit_ids) {
                     vehicleDef.garrison_choice_unit_ids.forEach(squadId => {
+
                         INFANTRY_SQUADS[squadId].weapon_ids.forEach(weaponId => weaponIdMap[weaponId] = true);
                     });
                 }
@@ -493,6 +498,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 });
             }
 
+            console.log(weaponIdMap);
             return Object.keys(weaponIdMap).map(weaponId => _getWeaponInfo(weaponId));
         });
 

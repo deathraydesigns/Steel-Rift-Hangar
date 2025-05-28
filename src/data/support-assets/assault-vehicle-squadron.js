@@ -22,7 +22,6 @@ import {
 } from '../unit-traits.js';
 import {SIZE_MEDIUM} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
-import {SUBMUNITIONS} from '../mech-weapons.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
     INFANTRY_ENGINEER_SQUAD,
@@ -138,7 +137,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA = {
                 display_name: 'Artillery Vehicle',
                 weapon_ids: [
                     VEH_HOWITZER,
-                    SUBMUNITIONS,
+                    VEH_SUBMUNITIONS,
                 ],
             },
         }),
