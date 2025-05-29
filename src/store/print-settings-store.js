@@ -56,10 +56,11 @@ export const usePrintSettingsStore = defineStore('print-settings', () => {
         });
 
         return {
-            one_team_per_page,
-            include_army_name_on_cards,
             print_mode,
             print_mode_display_name,
+
+            one_team_per_page,
+            include_army_name_on_cards,
             include_mine_drone_card,
             include_faction_perk_1_card,
             include_faction_perk_2_card,
@@ -75,7 +76,7 @@ export const usePrintSettingsStore = defineStore('print-settings', () => {
                 'include_army_name_on_cards',
                 'include_mine_drone_card',
                 'include_faction_perk_1_card',
-                'include_faction_perk_1_card',
+                'include_faction_perk_2_card',
                 'separate_reference_cards_page',
             ],
         },
