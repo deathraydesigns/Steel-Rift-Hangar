@@ -20,7 +20,7 @@ const {
   outrageous_budget_perk_support_asset_id,
 } = storeToRefs(supportAssetWeaponsStore);
 
-const hasOutrageousSupportBudget = computed(() => factionStore.hasPerk(DWC_OUTRAGEOUS_SUPPORT_BUDGET));
+const hasOutrageousSupportBudget = computed(() => factionStore.hasOutrageousSupportBudget);
 
 const modal = ref(false);
 

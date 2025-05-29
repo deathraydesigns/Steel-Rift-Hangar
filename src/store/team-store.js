@@ -4,7 +4,6 @@ import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-he
 import {MECH_TEAM_SIZES, MECH_TEAMS, TEAM_FIRE_SUPPORT, TEAM_GENERAL, TEAM_RECON} from '../data/mech-teams.js';
 import {useMechStore} from './mech-store.js';
 import {difference, each, find, groupBy, map, sortBy, sumBy} from 'es-toolkit/compat';
-import {getter} from './helpers/store-helpers.js';
 import {MECH_BODY_MODS_DROP_DOWN} from '../data/mech-body.js';
 import {MECH_WEAPONS} from '../data/mech-weapons.js';
 import {useArmyListStore} from './army-list-store.js';
@@ -78,12 +77,12 @@ export const useTeamStore = defineStore('team', () => {
             });
         }
 
-        const getTeamInfo = getter((teamId) => readonly(MECH_TEAMS[teamId]));
-        const getTeamGroupInfo = getter((teamId, groupId) => readonly(MECH_TEAMS[teamId].groups[groupId]));
+        const getTeamInfo = (teamId) => readonly(MECH_TEAMS[teamId]);
+        const getTeamGroupInfo = (teamId, groupId) => readonly(MECH_TEAMS[teamId].groups[groupId]);
 
-        const getWeaponIsRequired = getter((teamId, groupId, weaponAttachment, mech) => {
-            const groupInfo = getTeamGroupInfo.value(teamId, groupId);
-            const teamDisplayName = getTeamInfo.value(teamId).display_name;
+        function getWeaponIsRequired(teamId, groupId, weaponAttachment, mech) {
+            const groupInfo = getTeamGroupInfo(teamId, groupId);
+            const teamDisplayName = getTeamInfo(teamId).display_name;
 
             if (groupInfo.required_weapon_ids.includes(weaponAttachment.weapon_id)) {
                 const prevInstances = mech.weapons.filter((item) => {
@@ -136,17 +135,17 @@ export const useTeamStore = defineStore('team', () => {
                 required: false,
                 required_reason: null,
             };
-        });
+        }
 
-        const getWeaponIsProhibited = getter((mechId, weaponId, traits) => {
-            const {teamId, groupId} = getMechTeamAndGroupIds.value(mechId);
-            const groupInfo = getTeamGroupInfo.value(teamId, groupId);
+        function getWeaponIsProhibited(mechId, weaponId, traits) {
+            const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
+            const groupInfo = getTeamGroupInfo(teamId, groupId);
 
             if (groupInfo.prohibited_weapons_with_trait_ids?.length) {
 
                 const prohibited = traits.find((trait) => groupInfo.prohibited_weapons_with_trait_ids.includes(trait.id));
                 if (prohibited) {
-                    const teamDisplayName = getTeamInfo.value(teamId).display_name;
+                    const teamDisplayName = getTeamInfo(teamId).display_name;
                     const prohibitedTraits = groupInfo.prohibited_weapons_with_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
                     return {
                         valid: false,
@@ -159,14 +158,14 @@ export const useTeamStore = defineStore('team', () => {
                 valid: true,
                 validation_message: null,
             };
-        });
+        }
 
-        const getUpgradeIsRequired = getter((teamId, groupId, upgradeId) => {
+        function getUpgradeIsRequired(teamId, groupId, upgradeId) {
             const groupDef = MECH_TEAMS[teamId].groups[groupId];
             return groupDef.required_upgrade_ids.includes(upgradeId);
-        });
+        }
 
-        const getMechTeamAndGroupIds = getter((mechId) => {
+        function getMechTeamAndGroupIds(mechId) {
             let teamId = null;
             let groupId = null;
 
@@ -190,25 +189,25 @@ export const useTeamStore = defineStore('team', () => {
                 teamId,
                 groupId,
             };
-        });
+        }
 
-        const getAvailableMechSizes = getter((mechId) => {
-            const {teamId, groupId} = getMechTeamAndGroupIds.value(mechId);
-            const info = getTeamGroupInfo.value(teamId, groupId);
+        function getAvailableMechSizes(mechId) {
+            const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
+            const info = getTeamGroupInfo(teamId, groupId);
 
             if (!info.size_ids || !info.size_ids.length) {
                 return true;
             }
 
             return MECH_SIZES_DROP_DOWN.filter((size) => info.size_ids.includes(size.id));
-        });
+        }
 
         // internal
-        const getMechStructureModValid = getter((mechId, modId) => {
+        function getMechStructureModValid(mechId, modId) {
             const mech = mechStore.getMech(mechId);
-            const {teamId, groupId} = getMechTeamAndGroupIds.value(mechId);
-            const teamDisplayName = getTeamInfo.value(teamId).display_name;
-            const info = getTeamGroupInfo.value(teamId, groupId);
+            const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
+            const teamDisplayName = getTeamInfo(teamId).display_name;
+            const info = getTeamGroupInfo(teamId, groupId);
 
             if (!getBodyModValid(info.limited_structure_mod_ids, modId)) {
                 return {
@@ -236,14 +235,14 @@ export const useTeamStore = defineStore('team', () => {
                 valid: true,
                 validation_message: null,
             };
-        });
+        }
 
         // internal
-        const getMechArmorModValid = getter((mechId, modId) => {
+        function getMechArmorModValid(mechId, modId) {
             const mech = mechStore.getMech(mechId);
-            const {teamId, groupId} = getMechTeamAndGroupIds.value(mechId);
-            const teamDisplayName = getTeamInfo.value(teamId).display_name;
-            const info = getTeamGroupInfo.value(teamId, groupId);
+            const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
+            const teamDisplayName = getTeamInfo(teamId).display_name;
+            const info = getTeamGroupInfo(teamId, groupId);
 
             if (!getBodyModValid(info.limited_armor_mod_ids, modId)) {
                 return {
@@ -271,7 +270,7 @@ export const useTeamStore = defineStore('team', () => {
                 valid: true,
                 validation_message: null,
             };
-        });
+        }
 
         function requiredStructureOrArmorModValid(currentModId, otherModId, requiredId, modId) {
             return !(otherModId !== requiredId &&
@@ -287,17 +286,17 @@ export const useTeamStore = defineStore('team', () => {
             return limitedModIds.includes(modId);
         }
 
-        const getTeamMechCount = getter((teamId) => {
+        function getTeamMechCount(teamId) {
             const team = find(teams.value, {id: teamId});
             return sumBy(team.groups, (group) => group.mechs.length);
-        });
+        }
 
-        const getTeamGroupMechCount = getter((teamId, groupId) => {
-            const group = findGroup.value(teamId, groupId);
+        function getTeamGroupMechCount(teamId, groupId) {
+            const group = findGroup(teamId, groupId);
             return group.mechs.length;
-        });
+        }
 
-        const getTeamMechIds = getter((teamId) => {
+        function getTeamMechIds(teamId) {
             const team = find(teams.value, {id: teamId});
 
             let mechIds = [];
@@ -305,55 +304,57 @@ export const useTeamStore = defineStore('team', () => {
                 mechIds = mechIds.concat(map(group.mechs, 'mech_id'));
             });
             return mechIds;
-        });
+        }
 
-        const getTeamGroupMechIds = getter((teamId, groupId) => {
-            const group = findGroup.value(teamId, groupId);
+        function getTeamGroupMechIds(teamId, groupId) {
+            const group = findGroup(teamId, groupId);
             return map(group.mechs, 'mech_id');
-        });
+        }
 
-        const findGroup = getter((teamId, groupId) => {
+        function findGroup(teamId, groupId) {
             const team = find(teams.value, {id: teamId});
             return find(team.groups, {id: groupId});
-        });
+        }
 
-        const getMechStructureModOptions = getter((mechId) => {
+        function getMechStructureModOptions(mechId) {
             return MECH_BODY_MODS_DROP_DOWN.map((item) => {
-                item = Object.assign({}, item);
-                const {valid, validation_message} = getMechStructureModValid.value(mechId, item.id);
-                item.valid = valid;
-                item.validation_message = validation_message;
-                return item;
+                const {valid, validation_message} = getMechStructureModValid(mechId, item.id);
+                return {
+                    ...item,
+                    valid,
+                    validation_message,
+                };
             });
-        });
+        }
 
-        const getMechArmorModOptions = getter((mechId) => {
+        function getMechArmorModOptions(mechId) {
             return MECH_BODY_MODS_DROP_DOWN.map((item) => {
-                item = Object.assign({}, item);
-                const {valid, validation_message} = getMechArmorModValid.value(mechId, item.id);
-                item.valid = valid;
-                item.validation_message = validation_message;
-                return item;
+                const {valid, validation_message} = getMechArmorModValid(mechId, item.id);
+                return {
+                    ...item,
+                    valid,
+                    validation_message,
+                };
             });
-        });
+        }
 
-        const getMechHasTeamPerkId = getter((mechId, perkId) => {
+        function getMechHasTeamPerkId(mechId, perkId) {
             const sizeId = mechStore.getMech(mechId).size_id;
-            const {teamId} = getMechTeamAndGroupIds.value(mechId);
-            return getTeamPerkIdsByMechSize.value(teamId, sizeId).includes(perkId);
-        });
+            const {teamId} = getMechTeamAndGroupIds(mechId);
+            return getTeamPerkIdsByMechSize(teamId, sizeId).includes(perkId);
+        }
 
-        const getTeamPerksInfoByMech = getter((mechId) => {
+        function getTeamPerksInfoByMech(mechId) {
             const sizeId = mechStore.getMech(mechId).size_id;
-            const {teamId} = getMechTeamAndGroupIds.value(mechId);
-            const perkIds = getTeamPerkIdsByMechSize.value(teamId, sizeId);
+            const {teamId} = getMechTeamAndGroupIds(mechId);
+            const perkIds = getTeamPerkIdsByMechSize(teamId, sizeId);
             return perkIdsToInfo(perkIds);
-        });
+        }
 
-        const getTeamGroupPerksInfo = getter((teamId, groupId) => {
-            const groupInfo = getTeamGroupInfo.value(teamId, groupId);
+        function getTeamGroupPerksInfo(teamId, groupId) {
+            const groupInfo = getTeamGroupInfo(teamId, groupId);
             let result = groupInfo.size_ids.map(sizeId => {
-                const perkIds = getTeamPerkIdsByMechSize.value(teamId, sizeId);
+                const perkIds = getTeamPerkIdsByMechSize(teamId, sizeId);
                 return {
                     size_id: sizeId,
                     display_name: MECH_SIZES[sizeId].display_name,
@@ -373,15 +374,15 @@ export const useTeamStore = defineStore('team', () => {
             }
 
             return result;
-        });
+        }
 
-        const getUsedTeamAbilityPerksInfo = getter((teamId) => {
+        function getUsedTeamAbilityPerksInfo(teamId) {
             const perkIdsMap = {};
-            const mechIds = getTeamMechIds.value(teamId);
+            const mechIds = getTeamMechIds(teamId);
 
             mechIds.forEach((mechId) => {
                 const sizeId = mechStore.getMech(mechId).size_id;
-                const perkIds = getTeamPerkIdsByMechSize.value(teamId, sizeId);
+                const perkIds = getTeamPerkIdsByMechSize(teamId, sizeId);
                 perkIds.forEach(perkId => perkIdsMap[perkId] = true);
             });
 
@@ -390,10 +391,10 @@ export const useTeamStore = defineStore('team', () => {
             return perkIds.filter(perkId => MECH_TEAM_PERKS[perkId].is_ability)
                 .map((perkId) => MECH_TEAM_PERKS[perkId]);
 
-        });
+        }
 
         // internal
-        const getTeamPerkIdsByMechSize = getter((teamId, sizeId) => {
+        function getTeamPerkIdsByMechSize(teamId, sizeId) {
             if (teamId === TEAM_GENERAL) {
                 return [];
             }
@@ -410,7 +411,7 @@ export const useTeamStore = defineStore('team', () => {
                 return [];
             }
 
-            const teamSize = getTeamMechCount.value(teamId);
+            const teamSize = getTeamMechCount(teamId);
 
             let perkIds = [];
 
@@ -423,7 +424,7 @@ export const useTeamStore = defineStore('team', () => {
             });
 
             return perkIds;
-        });
+        }
 
         const used_teams_count = computed(() => teams.value.filter((team) => team.id !== TEAM_GENERAL).length);
         const max_teams_count = computed(() => armyListStore.game_size_info.max_teams);
@@ -473,7 +474,7 @@ export const useTeamStore = defineStore('team', () => {
                 }
             }
 
-            const group = findGroup.value(teamId, groupId);
+            const group = findGroup(teamId, groupId);
 
             group.mechs.push({
                 mech_id: mech.id,
@@ -484,21 +485,21 @@ export const useTeamStore = defineStore('team', () => {
         }
 
         function removeMechFromTeam(mechId) {
-            const {teamId, groupId} = getMechTeamAndGroupIds.value(mechId);
-            const group = findGroup.value(teamId, groupId);
+            const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
+            const group = findGroup(teamId, groupId);
             const index = group.mechs.findIndex(mech => mech.mech_id === mechId);
             group.mechs.splice(index, 1);
         }
 
         function removeTeam(teamId) {
-            const mechIds = getTeamMechIds.value(teamId);
+            const mechIds = getTeamMechIds(teamId);
             mechIds.forEach((mechId) => mechStore.removeMech(mechId));
             let index = findItemIndexById(teams.value, teamId);
             teams.value.splice(index, 1);
         }
 
         function moveGroupMech(teamId, groupId, mechId, toIndex) {
-            const group = findGroup.value(teamId, groupId);
+            const group = findGroup(teamId, groupId);
 
             const index = group.mechs.findIndex(mech => mech.mech_id === mechId);
             move(group.mechs, index, toIndex);

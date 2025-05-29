@@ -2,7 +2,6 @@ import {defineStore} from 'pinia';
 import {computed, readonly, ref} from 'vue';
 import {SUPPORT_ASSET_UNITS} from '../data/support-asset-units.js';
 import {getWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT} from '../data/weapon-traits.js';
-import {getter} from './helpers/store-helpers.js';
 import {UNIT_WEAPONS} from '../data/unit-weapons.js';
 import {each, find, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {filterUniqueById, findById, findItemIndexById} from './helpers/collection-helper.js';
@@ -33,14 +32,14 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
         const available_support_asset_units_info = computed(() => {
             let results = available_support_asset_unit_ids.value
-                .map((id) => _getUnitInfo.value(id));
+                .map((id) => _getUnitInfo(id));
 
             return sortBy(results, 'display_name');
         });
 
         const support_asset_units_info = computed(() => {
             let results = support_asset_units.value
-                .map(({id}) => getUnitAttachmentInfo.value(id));
+                .map(({id}) => getUnitAttachmentInfo(id));
 
             return sortBy(results, 'display_name');
         });
@@ -48,14 +47,14 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         const used_tons = computed(() => sumBy(support_asset_units_info.value, 'cost'));
         const used_count = computed(() => support_asset_units.value.length);
 
-        const getUnitAttachmentInfo = getter(unitAttachmentId => {
+        function getUnitAttachmentInfo(unitAttachmentId) {
             let {
                 id,
                 support_asset_unit_id,
                 vehicles,
                 upgrade_pod_id,
             } = findById(support_asset_units.value, unitAttachmentId);
-            const supportAssetId = getUnitAttachment.value(unitAttachmentId).support_asset_unit_id;
+            const supportAssetId = getUnitAttachment(unitAttachmentId).support_asset_unit_id;
 
             let {
                 display_name,
@@ -68,9 +67,9 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 unit_points_description,
                 all_vehicle_must_be_the_same,
                 traits,
-            } = _getUnitInfo.value(supportAssetId);
+            } = _getUnitInfo(supportAssetId);
 
-            vehicles = vehicles.map(vehicleAttachment => getUnitAttachmentVehicleInfo.value(unitAttachmentId, vehicleAttachment.id));
+            vehicles = vehicles.map(vehicleAttachment => getUnitAttachmentVehicleInfo(unitAttachmentId, vehicleAttachment.id));
 
             let cardIdIncrement = 1;
 
@@ -101,9 +100,9 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 traits,
                 all_vehicle_must_be_the_same,
             });
-        });
+        }
 
-        const _getUnitInfo = getter(unitId => {
+        function _getUnitInfo(unitId) {
             let asset = SUPPORT_ASSET_UNITS[unitId];
             asset = Object.assign({}, asset);
             asset.vehicles = Object.assign({}, asset.vehicles);
@@ -117,16 +116,16 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             asset.traits = asset.traits.map(getUnitTrait);
 
             return readonly(asset);
-        });
+        }
 
-        const getUnitVehicleAttachmentRequiredWeaponsInfo = getter((unitAttachmentId, vehicleAttachmentId) => {
-            const vehicleDef = getUnitAttachmentVehicleDef.value(unitAttachmentId, vehicleAttachmentId);
+        function getUnitVehicleAttachmentRequiredWeaponsInfo(unitAttachmentId, vehicleAttachmentId) {
+            const vehicleDef = getUnitAttachmentVehicleDef(unitAttachmentId, vehicleAttachmentId);
             if (!vehicleDef.weapon_ids) {
                 return [];
             }
 
-            const unitAttachment = getUnitAttachment.value(unitAttachmentId);
-            const unitDef = getUnitAttachmentDef.value(unitAttachmentId);
+            const unitAttachment = getUnitAttachment(unitAttachmentId);
+            const unitDef = getUnitAttachmentDef(unitAttachmentId);
 
             let weapons = [];
             if (vehicleDef.weapon_ids) {
@@ -142,10 +141,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             }
 
             return weapons;
-        });
+        }
 
-        const getUnitVehicleAttachmentAvailableWeaponChoicesInfo = getter((unitAttachmentId, vehicleAttachmentId) => {
-            const vehicleDef = getUnitAttachmentVehicleDef.value(unitAttachmentId, vehicleAttachmentId);
+        function getUnitVehicleAttachmentAvailableWeaponChoicesInfo(unitAttachmentId, vehicleAttachmentId) {
+            const vehicleDef = getUnitAttachmentVehicleDef(unitAttachmentId, vehicleAttachmentId);
 
             if (!vehicleDef.weapon_choice_ids) {
                 return [];
@@ -162,10 +161,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                     }),
                 };
             });
-        });
+        }
 
-        const getUnitAttachmentAllGarrisonChoicesInfo = getter((unitAttachmentId) => {
-            const unitDef = getUnitAttachmentDef.value(unitAttachmentId);
+        function getUnitAttachmentAllGarrisonChoicesInfo(unitAttachmentId) {
+            const unitDef = getUnitAttachmentDef(unitAttachmentId);
 
             let garrisonUnitIds = [];
             each(unitDef.vehicles, vehicleDef => {
@@ -177,10 +176,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return garrisonUnitIds.map(unitId => {
                 return _getGarrisonUnitInfo(unitId);
             });
-        });
+        }
 
-        const getUnitVehicleAttachmentAvailableGarrisonChoicesInfo = getter((unitAttachmentId, vehicleAttachmentId) => {
-            const vehicleDef = getUnitAttachmentVehicleDef.value(unitAttachmentId, vehicleAttachmentId);
+        function getUnitVehicleAttachmentAvailableGarrisonChoicesInfo(unitAttachmentId, vehicleAttachmentId) {
+            const vehicleDef = getUnitAttachmentVehicleDef(unitAttachmentId, vehicleAttachmentId);
 
             if (!vehicleDef.garrison_choice_unit_ids) {
                 return [];
@@ -189,10 +188,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return vehicleDef.garrison_choice_unit_ids.map(unitId => {
                 return _getGarrisonUnitInfo(unitId);
             });
-        });
+        }
 
-        const getUnitVehicleAttachmentGarrisonMax = getter((unitAttachmentId, vehicleAttachmentId) => {
-            const vehicleDef = getUnitAttachmentVehicleDef.value(unitAttachmentId, vehicleAttachmentId);
+        function getUnitVehicleAttachmentGarrisonMax(unitAttachmentId, vehicleAttachmentId) {
+            const vehicleDef = getUnitAttachmentVehicleDef(unitAttachmentId, vehicleAttachmentId);
             const garrisonTrait = find(vehicleDef.traits, {id: TRAIT_GARRISON});
 
             if (!garrisonTrait) {
@@ -200,10 +199,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             }
 
             return garrisonTrait.number;
-        });
+        }
 
-        const getUnitUpgradePodChoicesInfo = getter((unitAttachmentId) => {
-            const unitDef = getUnitAttachmentDef.value(unitAttachmentId);
+        function getUnitUpgradePodChoicesInfo(unitAttachmentId) {
+            const unitDef = getUnitAttachmentDef(unitAttachmentId);
 
             if (!unitDef.upgrade_pods) {
                 return [];
@@ -224,10 +223,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                     description,
                 };
             });
-        });
+        }
 
         function setUnitUpgradePod(unitAttachmentId, upgradePodId) {
-            const unitAttachment = getUnitAttachment.value(unitAttachmentId);
+            const unitAttachment = getUnitAttachment(unitAttachmentId);
             unitAttachment.upgrade_pod_id = upgradePodId;
         }
 
@@ -296,26 +295,26 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return readonly(squad);
         }
 
-        const getUnitAttachmentGarrisonUnitCardInfo = getter((unitAttachmentId) => {
-            const info = getUnitAttachmentInfo.value(unitAttachmentId);
+        function getUnitAttachmentGarrisonUnitCardInfo(unitAttachmentId) {
+            const info = getUnitAttachmentInfo(unitAttachmentId);
             const units = flatMap(info.vehicles, vehicle => vehicle.garrison_units);
 
             return readonly(units);
-        });
+        }
 
-        const getUnitAttachmentGarrisonUnitTraitsCardInfo = getter((unitAttachmentId) => {
-            const info = getUnitAttachmentInfo.value(unitAttachmentId);
+        function getUnitAttachmentGarrisonUnitTraitsCardInfo(unitAttachmentId) {
+            const info = getUnitAttachmentInfo(unitAttachmentId);
             let unitTraits = flatMap(info.vehicles, vehicle => vehicle.garrison_unit_traits || []);
             unitTraits = filterUniqueById(unitTraits);
             return readonly(unitTraits);
-        });
+        }
 
-        const getUnitAttachmentVehicleInfo = getter((unitAttachmentId, vehicleAttachmentId) => {
-            const unitAttachment = getUnitAttachment.value(unitAttachmentId);
+        function getUnitAttachmentVehicleInfo(unitAttachmentId, vehicleAttachmentId) {
+            const unitAttachment = getUnitAttachment(unitAttachmentId);
 
-            const vehicleAttachment = getUnitVehicleAttachment.value(unitAttachmentId, vehicleAttachmentId);
-            const unitAttachmentDef = getUnitAttachmentDef.value(unitAttachmentId);
-            const vehicleDef = getUnitAttachmentVehicleDef.value(unitAttachmentId, vehicleAttachmentId);
+            const vehicleAttachment = getUnitVehicleAttachment(unitAttachmentId, vehicleAttachmentId);
+            const unitAttachmentDef = getUnitAttachmentDef(unitAttachmentId);
+            const vehicleDef = getUnitAttachmentVehicleDef(unitAttachmentId, vehicleAttachmentId);
 
             let weapons = [];
             if (vehicleDef.weapon_ids) {
@@ -377,98 +376,88 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 garrison_unit_traits,
                 traits: _getUnitTraitsInfo(traits),
             });
-        });
+        }
 
-        const getUnitAttachmentUsedPoints = getter((unitAttachmentId) => {
-            const info = getUnitAttachmentInfo.value(unitAttachmentId);
+        function getUnitAttachmentUsedPoints(unitAttachmentId) {
+            const info = getUnitAttachmentInfo(unitAttachmentId);
 
             if (info.max_armor_tons) {
-                return getUnitAttachmentArmorTotal.value(unitAttachmentId);
+                return getUnitAttachmentArmorTotal(unitAttachmentId);
             }
 
-            return getUnitVehicleCount.value(unitAttachmentId);
-        });
+            return getUnitVehicleCount(unitAttachmentId);
+        }
 
-        const getUnitAttachmentMaxPoints = getter((unitAttachmentId) => {
-            const info = getUnitAttachmentInfo.value(unitAttachmentId);
+        function getUnitAttachmentMaxPoints(unitAttachmentId) {
+            const info = getUnitAttachmentInfo(unitAttachmentId);
 
             if (info.max_armor_tons) {
                 return info.max_armor_tons;
             }
 
             return info.max_vehicles;
-        });
+        }
 
-        const getUnitAttachmentPointsValid = getter((unitAttachmentId) => {
-            const used = getUnitAttachmentUsedPoints.value(unitAttachmentId);
-            const max = getUnitAttachmentMaxPoints.value(unitAttachmentId);
+        function getUnitAttachmentPointsValid(unitAttachmentId) {
+            const used = getUnitAttachmentUsedPoints(unitAttachmentId);
+            const max = getUnitAttachmentMaxPoints(unitAttachmentId);
             return used === max;
-        });
+        }
 
-        const hasUnitId = getter(unitId => support_asset_unit_ids.value.includes(unitId));
-        const getUnitVehicleCount = getter(unitAttachmentId => getUnitAttachment.value(unitAttachmentId).vehicles.length);
+        const hasUnitId = unitId => support_asset_unit_ids.value.includes(unitId);
+        const getUnitVehicleCount = unitAttachmentId => getUnitAttachment(unitAttachmentId).vehicles.length;
 
-        const getUnitAttachmentArmorTotal = getter(unitAttachmentId => {
-            return sumBy(getUnitAttachment.value(unitAttachmentId).vehicles, (vehicle) => getUnitAttachmentVehicleInfo.value(unitAttachmentId, vehicle.id).armor);
-        });
+        function getUnitAttachmentArmorTotal(unitAttachmentId) {
+            return sumBy(getUnitAttachment(unitAttachmentId).vehicles, (vehicle) => getUnitAttachmentVehicleInfo(unitAttachmentId, vehicle.id).armor);
+        }
 
-        const getUnitAttachment = getter(unitAttachmentId => findById(support_asset_units.value, unitAttachmentId));
-        const getUnitAndVehicleAttachments = getter((unitAttachmentId, vehicleAttachmentId) => {
-            const unitAttachment = getUnitAttachment.value(unitAttachmentId);
-            const vehicleAttachment = find(unitAttachment.vehicles, {id: vehicleAttachmentId});
-            return {
-                unitAttachment,
-                vehicleAttachment,
-            };
-        });
+        const getUnitAttachment = (unitAttachmentId) => findById(support_asset_units.value, unitAttachmentId);
 
-        const getUnitAttachmentHasGarrisonUnits = getter((unitAttachmentId) => {
-            const info = getUnitAttachmentInfo.value(unitAttachmentId);
+        function getUnitAttachmentHasGarrisonUnits(unitAttachmentId) {
+            const info = getUnitAttachmentInfo(unitAttachmentId);
             return !!info.vehicles.find((vehicle) => vehicle.garrison_units.length);
-        });
+        }
 
-        const getUnitHasGarrisonableVehicles = getter((supportAssetUnitId) => {
+        function getUnitHasGarrisonableVehicles(supportAssetUnitId) {
             const unitDef = SUPPORT_ASSET_UNITS[supportAssetUnitId];
             return !!Object.values(unitDef.vehicles).find(vehicleDef => {
                 return vehicleDef.garrison_choice_unit_ids?.length || vehicleDef.garrison_ul_hev;
             });
-        });
+        }
 
-        const getUnitVehicleAttachment = getter((unitAttachmentId, vehicleAttachmentId) => {
-            const unitAttachment = getUnitAttachment.value(unitAttachmentId);
+        function getUnitVehicleAttachment(unitAttachmentId, vehicleAttachmentId) {
+            const unitAttachment = getUnitAttachment(unitAttachmentId);
             return find(unitAttachment.vehicles, {id: vehicleAttachmentId});
-        });
+        }
 
-        const getUnitAttachmentVehicleGarrisonWeaponsCardInfo = getter(unitAttachmentId => {
-            const unit = getUnitAttachmentInfo.value(unitAttachmentId);
+        function getUnitAttachmentVehicleGarrisonWeaponsCardInfo(unitAttachmentId) {
+            const unit = getUnitAttachmentInfo(unitAttachmentId);
             const weapons = flatMap(unit.vehicles, vehicle => {
                 return flatMap(vehicle.garrison_units, squad => squad.weapons);
             });
             return readonly(filterUniqueById(weapons));
-        });
+        }
 
-        const getUnitAttachmentVehicleWeaponsCardInfo = getter(unitAttachmentId => {
-            const unit = getUnitAttachmentInfo.value(unitAttachmentId);
+        function getUnitAttachmentVehicleWeaponsCardInfo(unitAttachmentId) {
+            const unit = getUnitAttachmentInfo(unitAttachmentId);
             const weapons = flatMap(unit.vehicles, vehicle => vehicle.weapons);
             return readonly(filterUniqueById(weapons));
-        });
+        }
 
-        const getUnitAttachmentDef = getter(unitAttachmentId => {
-            const unitAttachment = getUnitAttachment.value(unitAttachmentId);
+        function getUnitAttachmentDef(unitAttachmentId) {
+            const unitAttachment = getUnitAttachment(unitAttachmentId);
             return SUPPORT_ASSET_UNITS[unitAttachment.support_asset_unit_id];
-        });
+        }
 
-        const getUnitAttachmentVehicleDef = getter((unitAttachmentId, vehicleAttachmentId) => {
-            const {
-                unitAttachment,
-                vehicleAttachment,
-            } = getUnitAndVehicleAttachments.value(unitAttachmentId, vehicleAttachmentId);
+        function getUnitAttachmentVehicleDef(unitAttachmentId, vehicleAttachmentId) {
+            const unitAttachment = getUnitAttachment(unitAttachmentId);
+            const vehicleAttachment = find(unitAttachment.vehicles, {id: vehicleAttachmentId});
 
             return SUPPORT_ASSET_UNITS[unitAttachment.support_asset_unit_id].vehicles[vehicleAttachment.vehicle_id];
-        });
+        }
 
-        const getUnitAllWeaponsInfo = getter(unitAttachmentId => {
-            const unitDef = getUnitAttachmentDef.value(unitAttachmentId);
+        function getUnitAllWeaponsInfo(unitAttachmentId) {
+            const unitDef = getUnitAttachmentDef(unitAttachmentId);
             const vehicleDefs = unitDef.vehicles;
 
             const weaponIdMap = {};
@@ -498,20 +487,13 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 });
             }
 
-            console.log(weaponIdMap);
             return Object.keys(weaponIdMap).map(weaponId => _getWeaponInfo(weaponId));
-        });
-
-        const getAttachmentVehicleIdCounts = getter(unitAttachmentId => {
-            const unit = getUnitAttachment.value(unitAttachmentId);
-            const selectedVehicleIds = unit.vehicles.map(vehicle => vehicle.vehicle_id);
-            return countBy(selectedVehicleIds, id => id);
-        });
+        }
 
         const validation_messages = computed(() => {
             let messages = [];
             support_asset_units.value.forEach(unit => {
-                const info = getUnitAttachmentInfo.value(unit.id);
+                const info = getUnitAttachmentInfo(unit.id);
 
                 if (info.max_vehicles) {
                     if (unit.vehicles.length < info.max_vehicles) {
@@ -520,8 +502,8 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 }
 
                 if (info.max_armor_tons) {
-                    const usedPoints = getUnitAttachmentUsedPoints.value(unit.id);
-                    const maxPoints = getUnitAttachmentMaxPoints.value(unit.id);
+                    const usedPoints = getUnitAttachmentUsedPoints(unit.id);
+                    const maxPoints = getUnitAttachmentMaxPoints(unit.id);
 
                     if (usedPoints !== maxPoints) {
                         messages.push(`${info.display_name} has used ${usedPoints} armor points of ${maxPoints} required`);
@@ -532,12 +514,14 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return messages;
         });
 
-        const getAvailableVehiclesInfo = getter(unitAttachmentId => {
-            const unit = getUnitAttachment.value(unitAttachmentId);
-            const unitInfo = _getUnitInfo.value(unit.support_asset_unit_id);
+        function getAvailableVehiclesInfo(unitAttachmentId) {
+            const unit = getUnitAttachment(unitAttachmentId);
+            const unitInfo = _getUnitInfo(unit.support_asset_unit_id);
 
             const vehicles = Object.assign({}, unitInfo.vehicles);
-            const vehicleIdsByCount = getAttachmentVehicleIdCounts.value(unitAttachmentId);
+            const selectedVehicleIds = unit.vehicles.map(vehicle => vehicle.vehicle_id);
+            const vehicleIdsByCount = countBy(selectedVehicleIds, id => id);
+
             const vehicleIds = Object.keys(vehicles);
 
             vehicleIds.forEach(vehicleId => {
@@ -567,7 +551,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             });
 
             return readonly(Object.values(vehicles));
-        });
+        }
 
         function removeSupportAssetId(vehicleAttachmentId) {
             let index = support_asset_units.value.findIndex(item => {
@@ -595,7 +579,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         }
 
         function addVehicle(unitAttachmentId, vehicleId) {
-            const supportAssetUnit = getUnitAttachment.value(unitAttachmentId);
+            const supportAssetUnit = getUnitAttachment(unitAttachmentId);
             const supportAssetUnitId = supportAssetUnit.support_asset_unit_id;
             const unitDef = SUPPORT_ASSET_UNITS[supportAssetUnitId];
             const vehicleDef = unitDef.vehicles[vehicleId];
@@ -633,17 +617,17 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         }
 
         function setUnitVehicleWeaponChoice(unitAttachmentId, vehicleAttachmentId, choiceId, weaponId) {
-            const vehicleAttachment = getUnitVehicleAttachment.value(unitAttachmentId, vehicleAttachmentId);
+            const vehicleAttachment = getUnitVehicleAttachment(unitAttachmentId, vehicleAttachmentId);
             vehicleAttachment.weapon_choices[choiceId] = weaponId;
         }
 
         function setUnitVehicleGarrisonChoice(unitAttachmentId, vehicleAttachmentId, index, squadId) {
-            const vehicleAttachment = getUnitVehicleAttachment.value(unitAttachmentId, vehicleAttachmentId);
+            const vehicleAttachment = getUnitVehicleAttachment(unitAttachmentId, vehicleAttachmentId);
             vehicleAttachment.garrison_units[index] = squadId;
         }
 
         function removeVehicle(unitAttachmentId, vehicleAttachmentId) {
-            const unitAttachment = getUnitAttachment.value(unitAttachmentId);
+            const unitAttachment = getUnitAttachment(unitAttachmentId);
             const index = findItemIndexById(unitAttachment.vehicles, vehicleAttachmentId);
             unitAttachment.vehicles.splice(index, 1);
         }
@@ -659,12 +643,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             support_asset_units_info,
             validation_messages,
 
-            getUnitAttachmentArmorTotal,
             getAvailableVehiclesInfo,
             getUnitVehicleCount,
             getUnitVehicleAttachment,
             getUnitAllWeaponsInfo,
-            getUnitAndVehicleAttachments,
             getUnitAttachmentInfo,
             getUnitAttachmentVehicleInfo,
             getUnitAttachmentVehicleWeaponsCardInfo,

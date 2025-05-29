@@ -28,7 +28,6 @@ import {
 import {deleteItemById, findById, findItemIndex, moveItem} from './helpers/collection-helper.js';
 import {useToastStore} from './toast-store.js';
 import {useFactionStore} from './faction-store.js';
-import {OI_MATERIEL_STOCKPILES} from '../data/faction-perks.js';
 import {useTeamStore} from './team-store.js';
 import {
     TEAM_PERK_0_SLOT_ARMOR_UPGRADES,
@@ -421,9 +420,10 @@ export const useMechStore = defineStore('mech', {
                             team_perks.push(perk);
                         }
 
-                        if (factionStore.hasPerk(OI_MATERIEL_STOCKPILES)) {
+                        const materielPerk = factionStore.hasMaterielStockpilesInfo;
+                        if (materielPerk) {
                             traitLimited.number += 1;
-                            faction_perks.push(factionStore.materielStockpilesPerk);
+                            faction_perks.push(materielPerk);
                         }
                     }
 
@@ -615,11 +615,12 @@ export const useMechStore = defineStore('mech', {
 
                     const faction_perks = [];
                     if (upgradeId === MINEFIELD_DRONE_CARRIER_SYSTEM) {
-                        if (factionStore.hasPerk(OI_MATERIEL_STOCKPILES)) {
+                        const materielPerk = factionStore.hasMaterielStockpilesInfo;
+                        if (materielPerk) {
                             if (traitLimited) {
                                 traitLimited.number += 1;
                             }
-                            faction_perks.push(factionStore.materielStockpilesPerk);
+                            faction_perks.push(materielPerk);
                         }
                     }
 

@@ -12,11 +12,9 @@ const {
   factions_info,
   perks_full,
   perk_grid,
-  hasPerkInGroupId,
-  hasPerk,
 } = storeToRefs(store);
 
-const {addPerk, removePerk} = store;
+const {addPerk, removePerk, hasPerk, hasPerkInGroupId} = store;
 
 function setFactionId(factionId) {
   faction_id.value = factionId;
@@ -29,10 +27,13 @@ function setFactionId(factionId) {
       :autofocus="false"
       no-trap
       centered
-      title="Faction Perks"
       ok-variant="secondary"
       size="xl"
   >
+    <template #title>
+      Faction Perks <span class="fw-light">(Pick 2)</span>
+    </template>
+
     <ul class="nav nav-tabs nav-tabs-factions">
       <button class="nav-link disabled tab-select-faction" role="tab" tabindex="-1">Select Faction:</button>
       <li class="nav-item" v-for="faction in factions_info">

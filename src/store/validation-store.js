@@ -2,7 +2,6 @@ import {defineStore} from 'pinia';
 import {computed} from 'vue';
 import {useArmyListStore} from './army-list-store.js';
 import {useTeamStore} from './team-store.js';
-import {getter} from './helpers/store-helpers.js';
 import {useMechStore} from './mech-store.js';
 import {MECH_TEAMS, TEAM_GENERAL} from '../data/mech-teams.js';
 import {useSupportAssetCountsStore} from './support-asset-count-store.js';
@@ -41,7 +40,7 @@ export const useValidationStore = defineStore('validation', () => {
 
         teamStore.teams.forEach(team => {
             team.groups.forEach((group) => {
-                const {size_valid, size_validation_message} = getTeamGroupSizeValidation.value(team.id, group.id);
+                const {size_valid, size_validation_message} = getTeamGroupSizeValidation(team.id, group.id);
 
                 const teamDisplayName = teamStore.getTeamInfo(team.id).display_name;
                 const groupDisplayName = teamStore.getTeamGroupInfo(team.id, group.id).display_name;
@@ -52,7 +51,7 @@ export const useValidationStore = defineStore('validation', () => {
                 const mechIds = teamStore.getTeamGroupMechIds(team.id, group.id);
 
                 mechIds.map(mechId => {
-                    let mechMessages = getInvalidMechMessages.value(mechId);
+                    let mechMessages = getInvalidMechMessages(mechId);
                     if (team.id !== TEAM_GENERAL) {
                         mechMessages = mechMessages.map(message => `[${teamDisplayName} ${groupDisplayName}] ${message}`);
                     }
@@ -74,18 +73,18 @@ export const useValidationStore = defineStore('validation', () => {
         return false;
     });
 
-    const getInvalidMechMessages = getter(mechId => {
+    function getInvalidMechMessages(mechId) {
         const teamStore = useTeamStore();
         const mech = mechStore.getMech(mechId);
         const mechDisplayName = mechStore.getMechInfo(mechId).display_name;
 
-        const tonsValidation = invalid_mech_tons.value(mechId);
+        const tonsValidation = getInvalidMechTons(mechId);
         const messages = [];
 
         if (tonsValidation) {
             messages.push(`${mechDisplayName}: ${tonsValidation}`);
         }
-        const slotsValidation = invalid_mech_slots.value(mechId);
+        const slotsValidation = getInvalidMechSlots(mechId);
 
         if (slotsValidation) {
             messages.push(`${mechDisplayName}: ${slotsValidation}`);
@@ -108,27 +107,25 @@ export const useValidationStore = defineStore('validation', () => {
         }
 
         return messages;
-    });
+    }
 
-    const invalid_mech = getter(mechId => getInvalidMechMessages.value(mechId).join('. ') + '.');
-
-    const invalid_mech_tons = getter(mechId => {
+    function getInvalidMechTons(mechId) {
         const {max_tons, used_tons} = mechStore.getMechInfo(mechId);
 
         if (max_tons < used_tons) {
             return `uses ${used_tons}/${max_tons} tons`;
         }
         return false;
-    });
+    }
 
-    const invalid_mech_slots = getter(mechId => {
+    function getInvalidMechSlots(mechId) {
         const {max_slots, used_slots} = mechStore.getMechInfo(mechId);
 
         if (max_slots < used_slots) {
             return `uses ${used_slots}/${max_slots} slots`;
         }
         return false;
-    });
+    }
 
     const invalid_number_of_teams = computed(() => {
         const usedTeams = teamStore.used_teams_count;
@@ -150,7 +147,7 @@ export const useValidationStore = defineStore('validation', () => {
         return false;
     });
 
-    const getTeamGroupSizeValidation = getter((teamId, groupId) => {
+    function getTeamGroupSizeValidation(teamId, groupId) {
         const {min_count, max_count} = MECH_TEAMS[teamId].groups[groupId];
         const group = teamStore.findGroup(teamId, groupId);
         const mechCount = group.mechs.length;
@@ -177,7 +174,7 @@ export const useValidationStore = defineStore('validation', () => {
             size_valid,
             size_validation_message,
         };
-    });
+    }
 
     const team_size_count_validation = computed(() => {
         const messageValid = {
@@ -235,7 +232,6 @@ export const useValidationStore = defineStore('validation', () => {
 
     return {
         list_validation,
-        invalid_mech,
         getInvalidMechMessages,
         list_is_valid,
         invalid_number_of_support_assets,

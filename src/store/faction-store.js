@@ -1,15 +1,12 @@
 import {defineStore} from 'pinia';
 import {computed, readonly, ref} from 'vue';
 import {
-    BLO_DISGRACED_TRILLIONAIRE_TOP_END_HARDWARE,
+    DWC_OUTRAGEOUS_SUPPORT_BUDGET,
     DWC_TOP_END_HARDWARE,
     FACTION_PERKS,
     isMatchingPerkOrCopy,
-    OI_MATERIEL_STOCKPILES,
     RD_ADVANCED_HARDPOINT_DESIGN,
-    UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN,
 } from '../data/faction-perks.js';
-import {getter} from './helpers/store-helpers.js';
 import {
     DWC_TOP_END_HARDWARE_BONUS_TONS,
     FACTIONS,
@@ -34,17 +31,29 @@ export const useFactionStore = defineStore('faction', () => {
 
         const faction_display_name = computed(() => FACTIONS[faction_id.value].display_name);
 
-        const perkBelongsToFaction = getter((perkId) => {
+        function perkBelongsToFaction(perkId) {
             return !!find(FACTIONS[faction_id.value].faction_perk_groups, (perkGroup) => {
                 return perkGroup.perk_ids.includes(perkId);
             });
-        });
+        }
 
-        const hasPerk = getter((perkId) => perkId === perk_1_id.value || perkId === perk_2_id.value);
-
-        const hasPerkOrCopiedPerk = getter((perkId) => {
+        function hasPerk(perkId) {
             return isMatchingPerkOrCopy(perkId, perk_1_id.value) || isMatchingPerkOrCopy(perkId, perk_2_id.value);
-        });
+        }
+
+        function getMatchingPerkOrCopyInfo(perkId) {
+            if (isMatchingPerkOrCopy(perkId, perk_1_id.value)) {
+                return FACTION_PERKS[perk_1_id.value];
+            }
+
+            if (isMatchingPerkOrCopy(perkId, perk_2_id.value)) {
+                return FACTION_PERKS[perk_2_id.value];
+            }
+        }
+
+        function hasExactPerk(perkId) {
+            return perkId === perk_1_id.value || perkId === perk_2_id.value;
+        }
 
         function addPerk(perkId) {
             if (perk_1_id.value === null) {
@@ -67,11 +76,11 @@ export const useFactionStore = defineStore('faction', () => {
         }
 
         function clearInvalidPerks() {
-            if (!perkBelongsToFaction.value(perk_1_id.value)) {
+            if (!perkBelongsToFaction(perk_1_id.value)) {
                 perk_1_id.value = null;
             }
 
-            if (!perkBelongsToFaction.value(perk_2_id.value)) {
+            if (!perkBelongsToFaction(perk_2_id.value)) {
                 perk_2_id.value = null;
             }
         }
@@ -79,14 +88,14 @@ export const useFactionStore = defineStore('faction', () => {
         const perk_1_info = computed(() => FACTION_PERKS[perk_1_id.value]);
         const perk_2_info = computed(() => FACTION_PERKS[perk_2_id.value]);
 
-        const perk_1_group_id = computed(() => findPerkGroupId.value(perk_1_id.value));
-        const perk_2_group_id = computed(() => findPerkGroupId.value(perk_2_id.value));
+        const perk_1_group_id = computed(() => findPerkGroupId(perk_1_id.value));
+        const perk_2_group_id = computed(() => findPerkGroupId(perk_2_id.value));
 
         const perks_full = computed(() => {
             return !!(perk_1_id.value && perk_2_id.value);
         });
 
-        const hasPerkInGroupId = getter((groupId) => {
+        function hasPerkInGroupId(groupId) {
             if (perk_1_group_id.value) {
                 return perk_1_group_id.value === groupId;
             }
@@ -94,9 +103,9 @@ export const useFactionStore = defineStore('faction', () => {
                 return perk_2_group_id.value === groupId;
             }
             return false;
-        });
+        }
 
-        const findPerkGroupId = getter((perkId) => {
+        function findPerkGroupId(perkId) {
             const factions = Object.values(FACTIONS);
             for (let i = 0; i < factions.length; i++) {
                 const faction = factions[i];
@@ -111,7 +120,7 @@ export const useFactionStore = defineStore('faction', () => {
                     }
                 }
             }
-        });
+        }
 
         const perk_grid = computed(() => {
             let perkGroups = FACTIONS[faction_id.value].faction_perk_groups;
@@ -136,37 +145,18 @@ export const useFactionStore = defineStore('faction', () => {
             });
         });
 
-        const hasAdvancedHardPoints = computed(() => {
-            return hasPerkOrCopiedPerk.value(RD_ADVANCED_HARDPOINT_DESIGN);
-        });
+        const hasAdvancedHardPoints = computed(() => hasPerk(RD_ADVANCED_HARDPOINT_DESIGN));
+        const hasOutrageousSupportBudget = computed(() => hasPerk(DWC_OUTRAGEOUS_SUPPORT_BUDGET));
 
-        const advancedHardPointsInfo = computed(() => {
-            if (hasPerk.value(RD_ADVANCED_HARDPOINT_DESIGN)) {
-                return FACTION_PERKS[RD_ADVANCED_HARDPOINT_DESIGN];
-            }
-            if (hasPerk.value(UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN)) {
-                return FACTION_PERKS[UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN];
-            }
-        });
+        const advancedHardPointsInfo = computed(() => getMatchingPerkOrCopyInfo(RD_ADVANCED_HARDPOINT_DESIGN));
 
-        const hasTopEndHardware = computed(() => {
-            return hasPerkOrCopiedPerk.value(DWC_TOP_END_HARDWARE);
-        });
-        const topEndHardwareInfo = computed(() => {
-            if (hasPerk.value(DWC_TOP_END_HARDWARE)) {
-                return FACTION_PERKS[DWC_TOP_END_HARDWARE];
-            }
-            if (hasPerk.value(BLO_DISGRACED_TRILLIONAIRE_TOP_END_HARDWARE)) {
-                return FACTION_PERKS[BLO_DISGRACED_TRILLIONAIRE_TOP_END_HARDWARE];
-            }
-        });
+        const hasTopEndHardware = computed(() => hasPerk(DWC_TOP_END_HARDWARE));
+        const topEndHardwareInfo = computed(() => getMatchingPerkOrCopyInfo(DWC_TOP_END_HARDWARE));
 
         const advancedHardPointsBonusSlots = computed(() => RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS);
         const topEndHardwareBonusTons = computed(() => DWC_TOP_END_HARDWARE_BONUS_TONS);
 
-        const materielStockpilesPerk = computed(() => {
-            return FACTION_PERKS[OI_MATERIEL_STOCKPILES];
-        });
+        const hasMaterielStockpilesInfo = computed(() => getMatchingPerkOrCopyInfo(DWC_TOP_END_HARDWARE));
 
         const factions_info = computed(() => {
             return readonly(Object.values(FACTIONS).map(({id, display_name}) => {
@@ -201,7 +191,8 @@ export const useFactionStore = defineStore('faction', () => {
             topEndHardwareBonusTons,
             hasTopEndHardware,
             topEndHardwareInfo,
-            materielStockpilesPerk,
+            hasMaterielStockpilesInfo,
+            hasOutrageousSupportBudget,
 
             $reset,
         };

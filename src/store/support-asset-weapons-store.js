@@ -4,7 +4,6 @@ import {sumBy} from 'es-toolkit/compat';
 import {useFactionStore} from './faction-store.js';
 import {TRAIT_LIMITED, WEAPON_TRAITS, weaponTraitDisplayName} from '../data/weapon-traits.js';
 import {DWC_OUTRAGEOUS_SUPPORT_BUDGET, FACTION_PERKS, OI_ORBITAL_STOCKPILES} from '../data/faction-perks.js';
-import {getter} from './helpers/store-helpers.js';
 import {SUPPORT_ASSET_WEAPONS} from '../data/support-asset-weapons.js';
 
 export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', () => {
@@ -26,15 +25,15 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
 
         const available_support_asset_weapons_info = computed(() => {
             return available_support_asset_weapon_ids.value
-                .map(id => getSupportAssetInfo.value(id));
+                .map(id => getSupportAssetInfo(id));
         });
 
         const support_asset_weapons_info = computed(() => {
             return support_asset_weapon_ids.value
-                .map(id => getSupportAssetInfo.value(id));
+                .map(id => getSupportAssetInfo(id));
         });
 
-        const getSupportAssetInfo = getter(supportAssetId => {
+        function getSupportAssetInfo(supportAssetId) {
             let asset = SUPPORT_ASSET_WEAPONS[supportAssetId];
             asset = Object.assign({}, asset);
             asset.notes = [];
@@ -84,9 +83,11 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
             asset.off_table_weapon = weapon;
 
             return readonly(asset);
-        });
+        }
 
-        const hasSupportAssetId = getter(supportAssetId => support_asset_weapon_ids.value.includes(supportAssetId));
+        function hasSupportAssetId(supportAssetId) {
+            return support_asset_weapon_ids.value.includes(supportAssetId);
+        }
 
         const used_tons = computed(() => sumBy(support_asset_weapons_info.value, 'cost'));
         const used_count = computed(() => support_asset_weapon_ids.value.length);

@@ -2,7 +2,6 @@
 import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store.js';
 import {computed} from 'vue';
 import {TRAIT_GARRISON, unitTraitDisplayName} from '../../../../data/unit-traits.js';
-import {getter} from '../../../../store/helpers/store-helpers.js';
 import {chunk} from 'es-toolkit/compat';
 import {formatCardRef} from '../../../functional/formatters.js';
 import UnitCardHalfHeader from './UnitCardHalfHeader.vue';
@@ -27,9 +26,9 @@ const hasGarrisonWithRefIds = computed(() => {
   return unit.value.vehicles.find((vehicle) => vehicle.garrison_units.find(g => g.card_ref_id));
 });
 
-const statArray = getter((stat) => {
+const statArray = (stat) => {
   return chunk(Array(stat).fill(0), 4);
-});
+};
 
 function filterTraits(traits) {
   return traits.filter(t => t.id !== TRAIT_GARRISON);
