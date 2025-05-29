@@ -523,7 +523,9 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                     const usedPoints = getUnitAttachmentUsedPoints.value(unit.id);
                     const maxPoints = getUnitAttachmentMaxPoints.value(unit.id);
 
-                    messages.push(`${info.display_name} has used ${usedPoints} armor points of ${maxPoints} required`);
+                    if (usedPoints !== maxPoints) {
+                        messages.push(`${info.display_name} has used ${usedPoints} armor points of ${maxPoints} required`);
+                    }
                 }
             });
 

@@ -222,7 +222,7 @@ export const useValidationStore = defineStore('validation', () => {
             if (largestTeamCount > 4) {
                 return messageMax(4);
             }
-            const instancesOfCount = countBy(teamCounts);
+            const instancesOfCount = countBy(teamCounts, (i) => i);
             if (instancesOfCount[4] > 1) {
                 return {
                     valid: false,
