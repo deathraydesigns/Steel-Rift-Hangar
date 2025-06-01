@@ -54,18 +54,21 @@ function selectOption(value) {
             <td>
               Type
             </td>
+            <td class="text-end">
+              Slots Used
+            </td>
           </tr>
           </thead>
           <tbody>
           <tr
               :class="{
                 'dropdown-row': true,
-                'table-selected': item.id === model
+                'table-selected':   (item.id == model)
               }"
               v-for="item in options" :key="item.id"
               @click="selectOption(item.id)"
           >
-            <td>
+            <td class="text-nowrap">
               <BtnToolTip
                   :enabled="!!item.description">
                 <template #target="{mouseover, mouseleave}">
@@ -81,6 +84,9 @@ function selectOption(value) {
                   {{ item.description }}
                 </template>
               </BtnToolTip>
+            </td>
+            <td class="text-end">
+              <number :val="item.slots" invert-color/>
             </td>
           </tr>
           </tbody>
