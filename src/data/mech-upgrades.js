@@ -74,7 +74,7 @@ export const MECH_UPGRADES = makeFrozenStaticListIds({
             [[SIZE_HEAVY]]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
             [[SIZE_ULTRA]]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
         },
-        prohibited_by_sizes: [SIZE_LIGHT],
+        limited_size_ids: [SIZE_MEDIUM, SIZE_HEAVY, SIZE_ULTRA],
     }),
     [[MINEFIELD_DRONE_TRACKING_SYSTEM]]: makeUpgrade({
         display_name: 'Minefield Drone Tracking Submunitions',

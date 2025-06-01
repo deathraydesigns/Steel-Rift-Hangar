@@ -544,6 +544,7 @@ export const useMechStore = defineStore('mech', {
                         slots,
                         description,
                         cost_by_size,
+                        limited_size_ids,
                     } = upgrade;
 
                     let traits = getUpgradeTraits(upgradeId, size_id);
@@ -553,10 +554,11 @@ export const useMechStore = defineStore('mech', {
 
                     const traitLimited = find(traits, {id: TRAIT_UPGRADE_LIMITED});
 
-                    if (upgrade.prohibited_by_sizes) {
-                        valid = !upgrade.prohibited_by_sizes.includes(size_id);
+                    if (limited_size_ids) {
+                        valid = limited_size_ids.includes(size_id);
                         if (!valid) {
-                            validation_message = `Not available for ${MECH_SIZES[size_id].display_name} HE-Vs`;
+                            const sizeDisplayNames = limited_size_ids.map(sizeId => MECH_SIZES[sizeId].display_name).join('/');
+                            validation_message = `Only available for ${sizeDisplayNames} HE-Vs`;
                         }
                     }
 
