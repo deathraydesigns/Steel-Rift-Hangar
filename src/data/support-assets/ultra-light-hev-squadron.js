@@ -1,20 +1,22 @@
 import {SIZE_ULTRA_LIGHT} from '../unit-sizes.js';
 import {makeStaticListIds} from '../data-helpers.js';
 import {
-    CLUSTER_ROCKETS,
-    MISSILE_POD,
     SHORT_RANGE_MISSILE_PACK,
     UL_AUTO_CANNON,
+    UL_GRENADES,
+    UL_INCINERATORS,
     UL_ROCKET_PACK,
     VEH_SUBMUNITIONS,
 } from '../unit-weapons.js';
 import {
     TRAIT_ALL_TERRAIN,
     TRAIT_CLOSE_SUPPORT,
+    TRAIT_INFERNO_GEAR,
     TRAIT_MAGNETIC_GRAPPLES,
-    TRAIT_MINE_SWEEPER,
+    TRAIT_SCRAMBLERS,
     TRAIT_SQUADRON,
     TRAIT_SUPPRESSIVE_FIRE,
+    TRAIT_TARGET_DESIGNATOR,
     TRAIT_UL_HEV_LAUNCH_GEAR,
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
@@ -60,47 +62,46 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
                     trait(TRAIT_MAGNETIC_GRAPPLES),
                 ],
             },
-            FIRE_SUPPORT: {
-                move: 8,
-                jump: 0,
-                armor: 2,
-                structure: 0,
-                display_name: 'Fire Support',
-                weapon_ids: [
-                    UL_AUTO_CANNON,
-                ],
-                weapon_choice_ids: {
-                    choice_1: [
-                        CLUSTER_ROCKETS,
-                        MISSILE_POD,
-                    ],
-                },
-                traits: [],
-            },
-            TACTICAL: {
-                move: 10,
-                jump: 0,
-                armor: 2,
-                structure: 0,
-                display_name: 'Tactical',
-                weapon_ids: [
-                    UL_AUTO_CANNON,
-                ],
-                traits: [
-                    trait(TRAIT_SUPPRESSIVE_FIRE),
-                ],
-            },
-            ENGINEERING: {
-                move: 8,
+            PYRO: {
+                move: 6,
                 jump: 0,
                 armor: 3,
                 structure: 0,
-                display_name: 'Engineering',
+                display_name: 'Pyro',
+                weapon_ids: [
+                    UL_INCINERATORS,
+                    VEH_SUBMUNITIONS,
+                ],
+                traits: [
+                    trait(TRAIT_INFERNO_GEAR),
+                ],
+            },
+            COMMANDO: {
+                move: 7,
+                jump: 0,
+                armor: 3,
+                structure: 0,
+                display_name: 'Commando',
                 weapon_ids: [
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_MINE_SWEEPER),
+                    trait(TRAIT_SCRAMBLERS),
+                    trait(TRAIT_TARGET_DESIGNATOR),
+                ],
+            },
+            RIFLEMAN: {
+                move: 8,
+                jump: 0,
+                armor: 3,
+                structure: 0,
+                display_name: 'Rifleman',
+                weapon_ids: [
+                    UL_AUTO_CANNON,
+                    UL_GRENADES,
+                ],
+                traits: [
+                    trait(TRAIT_SUPPRESSIVE_FIRE),
                 ],
             },
         }),

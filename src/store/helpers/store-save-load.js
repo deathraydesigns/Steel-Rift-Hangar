@@ -7,6 +7,7 @@ import {usePrintSettingsStore} from '../print-settings-store.js';
 import {useSupportAssetWeaponsStore} from '../support-asset-weapons-store.js';
 import {useSupportAssetUnitsStore} from '../support-asset-units-store.js';
 import {MOBILITY_BI_PEDAL} from '../../data/mech-mobility.js';
+import {ULTRA_LIGHT_HEV_SQUADRON} from '../../data/support-assets/ultra-light-hev-squadron.js';
 
 function getStores() {
     return [
@@ -30,7 +31,7 @@ export function resetStores() {
 export function makeSaveFileData() {
 
     const result = {
-        save_schema_version: 2,
+        save_schema_version: 3,
     };
 
     getStores().forEach((store) => {
@@ -59,6 +60,25 @@ function migrateLoadData(data) {
         data?.mech?.mechs?.forEach(mech => {
             if (!mech.mobility_id) {
                 mech.mobility_id = MOBILITY_BI_PEDAL;
+            }
+        });
+    }
+
+    if (data.save_schema_version < 3) {
+        data['support-asset-units']?.support_asset_units?.forEach(unit => {
+            if (unit.support_asset_unit_id === ULTRA_LIGHT_HEV_SQUADRON) {
+                unit?.vehicles.forEach(vehicle => {
+                    if (vehicle.vehicle_id === 'FIRE_SUPPORT') {
+                        vehicle.vehicle_id = 'PYRO';
+                    }
+                    if (vehicle.vehicle_id === 'TACTICAL') {
+                        vehicle.vehicle_id = 'COMMANDO';
+                    }
+                    if (vehicle.vehicle_id === 'ENGINEERING') {
+                        vehicle.vehicle_id = 'RIFLEMAN';
+                    }
+                    console.log(vehicle.vehicle_id)
+                });
             }
         });
     }
