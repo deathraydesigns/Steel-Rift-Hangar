@@ -4,6 +4,7 @@ import {useMechStore} from '../../../../store/mech-store.js';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {MECH_MOBILITIES} from '../../../../data/mech-mobility.js';
 import {BDropdown} from 'bootstrap-vue-next';
+import Number from '../../../functional/number.vue';
 
 const mechStore = useMechStore();
 
@@ -103,7 +104,11 @@ function selectOption(value) {
     </td>
     <td></td>
     <td></td>
-    <td></td>
+    <td class="text-end">
+      <div class="col-form-label">
+        <number :val="mobility.slots" :invert-color="true"/>
+      </div>
+    </td>
     <td></td>
     <td></td>
   </tr>

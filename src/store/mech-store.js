@@ -47,7 +47,7 @@ import {
 } from '../data/mech-team-perks.js';
 import {TRAIT_UPGRADE_LIMITED} from '../data/upgrade-traits.js';
 import {DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS} from '../data/factions.js';
-import {MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
+import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
 import {TYPE_HEV} from '../data/unit-types.js';
 
 export const useMechStore = defineStore('mech', {
@@ -242,6 +242,7 @@ export const useMechStore = defineStore('mech', {
                         structure_mod_id,
                         armor_mod_id,
                         armor_upgrade_id,
+                        mobility_id,
                         weapons,
                         upgrades,
                     } = this.getMech(mechId);
@@ -256,6 +257,7 @@ export const useMechStore = defineStore('mech', {
                     const size = MECH_SIZES[size_id];
                     const structure_mod = MECH_BODY_MODS[structure_mod_id];
                     const armor_mod = MECH_BODY_MODS[armor_mod_id];
+                    const mobility = MECH_MOBILITIES[mobility_id];
 
                     let {
                         defense,
@@ -275,7 +277,9 @@ export const useMechStore = defineStore('mech', {
 
                     let used_slots = weapon_used_slots +
                         upgrade_used_slots +
-                        armorUpgradeInfo.slots;
+                        armorUpgradeInfo.slots +
+                        mobility.slots
+                    ;
 
                     if (factionStore.hasAdvancedHardPoints) {
                         used_slots += RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS;
