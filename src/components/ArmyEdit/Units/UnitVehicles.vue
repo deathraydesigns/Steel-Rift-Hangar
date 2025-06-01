@@ -20,7 +20,7 @@ const has_garrison = computed(() => !!unitStore.getUnitHasGarrisonableVehicles(u
 provide('has_armor', has_armor);
 provide('has_jump', has_jump);
 provide('has_structure', has_structure);
-provide('has_structure', has_garrison);
+provide('has_garrison', has_garrison);
 
 </script>
 <template>
