@@ -30,7 +30,7 @@ const upgrades = computed(() => {
       // shown in weapons row instead
       .filter(item => item.upgrade_id !== MINEFIELD_DRONE_CARRIER_SYSTEM);
 
-  const teamPerks = teamStore.getTeamPerksInfoByMech(mechId).filter(({is_ability}) => is_ability);
+  const teamPerks = teamStore.getTeamPerksInfoByMech(mechId).filter(({visible_on_card}) => visible_on_card);
   teamPerks.forEach(item => item.is_team_perk = true);
 
   const mobility = [];
@@ -54,7 +54,7 @@ const upgrades = computed(() => {
     </div>
     <div class="upgrades">
       <span v-for="(upgrade, index) in upgrades">
-        {{ upgrade.display_name }}<Icon v-if="upgrade.is_team_perk" name="team-perk" size="18px"/>
+        {{ upgrade.display_name }}<small v-if="upgrade.card_note"> ({{upgrade.card_note}})</small><Icon v-if="upgrade.is_team_perk" name="team-perk" size="18px"/>
         <template v-if="upgrade.max_uses">&nbsp;</template>
         <span
             v-if="upgrade.max_uses"

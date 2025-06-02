@@ -388,7 +388,7 @@ export const useTeamStore = defineStore('team', () => {
 
             const perkIds = Object.keys(perkIdsMap);
 
-            return perkIds.filter(perkId => MECH_TEAM_PERKS[perkId].is_ability)
+            return perkIds.filter(perkId => MECH_TEAM_PERKS[perkId].visible_on_card)
                 .map((perkId) => MECH_TEAM_PERKS[perkId]);
 
         }
@@ -567,7 +567,8 @@ function perkIdsToInfo(perkIds) {
             renderDisplayName,
             renderDesc,
             value,
-            is_ability,
+            visible_on_card,
+            card_note,
         } = perkInfo;
 
         if (repeatCount > 1 && stackable) {
@@ -580,7 +581,8 @@ function perkIdsToInfo(perkIds) {
                 display_order,
                 value: newValue,
                 repeatCount,
-                is_ability,
+                card_note,
+                visible_on_card,
             };
         }
 
@@ -590,7 +592,8 @@ function perkIdsToInfo(perkIds) {
             display_name_short,
             description,
             display_order,
-            is_ability,
+            visible_on_card,
+            card_note,
             value,
         };
     });

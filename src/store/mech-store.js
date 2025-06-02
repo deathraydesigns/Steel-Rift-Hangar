@@ -12,7 +12,7 @@ import {
     WEAPON_TRAITS,
     weaponTraitDisplayName,
 } from '../data/weapon-traits.js';
-import {HOWITZER, MECH_WEAPONS, MISSILES, ROCKET_PACK} from '../data/mech-weapons.js';
+import {getRangeFromShortTrait, HOWITZER, MECH_WEAPONS, MISSILES, ROCKET_PACK} from '../data/mech-weapons.js';
 import {readonly} from 'vue';
 import {
     COMBAT_SHIELD,
@@ -354,7 +354,6 @@ export const useMechStore = defineStore('mech', {
                     const cost = weapon.cost_by_size[size_id];
 
                     const {
-                        range,
                         display_name,
                         slots,
                         limited_size_ids,
@@ -362,6 +361,7 @@ export const useMechStore = defineStore('mech', {
 
                     const {traits, team_perks, faction_perks} = this.getWeaponTraitInfo(mechId, weaponId);
                     const traitLimited = find(traits, {id: TRAIT_LIMITED});
+                    const range = getRangeFromShortTrait(traits);
 
                     let max_uses = null;
                     if (traitLimited) {
@@ -409,7 +409,7 @@ export const useMechStore = defineStore('mech', {
                     const mech = this.getMech(mechId);
                     const size_id = mech.size_id;
                     const weapon = MECH_WEAPONS[weaponId];
-                    const traits = cloneDeep(weapon.traits_by_size[size_id]);
+                    let traits = cloneDeep(weapon.traits_by_size[size_id]);
                     const perks = teamStore.getTeamPerksInfoByMech(mechId);
 
                     const faction_perks = [];
@@ -448,9 +448,10 @@ export const useMechStore = defineStore('mech', {
                         }
                     }
 
-                    traits.forEach(trait => Object.assign(
-                        trait,
+                    traits = traits.map(trait => Object.assign(
+                        {},
                         WEAPON_TRAITS[trait.id],
+                        trait,
                         {display_name: weaponTraitDisplayName(trait)},
                     ));
 

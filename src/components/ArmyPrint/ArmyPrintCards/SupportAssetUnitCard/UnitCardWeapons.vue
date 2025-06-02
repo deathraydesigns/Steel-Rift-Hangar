@@ -34,7 +34,7 @@ const sortedWeapons = computed(() => sortBy(weapons, 'display_name').reverse());
     </thead>
     <tbody>
     <tr v-for="weapon in sortedWeapons">
-      <td class="text-start">
+      <td class="text-start small">
         {{ weapon.display_name }}
       </td>
       <td class="text-end text-nowrap">

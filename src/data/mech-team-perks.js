@@ -44,17 +44,17 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [[TEAM_PERK_RECON_INITIATIVE]]: {
         display_name: 'Recon Initiative',
         description: 'If one or more HE-Vs from this Team is within 18" of an enemy Deployment Edge or Corner, you gain +1 to the Initiative Roll.',
-        is_ability: true,
+        visible_on_card: true,
     },
     [[TEAM_PERK_SUPPORT_ASSET_DAMAGE]]: {
         display_name: 'OT Asset Damage',
         description: 'Off-Table Support Assets gain +1 to their Damage Rating.',
-        is_ability: true,
+        visible_on_card: true,
     },
     [[TEAM_PERK_DIRECTIONAL_ASSETS]]: {
         display_name: 'Mobile OT Assets',
         description: 'When determining the origin of direction for an Off-Table Support Asset directed by a member of this team, it can be from any direction.',
-        is_ability: true,
+        visible_on_card: true,
     },
     [[TEAM_PERK_EXTRA_TONNAGE]]: {
         display_name: `Objective Tonnage (5)`,
@@ -63,22 +63,22 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [[TEAM_PERK_SIDE_DEFENSE]]: {
         display_name: 'Side Defense',
         description: 'Enemy Units do not gain bonuses to their Damage Rating for Side Arcs.',
-        is_ability: true,
+        visible_on_card: true,
     },
     [[TEAM_PERK_FORWARD_DEPLOY_HEVS]]: {
         display_name: 'Forward Deploy HE-Vs',
         description: 'HE-Vs in this Team may deploy as Support Assets.',
-        is_ability: true,
+        visible_on_card: true,
     },
     [[TEAM_PERK_MELEE_FLANK]]: {
         display_name: 'Melee Flank',
         description: 'Weapons with the Melee Trait targeting opposing HE-Vs that are base to base with 2 or more Units in this Team receive the Frag trait.',
-        is_ability: true,
+        visible_on_card: true,
     },
     [[TEAM_PERK_COUNTER_ATTACK]]: {
         display_name: 'Counter Attack',
         description: 'When targeted by an Engage or Smash Order, an HE-V in this Team without an Activated Marker may gain an Activated Marker. If they do, they may make a Smash Order before resolving the Opposing Commander’s Order.',
-        is_ability: true,
+        visible_on_card: true,
     },
     [[TEAM_PERK_JUMP_BOOSTER]]: {
         display_name: 'Jump Boost',
@@ -95,7 +95,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [[TEAM_PERK_QUICKDRAW]]: {
         display_name: 'Quickdraw',
         description: 'Returning Fire generates a Redline Marker instead of an Activation Marker.',
-        is_ability: true,
+        visible_on_card: true,
     },
     [[TEAM_PERK_EXTRA_MISSILE_AMMO]]: {
         renderDisplayName: makeRenderDisplayName('Extra Guided Ammo'),
@@ -114,8 +114,9 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
 
             return `Short(X) weapons gain +${baseValue}${repeatStr} to their range.`;
         },
+        card_note: 'applied',
         value: 2,
-        stackable: true,
+        visible_on_card: true,
     },
 });
 
