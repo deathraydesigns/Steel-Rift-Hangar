@@ -114,7 +114,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
 
             return `Short(X) weapons gain +${baseValue}${repeatStr} to their range.`;
         },
-        card_note: 'applied',
+        card_note: '+2 applied',
         value: 2,
         visible_on_card: true,
     },

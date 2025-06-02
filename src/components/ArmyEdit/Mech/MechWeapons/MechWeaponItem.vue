@@ -36,10 +36,20 @@ function remove() {
       {{ weapon.display_name }}
     </td>
     <td class="text-end">
-      {{ weapon.damage }}
+        {{ weapon.damage }}
     </td>
-    <td class="text-end">
-      <format-inches :value="weapon.range"/>
+    <td class="text-end text-nowrap">
+      <template v-if="weapon.range_modifier">
+        <small class="fw-light">
+          {{ weapon.range }}+{{ weapon.range_modifier }}=
+        </small>
+        <span class="fw-bold">
+          {{ weapon.range_total }}"
+        </span>
+      </template>
+      <template v-else>
+        <format-inches :value="weapon.range"/>
+      </template>
     </td>
     <td>
       <TraitList :traits="weapon.traits"/>

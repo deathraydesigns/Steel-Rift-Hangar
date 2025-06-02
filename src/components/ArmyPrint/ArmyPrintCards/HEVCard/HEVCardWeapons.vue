@@ -73,17 +73,25 @@ function filterTraits(traits) {
       </td>
       <td>
         <template v-if="weapon.base_melee_damage">
-          <span class="fw-light">
-            {{ weapon.base_melee_damage }} + {{ weapon.melee_trait_damage }} =
-          </span>
+          <small class="fw-light">
+            {{ weapon.base_melee_damage }}+{{ weapon.melee_trait_damage }} =
+          </small>
           {{ weapon.total_damage }}
         </template>
         <template v-else>
           {{ weapon.damage }}
         </template>
       </td>
-      <td>
-        <format-inches :value="weapon.range"/>
+      <td class="text-nowrap">
+        <div class="text-end" v-if="weapon.range_modifier">
+          <small class="fw-light">
+            {{ weapon.range }}+{{ weapon.range_modifier }} =
+          </small>
+          {{ weapon.range_total }}"
+        </div>
+        <template v-else>
+          <format-inches :value="weapon.range"/>
+        </template>
       </td>
       <td class="text-start">
         <div v-for="(trait, index) in filterTraits(weapon.traits)">

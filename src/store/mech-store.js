@@ -12,7 +12,7 @@ import {
     WEAPON_TRAITS,
     weaponTraitDisplayName,
 } from '../data/weapon-traits.js';
-import {getRangeFromShortTrait, HOWITZER, MECH_WEAPONS, MISSILES, ROCKET_PACK} from '../data/mech-weapons.js';
+import {HOWITZER, MECH_WEAPONS, MISSILES, ROCKET_PACK} from '../data/mech-weapons.js';
 import {readonly} from 'vue';
 import {
     COMBAT_SHIELD,
@@ -357,11 +357,11 @@ export const useMechStore = defineStore('mech', {
                         display_name,
                         slots,
                         limited_size_ids,
+                        range,
                     } = weapon;
 
-                    const {traits, team_perks, faction_perks} = this.getWeaponTraitInfo(mechId, weaponId);
+                    let {traits, team_perks, faction_perks, range_modifier} = this.getWeaponTraitInfo(mechId, weaponId);
                     const traitLimited = find(traits, {id: TRAIT_LIMITED});
-                    const range = getRangeFromShortTrait(traits);
 
                     let max_uses = null;
                     if (traitLimited) {
@@ -392,6 +392,8 @@ export const useMechStore = defineStore('mech', {
                         slots,
                         cost,
                         range,
+                        range_modifier,
+                        range_total: range + range_modifier,
                         traits,
                         team_perks,
                         faction_perks,
@@ -415,6 +417,8 @@ export const useMechStore = defineStore('mech', {
                     const faction_perks = [];
                     const team_perks = [];
 
+                    let range_modifier = null;
+
                     if (weaponId === ROCKET_PACK || weaponId === MISSILES) {
                         const perk = find(perks, {id: TEAM_PERK_EXTRA_MISSILE_AMMO});
                         const traitLimited = find(traits, {id: TRAIT_LIMITED});
@@ -435,7 +439,7 @@ export const useMechStore = defineStore('mech', {
                     if (perk) {
                         const match = find(traits, {id: TRAIT_SHORT});
                         if (match) {
-                            match.number += perk.value;
+                            range_modifier = perk.value;
                             team_perks.push(perk);
                         }
                     }
@@ -455,7 +459,7 @@ export const useMechStore = defineStore('mech', {
                         {display_name: weaponTraitDisplayName(trait)},
                     ));
 
-                    return {traits, team_perks, faction_perks};
+                    return {traits, team_perks, faction_perks, range_modifier};
                 };
             },
             getMechWeaponsAttachmentInfo(state) {
