@@ -241,6 +241,13 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     width: 100%;
     margin: 2pt 0;
 
+    &.table-stats-small {
+      .use {
+        width: 9pt;
+        height: 9pt;
+      }
+    }
+
     thead th {
       font-family: $font-anta;
       font-weight: normal;

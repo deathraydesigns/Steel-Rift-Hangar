@@ -44,10 +44,10 @@ const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitCardInfo
           <div class="col-6">
             <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
             <div class="row g-1">
-              <div class="col-6">
+              <div class="col-6 mt-0">
                 <UnitCardWeapons :weapons="vehicleWeapons"/>
               </div>
-              <div class="col-6">
+              <div class="col-6 mt-0">
                 <UnitCardTraits :traits="info.traits"/>
               </div>
             </div>
@@ -55,10 +55,10 @@ const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitCardInfo
           <div class="col-6">
             <UnitCardGarrisonInfantry :unit-attachment-id="unitAttachmentId"/>
             <div class="row g-1">
-              <div class="col-6">
+              <div class="col-6 mt-0">
                 <UnitCardWeapons :weapons="infantryWeapons" damage-suffix=" x (X)"/>
               </div>
-              <div class="col-6">
+              <div class="col-6 mt-0">
                 <UnitCardTraits :traits="infantryTraits"/>
               </div>
             </div>
@@ -69,10 +69,10 @@ const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitCardInfo
       <template v-else>
         <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
         <div class="row g-1">
-          <div class="col-6">
+          <div class="col-6 mt-0">
             <UnitCardWeapons :weapons="vehicleWeapons"/>
           </div>
-          <div class="col-6">
+          <div class="col-6 mt-0">
             <UnitCardTraits :traits="info.traits"/>
           </div>
         </div>

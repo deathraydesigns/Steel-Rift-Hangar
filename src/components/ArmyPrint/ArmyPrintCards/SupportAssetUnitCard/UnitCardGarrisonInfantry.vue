@@ -26,7 +26,7 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
         label="Garrisoned Units"
         :type-display-name="units[0].unit_type.display_name"
     />
-    <table class="table-stats">
+    <table class="table-stats table-stats-small">
       <thead>
       <tr>
         <th class="text-start text-nowrap" :colspan="hasCardRefIds ? 2 : 1">
