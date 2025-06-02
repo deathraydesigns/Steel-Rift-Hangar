@@ -2,7 +2,6 @@
 import {BFormInput} from 'bootstrap-vue-next';
 import {useMechStore} from '../../../store/mech-store.js';
 import {useFactionStore} from '../../../store/faction-store.js';
-import Number from '../../functional/number.vue';
 import MechFactionPerkRow from './MechStats/MechFactionPerkRow.vue';
 import Fraction from '../../functional/fraction.vue';
 import MechWeapons from './MechWeapons.vue';
@@ -19,7 +18,11 @@ const mechStore = useMechStore();
 const factionStore = useFactionStore();
 const teamStore = useTeamStore();
 
-const {mechId} = defineProps({mechId: Number});
+const {mechId} = defineProps({
+  mechId: {
+    type: Number,
+  },
+});
 
 const mech = computed(() => mechStore.getMech(mechId));
 const info = computed(() => mechStore.getMechInfo(mechId));
