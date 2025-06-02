@@ -277,7 +277,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds({
         ],
     }),
     [[INFANTRY_RIFLES]]: makeWeapon({
-        display_name: 'Infantry Rifles',
+        display_name: 'Rifles',
         damage: 2,
         traits: [
             trait(TRAIT_SHORT, 6),
@@ -312,7 +312,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds({
         ],
     }),
     [[INFANTRY_HEAVY_RIFLES]]: makeWeapon({
-        display_name: 'Heavy Infantry Rifles',
+        display_name: 'Heavy Rifles',
         damage: 3,
         traits: [
             trait(TRAIT_LIGHT),
