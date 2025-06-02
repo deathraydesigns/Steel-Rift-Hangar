@@ -5,6 +5,7 @@ import {
     DWC_TOP_END_HARDWARE,
     FACTION_PERKS,
     isMatchingPerkOrCopy,
+    OI_MATERIEL_STOCKPILES,
     RD_ADVANCED_HARDPOINT_DESIGN,
 } from '../data/faction-perks.js';
 import {
@@ -156,7 +157,7 @@ export const useFactionStore = defineStore('faction', () => {
         const advancedHardPointsBonusSlots = computed(() => RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS);
         const topEndHardwareBonusTons = computed(() => DWC_TOP_END_HARDWARE_BONUS_TONS);
 
-        const hasMaterielStockpilesInfo = computed(() => getMatchingPerkOrCopyInfo(DWC_TOP_END_HARDWARE));
+        const hasMaterielStockpilesInfo = computed(() => getMatchingPerkOrCopyInfo(OI_MATERIEL_STOCKPILES));
 
         const factions_info = computed(() => {
             return readonly(Object.values(FACTIONS).map(({id, display_name}) => {
