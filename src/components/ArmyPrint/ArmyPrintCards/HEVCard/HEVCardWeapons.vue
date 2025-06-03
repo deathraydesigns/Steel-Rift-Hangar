@@ -1,11 +1,12 @@
 <script setup>
 import {computed} from 'vue';
 import {useMechStore} from '../../../../store/mech-store.js';
-import {TRAIT_LIMITED, TRAIT_MELEE, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
+import {TRAIT_LIMITED, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
 import {TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
 import {find} from 'es-toolkit/compat';
-import FormatInches from '../../../functional/format-inches.vue';
+import DamageFormatter from '../../../UI/DamageFormatter.vue';
+import RangeFormatter from '../../../UI/RangeFormatter.vue';
 
 const mechStore = useMechStore();
 const {mechId} = defineProps({
@@ -14,7 +15,6 @@ const {mechId} = defineProps({
   },
 });
 const weapons = computed(() => {
-  let {size} = mechStore.getMechInfo(mechId);
   let results = mechStore.getMechWeaponsAttachmentInfo(mechId);
   let mineDroneUpgrade = find(mechStore.getMechUpgradesAttachmentInfo(mechId), {upgrade_id: MINEFIELD_DRONE_CARRIER_SYSTEM});
 
@@ -24,22 +24,7 @@ const weapons = computed(() => {
     results.push(mineDroneUpgrade);
   }
 
-  return results.map(weapon => {
-    const melee = find(weapon.traits, {id: TRAIT_MELEE});
-
-    if (melee) {
-
-      const base_melee_damage = size.smash_damage + 1;
-      const melee_trait_damage = melee.number;
-      return Object.assign({}, weapon, {
-        base_melee_damage,
-        melee_trait_damage,
-        total_damage: base_melee_damage + melee_trait_damage,
-      });
-    }
-
-    return weapon;
-  });
+  return results;
 });
 
 const hasUses = computed(() => weapons.value.find(weapon => !!weapon.max_uses));
@@ -71,27 +56,20 @@ function filterTraits(traits) {
           <span class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span>
         </span>
       </td>
-      <td>
-        <template v-if="weapon.base_melee_damage">
-          <small class="fw-light">
-            {{ weapon.base_melee_damage }}+{{ weapon.melee_trait_damage }} =
-          </small>
-          {{ weapon.total_damage }}
-        </template>
-        <template v-else>
-          {{ weapon.damage }}
-        </template>
+      <td class="text-nowrap">
+        <DamageFormatter
+            :damage="weapon.damage"
+            :melee-base-damage="weapon.melee_base_damage"
+            :melee-modifier-damage="weapon.melee_trait_damage"
+            :melee-total-damage="weapon.melee_total_damage"
+        />
       </td>
       <td class="text-nowrap">
-        <div class="text-end" v-if="weapon.range_modifier">
-          <small class="fw-light">
-            {{ weapon.range }}+{{ weapon.range_modifier }} =
-          </small>
-          {{ weapon.range_total }}"
-        </div>
-        <template v-else>
-          <format-inches :value="weapon.range"/>
-        </template>
+        <RangeFormatter
+            :range="weapon.range"
+            :modifier="weapon.range_modifier"
+            :total="weapon.range_total"
+        />
       </td>
       <td class="text-start">
         <div v-for="(trait, index) in filterTraits(weapon.traits)">

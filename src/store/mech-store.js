@@ -349,6 +349,7 @@ export const useMechStore = defineStore('mech', {
                     const teamStore = useTeamStore();
                     const mech = this.getMech(mechId);
                     const size_id = mech.size_id;
+                    const size = MECH_SIZES[size_id];
                     const weapon = MECH_WEAPONS[weaponId];
                     const damage = weapon.damage_by_size[size_id];
                     const cost = weapon.cost_by_size[size_id];
@@ -385,6 +386,15 @@ export const useMechStore = defineStore('mech', {
                         validation_message = prohibited.validation_message;
                     }
 
+                    let melee_base_damage = null;
+                    let melee_trait_damage = null;
+
+                    const melee = find(traits, {id: TRAIT_MELEE});
+                    if (melee) {
+                        melee_base_damage = size.smash_damage + 1;
+                        melee_trait_damage = melee.number;
+                    }
+
                     return readonly({
                         weapon_id: weaponId,
                         display_name,
@@ -394,6 +404,9 @@ export const useMechStore = defineStore('mech', {
                         range,
                         range_modifier,
                         range_total: range + range_modifier,
+                        melee_base_damage,
+                        melee_trait_damage,
+                        melee_total_damage: melee_base_damage + melee_trait_damage,
                         traits,
                         team_perks,
                         faction_perks,

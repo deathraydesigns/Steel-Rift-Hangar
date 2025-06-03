@@ -7,7 +7,8 @@ import TraitList from '../../../UI/TraitList.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import {BButton} from 'bootstrap-vue-next';
 import Number from '../../../functional/number.vue';
-import FormatInches from '../../../functional/format-inches.vue';
+import DamageFormatter from '../../../UI/DamageFormatter.vue';
+import RangeFormatter from '../../../UI/RangeFormatter.vue';
 
 const mechStore = useMechStore();
 
@@ -36,20 +37,19 @@ function remove() {
       {{ weapon.display_name }}
     </td>
     <td class="text-end">
-        {{ weapon.damage }}
+      <DamageFormatter
+          :damage="weapon.damage"
+          :melee-base-damage="weapon.melee_base_damage"
+          :melee-modifier-damage="weapon.melee_trait_damage"
+          :melee-total-damage="weapon.melee_total_damage"
+      />
     </td>
     <td class="text-end text-nowrap">
-      <template v-if="weapon.range_modifier">
-        <small class="fw-light">
-          {{ weapon.range }}+{{ weapon.range_modifier }}=
-        </small>
-        <span class="fw-bold">
-          {{ weapon.range_total }}"
-        </span>
-      </template>
-      <template v-else>
-        <format-inches :value="weapon.range"/>
-      </template>
+      <RangeFormatter
+          :range="weapon.range"
+          :modifier="weapon.range_modifier"
+          :total="weapon.range_total"
+      />
     </td>
     <td>
       <TraitList :traits="weapon.traits"/>

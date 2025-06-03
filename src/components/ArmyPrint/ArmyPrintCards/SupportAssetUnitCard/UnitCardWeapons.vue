@@ -3,6 +3,7 @@ import {TRAIT_LIMITED, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
 import {sortBy} from 'es-toolkit';
 import {computed} from 'vue';
 import FormatInches from '../../../functional/format-inches.vue';
+import DamageFormatter from '../../../UI/DamageFormatter.vue';
 
 const {weapons, damageSuffix} = defineProps({
   weapons: {
@@ -38,15 +39,13 @@ const sortedWeapons = computed(() => sortBy(weapons, 'display_name').reverse());
         {{ weapon.display_name }}
       </td>
       <td class="text-end text-nowrap">
-        <template v-if="weapon.base_melee_damage">
-          <span class="fw-light">
-            {{ weapon.base_melee_damage }} + {{ weapon.melee_trait_damage }} =
-          </span>
-          {{ weapon.total_damage }}
-        </template>
-        <template v-else>
-          {{ weapon.damage }}{{ damageSuffix }}
-        </template>
+        <DamageFormatter
+            :damage="weapon.damage"
+            :melee-base-damage="weapon.melee_base_damage"
+            :melee-modifier-damage="weapon.melee_trait_damage"
+            :melee-total-damage="weapon.melee_total_damage"
+            :suffix="damageSuffix"
+        />
       </td>
       <td class="text-end">
         <format-inches :value="weapon.range"/>
