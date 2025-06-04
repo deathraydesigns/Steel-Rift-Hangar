@@ -17,6 +17,15 @@ const {mechId} = defineProps({
 });
 
 const upgrades = computed(() => {
+  const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId);
+
+  const armorUpgradeArray = [];
+  if (armorUpgrade) {
+    armorUpgradeArray.push({
+      display_name: armorUpgrade.card_upgrade_display_name,
+    });
+  }
+
   const upgradesAttachments = mechStore.getMechUpgradesAttachmentInfo(mechId)
       .map(item => {
 
@@ -41,6 +50,7 @@ const upgrades = computed(() => {
     });
   }
   return [].concat(
+      armorUpgradeArray,
       upgradesAttachments,
       teamPerks,
       mobility,

@@ -17,6 +17,7 @@ export const MECH_ARMOR_UPGRADES = makeFrozenStaticListIds({
     }),
     [[ABLATIVE_ARMOR_UPGRADE]]: makeArmorUpgrade({
         display_name: 'Ablative',
+        card_upgrade_display_name: 'Ablative Armor',
         cost_by_size: {
             [[SIZE_LIGHT]]: 1,
             [[SIZE_MEDIUM]]: 1,
@@ -28,12 +29,14 @@ export const MECH_ARMOR_UPGRADES = makeFrozenStaticListIds({
     }),
     [[REACTIVE_ARMOR_UPGRADE]]: makeArmorUpgrade({
         display_name: 'Reactive',
+        card_upgrade_display_name: 'Reactive Armor',
         cost: 1,
         slots: 1,
         description: 'Reduce the Attack Pool for Missile and Rocket Pack attacks by 1, to a minimum of 1.',
     }),
     [[CERAMIC_ARMOR_UPGRADE]]: makeArmorUpgrade({
         display_name: 'Ceramic',
+        card_upgrade_display_name: 'Ceramic Armor',
         cost_by_size: {
             [[SIZE_LIGHT]]: 2,
             [[SIZE_MEDIUM]]: 2,
@@ -45,12 +48,14 @@ export const MECH_ARMOR_UPGRADES = makeFrozenStaticListIds({
     }),
     [[CLAYMORE_ARMOR_UPGRADE]]: makeArmorUpgrade({
         display_name: 'Claymore',
+        card_upgrade_display_name: 'Claymore Armor',
         description: 'Reduce the Attack Pool of incoming Smash Orders by 1 to a minimum of 1. If a Unit equipped with Claymore Armor takes structure damage from a Smash Order, the attacking Unit is immediately targeted by an Engage Order with a damage value of (2/2/3/3) and the Frag trait.',
         cost: 1,
         slots: 1,
     }),
     [[EXTRA_PLATING_ARMOR_UPGRADE]]: makeArmorUpgrade({
         display_name: 'Extra Plating',
+        card_upgrade_display_name: 'Extra Plating (+2 applied)',
         description: 'This HE-V gains 2 additional Armor ',
         cost: 1,
         slots: 1,
@@ -58,6 +63,7 @@ export const MECH_ARMOR_UPGRADES = makeFrozenStaticListIds({
     }),
     [[HEAVY_PLATING_ARMOR_UPGRADE]]: makeArmorUpgrade({
         display_name: 'Heavy Plating',
+        card_upgrade_display_name: 'Heavy Plating (+4 applied)',
         description: 'This HE-V gains 4 additional Armor ',
         cost: 1,
         slots: 1,

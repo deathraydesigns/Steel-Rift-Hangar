@@ -702,6 +702,18 @@ export const useMechStore = defineStore('mech', {
                 };
             },
 
+            getMechArmorUpgradeAttachmentInfo(state) {
+                return (mechId) => {
+                    let {
+                        armor_upgrade_id,
+                    } = this.getMech(mechId);
+
+                    if (armor_upgrade_id === NO_ARMOR_UPGRADE) {
+                        return;
+                    }
+                    return this.getMechArmorUpgradeInfo(mechId, armor_upgrade_id);
+                };
+            },
             getMechArmorUpgradeInfo(state) {
                 return function (mechId, armorUpgradeId) {
                     const teamStore = useTeamStore();
@@ -718,6 +730,7 @@ export const useMechStore = defineStore('mech', {
                         slots,
                         cost_by_size,
                         display_name,
+                        card_upgrade_display_name,
                         armor_mod,
                         limited_size_ids,
                         description,
@@ -764,6 +777,7 @@ export const useMechStore = defineStore('mech', {
                         cost,
                         slots,
                         display_name,
+                        card_upgrade_display_name,
                         description,
                         valid,
                         validation_message,

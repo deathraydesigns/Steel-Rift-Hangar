@@ -152,6 +152,10 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     .hp-heading {
       font-size: 80%;
       padding: 0 $card-padding-x;
+
+      small {
+        font-size: 70%;
+      }
     }
 
     .structure-systems {
@@ -203,6 +207,8 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
 
       &.hp-armor {
         border-radius: $armor-border-radius;
+        color: #808080;
+        font-size: 60%;
       }
 
       > span {
