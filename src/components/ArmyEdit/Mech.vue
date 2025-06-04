@@ -7,6 +7,7 @@ import {useExpandCollapseAll} from '../functional/expand-collapse.js';
 import {useValidationStore} from '../../store/validation-store.js';
 import IconValidationError from '../UI/IconValidationError.vue';
 import MechStats from './Mech/MechStats.vue';
+import HEVCard from '../ArmyPrint/ArmyPrintCards/HEVCard.vue';
 
 const mechStore = useMechStore();
 const validationStore = useValidationStore();
@@ -109,8 +110,12 @@ watch(expandSignal, () => visible.value = true);
           lazy
       >
         <hr class="mt-2">
-        <div class="d-flex justify-content-md-center">
+        <div class="d-lg-flex justify-content-lg-center">
           <MechStats :mech-id="mechId"/>
+          <div class="output-container ms-3">
+            <div class="fw-bold mb-2 pt-2">Card Preview</div>
+            <HEVCard :mech-id="mechId" class="shadow"/>
+          </div>
         </div>
       </BCollapse>
     </div>
