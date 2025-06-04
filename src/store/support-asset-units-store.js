@@ -5,11 +5,18 @@ import {getWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT} from '../data/weapon-traits.
 import {UNIT_WEAPONS} from '../data/unit-weapons.js';
 import {each, find, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {filterUniqueById, findById, findItemIndexById} from './helpers/collection-helper.js';
-import {getUnitTrait, TRAIT_GARRISON, TRAIT_UL_HEV_LAUNCH_GEAR, unitTraitDisplayName} from '../data/unit-traits.js';
+import {
+    TRAIT_GARRISON,
+    TRAIT_SUPPORT_MINE_DRONE_LAYER,
+    TRAIT_UL_HEV_LAUNCH_GEAR,
+    getUnitTrait,
+    unitTraitDisplayName,
+} from '../data/unit-traits.js';
 import {UNIT_SIZES} from '../data/unit-sizes.js';
 import {getInfantrySquad, INFANTRY_SQUADS} from '../data/infantry-squads.js';
 import {countBy, flatMap} from 'es-toolkit';
 import {UNIT_TYPES} from '../data/unit-types.js';
+import {INFANTRY_OUTPOST} from '../data/support-assets/infantry-outpost.js';
 
 export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
 
@@ -46,6 +53,19 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
 
         const used_tons = computed(() => sumBy(support_asset_units_info.value, 'cost'));
         const used_count = computed(() => support_asset_units.value.length);
+
+        const has_mine_drones = computed(() => {
+            const hasOutpost = find(support_asset_units.value, (unit) => unit.support_asset_unit_id === INFANTRY_OUTPOST);
+            if (hasOutpost) {
+                return true;
+            }
+
+            return !!support_asset_units_info.value.find(unit => {
+                return unit.vehicles.find(vehicle => {
+                    return vehicle.traits.find(trait => trait.id === TRAIT_SUPPORT_MINE_DRONE_LAYER);
+                });
+            });
+        });
 
         function getUnitAttachmentInfo(unitAttachmentId) {
             let {
@@ -636,6 +656,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             support_asset_units,
             support_asset_units_id_increment,
 
+            has_mine_drones,
             used_tons,
             used_count,
 

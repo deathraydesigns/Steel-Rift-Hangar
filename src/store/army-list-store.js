@@ -7,9 +7,11 @@ import {MINE_DRONE_BARRAGE} from '../data/support-asset-weapons.js';
 import {useSupportAssetWeaponsStore} from './support-asset-weapons-store.js';
 import {useSupportAssetCountsStore} from './support-asset-count-store.js';
 import {find} from 'es-toolkit/compat';
+import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
 
 export const useArmyListStore = defineStore('army-list', () => {
         const supportAssetWeaponsStore = useSupportAssetWeaponsStore();
+        const supportAssetUnitStore = useSupportAssetUnitsStore();
 
         const defaultArmyName = '';
         const defaultMaxTons = 100;
@@ -43,6 +45,9 @@ export const useArmyListStore = defineStore('army-list', () => {
                 return true;
             }
 
+            if (supportAssetUnitStore.has_mine_drones) {
+                return true;
+            }
             return supportAssetWeaponsStore.hasSupportAssetId(MINE_DRONE_BARRAGE);
         });
 

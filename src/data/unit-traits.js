@@ -87,6 +87,7 @@ export const UNIT_TRAITS = makeUnitTraits({
     },
     [[TRAIT_SUPPORT_MINE_DRONE_LAYER]]: {
         display_name: 'Support: Mine Drone Layer',
+        formatter: numberFormater,
         description: '',
     },
     [[TRAIT_SUPPORT_MOED]]: {
