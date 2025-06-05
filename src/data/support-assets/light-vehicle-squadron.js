@@ -22,6 +22,7 @@ export const LIGHT_VEHICLE_SQUADRON_DATA = {
         display_name: 'Light Unit Squadron',
         cost: 10,
         max_armor_tons: 10,
+        defense: 3,
         unit_points_description: 'This Unit must have a total of 10 armor',
         traits: [
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Light Vehicle'),

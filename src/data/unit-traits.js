@@ -16,6 +16,7 @@ export const TRAIT_SUPPORT_GUIDANCE_SUITE = 'TRAIT_SUPPORT_GUIDANCE_SUITE';
 export const TRAIT_SUPPORT_MINE_DRONE_LAYER = 'TRAIT_SUPPORT_MINE_DRONE_LAYER';
 export const TRAIT_SUPPORT_MOED = 'TRAIT_SUPPORT_MOED';
 export const TRAIT_MSOE_LAUNCHER = 'TRAIT_MSOE_LAUNCHER';
+export const TRAIT_MSOE_DEPLOYER = 'TRAIT_MSOE_DEPLOYER';
 export const TRAIT_SCRAMBLERS = 'TRAIT_SCRAMBLERS';
 export const TRAIT_INFERNO_GEAR = 'TRAIT_INFERNO_GEAR';
 export const TRAIT_SUPPRESSIVE_FIRE = 'TRAIT_SUPPRESSIVE_FIRE';
@@ -97,6 +98,10 @@ export const UNIT_TRAITS = makeUnitTraits({
     [[TRAIT_MSOE_LAUNCHER]]: {
         display_name: 'MSOE Launcher',
         description: 'When targeting a unit with the Flying Trait, the target is at -2 to Defense Rolls from weapons with this trait. (I.e., if the target until would normally remove damage from the Attack Pool on a 2+, it avoids damage from this weapon on a 4+). If a Weapon with this trait destroys the Target Model, you may apply remaining damage to another Model of the Squadron as if the Squadron was not a Flying Squadron. ',
+    },
+    [[TRAIT_MSOE_DEPLOYER]]: {
+        display_name: 'MSOE Deployer',
+        description: '',
     },
     [[TRAIT_SCRAMBLERS]]: {
         display_name: 'Scramblers',

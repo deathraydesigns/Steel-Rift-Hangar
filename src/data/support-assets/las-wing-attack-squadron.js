@@ -27,6 +27,7 @@ export const LAS_WING_ATTACK_SQUADRON_DATA = {
         display_name: 'LAS-Wing Attack Squadron',
         cost: 10,
         max_vehicles: 4,
+        defense: 3,
         traits: [
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Light Vehicle'),
             trait(TRAIT_FLYING),

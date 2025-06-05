@@ -28,6 +28,7 @@ export const INFANTRY_OUTPOST_DATA = {
         cost: 10,
         max_vehicles: 2,
         all_vehicle_must_be_the_same: true,
+        defense: 6,
         traits: [
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Fortification'),
             trait(TRAIT_GROUP_COMMAND),

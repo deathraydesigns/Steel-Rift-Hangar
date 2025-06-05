@@ -44,6 +44,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA = {
         display_name: 'Assault Vehicle Squadron',
         cost: 20,
         max_vehicles: 4,
+        defense: 4,
         traits: [
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Medium Vehicle'),
             trait(TRAIT_SQUADRON),

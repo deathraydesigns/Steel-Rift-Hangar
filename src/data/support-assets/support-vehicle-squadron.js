@@ -1,6 +1,7 @@
 import {VEH_AUTO_CANNON} from '../unit-weapons.js';
 import {trait} from '../weapon-traits.js';
 import {
+    TRAIT_MSOE_DEPLOYER,
     TRAIT_OUTRIDER,
     TRAIT_SQUADRON,
     TRAIT_SUPPORT_GUIDANCE_SUITE,
@@ -31,6 +32,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA = {
         cost: 20,
         max_duplicate_vehicles: 2,
         max_vehicles: 4,
+        defense: 4,
         traits: [
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Medium Vehicle'),
             trait(TRAIT_SQUADRON),
@@ -95,7 +97,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA = {
                     VEH_AUTO_CANNON,
                 ],
                 traits: [
-                    trait(TRAIT_SUPPORT_MINE_DRONE_LAYER, 4),
+                    trait(TRAIT_MSOE_DEPLOYER),
                 ],
             },
         }),

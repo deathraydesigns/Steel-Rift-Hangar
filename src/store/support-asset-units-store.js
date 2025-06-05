@@ -87,6 +87,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 unit_points_description,
                 all_vehicle_must_be_the_same,
                 traits,
+                defense,
             } = _getUnitInfo(supportAssetId);
 
             vehicles = vehicles.map(vehicleAttachment => getUnitAttachmentVehicleInfo(unitAttachmentId, vehicleAttachment.id));
@@ -118,6 +119,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
                 upgrade_pod_id,
                 vehicles,
                 traits,
+                defense,
                 all_vehicle_must_be_the_same,
             });
         }

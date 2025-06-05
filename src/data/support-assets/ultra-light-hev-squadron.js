@@ -24,6 +24,12 @@ import {trait} from '../weapon-traits.js';
 import {TYPE_HEV} from '../unit-types.js';
 
 export const ULTRA_LIGHT_HEV_SQUADRON = 'ULTRA_LIGHT_HEV_SQUADRON';
+
+const baseStats = {
+    armor: 3,
+    structure: 0,
+};
+
 export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
     [[ULTRA_LIGHT_HEV_SQUADRON]]: {
         unit_type_id: TYPE_HEV,
@@ -31,6 +37,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
         display_name: 'Ultra-Light HE-V Squadron',
         cost: 10,
         max_vehicles: 3,
+        defense: 2,
         traits: [
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'UL HE-V'),
             trait(TRAIT_SQUADRON),
@@ -52,8 +59,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
             BRAWLER: {
                 move: 7,
                 jump: 0,
-                armor: 3,
-                structure: 0,
+                ...baseStats,
                 display_name: 'Brawler',
                 weapon_ids: [
                     VEH_SUBMUNITIONS,
@@ -65,8 +71,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
             PYRO: {
                 move: 6,
                 jump: 0,
-                armor: 3,
-                structure: 0,
+                ...baseStats,
                 display_name: 'Pyro',
                 weapon_ids: [
                     UL_INCINERATORS,
@@ -79,8 +84,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
             COMMANDO: {
                 move: 7,
                 jump: 0,
-                armor: 3,
-                structure: 0,
+                ...baseStats,
                 display_name: 'Commando',
                 weapon_ids: [
                     VEH_SUBMUNITIONS,
@@ -93,8 +97,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
             RIFLEMAN: {
                 move: 8,
                 jump: 0,
-                armor: 3,
-                structure: 0,
+                ...baseStats,
                 display_name: 'Rifleman',
                 weapon_ids: [
                     UL_AUTO_CANNON,

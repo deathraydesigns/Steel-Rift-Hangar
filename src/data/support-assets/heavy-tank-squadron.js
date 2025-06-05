@@ -41,6 +41,7 @@ export const HEAVY_TANK_SQUADRON_DATA = {
         display_name: 'Heavy Tank Troop',
         cost: 20,
         max_vehicles: 2,
+        defense: 5,
         traits: [
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Heavy Vehicle'),
             trait(TRAIT_HEAVY_SUPPORT_ASSET),

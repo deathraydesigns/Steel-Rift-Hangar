@@ -25,6 +25,7 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
     <UnitCardHalfHeader
         label="Garrisoned Units"
         :type-display-name="units[0].unit_type.display_name"
+        :defense="3"
     />
     <table class="table-stats table-stats-small">
       <thead>

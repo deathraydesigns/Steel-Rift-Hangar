@@ -15,6 +15,10 @@ const {
   sizeDisplayName: {
     type: String,
   },
+  defense: {
+    type: Number,
+    required: true,
+  },
 });
 </script>
 <template>
@@ -29,6 +33,7 @@ const {
         </template>
         <template v-if="typeDisplayName">
           <span class="fw-medium">Type:</span> {{ typeDisplayName }}
+          <span class="fw-medium">Def:</span> {{ defense }}+
         </template>
       </div>
     </div>

@@ -37,6 +37,7 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
         cost: 10,
         max_vehicles: 3,
         all_vehicle_must_be_the_same: true,
+        defense: 3,
         traits: [
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Light Vehicle'),
             trait(TRAIT_FLYING),
