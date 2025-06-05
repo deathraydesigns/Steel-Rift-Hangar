@@ -12,6 +12,7 @@ import MineDroneCard from './ArmyPrintCards/MineDroneCard.vue';
 import FactionPerkCard from './ArmyPrintCards/FactionPerkCard.vue';
 import SupportAssetWeaponCard from './ArmyPrintCards/SupportAssetWeaponCard.vue';
 import SupportAssetUnitCard from './ArmyPrintCards/SupportAssetUnitCard.vue';
+import {sortBy} from 'es-toolkit';
 
 const printSettingsStore = usePrintSettingsStore();
 const teamStore = useTeamStore();
@@ -92,7 +93,7 @@ const referenceCards = computed(() => {
 
 const supportAssetPages = computed(() => {
 
-  const cards = [];
+  let cards = [];
   supportAssetUnitsStore.support_asset_units.forEach(unit => {
     const hasGarrison = supportAssetUnitsStore.getUnitAttachmentHasGarrisonUnits(unit.id);
 
@@ -103,6 +104,8 @@ const supportAssetPages = computed(() => {
     });
 
   });
+
+  cards = sortBy(cards, ['cardSize'])
 
   supportAssetWeaponsStore.support_asset_weapon_ids.forEach(supportAssetId => {
     cards.push({
