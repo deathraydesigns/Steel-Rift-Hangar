@@ -17,6 +17,7 @@ const {unitAttachmentId} = defineProps({
 const unitStore = useSupportAssetUnitsStore();
 const unit = computed(() => unitStore.getUnitAttachmentInfo(unitAttachmentId));
 
+const hasMove = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.move));
 const hasJump = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.jump));
 const hasArmor = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.armor));
 const hasGarrison = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.garrison_units.length));
@@ -48,7 +49,7 @@ function filterTraits(traits) {
         <th class="text-start text-nowrap">
           {{ unit.unit_type.display_name }}
         </th>
-        <th class="text-end">
+        <th class="text-end" v-if="hasMove">
           Mov
         </th>
         <th class="text-end" v-if="hasJump">
@@ -78,7 +79,7 @@ function filterTraits(traits) {
         <td class="small text-start">
           {{ item.display_name }}
         </td>
-        <td class="text-end">
+        <td class="text-end" v-if="hasMove">
           <format-inches :value="item.move"/>
         </td>
         <td class="text-end" v-if="hasJump">
