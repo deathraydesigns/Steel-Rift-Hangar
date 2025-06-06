@@ -1,19 +1,12 @@
 <script setup>
 import ArmyPrintSettings from './ArmyPrint/ArmyPrintSettings.vue';
-import {
-  PRINT_MODE_ALL,
-  PRINT_MODE_CARDS,
-  PRINT_MODE_REF,
-  PRINT_MODES,
-  usePrintSettingsStore,
-} from '../store/print-settings-store.js';
+import {PRINT_MODE_CARDS, PRINT_MODE_REF, PRINT_MODES, usePrintSettingsStore} from '../store/print-settings-store.js';
 import {storeToRefs} from 'pinia';
 import {useFactionStore} from '../store/faction-store.js';
 import {useArmyListStore} from '../store/army-list-store.js';
 import {BFormCheckbox} from 'bootstrap-vue-next';
 import ArmyPrintCards from './ArmyPrint/ArmyPrintCards.vue';
 import ArmyPrintRef from './ArmyPrint/ArmyPrintRef.vue';
-import ArmyPrintAll from './ArmyPrint/ArmyPrintAll.vue';
 
 const printSettingsStore = usePrintSettingsStore();
 const factionStore = useFactionStore();
@@ -145,7 +138,6 @@ function print() {
       <div class="output-container">
         <ArmyPrintCards v-if="print_mode === PRINT_MODE_CARDS"/>
         <ArmyPrintRef v-if="print_mode === PRINT_MODE_REF"/>
-        <ArmyPrintAll v-if="print_mode === PRINT_MODE_ALL"/>
       </div>
     </div>
   </div>

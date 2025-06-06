@@ -5,17 +5,12 @@ import {useFactionStore} from './faction-store.js';
 
 export const PRINT_MODE_CARDS = 'PRINT_MODE_CARDS';
 export const PRINT_MODE_REF = 'PRINT_MODE_REF';
-export const PRINT_MODE_ALL = 'PRINT_MODE_ALL';
-
 export const PRINT_MODES = {
     [[PRINT_MODE_CARDS]]: {
         display_name: 'Cards',
     },
     [[PRINT_MODE_REF]]: {
         display_name: 'Rules Reference',
-    },
-    [[PRINT_MODE_ALL]]: {
-        display_name: 'All',
     },
 };
 export const usePrintSettingsStore = defineStore('print-settings', () => {

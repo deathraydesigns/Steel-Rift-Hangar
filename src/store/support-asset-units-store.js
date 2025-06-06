@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import {computed, readonly, ref} from 'vue';
 import {SUPPORT_ASSET_UNITS} from '../data/support-asset-units.js';
-import {freshWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT} from '../data/weapon-traits.js';
+import {freshWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT, WEAPON_TRAITS} from '../data/weapon-traits.js';
 import {UNIT_WEAPONS} from '../data/unit-weapons.js';
 import {each, find, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {filterUniqueById, findById, findItemIndexById} from './helpers/collection-helper.js';
@@ -10,6 +10,7 @@ import {
     TRAIT_GARRISON,
     TRAIT_SUPPORT_MINE_DRONE_LAYER,
     TRAIT_UL_HEV_LAUNCH_GEAR,
+    UNIT_TRAITS,
     unitTraitDisplayName,
 } from '../data/unit-traits.js';
 import {UNIT_SIZES} from '../data/unit-sizes.js';
@@ -17,7 +18,7 @@ import {getInfantrySquad, INFANTRY_SQUADS} from '../data/infantry-squads.js';
 import {countBy, flatMap} from 'es-toolkit';
 import {TYPE_INFANTRY, UNIT_TYPES} from '../data/unit-types.js';
 import {INFANTRY_OUTPOST} from '../data/support-assets/infantry-outpost.js';
-import {makeGrantedOrderCollection} from './helpers/helpers.js';
+import {makeGrantedOrderCollection, makeUniqueItemIdCollection} from './helpers/helpers.js';
 import {INFANTRY_ORDERS_DATA} from '../data/orders/infantry-orders.js';
 
 export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
@@ -165,6 +166,30 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             }
 
             return weapons;
+        }
+
+        function getAllUnitTraits() {
+            const traitCollection = makeUniqueItemIdCollection(UNIT_TRAITS);
+            support_asset_units.value.forEach(asset => {
+                const info = getUnitAttachmentInfo(asset.id);
+                info.vehicles.forEach(vehicle => {
+                    traitCollection.addMultiple(vehicle.traits);
+                });
+            });
+            return traitCollection.all();
+        }
+
+        function getAllWeaponTraitsCollection() {
+            const traitCollection = makeUniqueItemIdCollection(WEAPON_TRAITS);
+            support_asset_units.value.forEach(asset => {
+                const info = getUnitAttachmentInfo(asset.id);
+                info.vehicles.forEach(vehicle => {
+                    vehicle.weapons.forEach(weapon => {
+                        traitCollection.addMultiple(weapon.traits);
+                    });
+                });
+            });
+            return traitCollection;
         }
 
         function getUnitVehicleAttachmentAvailableWeaponChoicesInfo(unitAttachmentId, vehicleAttachmentId) {
@@ -591,10 +616,10 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return grantedOrders;
         }
 
-        function getUnitAttachmentGrantedOrdersCollection(vehicleAttachmentId) {
+        function getUnitAttachmentGrantedOrdersCollection(unitAttachmentId) {
             const grantedOrders = makeGrantedOrderCollection();
 
-            const info = getUnitAttachmentInfo(vehicleAttachmentId);
+            const info = getUnitAttachmentInfo(unitAttachmentId);
 
             grantedOrders.addMultiple(info.traits);
 
@@ -735,6 +760,8 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             getUnitAttachmentGrantedOrdersCollection,
             getAllGrantedOrdersCollection,
             getUnitAttachmentGarrisonGrantedOrdersCollection,
+            getAllUnitTraits,
+            getAllWeaponTraitsCollection,
 
             setUnitVehicleGarrisonChoice,
             setUnitUpgradePod,

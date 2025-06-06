@@ -47,3 +47,44 @@ export function makeGrantedOrderCollection() {
         all,
     };
 }
+
+export function makeUniqueItemIdCollection(DATA_STORE) {
+    let idMap = new Map();
+
+    function add(item) {
+        idMap.set(item.id, true);
+    }
+
+    function addMultiple(array) {
+        array.forEach(item => {
+            add(item);
+        });
+    }
+
+    function addId(id) {
+        idMap.set(id, true);
+    }
+
+    function addIds(array) {
+        array.forEach(id => {
+            addId(id);
+        });
+    }
+
+    function ids() {
+        return idMap.keys().toArray();
+    }
+
+    function all() {
+        return ids().map(id => DATA_STORE[id]);
+    }
+
+    return {
+        add,
+        addId,
+        addIds,
+        addMultiple,
+        ids,
+        all,
+    };
+}
