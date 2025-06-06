@@ -1,5 +1,4 @@
 import {
-    trait,
     TRAIT_AP,
     TRAIT_BLAST,
     TRAIT_CONCUSSIVE,
@@ -13,7 +12,7 @@ import {
     TRAIT_SMART,
     TRAIT_STAGGER,
 } from './weapon-traits.js';
-import {makeFrozenStaticListIds} from './data-helpers.js';
+import {makeFrozenStaticListIds, trait} from './data-helpers.js';
 import {getRangeFromShortTrait} from './mech-weapons.js';
 
 export const VEH_AUTO_CANNON = 'VEH_AUTO_CANNON';

@@ -1,5 +1,5 @@
 import {SIZE_ULTRA_LIGHT} from '../unit-sizes.js';
-import {makeStaticListIds} from '../data-helpers.js';
+import {makeStaticListIds, trait} from '../data-helpers.js';
 import {
     SHORT_RANGE_MISSILE_PACK,
     UL_AUTO_CANNON,
@@ -20,7 +20,6 @@ import {
     TRAIT_UL_HEV_LAUNCH_GEAR,
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
-import {trait} from '../weapon-traits.js';
 import {TYPE_HEV} from '../unit-types.js';
 
 export const ULTRA_LIGHT_HEV_SQUADRON = 'ULTRA_LIGHT_HEV_SQUADRON';

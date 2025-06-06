@@ -1,15 +1,15 @@
 import {defineStore} from 'pinia';
 import {computed, readonly, ref} from 'vue';
 import {SUPPORT_ASSET_UNITS} from '../data/support-asset-units.js';
-import {getWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT} from '../data/weapon-traits.js';
+import {freshWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT} from '../data/weapon-traits.js';
 import {UNIT_WEAPONS} from '../data/unit-weapons.js';
 import {each, find, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {filterUniqueById, findById, findItemIndexById} from './helpers/collection-helper.js';
 import {
+    freshUnitTrait,
     TRAIT_GARRISON,
     TRAIT_SUPPORT_MINE_DRONE_LAYER,
     TRAIT_UL_HEV_LAUNCH_GEAR,
-    getUnitTrait,
     unitTraitDisplayName,
 } from '../data/unit-traits.js';
 import {UNIT_SIZES} from '../data/unit-sizes.js';
@@ -135,7 +135,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             asset.unit_type = UNIT_TYPES[asset.unit_type_id];
             asset.size = UNIT_SIZES[asset.size_id];
             asset.traits = asset.traits || [];
-            asset.traits = asset.traits.map(getUnitTrait);
+            asset.traits = asset.traits.map(freshUnitTrait);
 
             return readonly(asset);
         }
@@ -256,7 +256,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             if (!traits) {
                 return [];
             }
-            return traits.map(trait => getUnitTrait(trait));
+            return traits.map(trait => freshUnitTrait(trait));
         }
 
         function _getUnitVehicleInfo(unitId, vehicleId) {
@@ -286,7 +286,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             garrisonUnit.unit_type = UNIT_TYPES[garrisonUnit.unit_type_id];
             garrisonUnit.size = UNIT_SIZES[garrisonUnit.size_id];
             garrisonUnit.weapons = garrisonUnit.weapon_ids.map(weaponId => _getWeaponInfo(weaponId));
-            garrisonUnit.traits = garrisonUnit.traits.map(trait => getUnitTrait(trait));
+            garrisonUnit.traits = garrisonUnit.traits.map(trait => freshUnitTrait(trait));
 
             return garrisonUnit;
         }
@@ -298,7 +298,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             }
             weapon = Object.assign({}, weapon);
 
-            weapon.traits = weapon?.traits?.map(trait => getWeaponTrait(trait)).filter(weapon => weapon.id !== TRAIT_SHORT) || [];
+            weapon.traits = weapon?.traits?.map(trait => freshWeaponTrait(trait)).filter(weapon => weapon.id !== TRAIT_SHORT) || [];
             const limitedTrait = findById(weapon.traits, TRAIT_LIMITED);
 
             if (limitedTrait) {
@@ -312,7 +312,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             let squad = INFANTRY_SQUADS[infantrySquadId];
             squad = Object.assign({}, squad);
             squad.weapons = squad.weapon_ids.map(weaponId => _getWeaponInfo(weaponId));
-            squad.traits = squad?.traits?.map(trait => getUnitTrait(trait)) || [];
+            squad.traits = squad?.traits?.map(trait => freshUnitTrait(trait)) || [];
 
             return readonly(squad);
         }
@@ -351,7 +351,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             let garrison_units = vehicleAttachment.garrison_units || [];
             garrison_units = garrison_units.map((infantrySquadId) => _getInfantryUnitInfo(infantrySquadId));
             let garrison_unit_traits = vehicleDef.garrison_unit_traits || [];
-            garrison_unit_traits = garrison_unit_traits.map((trait) => getUnitTrait(trait));
+            garrison_unit_traits = garrison_unit_traits.map((trait) => freshUnitTrait(trait));
 
             let traits = [].concat(vehicleDef.traits || []);
 

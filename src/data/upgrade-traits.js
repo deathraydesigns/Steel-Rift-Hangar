@@ -1,10 +1,13 @@
-import {inchFormater, numberFormater} from './weapon-traits.js';
+//import {ORDER_DASH} from './orders/special-orders.js';
+
+import {makeTraits} from './data-helpers.js';
+import {inchFormater, numberFormater} from './data-formatters.js';
 
 export const TRAIT_COMPACT = 'TRAIT_COMPACT';
 export const TRAIT_DASH = 'TRAIT_DASH';
 export const TRAIT_UPGRADE_LIMITED = 'TRAIT_UPGRADE_LIMITED';
 
-export const UPGRADE_TRAITS = makeUpgradeTraits({
+export const UPGRADE_TRAITS = makeTraits({
     [[TRAIT_COMPACT]]: {
         display_name: 'Compact',
         description: 'This upgrade does not take up a slot during upgrade. No HE-V may be equipped with more than one Upgrade with the Compact special Rule.',
@@ -21,7 +24,7 @@ export const UPGRADE_TRAITS = makeUpgradeTraits({
     },
 });
 
-export function traitDisplayName({id, number}) {
+export function upgradeTraitDisplayName({id, number}) {
 
     const trait = UPGRADE_TRAITS[id];
 
@@ -33,16 +36,3 @@ export function traitDisplayName({id, number}) {
     }
     return trait.display_name;
 }
-
-function makeUpgradeTraits(items) {
-    Object.keys(items)
-        .forEach((key) => {
-            const item = items[key];
-            item.id = key;
-
-            Object.freeze(item);
-        });
-
-    return Object.freeze(items);
-}
-

@@ -1,5 +1,5 @@
-import {trait, TRAIT_AP, TRAIT_BLAST, TRAIT_KINETIC, TRAIT_LIMITED, TRAIT_MINE_TOKENS} from './weapon-traits.js';
-import {makeFrozenStaticListIds} from './data-helpers.js';
+import {TRAIT_AP, TRAIT_BLAST, TRAIT_KINETIC, TRAIT_LIMITED, TRAIT_MINE_TOKENS} from './weapon-traits.js';
+import {makeFrozenStaticListIds, trait} from './data-helpers.js';
 
 export const ARTILLERY_BARRAGE = 'ARTILLERY_BARRAGE';
 export const MASS_DRIVER = 'MASS_DRIVER';

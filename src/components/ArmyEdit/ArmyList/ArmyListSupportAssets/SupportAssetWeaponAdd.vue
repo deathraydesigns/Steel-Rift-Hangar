@@ -1,9 +1,9 @@
 <script setup>
 import {storeToRefs} from 'pinia';
-import {traitDisplayNames} from '../../../../data/weapon-traits.js';
 import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapons-store.js';
 import Number from '../../../functional/number.vue';
 import {BDropdown} from 'bootstrap-vue-next';
+import {traitDisplayNames} from '../../../../data/data-helpers.js';
 
 const store = useSupportAssetWeaponsStore();
 

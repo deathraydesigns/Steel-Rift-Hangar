@@ -1,5 +1,6 @@
 import {MECH_UPGRADES, TARGET_DESIGNATOR} from './mech-upgrades.js';
-import {numberFormater} from './weapon-traits.js';
+import {makeTraits} from './data-helpers.js';
+import {numberFormater} from './data-formatters.js';
 
 export const TRAIT_ALL_TERRAIN = 'TRAIT_ALL_TERRAIN';
 export const TRAIT_CLOSE_SUPPORT = 'TRAIT_CLOSE_SUPPORT';
@@ -32,7 +33,7 @@ export const TRAIT_HEAVY_SUPPORT_ASSET = 'TRAIT_HEAVY_SUPPORT_ASSET';
 export const TRAIT_HAULER = 'TRAIT_HAULER';
 export const TRAIT_UNIT_SIZE_AND_TYPE = 'TRAIT_UNIT_SIZE_AND_TYPE';
 
-export const UNIT_TRAITS = makeUnitTraits({
+export const UNIT_TRAITS = makeTraits({
     [[TRAIT_ALL_TERRAIN]]: {
         display_name: 'All-Terrain',
         description: 'Units with this Trait ignore the movement penalty for Rough Terrain.',
@@ -179,19 +180,7 @@ export function unitTraitDisplayName({id, number, type}) {
     return trait.display_name;
 }
 
-function makeUnitTraits(items) {
-    Object.keys(items)
-        .forEach((key) => {
-            const item = items[key];
-            item.id = key;
-
-            Object.freeze(item);
-        });
-
-    return Object.freeze(items);
-}
-
-export function getUnitTrait(trait) {
+export function freshUnitTrait(trait) {
     trait = Object.assign({}, UNIT_TRAITS[trait.id], trait);
     trait.display_name = unitTraitDisplayName(trait);
 

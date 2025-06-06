@@ -7,7 +7,6 @@ import {
     VEH_HOWITZER,
     VEH_SUBMUNITIONS,
 } from '../unit-weapons.js';
-import {trait} from '../weapon-traits.js';
 import {
     TRAIT_ALL_TERRAIN,
     TRAIT_CLOSE_SUPPORT,
@@ -21,7 +20,7 @@ import {
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_MEDIUM} from '../unit-sizes.js';
-import {makeStaticListIds} from '../data-helpers.js';
+import {makeStaticListIds, trait} from '../data-helpers.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
     INFANTRY_ENGINEER_SQUAD,

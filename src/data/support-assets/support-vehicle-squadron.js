@@ -1,5 +1,4 @@
 import {VEH_AUTO_CANNON} from '../unit-weapons.js';
-import {trait} from '../weapon-traits.js';
 import {
     TRAIT_MSOE_DEPLOYER,
     TRAIT_OUTRIDER,
@@ -13,7 +12,7 @@ import {
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_MEDIUM} from '../unit-sizes.js';
-import {makeStaticListIds} from '../data-helpers.js';
+import {makeStaticListIds, trait} from '../data-helpers.js';
 import {TYPE_VEHICLE} from '../unit-types.js';
 
 export const SUPPORT_VEHICLE_SQUADRON = 'SUPPORT_VEHICLE_SQUADRON';

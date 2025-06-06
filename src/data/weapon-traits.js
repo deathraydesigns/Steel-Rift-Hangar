@@ -1,3 +1,6 @@
+import {makeTraits} from './data-helpers.js';
+import {inchFormater, numberFormater} from './data-formatters.js';
+
 export const TRAIT_AP = 'TRAIT_AP';
 export const TRAIT_BLAST = 'TRAIT_BLAST';
 export const TRAIT_DISRUPTIVE = 'TRAIT_DISRUPTIVE';
@@ -20,15 +23,7 @@ export const TRAIT_STAGGER = 'TRAIT_STAGGER';
 export const TRAIT_TETHER = 'TRAIT_TETHER';
 export const TRAIT_ANTI_AIR = 'TRAIT_ANTI_AIR';
 
-export function numberFormater(name, number) {
-    return `${name}(${number})`;
-}
-
-export function inchFormater(name, number) {
-    return `${name}(${number}")`;
-}
-
-export const WEAPON_TRAITS = makeWeaponTraits({
+export const WEAPON_TRAITS = makeTraits({
     [[TRAIT_AP]]: {
         display_name: 'AP',
         description: 'If any damage is inflicted by this Attack, apply AP(X) damage directly to the target unit\'s Structure',
@@ -127,10 +122,6 @@ export const WEAPON_TRAITS = makeWeaponTraits({
     },
 });
 
-export function traitDisplayNames(traits) {
-    return traits.map((trait) => weaponTraitDisplayName(trait)).join(', ');
-}
-
 export function weaponTraitDisplayName({id, number, type}) {
 
     const trait = WEAPON_TRAITS[id];
@@ -144,35 +135,11 @@ export function weaponTraitDisplayName({id, number, type}) {
     return trait.display_name;
 }
 
-function makeWeaponTraits(items) {
-    Object.keys(items)
-        .forEach((key) => {
-            const item = items[key];
-            item.id = key;
-
-            Object.freeze(item);
-        });
-
-    return Object.freeze(items);
-}
-
-export function trait(id, number = undefined, type = undefined) {
-    const obj = {id};
-    if (number !== undefined) {
-        obj.number = number;
-    }
-    if (type !== undefined) {
-        obj.type = type;
-    }
-
-    return Object.freeze(obj);
-}
-
-export function getWeaponTrait(trait) {
+export function freshWeaponTrait(trait) {
     return Object.assign(
         {},
-        trait,
         WEAPON_TRAITS[trait.id],
+        trait,
         {
             display_name: weaponTraitDisplayName(trait),
         },
