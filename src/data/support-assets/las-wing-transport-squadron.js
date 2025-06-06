@@ -1,5 +1,4 @@
 import {VEH_ROTARY_CANNON} from '../unit-weapons.js';
-import {trait} from '../weapon-traits.js';
 import {
     TRAIT_ALL_TERRAIN,
     TRAIT_FLYING,
@@ -10,7 +9,7 @@ import {
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_LIGHT} from '../unit-sizes.js';
-import {makeStaticListIds} from '../data-helpers.js';
+import {makeStaticListIds, trait} from '../data-helpers.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
     INFANTRY_ARC_SUIT_SQUAD,

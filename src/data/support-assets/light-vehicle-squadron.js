@@ -1,5 +1,5 @@
 import {SIZE_ULTRA_LIGHT} from '../unit-sizes.js';
-import {makeStaticListIds} from '../data-helpers.js';
+import {makeStaticListIds, trait} from '../data-helpers.js';
 import {CLUSTER_ROCKETS, MISSILE_POD, VEH_AUTO_CANNON, VEH_SUBMUNITIONS} from '../unit-weapons.js';
 import {
     TRAIT_CLOSE_SUPPORT,
@@ -10,7 +10,6 @@ import {
     TRAIT_TARGET_DESIGNATOR,
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
-import {trait} from '../weapon-traits.js';
 import {TYPE_VEHICLE} from '../unit-types.js';
 
 export const LIGHT_VEHICLE_SQUADRON = 'LIGHT_VEHICLE_SQUADRON';

@@ -1,5 +1,5 @@
 import {SIZE_HEAVY} from '../unit-sizes.js';
-import {makeStaticListIds} from '../data-helpers.js';
+import {makeStaticListIds, trait} from '../data-helpers.js';
 import {
     DOZER_BLADE,
     TANK_AUTOCANNON,
@@ -17,7 +17,6 @@ import {
     TRAIT_HEAVY_SUPPORT_ASSET,
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
-import {trait} from '../weapon-traits.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
     INFANTRY_ENGINEER_SQUAD,

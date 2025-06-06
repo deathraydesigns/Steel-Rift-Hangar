@@ -1,4 +1,4 @@
-import {makeFrozenStaticListIds} from './data-helpers.js';
+import {makeFrozenStaticListIds, trait} from './data-helpers.js';
 import {
     INFANTRY_ELECTRO_ARC_PULSERS,
     INFANTRY_HEAVY_MISSILE_LAUNCHER,
@@ -6,7 +6,6 @@ import {
     INFANTRY_MISSILE_LAUNCHER,
     INFANTRY_RIFLES,
 } from './unit-weapons.js';
-import {trait} from './weapon-traits.js';
 import {TRAIT_MINE_SWEEPER, TRAIT_SUPPRESSIVE_FIRE, TRAIT_TARGET_DESIGNATOR} from './unit-traits.js';
 import {SIZE_ULTRA_LIGHT} from './unit-sizes.js';
 import {TYPE_INFANTRY} from './unit-types.js';

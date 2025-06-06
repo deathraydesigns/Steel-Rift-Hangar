@@ -1,6 +1,5 @@
 import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from './unit-sizes.js';
 import {
-    trait,
     TRAIT_AP,
     TRAIT_BLAST,
     TRAIT_CONCUSSIVE,
@@ -20,7 +19,7 @@ import {
     TRAIT_STAGGER,
     TRAIT_TETHER,
 } from './weapon-traits.js';
-import {makeFrozenStaticListIds} from './data-helpers.js';
+import {makeFrozenStaticListIds, trait} from './data-helpers.js';
 import {find} from 'es-toolkit/compat';
 
 export const AUTO_CANNON = 'AUTO_CANNON';

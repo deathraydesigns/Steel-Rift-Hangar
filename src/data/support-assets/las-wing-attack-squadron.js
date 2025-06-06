@@ -1,5 +1,4 @@
 import {VEH_AGM_MISSILES, VEH_BARRAGE_ROCKETS, VEH_LAS_AUTO_CANNON, VEH_ROTARY_CANNON} from '../unit-weapons.js';
-import {trait} from '../weapon-traits.js';
 import {
     TRAIT_FLYING,
     TRAIT_FLYING_SQUADRON,
@@ -9,7 +8,7 @@ import {
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_LIGHT} from '../unit-sizes.js';
-import {makeStaticListIds} from '../data-helpers.js';
+import {makeStaticListIds, trait} from '../data-helpers.js';
 import {TYPE_VEHICLE} from '../unit-types.js';
 
 export const LAS_WING_ATTACK_SQUADRON = 'LAS_WING_ATTACK_SQUADRON';

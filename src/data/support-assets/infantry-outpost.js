@@ -1,5 +1,4 @@
 import {BUNKER_AUTO_CANNON, BUNKER_MISSILE_PACK, BUNKER_ROCKET_PACK} from '../unit-weapons.js';
-import {trait} from '../weapon-traits.js';
 import {
     TRAIT_ALL_TERRAIN,
     TRAIT_BUNKER_MINE_DRONES,
@@ -9,7 +8,7 @@ import {
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
 import {SIZE_ULTRA} from '../unit-sizes.js';
-import {makeStaticListIds} from '../data-helpers.js';
+import {makeStaticListIds, trait} from '../data-helpers.js';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
     INFANTRY_ENGINEER_SQUAD,
