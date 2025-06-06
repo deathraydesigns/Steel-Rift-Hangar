@@ -6,6 +6,10 @@ const {traits} = defineProps({
     type: Array,
     required: true,
   },
+  orders: {
+    type: Array,
+    required: true,
+  },
 });
 </script>
 
@@ -16,6 +20,10 @@ const {traits} = defineProps({
     </div>
     <div class="card-description">
       {{ traits.map(t => unitTraitDisplayName(t)).join(', ') }}
+      <span v-if="orders.length">
+        <span class="fw-bold"> Special Orders: </span>
+        {{ orders.map(o => o.display_name).join(', ') }}
+      </span>
     </div>
   </template>
 </template>

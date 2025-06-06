@@ -1,6 +1,16 @@
 import {MECH_UPGRADES, TARGET_DESIGNATOR} from './mech-upgrades.js';
+import {
+    ORDER_SUPPORT,
+    ORDER_SUPPORT_CNC_STATION,
+    ORDER_SUPPORT_COMBAT_SUPPLIES,
+    ORDER_SUPPORT_GUIDANCE_SUITE,
+    ORDER_SUPPORT_MINE_DRONE_LAYER,
+    ORDER_SUPPORT_MSOE,
+} from './orders/support-orders.js';
+
 import {makeTraits} from './data-helpers.js';
 import {numberFormater} from './data-formatters.js';
+import {ORDER_CLEAR_MINEFIELD} from './orders/special-orders.js';
 
 export const TRAIT_ALL_TERRAIN = 'TRAIT_ALL_TERRAIN';
 export const TRAIT_CLOSE_SUPPORT = 'TRAIT_CLOSE_SUPPORT';
@@ -57,7 +67,8 @@ export const UNIT_TRAITS = makeTraits({
     },
     [[TRAIT_MINE_SWEEPER]]: {
         display_name: 'Mine Sweeper',
-        description: 'Unit with this Trait may perform the following Order: Clear Minefield: Target a Mine Token of any type within 8” and Line of Sight of this Unit. Roll 1D6, adding +1 for each additional model with the Minesweeper Trait in this Unit. on a roll of 4”, the Mine Token is neutralized and removed from play.',
+        description: '',
+        granted_order_ids: [ORDER_CLEAR_MINEFIELD]
     },
     [[TRAIT_SHIELD_PROJECTOR]]: {
         display_name: 'Shield Projector',
@@ -74,35 +85,42 @@ export const UNIT_TRAITS = makeTraits({
     [[TRAIT_SUPPORT_ORDERS]]: {
         display_name: 'Support Orders',
         description: 'Units with this trait possess unusual equipment that is intended to support other units, but must be actively operated to take effect. These traits will be prefixed with the term “Support:”. Units with these traits may perform the Support Order. Support: The unit may activate the effect of any or all “Support:” traits. See each trait entry for the effects of the “Support:” trait. Note that if a model (or models) in a Squadron have a “Support:” trait, the entire Squadron must perform the Support Order. However, each model with a “Support:” will activate that trait during the Order, in any order its Commander wishes.',
+        granted_order_ids: [ORDER_SUPPORT],
     },
     [[TRAIT_SUPPORT_ORDER_CNC]]: {
         display_name: 'Support: Command and Control Station',
         description: '',
+        granted_order_ids: [ORDER_SUPPORT_CNC_STATION],
     },
     [[TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES]]: {
         display_name: 'Support: Combat Supplies',
         description: '',
+        granted_order_ids: [ORDER_SUPPORT_COMBAT_SUPPLIES],
     },
     [[TRAIT_SUPPORT_GUIDANCE_SUITE]]: {
         display_name: 'Support: Guidance Suite',
         description: '',
+        granted_order_ids: [ORDER_SUPPORT_GUIDANCE_SUITE],
     },
     [[TRAIT_SUPPORT_MINE_DRONE_LAYER]]: {
         display_name: 'Support: Mine Drone Layer',
         formatter: numberFormater,
         description: '',
+        granted_order_ids: [ORDER_SUPPORT_MINE_DRONE_LAYER],
     },
     [[TRAIT_SUPPORT_MOED]]: {
         display_name: 'Support: Multi-spectral Obscuration Emitter Deployer',
         description: '',
+        granted_order_ids: [ORDER_SUPPORT_MSOE],
     },
     [[TRAIT_MSOE_LAUNCHER]]: {
         display_name: 'MSOE Launcher',
-        description: 'When targeting a unit with the Flying Trait, the target is at -2 to Defense Rolls from weapons with this trait. (I.e., if the target until would normally remove damage from the Attack Pool on a 2+, it avoids damage from this weapon on a 4+). If a Weapon with this trait destroys the Target Model, you may apply remaining damage to another Model of the Squadron as if the Squadron was not a Flying Squadron. ',
+        description: 'Immediately before or after this model performs a Move Order, you may place an Obscuration Emitter Marker within 6” of this model.',
     },
     [[TRAIT_MSOE_DEPLOYER]]: {
-        display_name: 'MSOE Deployer',
+        display_name: 'Support: MSOE Deployer',
         description: '',
+        granted_order_ids: [ORDER_SUPPORT_MSOE],
     },
     [[TRAIT_SCRAMBLERS]]: {
         display_name: 'Scramblers',

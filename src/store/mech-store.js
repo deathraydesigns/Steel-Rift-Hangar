@@ -49,6 +49,7 @@ import {TRAIT_UPGRADE_LIMITED} from '../data/upgrade-traits.js';
 import {DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS} from '../data/factions.js';
 import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
 import {TYPE_HEV} from '../data/unit-types.js';
+import {makeGrantedOrderCollection} from './helpers/helpers.js';
 
 export const useMechStore = defineStore('mech', {
         state() {
@@ -336,12 +337,35 @@ export const useMechStore = defineStore('mech', {
                         weapon_used_slots,
                         weapon_used_tons,
                         armor_upgrade_id,
+                        mobility,
                         move,
                         jump,
                         tonnage_stat,
                         defense,
                         smash_damage,
                     });
+                };
+            },
+            getMechGrantedOrdersCollection(state) {
+                return (mechId) => {
+
+                    const grantedOrders = makeGrantedOrderCollection();
+
+                    const info = this.getMechInfo(mechId);
+
+                    grantedOrders.add(info.mobility);
+
+                    const weapons = this.getMechWeaponsAttachmentInfo(mechId);
+                    weapons.forEach(weapon => {
+                        grantedOrders.addMultiple(weapon.traits);
+                    });
+
+                    const upgrades = this.getMechUpgradesAttachmentInfo(mechId);
+                    upgrades.forEach(upgrade => {
+                        grantedOrders.addMultiple(upgrade.traits);
+                    });
+
+                    return grantedOrders;
                 };
             },
             getWeaponInfo(state) {

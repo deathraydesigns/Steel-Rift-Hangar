@@ -13,6 +13,7 @@ import FactionPerkCard from './ArmyPrintCards/FactionPerkCard.vue';
 import SupportAssetWeaponCard from './ArmyPrintCards/SupportAssetWeaponCard.vue';
 import SupportAssetUnitCard from './ArmyPrintCards/SupportAssetUnitCard.vue';
 import {sortBy} from 'es-toolkit';
+import MSOECard from './ArmyPrintCards/MSOECard.vue';
 
 const printSettingsStore = usePrintSettingsStore();
 const teamStore = useTeamStore();
@@ -67,6 +68,12 @@ const referenceCards = computed(() => {
   if (printSettingsStore.include_mine_drone_card) {
     cards.push({
       type: 'mine_drone',
+    });
+  }
+
+  if (printSettingsStore.include_msoe_card) {
+    cards.push({
+      type: 'msoe',
     });
   }
 
@@ -150,6 +157,7 @@ const supportAssetPages = computed(() => {
       <template v-for="item in page">
         <HEVCard v-if="item.type === 'hev'" :mech-id="item.mechId"/>
         <MineDroneCard v-if="item.type === 'mine_drone'"/>
+        <MSOECard v-if="item.type === 'msoe'"/>
         <FactionPerkCard v-if="item.type === 'faction_perk'" :perk-id="item.perkId"/>
       </template>
     </div>

@@ -1,4 +1,4 @@
-//import {ORDER_DASH} from './orders/special-orders.js';
+import {ORDER_DASH} from './orders/special-orders.js';
 
 import {makeTraits} from './data-helpers.js';
 import {inchFormater, numberFormater} from './data-formatters.js';
@@ -16,6 +16,7 @@ export const UPGRADE_TRAITS = makeTraits({
         display_name: 'Dash',
         description: 'This Unit may take the Dash order',
         formatter: inchFormater,
+       granted_order_ids: [ORDER_DASH],
     },
     [[TRAIT_UPGRADE_LIMITED]]: {
         display_name: 'Limited',

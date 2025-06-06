@@ -1,12 +1,13 @@
 <script setup>
 import {computed} from 'vue';
 import CardHeader from './CardParts/CardHeader.vue';
-import UnitCardVehicles from './SupportAssetUnitCard/UnitCardVehicles.vue';
 import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
 import UnitCardWeapons from './SupportAssetUnitCard/UnitCardWeapons.vue';
 import CardFooter from './CardParts/CardFooter.vue';
 import UnitCardGarrisonInfantry from './SupportAssetUnitCard/UnitCardGarrisonInfantry.vue';
 import UnitCardTraits from './SupportAssetUnitCard/UnitCardTraits.vue';
+import UnitCardVehicleHalf from './SupportAssetUnitCard/UnitCardVehicleHalf.vue';
+import {ORDER_SUPPORT} from '../../../data/orders/support-orders.js';
 
 const store = useSupportAssetUnitsStore();
 
@@ -19,10 +20,17 @@ const {unitAttachmentId} = defineProps({
 
 const info = computed(() => store.getUnitAttachmentInfo(unitAttachmentId));
 const vehicleWeapons = computed(() => store.getUnitAttachmentVehicleWeaponsCardInfo(unitAttachmentId));
+const vehicleOrders = computed(() => {
+  const orders = store.getUnitAttachmentGrantedOrdersCollection(unitAttachmentId);
+
+  orders.remove(ORDER_SUPPORT);
+
+  return orders.all();
+});
 const infantryWeapons = computed(() => store.getUnitAttachmentVehicleGarrisonWeaponsCardInfo(unitAttachmentId));
 const infantryTraits = computed(() => store.getUnitAttachmentGarrisonUnitTraitsCardInfo(unitAttachmentId));
-const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitCardInfo(unitAttachmentId).length);
-
+const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId).length);
+const infantryOrders = computed(() => store.getUnitAttachmentGarrisonGrantedOrdersCollection(unitAttachmentId).all())
 </script>
 <template>
   <div
@@ -42,15 +50,12 @@ const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitCardInfo
       <template v-if="hasGarrison">
         <div class="row g-2">
           <div class="col-6">
-            <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
-            <div class="row g-1">
-              <div class="col-6 mt-0">
-                <UnitCardWeapons :weapons="vehicleWeapons"/>
-              </div>
-              <div class="col-6 mt-0">
-                <UnitCardTraits :traits="info.traits"/>
-              </div>
-            </div>
+            <UnitCardVehicleHalf
+                :unit-attachment-id="unitAttachmentId"
+                :weapons="vehicleWeapons"
+                :traits="info.traits"
+                :orders="vehicleOrders"
+            />
           </div>
           <div class="col-6">
             <UnitCardGarrisonInfantry :unit-attachment-id="unitAttachmentId"/>
@@ -59,23 +64,22 @@ const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitCardInfo
                 <UnitCardWeapons :weapons="infantryWeapons" damage-suffix=" x (X)"/>
               </div>
               <div class="col-6 mt-0">
-                <UnitCardTraits :traits="infantryTraits"/>
+                <UnitCardTraits
+                    :traits="infantryTraits"
+                    :orders="infantryOrders"
+                />
               </div>
             </div>
           </div>
         </div>
-
       </template>
       <template v-else>
-        <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
-        <div class="row g-1">
-          <div class="col-6 mt-0">
-            <UnitCardWeapons :weapons="vehicleWeapons"/>
-          </div>
-          <div class="col-6 mt-0">
-            <UnitCardTraits :traits="info.traits"/>
-          </div>
-        </div>
+        <UnitCardVehicleHalf
+            :unit-attachment-id="unitAttachmentId"
+            :weapons="vehicleWeapons"
+            :traits="info.traits"
+            :orders="vehicleOrders"
+        />
       </template>
       <CardFooter/>
     </div>

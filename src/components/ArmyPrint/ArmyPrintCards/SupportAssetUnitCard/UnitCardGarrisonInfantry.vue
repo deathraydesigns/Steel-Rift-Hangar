@@ -14,7 +14,7 @@ const {unitAttachmentId} = defineProps({
 });
 
 const unitStore = useSupportAssetUnitsStore();
-const units = computed(() => unitStore.getUnitAttachmentGarrisonUnitCardInfo(unitAttachmentId));
+const units = computed(() => unitStore.getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId));
 
 const hasCardRefIds = computed(() => !!units.value.find((unit) => unit.card_ref_id));
 const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));

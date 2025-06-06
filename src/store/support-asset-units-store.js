@@ -15,8 +15,10 @@ import {
 import {UNIT_SIZES} from '../data/unit-sizes.js';
 import {getInfantrySquad, INFANTRY_SQUADS} from '../data/infantry-squads.js';
 import {countBy, flatMap} from 'es-toolkit';
-import {UNIT_TYPES} from '../data/unit-types.js';
+import {TYPE_INFANTRY, UNIT_TYPES} from '../data/unit-types.js';
 import {INFANTRY_OUTPOST} from '../data/support-assets/infantry-outpost.js';
+import {makeGrantedOrderCollection} from './helpers/helpers.js';
+import {INFANTRY_ORDERS_DATA} from '../data/orders/infantry-orders.js';
 
 export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
 
@@ -317,7 +319,7 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return readonly(squad);
         }
 
-        function getUnitAttachmentGarrisonUnitCardInfo(unitAttachmentId) {
+        function getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId) {
             const info = getUnitAttachmentInfo(unitAttachmentId);
             const units = flatMap(info.vehicles, vehicle => vehicle.garrison_units);
 
@@ -575,6 +577,49 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             return readonly(Object.values(vehicles));
         }
 
+        function getAllGrantedOrdersCollection() {
+            const grantedOrders = makeGrantedOrderCollection();
+
+            support_asset_units.value.forEach(unit => {
+                const vehicleOrders = getUnitAttachmentGrantedOrdersCollection(unit.id);
+                grantedOrders.addIds(vehicleOrders.ids());
+
+                const infantryOrders = getUnitAttachmentGarrisonGrantedOrdersCollection(unit.id);
+                grantedOrders.addIds(infantryOrders.ids());
+            });
+
+            return grantedOrders;
+        }
+
+        function getUnitAttachmentGrantedOrdersCollection(vehicleAttachmentId) {
+            const grantedOrders = makeGrantedOrderCollection();
+
+            const info = getUnitAttachmentInfo(vehicleAttachmentId);
+
+            grantedOrders.addMultiple(info.traits);
+
+            info.vehicles.forEach(vehicle => {
+                grantedOrders.addMultiple(vehicle.traits);
+
+                vehicle.weapons.forEach(weapon => {
+                    grantedOrders.addMultiple(weapon.traits);
+                });
+            });
+
+            return grantedOrders;
+        }
+
+        function getUnitAttachmentGarrisonGrantedOrdersCollection(unitAttachmentId) {
+            const grantedOrders = makeGrantedOrderCollection();
+            const garrisonUnits = getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId);
+            if (garrisonUnits.length && garrisonUnits[0].unit_type_id === TYPE_INFANTRY) {
+                const infantryOrderIds = Object.keys(INFANTRY_ORDERS_DATA);
+                grantedOrders.addIds(infantryOrderIds);
+            }
+
+            return grantedOrders;
+        }
+
         function removeSupportAssetId(vehicleAttachmentId) {
             let index = support_asset_units.value.findIndex(item => {
                 return item.id === vehicleAttachmentId;
@@ -682,11 +727,14 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
             getUnitVehicleAttachmentAvailableGarrisonChoicesInfo,
             getUnitVehicleAttachmentGarrisonMax,
             getUnitAttachmentAllGarrisonChoicesInfo,
-            getUnitAttachmentGarrisonUnitCardInfo,
+            getUnitAttachmentGarrisonUnitsInfo,
             getUnitAttachmentGarrisonUnitTraitsCardInfo,
             getUnitAttachmentVehicleGarrisonWeaponsCardInfo,
             getUnitAttachmentHasGarrisonUnits,
             getUnitHasGarrisonableVehicles,
+            getUnitAttachmentGrantedOrdersCollection,
+            getAllGrantedOrdersCollection,
+            getUnitAttachmentGarrisonGrantedOrdersCollection,
 
             setUnitVehicleGarrisonChoice,
             setUnitUpgradePod,

@@ -8,6 +8,8 @@ import {useSupportAssetWeaponsStore} from './support-asset-weapons-store.js';
 import {useSupportAssetCountsStore} from './support-asset-count-store.js';
 import {find} from 'es-toolkit/compat';
 import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
+import {TRAIT_MSOE_LAUNCHER} from '../data/unit-traits.js';
+import {ORDER_SUPPORT_MSOE} from '../data/orders/support-orders.js';
 
 export const useArmyListStore = defineStore('army-list', () => {
         const supportAssetWeaponsStore = useSupportAssetWeaponsStore();
@@ -51,6 +53,17 @@ export const useArmyListStore = defineStore('army-list', () => {
             return supportAssetWeaponsStore.hasSupportAssetId(MINE_DRONE_BARRAGE);
         });
 
+        const includes_msoe = computed(() => {
+            const hasLauncher = supportAssetUnitStore.support_asset_units.find(unit => {
+                const unitInfo = supportAssetUnitStore.getUnitAttachmentInfo(unit.id);
+                return unitInfo.vehicles.find(vehicle => {
+                    return vehicle.traits.find((trait) => trait.id === TRAIT_MSOE_LAUNCHER);
+                });
+            });
+
+            return hasLauncher || supportAssetUnitStore.getAllGrantedOrdersCollection().includes(ORDER_SUPPORT_MSOE);
+        });
+
         return {
             name,
             used_tons,
@@ -58,6 +71,7 @@ export const useArmyListStore = defineStore('army-list', () => {
             game_size_id,
             game_size_info,
             includes_mine_drones,
+            includes_msoe,
             $reset,
         };
     },

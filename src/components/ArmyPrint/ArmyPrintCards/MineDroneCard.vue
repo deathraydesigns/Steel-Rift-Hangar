@@ -7,7 +7,15 @@ import CardFooter from './CardParts/CardFooter.vue';
     <div class="card-content-container">
       <CardHeader title="Mine Drone"/>
 
-      <div class="section-heading">Battlefield Asset</div>
+      <div class="section-heading d-flex">
+        <div class="flex-shrink-1">
+          Battlefield Asset
+        </div>
+
+        <div class="flex-grow-1 fw-normal font-outfit text-end">
+          Size: 25mm
+        </div>
+      </div>
 
       <div class="card-description">
         <div><strong>Placing:</strong> May not be placed within 6” of another friendly Mine Drone token (unless deployed

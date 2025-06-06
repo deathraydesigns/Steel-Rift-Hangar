@@ -4,6 +4,7 @@ import {useMechStore} from '../../../../store/mech-store.js';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {MECH_MOBILITIES} from '../../../../data/mech-mobility.js';
 import {BDropdown} from 'bootstrap-vue-next';
+import GrantedOrders from '../../../UI/GrantedOrders.vue';
 
 const mechStore = useMechStore();
 
@@ -69,18 +70,18 @@ function selectOption(value) {
           >
             <td class="text-nowrap">
               <BtnToolTip
-                  :enabled="!!item.description">
+                  :enabled="!!item.granted_order_ids.length">
                 <template #target="{mouseover, mouseleave}">
                   <span
                       @mouseover="mouseover"
                       @mouseleave="mouseleave"
-                      :class="{'text-tooltip': item.description}"
+                      :class="{'text-tooltip': item.granted_order_ids.length}"
                   >
                     {{ item.display_name }}
                   </span>
                 </template>
                 <template #content>
-                  {{ item.description }}
+                  <GrantedOrders :order-ids="item.granted_order_ids"/>
                 </template>
               </BtnToolTip>
             </td>
@@ -91,19 +92,20 @@ function selectOption(value) {
           </tbody>
         </table>
       </BDropdown>
+
       <BtnToolTip lazy>
         <template #target="{mouseover, mouseleave}">
           <span
               @mouseover="mouseover"
               @mouseleave="mouseleave"
               class="btn btn-md btn-default ms-1"
-              v-show="!!mobility.description"
+              v-show="!!mobility.granted_order_ids?.length"
           >
             ?
           </span>
         </template>
         <template #content>
-          {{ mobility.description }}
+          <GrantedOrders :order-ids="mobility.granted_order_ids"/>
         </template>
       </BtnToolTip>
     </td>

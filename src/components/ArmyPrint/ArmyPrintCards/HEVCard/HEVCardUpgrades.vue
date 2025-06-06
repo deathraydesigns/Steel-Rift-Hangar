@@ -56,8 +56,15 @@ const upgrades = computed(() => {
       mobility,
   );
 });
+
+const orders = computed(() => {
+  const grantedOrders = mechStore.getMechGrantedOrdersCollection(mechId);
+
+  return grantedOrders.all();
+});
 </script>
 <template>
+
   <div v-if="upgrades.length">
     <div class="section-heading">
       Upgrades
@@ -76,6 +83,13 @@ const upgrades = computed(() => {
           {{ trait.display_name }}
         </template>
         <span v-if="index !== upgrades.length -1">, </span>
+      </span>
+      <span v-if="orders.length">
+        <span class="fw-bold"> Special Orders: </span>
+        <span v-for="(order, index) in orders">
+          {{order.display_name}}
+          <span v-if="index !== orders.length -1">, </span>
+        </span>
       </span>
     </div>
   </div>

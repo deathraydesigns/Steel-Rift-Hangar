@@ -29,12 +29,13 @@ const {
   one_team_per_page,
   include_army_name_on_cards,
   include_mine_drone_card,
+  include_msoe_card,
   include_faction_perk_1_card,
   include_faction_perk_2_card,
   separate_reference_cards_page,
 } = storeToRefs(printSettingsStore);
 
-const {includes_mine_drones} = storeToRefs(useArmyListStore());
+const {includes_mine_drones, includes_msoe} = storeToRefs(useArmyListStore());
 
 function print() {
   window.print();
@@ -95,6 +96,14 @@ function print() {
               :disabled="!includes_mine_drones"
           >
             Include Mine Drone Card
+          </BFormCheckbox>
+
+          <BFormCheckbox
+              v-model="include_msoe_card"
+              id="include_msoe_card"
+              :disabled="!includes_msoe"
+          >
+            Include Multi-spectral Obscuration Emitter (msoe) Card
           </BFormCheckbox>
 
           <BFormCheckbox
