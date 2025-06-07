@@ -26,7 +26,7 @@ export function makeGrantedOrderCollection() {
     }
 
     function ids() {
-        return orderIdMap.keys().toArray();
+        return [...orderIdMap.keys()];
     }
 
     function all() {
@@ -72,7 +72,7 @@ export function makeUniqueItemIdCollection(DATA_STORE) {
     }
 
     function ids() {
-        return idMap.keys().toArray();
+        return [...idMap.keys()];
     }
 
     function all() {
