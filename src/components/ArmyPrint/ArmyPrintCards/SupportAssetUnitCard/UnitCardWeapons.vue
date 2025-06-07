@@ -50,7 +50,7 @@ const sortedWeapons = computed(() => sortBy(weapons, 'display_name').reverse());
       <td class="text-end">
         <format-inches :value="weapon.range"/>
       </td>
-      <td class="text-start">
+      <td class="text-start small">
         <div v-for="(trait, index) in filterTraits(weapon.traits)">
           {{ trait.display_name }}<span v-if="index !== filterTraits(weapon.traits).length - 1">, </span>
         </div>
