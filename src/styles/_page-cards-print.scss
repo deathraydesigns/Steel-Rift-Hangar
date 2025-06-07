@@ -173,7 +173,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
       font-size: 1.1rem;
       line-height: 10pt;
       text-align: left;
-      padding: 0 ($card-padding-x - 1pt) 0;
+      padding-left: $card-padding-x - 1pt;
 
       .hp-row {
         display: flex;
