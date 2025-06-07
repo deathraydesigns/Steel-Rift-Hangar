@@ -164,7 +164,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
 
     .structure-systems {
       font-size: 55%;
-      padding: 0 $card-padding-x;
+      padding: 0 $card-padding-x 0 0;
     }
 
     .hp-container {
@@ -185,7 +185,7 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     .hp-structure {
       .hp-heading,
       .hp-container {
-        padding-right: 0;
+        padding: 0;
       }
 
     }
@@ -228,11 +228,14 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     margin: 0;
   }
 
+  .crit-container {
+    padding-right: 1pt;
+  }
+
   .crit-heading {
     font-size: 80%;
     font-weight: normal;
     font-family: $font-anta;
-    padding-left: 3pt;
     line-height: 1.2;
   }
 
@@ -240,7 +243,6 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     font-size: 70%;
     font-family: $font-outfit;
     font-weight: 400;
-    padding-left: 3pt;
 
     strong {
       font-weight: 600;

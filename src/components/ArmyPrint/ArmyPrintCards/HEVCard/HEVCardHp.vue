@@ -35,6 +35,11 @@ const armor6PerRow = computed(() => {
   return armorStat > 15;
 });
 
+const structure6PerRow = computed(() => {
+  const structureStat = info.value.structure_stat;
+  return structureStat > 10;
+});
+
 const armorHp = computed(() => {
   const armorStat = info.value.armor_stat;
 
@@ -95,6 +100,10 @@ const structureHp = computed(() => {
     points = ['-', '-'].concat(points);
   }
 
+
+  if (structure6PerRow.value) {
+    return chunk(points, 6);
+  }
   return chunk(points, 5);
 });
 
@@ -128,9 +137,9 @@ const armorUpgrade = computed(() => {
       </div>
     </div>
     <div class="col-7">
-      <div class="row g-1">
-        <div class="col-7 hp-structure">
-          <div class="hp-heading">
+      <div class="d-flex">
+        <div class="hp-structure flex-grow-1">
+          <div class="hp-heading ps-0">
             STRUCTURE
           </div>
           <div class="hp-container">
@@ -145,7 +154,7 @@ const armorUpgrade = computed(() => {
             {{ structureSystem }}
           </div>
         </div>
-        <div class="col-5 crit-container">
+        <div class="crit-container">
           <div class="crit-heading">
             CRIT
           </div>
