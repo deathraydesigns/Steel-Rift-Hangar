@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {computed, readonly, ref} from 'vue';
+import {computed, readonly, ref, watch} from 'vue';
 import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-helper.js';
 import {MECH_TEAM_SIZES, MECH_TEAMS, TEAM_FIRE_SUPPORT, TEAM_GENERAL, TEAM_RECON} from '../data/mech-teams.js';
 import {useMechStore} from './mech-store.js';
@@ -11,6 +11,7 @@ import {GAME_SIZES} from '../data/game-sizes.js';
 import {MECH_TEAM_PERKS} from '../data/mech-team-perks.js';
 import {MECH_SIZES, MECH_SIZES_DROP_DOWN, SIZE_HEAVY, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
+import {toaster} from '../toaster.js';
 
 export const useTeamStore = defineStore('team', () => {
 
@@ -376,7 +377,7 @@ export const useTeamStore = defineStore('team', () => {
             return result;
         }
 
-        function getUsedTeamAbilityPerksInfo(teamId) {
+        function getUsedTeamAbilityPerkIds(teamId) {
             const perkIdsMap = {};
             const mechIds = getTeamMechIds(teamId);
 
@@ -386,7 +387,12 @@ export const useTeamStore = defineStore('team', () => {
                 perkIds.forEach(perkId => perkIdsMap[perkId] = true);
             });
 
-            const perkIds = Object.keys(perkIdsMap);
+            return Object.keys(perkIdsMap);
+        }
+
+        function getUsedTeamAbilityPerksInfo(teamId) {
+
+            const perkIds = getUsedTeamAbilityPerkIds(teamId);
 
             return perkIds.filter(perkId => MECH_TEAM_PERKS[perkId].visible_on_card)
                 .map((perkId) => MECH_TEAM_PERKS[perkId]);
@@ -437,6 +443,31 @@ export const useTeamStore = defineStore('team', () => {
                 }, MECH_TEAM_SIZES[teamSizeId]);
             });
         });
+
+        watch(() => {
+                const result = {};
+                teams.value.forEach(team => {
+                    result[team.id] = getUsedTeamAbilityPerkIds(team.id);
+                });
+                return result;
+            },
+            () => {
+
+                teams.value.forEach(team => {
+                    getTeamMechIds(team.id).forEach(mechId => {
+                        mechStore.getMechUpgradesAttachmentInfo(mechId)
+                            .forEach(upgrade => {
+                                if (!upgrade.valid) {
+                                    mechStore.removeMechUpgradeAttachment(mechId, upgrade.id);
+                                    const mechInfo = mechStore.getMechInfo(mechId);
+
+                                    toaster().info(`${mechInfo.size.display_name} HE-V (${mechInfo.display_name})`,
+                                        `${upgrade.display_name} removed: (${upgrade.validation_message})`);
+                                }
+                            });
+                    });
+                });
+            });
 
         function addMechToTeam(teamId, groupId, addDefaults = true) {
             const groupDef = MECH_TEAMS[teamId].groups[groupId];

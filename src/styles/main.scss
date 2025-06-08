@@ -73,14 +73,9 @@ $accordion-icon-active-color-dark: #fff;
 
 :root {
   --bs-popover-header-color: var(--bs-body-color);
-  --bs-toast-max-width: 75vw;
 }
 
-.toast {
-  --bs-toast-max-width: 75vw;
-}
-
-.toast-body-error {
+.ws-pre-wrap {
   white-space: pre-wrap;
 }
 

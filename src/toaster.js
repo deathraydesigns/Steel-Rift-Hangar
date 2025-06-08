@@ -1,6 +1,8 @@
 import {useToastController} from 'bootstrap-vue-next';
+import {defineStore} from 'pinia';
 
-export function toaster() {
+// needs to be defined as a pinia store to allow calling toasts from other stores not sure why
+export const toaster = defineStore('toaster', () => {
 
     const {create} = useToastController();
 
@@ -38,7 +40,6 @@ export function toaster() {
 
     function error(text, body = null) {
         message({
-            pos: 'top-center',
             bodyClass: 'toast-body-error',
             modelValue: true,
             title: text,
@@ -53,4 +54,4 @@ export function toaster() {
         info,
         error,
     };
-}
+})

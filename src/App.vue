@@ -1,12 +1,11 @@
 <script setup>
-import {computed, onErrorCaptured, onMounted, provide, ref} from 'vue';
+import {computed, h, onErrorCaptured, onMounted, provide, ref} from 'vue';
 import AppHeader from './components/AppHeader.vue';
 import {ROUTE_PRINT} from './routes.js';
 import ArmyPrint from './components/ArmyPrint.vue';
 import ArmyEdit from './components/ArmyEdit.vue';
 
-import {BToastOrchestrator, useColorMode} from 'bootstrap-vue-next';
-import {toaster} from './toaster.js';
+import {BModalOrchestrator, BToastOrchestrator, useColorMode, useModalController} from 'bootstrap-vue-next';
 
 onMounted(() => {
   document.getElementById('failsafe-container')?.remove();
@@ -27,8 +26,19 @@ const mode = useColorMode({
 });
 provide('color_mode', mode);
 
+const {create} = useModalController();
+
 onErrorCaptured((error) => {
-  toaster().error('Error', error.stack);
+  create({
+    title: 'Error',
+    body: error.stack,
+    titleClass: 'text-danger',
+    contentClass: 'border-danger',
+    slots: {
+      cancel: () => false,
+      default: (scope) => h('div', {class: 'ws-pre-wrap'}, {default: () => error.stack}),
+    },
+  });
 });
 
 </script>
@@ -36,6 +46,8 @@ onErrorCaptured((error) => {
   <div class="d-flex flex-column vh-100">
 
     <BToastOrchestrator/>
+    <BModalOrchestrator/>
+
     <AppHeader/>
     <ArmyPrint v-show="showPrint"/>
     <ArmyEdit v-show="!showPrint"/>

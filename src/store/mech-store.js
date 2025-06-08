@@ -599,7 +599,6 @@ export const useMechStore = defineStore('mech', {
                     if (upgradeId === COMBAT_SHIELD) {
                         let perk = find(perks, {id: TEAM_PERK_COMBAT_BUCKLER});
                         if (perk) {
-                            limited_size_ids.push('z');
                             limited_size_ids = [...limited_size_ids, SIZE_MEDIUM];
 
                             if (size_id === SIZE_MEDIUM) {
@@ -719,7 +718,7 @@ export const useMechStore = defineStore('mech', {
                     const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
                     const isRequired = teamStore.getUpgradeIsRequired(teamId, groupId, upgrade_id);
 
-                    return Object.assign({}, info, {required_by_group: isRequired});
+                    return Object.assign({id: mechUpgradeAttachmentId}, info, {required_by_group: isRequired});
                 };
             },
             getMechAvailableUpgradesInfo(state) {
