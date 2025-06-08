@@ -184,7 +184,8 @@ export const MECH_UPGRADES = makeFrozenStaticListIds({
         description: 'When this HE-V is damaged by an Attack originating from its front or side arcs, and it has more than 0 Armor remaining, roll 1D6 for each point of Damage it would receive. On a 5+, that point of Damage is ignored. Damage negated by this rule is treated as not having happened for the purposes of other weapon Trait effects, such as AP. If this HE-V performs an Engage Order, all of its Weapon Systems receive a -1 to their Damage Rating.',
         cost_by_size: {
             [[SIZE_LIGHT]]: 0,
-            [[SIZE_MEDIUM]]: 0,
+            // only available in medium with TEAM_PERK_COMBAT_BUCKLER
+            [[SIZE_MEDIUM]]: 3,
             [[SIZE_HEAVY]]: 4,
             [[SIZE_ULTRA]]: 5,
         },

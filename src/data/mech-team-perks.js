@@ -86,7 +86,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     },
     [[TEAM_PERK_COMBAT_BUCKLER]]: {
         display_name: 'Combat Buckler',
-        description: 'May purchase a Shield for 3 Tons.',
+        description: 'Medium HE-V may purchase a Combat Shield for 3 Tons.',
     },
     [[TEAM_PERK_EXTRA_NITRO]]: {
         display_name: 'Extra Nitro',

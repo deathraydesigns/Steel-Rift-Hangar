@@ -596,6 +596,20 @@ export const useMechStore = defineStore('mech', {
 
                     const traitLimited = find(traits, {id: TRAIT_UPGRADE_LIMITED});
 
+                    const perks = teamStore.getTeamPerksInfoByMech(mechId);
+                    const team_perks = [];
+
+                    if (upgradeId === COMBAT_SHIELD) {
+                        let perk = find(perks, {id: TEAM_PERK_COMBAT_BUCKLER});
+                        if (perk) {
+                            limited_size_ids = [...limited_size_ids, SIZE_MEDIUM];
+
+                            if (size_id === SIZE_MEDIUM) {
+                                team_perks.push(perk);
+                            }
+                        }
+                    }
+
                     if (limited_size_ids) {
                         valid = limited_size_ids.includes(size_id);
                         if (!valid) {
@@ -603,9 +617,6 @@ export const useMechStore = defineStore('mech', {
                             validation_message = `Only available for ${sizeDisplayNames} HE-Vs`;
                         }
                     }
-
-                    const perks = teamStore.getTeamPerksInfoByMech(mechId);
-                    const team_perks = [];
 
                     if (upgradeId === TARGET_DESIGNATOR) {
                         let perk = find(perks, {id: TEAM_PERK_0_SLOT_TARGET_DESIGNATORS});
@@ -639,14 +650,6 @@ export const useMechStore = defineStore('mech', {
                         perk = find(perks, {id: TEAM_PERK_0_TON_ECM});
                         if (perk) {
                             cost = 0;
-                            team_perks.push(perk);
-                        }
-                    }
-
-                    if (upgradeId === COMBAT_SHIELD) {
-                        let perk = find(perks, {id: TEAM_PERK_COMBAT_BUCKLER});
-                        if (perk) {
-                            cost = 3;
                             team_perks.push(perk);
                         }
                     }
