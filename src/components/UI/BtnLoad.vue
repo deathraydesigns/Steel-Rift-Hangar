@@ -1,10 +1,9 @@
 <script setup>
 import {useTemplateRef} from 'vue';
-import {useToastStore} from '../../store/toast-store.js';
 import {loadSaveFileData} from '../../store/helpers/store-save-load.js';
 import {BButton} from 'bootstrap-vue-next';
+import {toaster} from '../../toaster.js';
 
-const toastStore = useToastStore();
 const fileUpload = useTemplateRef('file-upload');
 
 function clickFile() {
@@ -21,7 +20,7 @@ function fileChange(event) {
         loadSaveFileData(JSON.parse(e.target.result));
 
       } catch (error) {
-        toastStore.toastError('Invalid Save File', error);
+        toaster().error('Invalid Save File', error);
         console.error('Error parsing JSON:', error);
       }
 

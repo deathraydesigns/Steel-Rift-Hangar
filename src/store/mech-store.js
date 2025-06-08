@@ -26,7 +26,6 @@ import {
     TARGET_DESIGNATOR,
 } from '../data/mech-upgrades.js';
 import {deleteItemById, findById, findItemIndex, moveItem} from './helpers/collection-helper.js';
-import {useToastStore} from './toast-store.js';
 import {useFactionStore} from './faction-store.js';
 import {useTeamStore} from './team-store.js';
 import {
@@ -50,6 +49,7 @@ import {DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOT
 import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
 import {TYPE_HEV} from '../data/unit-types.js';
 import {makeGrantedOrderCollection} from './helpers/helpers.js';
+import {toaster} from '../toaster.js';
 
 export const useMechStore = defineStore('mech', {
         state() {
@@ -199,9 +199,7 @@ export const useMechStore = defineStore('mech', {
                 mech.upgrades.forEach((upgradeAttachment) => {
                     const info = this.getMechUpgradeAttachmentInfo(mechId, upgradeAttachment.id);
                     if (!info.valid) {
-                        const {toastInfo} = useToastStore();
-
-                        toastInfo(`${mechInfo.size.display_name} HE-V (${mechInfo.display_name})`,
+                        toaster().info(`${mechInfo.size.display_name} HE-V (${mechInfo.display_name})`,
                             `${info.display_name} removed: (${info.validation_message})`);
                         this.removeMechUpgradeAttachment(mechId, upgradeAttachment.id);
                     }
@@ -210,9 +208,8 @@ export const useMechStore = defineStore('mech', {
                 mech.weapons.forEach((weaponAttachment) => {
                     const info = this.getMechWeaponAttachmentInfo(mechId, weaponAttachment.id);
                     if (!info.valid) {
-                        const {toastInfo} = useToastStore();
 
-                        toastInfo(`${mechInfo.size.display_name} HE-V (${mechInfo.display_name})`,
+                        toaster().info(`${mechInfo.size.display_name} HE-V (${mechInfo.display_name})`,
                             `${info.display_name} removed: (${info.validation_message})`);
                         this.removeMechWeaponAttachment(mechId, weaponAttachment.id);
                     }
@@ -602,6 +599,7 @@ export const useMechStore = defineStore('mech', {
                     if (upgradeId === COMBAT_SHIELD) {
                         let perk = find(perks, {id: TEAM_PERK_COMBAT_BUCKLER});
                         if (perk) {
+                            limited_size_ids.push('z');
                             limited_size_ids = [...limited_size_ids, SIZE_MEDIUM];
 
                             if (size_id === SIZE_MEDIUM) {
@@ -650,6 +648,14 @@ export const useMechStore = defineStore('mech', {
                         perk = find(perks, {id: TEAM_PERK_0_TON_ECM});
                         if (perk) {
                             cost = 0;
+                            team_perks.push(perk);
+                        }
+                    }
+
+                    if (upgradeId === COMBAT_SHIELD) {
+                        let perk = find(perks, {id: TEAM_PERK_COMBAT_BUCKLER});
+                        if (perk) {
+                            cost = 3;
                             team_perks.push(perk);
                         }
                     }

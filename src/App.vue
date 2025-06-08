@@ -1,12 +1,12 @@
 <script setup>
-import Toaster from './components/UI/Toaster.vue';
-import {computed, onMounted, provide, ref} from 'vue';
+import {computed, onErrorCaptured, onMounted, provide, ref} from 'vue';
 import AppHeader from './components/AppHeader.vue';
 import {ROUTE_PRINT} from './routes.js';
 import ArmyPrint from './components/ArmyPrint.vue';
 import ArmyEdit from './components/ArmyEdit.vue';
 
-import {useColorMode} from 'bootstrap-vue-next';
+import {BToastOrchestrator, useColorMode} from 'bootstrap-vue-next';
+import {toaster} from './toaster.js';
 
 onMounted(() => {
   document.getElementById('failsafe-container')?.remove();
@@ -27,11 +27,15 @@ const mode = useColorMode({
 });
 provide('color_mode', mode);
 
+onErrorCaptured((error) => {
+  toaster().error('Error', error.stack);
+});
+
 </script>
 <template>
   <div class="d-flex flex-column vh-100">
 
-    <Toaster/>
+    <BToastOrchestrator/>
     <AppHeader/>
     <ArmyPrint v-show="showPrint"/>
     <ArmyEdit v-show="!showPrint"/>
