@@ -98,8 +98,8 @@ const structureHp = computed(() => {
 
   if (factionStore.hasPerk(RD_ADVANCED_STRUCTURAL_COMPONENTS)) {
     points = ['-', '-'].concat(points);
+    points.splice(points.length - 2, 2);
   }
-
 
   if (structure6PerRow.value) {
     return chunk(points, 6);
