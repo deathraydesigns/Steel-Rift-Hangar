@@ -17,6 +17,10 @@ export default defineComponent({
       type: String,
       default: null,
     },
+    size: {
+      type: String,
+      default: '20px',
+    }
   },
   setup(props) {
     const symbolId = computed(() => `#${props.prefix}-${props.name}`);
@@ -26,12 +30,12 @@ export default defineComponent({
 </script>
 <template>
   <template v-if="color">
-    <svg aria-hidden="true" width="20px" height="20px" :fill="color">
+    <svg aria-hidden="true" :width="size" :height="size" :fill="color">
       <use :href="symbolId"/>
     </svg>
   </template>
   <template v-else>
-    <svg aria-hidden="true" width="20px" height="20px" class="app-svg-icon">
+    <svg aria-hidden="true" :width="size" :height="size" class="app-svg-icon">
       <use :href="symbolId"/>
     </svg>
   </template>

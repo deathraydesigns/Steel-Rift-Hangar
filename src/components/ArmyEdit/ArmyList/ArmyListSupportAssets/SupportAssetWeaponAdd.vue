@@ -4,6 +4,8 @@ import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapo
 import Number from '../../../functional/number.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 import {traitDisplayNames} from '../../../../data/data-helpers.js';
+import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
+import SupportAssetNoteList from '../../../UI/SupportAssetNoteList.vue';
 
 const store = useSupportAssetWeaponsStore();
 
@@ -29,7 +31,7 @@ const {
             Support Asset
           </td>
           <td class="text-end">
-            Attack
+            Damage
           </td>
           <td class="text-end">
             Tons
@@ -37,6 +39,7 @@ const {
           <td>
             Traits
           </td>
+          <td>Notes</td>
         </tr>
         </thead>
         <tbody>
@@ -51,13 +54,19 @@ const {
             {{ item.display_name }}
           </td>
           <td class="text-end">
-            {{ item.off_table_weapon.damage }}
+            <SupportAssetWeaponDamageFormatter
+                :damage="item.off_table_weapon.damage"
+                :damage-modifier="item.off_table_weapon.damage_modifiers"
+            />
           </td>
           <td class="text-end">
             <number :val="item.cost" :invert-color="true"/>
           </td>
           <td>
             {{ traitDisplayNames(item.off_table_weapon.traits) }}
+          </td>
+          <td>
+            <SupportAssetNoteList :notes="item.notes"/>
           </td>
         </tr>
         </tbody>

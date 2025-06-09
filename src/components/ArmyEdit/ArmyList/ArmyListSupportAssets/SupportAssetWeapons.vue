@@ -8,6 +8,8 @@ import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapo
 import {BButton} from 'bootstrap-vue-next';
 import Number from '../../../functional/number.vue';
 import IconValidationError from '../../../UI/IconValidationError.vue';
+import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
+import SupportAssetNoteList from '../../../UI/SupportAssetNoteList.vue';
 
 const store = useSupportAssetWeaponsStore();
 const validationStore = useValidationStore();
@@ -69,7 +71,10 @@ const {
             </BtnToolTip>
           </td>
           <td class="text-end">
-            {{ item.off_table_weapon.damage }}
+            <SupportAssetWeaponDamageFormatter
+                :damage="item.off_table_weapon.damage"
+                :damage-modifiers="item.off_table_weapon.damage_modifiers"
+            />
           </td>
           <td class="text-end">
             <number :val="item.cost" :invert-color="true"/>
@@ -78,7 +83,7 @@ const {
             <TraitList :traits="item.off_table_weapon.traits"/>
           </td>
           <td>
-            <small>{{ item.notes.join(', ') }}</small>
+            <SupportAssetNoteList :notes="item.notes"/>
           </td>
           <td class="table-btn-cell text-end">
             <BButton @click="store.removeSupportAssetId(item.id)" variant="danger" size="sm"><span

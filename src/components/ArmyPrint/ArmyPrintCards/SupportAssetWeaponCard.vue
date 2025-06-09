@@ -6,6 +6,7 @@ import CardFooter from './CardParts/CardFooter.vue';
 import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store.js';
 import {find} from 'es-toolkit/compat';
 import {traitDisplayNames} from '../../../data/data-helpers.js';
+import SupportAssetWeaponDamageFormatter from '../../UI/SupportAssetWeaponDamageFormatter.vue';
 
 const supportAssetStore = useSupportAssetWeaponsStore();
 
@@ -65,7 +66,10 @@ const max_uses = computed(() => {
             </span>
           </td>
           <td v-if="weapon.damage">
-            {{ weapon.damage }}
+            <SupportAssetWeaponDamageFormatter
+                :damage="weapon.damage"
+                :damage-modifiers="weapon.damage_modifiers"
+            />
           </td>
           <td class="text-start">
             {{ traits }}
@@ -78,9 +82,14 @@ const max_uses = computed(() => {
           Notes
         </div>
         <div class="card-description">
-          <p v-for="i in info.notes">{{ i }}</p>
+          <div v-for="note in info.notes">
+            {{ note.display_name }}
+            <Icon v-if="note.is_team_perk" name="team-perk" size="14px"/>
+            <span class="material-symbols-outlined" v-if="note.is_faction_perk" style="font-size: 12px">flag</span>
+          </div>
         </div>
       </template>
+
       <CardFooter/>
     </div>
   </div>

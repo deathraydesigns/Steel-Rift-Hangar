@@ -12,6 +12,7 @@ import {MECH_TEAM_PERKS} from '../data/mech-team-perks.js';
 import {MECH_SIZES, MECH_SIZES_DROP_DOWN, SIZE_HEAVY, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
 import {toaster} from '../toaster.js';
+import {makeUniqueItemIdCollection} from './helpers/helpers.js';
 
 export const useTeamStore = defineStore('team', () => {
 
@@ -390,6 +391,16 @@ export const useTeamStore = defineStore('team', () => {
             return Object.keys(perkIdsMap);
         }
 
+        const allUsedTeamAbilityPerkIds = computed(() => {
+            const perks = makeUniqueItemIdCollection(MECH_TEAM_PERKS);
+            teams.value.forEach(team => {
+                const perkIds = getUsedTeamAbilityPerkIds(team.id);
+                perks.addIds(perkIds);
+            });
+
+            return perks.ids();
+        });
+
         function getUsedTeamAbilityPerksInfo(teamId) {
 
             const perkIds = getUsedTeamAbilityPerkIds(teamId);
@@ -544,6 +555,8 @@ export const useTeamStore = defineStore('team', () => {
             used_teams_count,
             max_teams_count,
             special_teams,
+
+            allUsedTeamAbilityPerkIds,
 
             findGroup,
             getTeamMechCount,

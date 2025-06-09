@@ -5,10 +5,17 @@ import {useFactionStore} from './faction-store.js';
 import {TRAIT_LIMITED, WEAPON_TRAITS, weaponTraitDisplayName} from '../data/weapon-traits.js';
 import {DWC_OUTRAGEOUS_SUPPORT_BUDGET, FACTION_PERKS, OI_ORBITAL_STOCKPILES} from '../data/faction-perks.js';
 import {SUPPORT_ASSET_WEAPONS} from '../data/support-asset-weapons.js';
+import {useTeamStore} from './team-store.js';
+import {
+    MECH_TEAM_PERKS,
+    TEAM_PERK_DIRECTIONAL_ASSETS,
+    TEAM_PERK_SUPPORT_ASSET_DAMAGE,
+} from '../data/mech-team-perks.js';
 
 export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', () => {
 
         const factionStore = useFactionStore();
+        const teamStore = useTeamStore();
 
         const outrageous_budget_perk_support_asset_id = ref(null);
         const support_asset_weapon_ids = ref([]);
@@ -40,6 +47,7 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
 
             const weapon = Object.assign({}, asset.off_table_weapon);
             weapon.traits = weapon.traits.map((trait) => Object.assign({}, trait));
+            weapon.damage_modifiers = [];
 
             if (factionStore.hasPerk(OI_ORBITAL_STOCKPILES)) {
                 let hasLimitedTrait = false;
@@ -50,8 +58,11 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
                     }
                 });
                 if (hasLimitedTrait) {
-                    const note = FACTION_PERKS[OI_ORBITAL_STOCKPILES].display_name;
-                    asset.notes.push(`Faction Perk: ${note} Limit(+1) applied`);
+                    asset.notes.push({
+                        ...FACTION_PERKS[OI_ORBITAL_STOCKPILES],
+                        display_name: FACTION_PERKS[OI_ORBITAL_STOCKPILES].display_name + ' Limit(+1) applied',
+                        is_faction_perk: true,
+                    });
                 }
             }
 
@@ -59,7 +70,7 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
                 if (asset.id === outrageous_budget_perk_support_asset_id.value) {
                     asset.cost = 0;
                     if (weapon.damage > 0) {
-                        weapon.damage -= 1;
+                        weapon.damage_modifiers.push(-1);
                     }
 
                     weapon.traits.forEach((trait) => {
@@ -68,10 +79,30 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
                         }
                     });
 
-                    const note = FACTION_PERKS[DWC_OUTRAGEOUS_SUPPORT_BUDGET].display_name;
-
-                    asset.notes.push(`Faction Perk: ${note} applied`);
+                    asset.notes.push({
+                        ...FACTION_PERKS[DWC_OUTRAGEOUS_SUPPORT_BUDGET],
+                        is_faction_perk: true,
+                    });
                 }
+            }
+
+            const perkIds = teamStore.allUsedTeamAbilityPerkIds;
+            if (perkIds.includes(TEAM_PERK_SUPPORT_ASSET_DAMAGE)) {
+                if (weapon.damage) {
+                    weapon.damage_modifiers.push(1);
+
+                    asset.notes.push({
+                        ...MECH_TEAM_PERKS[TEAM_PERK_SUPPORT_ASSET_DAMAGE],
+                        is_team_perk: true,
+                    });
+                }
+            }
+
+            if (perkIds.includes(TEAM_PERK_DIRECTIONAL_ASSETS)) {
+                asset.notes.push({
+                    ...MECH_TEAM_PERKS[TEAM_PERK_DIRECTIONAL_ASSETS],
+                    is_team_perk: true,
+                });
             }
 
             weapon.traits = weapon.traits.map(trait => Object.assign({},
