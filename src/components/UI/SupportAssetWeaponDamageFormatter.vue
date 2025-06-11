@@ -5,7 +5,6 @@ import {sum} from 'es-toolkit';
 const {damage, damageModifiers} = defineProps({
   damage: {
     type: Number,
-    required: true,
   },
   damageModifiers: {
     type: Array,
