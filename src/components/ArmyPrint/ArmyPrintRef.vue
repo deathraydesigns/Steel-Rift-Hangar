@@ -37,15 +37,12 @@ onMounted(() => {
 }
 `;
   document.head.appendChild(style);
-  console.log('mounted');
 });
 
 onUnmounted(() => {
   if (style) {
     style.remove();
   }
-  console.log('un-mounted');
-
 });
 </script>
 <template>
