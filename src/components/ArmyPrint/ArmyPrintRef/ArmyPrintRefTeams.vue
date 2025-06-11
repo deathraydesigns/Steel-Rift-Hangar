@@ -9,7 +9,7 @@ const teamPerks = computed(() => {
       .filter((team) => team.id !== TEAM_GENERAL && teamStore.getTeamMechCount(team.id))
       .map((team) => {
         return {
-          display_name: MECH_TEAMS[team.id].display_name,
+          ...MECH_TEAMS[team.id],
           perks: teamStore.getUsedTeamAbilityPerksInfo(team.id),
         };
       });
@@ -20,7 +20,7 @@ const teamPerks = computed(() => {
     <div v-if="team.perks.length">
       <div class="divider"></div>
 
-      <div class="ref-heading">{{ team.display_name }}</div>
+      <div class="ref-heading">{{ team.display_name }}  <Icon :name="team.icon"/></div>
       <div v-for="perk in team.perks">
         <p class="p-gap">
           <span class="fw-bold">
