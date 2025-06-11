@@ -3,7 +3,6 @@ import ArmyPrintRefTeams from './ArmyPrintRef/ArmyPrintRefTeams.vue';
 import ArmyPrintRefSecondaryAgendas from './ArmyPrintRef/ArmyPrintRefSecondaryAgendas.vue';
 import ArmyPrintRefUpgrades from './ArmyPrintRef/ArmyPrintRefUpgrades.vue';
 import ArmyPrintRefHeader from './ArmyPrintRef/ArmyPrintRefHeader.vue';
-import ArmyPrintRefSupportAssets from './ArmyPrintRef/ArmyPrintRefSupportAssets.vue';
 import ArmyPrintRefFaction from './ArmyPrintRef/ArmyPrintRefFaction.vue';
 import ArmyPrintRefSpecialOrders from './ArmyPrintRef/ArmyPrintRefSpecialOrders.vue';
 import ArmyPrintRefTraits from './ArmyPrintRef/ArmyPrintRefTraits.vue';
@@ -56,7 +55,6 @@ onUnmounted(() => {
       <ArmyPrintRefTeams/>
       <ArmyPrintRefSecondaryAgendas/>
       <ArmyPrintRefUpgrades/>
-      <ArmyPrintRefSupportAssets/>
       <ArmyPrintRefSpecialOrders/>
       <ArmyPrintRefTraits/>
 
