@@ -54,9 +54,10 @@ const {
             {{ item.display_name }}
           </td>
           <td class="text-end">
+
             <SupportAssetWeaponDamageFormatter
                 :damage="item.off_table_weapon.damage"
-                :damage-modifier="item.off_table_weapon.damage_modifiers"
+                :damage-modifiers="item.off_table_weapon.damage_modifiers"
             />
           </td>
           <td class="text-end">
