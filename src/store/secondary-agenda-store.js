@@ -35,13 +35,14 @@ export const useSecondaryAgendaStore = defineStore('secondary-agenda', () => {
         const result = [];
         const factionId = factionStore.faction_id;
         if (factionId) {
-            const agendaId = FACTIONS[factionId].secondary_agenda_id;
+            const faction = FACTIONS[factionId];
+            const agendaId = faction.secondary_agenda_id;
             if (agendaId) {
                 result.push(Object.assign({},
                     SECONDARY_AGENDAS[agendaId],
                     {
-                        type: 'Faction',
-                        type_display_name: FACTIONS[factionId].display_name,
+                        type_display_name: 'Faction',
+                        subtype_display_name: faction.display_name,
                     },
                 ));
             }
@@ -49,12 +50,11 @@ export const useSecondaryAgendaStore = defineStore('secondary-agenda', () => {
 
         teamStore.teams.map(team => {
             if (teamStore.getTeamMechCount(team.id)) {
-                const agendaId = MECH_TEAMS[team.id].secondary_agenda;
+                const agendaId = MECH_TEAMS[team.id].secondary_agenda_id;
                 if (agendaId) {
                     result.push(Object.assign({},
                         SECONDARY_AGENDAS[agendaId],
                         {
-                            type: null,
                             type_display_name: MECH_TEAMS[team.id].display_name,
                         },
                     ));
@@ -65,49 +65,31 @@ export const useSecondaryAgendaStore = defineStore('secondary-agenda', () => {
         const sizesByCount = countBy(mechStore.mechs, mech => mech.size_id);
 
         if (sizesByCount[SIZE_LIGHT] === 2) {
-            result.push(Object.assign({},
-                SECONDARY_AGENDAS[SA_STALKERS],
-                {
-                    type: null,
-                    type_display_name: 'Universal',
-                },
-            ));
+            result.push(SECONDARY_AGENDAS[SA_STALKERS]);
         }
+
         if (sizesByCount[SIZE_MEDIUM] === 2) {
-            result.push(Object.assign({},
-                SECONDARY_AGENDAS[SA_BRAWLERS],
-                {
-                    type: null,
-                    type_display_name: 'Universal',
-                },
-            ));
+            result.push(SECONDARY_AGENDAS[SA_BRAWLERS]);
         }
 
         if (sizesByCount[SIZE_HEAVY] === 2) {
-            result.push(Object.assign({},
-                SECONDARY_AGENDAS[SA_ENFORCERS],
-                {
-                    type: null,
-                    type_display_name: 'Universal',
-                },
-            ));
+            result.push(SECONDARY_AGENDAS[SA_ENFORCERS]);
         }
 
         if (sizesByCount[SIZE_ULTRA] === 2) {
-            result.push(Object.assign({},
-                SECONDARY_AGENDAS[SA_TITAN_KILLERS],
-                {
-                    type: 'Opponent Eligible',
-                    type_display_name: 'Universal',
-                },
-            ));
+            result.push(SECONDARY_AGENDAS[SA_TITAN_KILLERS]);
         }
 
         return result;
     });
 
+    const universal_secondary_agendas = computed(() => {
+        return Object.values(SECONDARY_AGENDAS).filter(item => item.is_universal);
+    });
+
     return {
         max_secondary_agendas,
+        universal_secondary_agendas,
         secondary_agendas,
         $reset,
     };
