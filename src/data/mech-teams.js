@@ -438,8 +438,8 @@ export const MECH_TEAMS = makeStaticListIds({
                 [TEAM_PERK_JUMP_BOOSTER],
             ],
             3: [
-                [TEAM_PERK_MELEE_FLANK, TEAM_PERK_0_SLOT_DIRECTIONAL_THRUSTERS],
-                [TEAM_PERK_SIDE_DEFENSE],
+                [TEAM_PERK_MELEE_FLANK],
+                [TEAM_PERK_0_SLOT_DIRECTIONAL_THRUSTERS],
                 [],
             ],
             4: [
