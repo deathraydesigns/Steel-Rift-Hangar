@@ -30,7 +30,7 @@ const militaryTrainingPerks = computed(() => {
     <div class="card-content-container">
       <CardHeader :title="'Faction Perk: ' + faction_display_name"/>
 
-      <div class="fw-bold section-heading">{{ info.display_name }}</div>
+      <div class="section-heading">{{ info.display_name }}</div>
       <div class="card-description">
         {{ info.description }}
         <span v-if="info.calculated_on_cards">
