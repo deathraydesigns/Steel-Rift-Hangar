@@ -151,7 +151,19 @@ export const useTeamStore = defineStore('team', () => {
                     const prohibitedTraits = groupInfo.prohibited_weapons_with_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
                     return {
                         valid: false,
-                        validation_message: `${teamDisplayName} ${groupInfo.display_name} cannot use weapons with the following traits: ${prohibitedTraits.join(', ')}`,
+                        validation_message: `${teamDisplayName} ${groupInfo.display_name}: cannot use weapons with the following traits: ${prohibitedTraits.join(', ')}`,
+                    };
+                }
+            }
+
+            if(groupInfo.limited_weapons_with_at_least_one_of_trait_ids?.length) {
+                const matched = traits.find((trait) => groupInfo.limited_weapons_with_at_least_one_of_trait_ids.includes(trait.id));
+                if(!matched) {
+                    const teamDisplayName = getTeamInfo(teamId).display_name;
+                    const requiredTraits = groupInfo.limited_weapons_with_at_least_one_of_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
+                    return {
+                        valid: false,
+                        validation_message: `${teamDisplayName} ${groupInfo.display_name}: can only use weapons with one of the following traits: ${requiredTraits.join(', ')}`,
                     };
                 }
             }
