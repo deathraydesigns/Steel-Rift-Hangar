@@ -7,6 +7,7 @@ import TraitList from '../../../UI/TraitList.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {BDropdown} from 'bootstrap-vue-next';
+import FormatNumber from '../../../functional/format-number.vue';
 
 const {mechId} = defineProps({
   mechId: {
@@ -82,10 +83,10 @@ function addUpgrade(upgradeId, valid, event) {
             </BtnToolTip>
           </td>
           <td class="text-end">
-            <number :val="item.slots" :invert-color="true"/>
+            <format-number :val="item.slots" :invert-color="true"/>
           </td>
           <td class="text-end">
-            <number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true"/>
           </td>
           <td class="notes">
             <TraitList :traits="item.traits"/>

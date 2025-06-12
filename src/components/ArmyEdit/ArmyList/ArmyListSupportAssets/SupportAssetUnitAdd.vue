@@ -1,7 +1,7 @@
 <script setup>
 import {storeToRefs} from 'pinia';
 import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store.js';
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 
 const store = useSupportAssetUnitsStore();
@@ -44,7 +44,7 @@ const {
           </td>
 
           <td class="text-end">
-            <number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true"/>
           </td>
         </tr>
         </tbody>

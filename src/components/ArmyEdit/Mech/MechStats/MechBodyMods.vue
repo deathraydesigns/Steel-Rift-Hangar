@@ -2,7 +2,7 @@
 import {MECH_BODY_MODS} from '../../../../data/mech-body.js';
 import {computed} from 'vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 
 const {
@@ -93,10 +93,10 @@ function selectOption(value, valid, event) {
               {{ item.text }}
             </td>
             <td class="text-end">
-              <number :val="item.modifier"/>
+              <format-number :val="item.modifier"/>
             </td>
             <td class="text-end">
-              <number :val="item.max_tons" invert invert-color/>
+              <format-number :val="item.max_tons" invert invert-color/>
             </td>
             <td class="notes">
               <IconNotAvailable
@@ -111,19 +111,19 @@ function selectOption(value, valid, event) {
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number :val="armor" v-if="armor !== null"/>
+        <format-number :val="armor" v-if="armor !== null"/>
       </div>
     </td>
     <td class="text-end">
       <div class="col-form-label">
 
-        <number :val="structure" v-if="structure !== null"/>
+        <format-number :val="structure" v-if="structure !== null"/>
       </div>
     </td>
     <td></td>
     <td class="text-end">
       <div class="col-form-label">
-        <number :val="tonnage" :invert-color="true"/>
+        <format-number :val="tonnage" :invert-color="true"/>
       </div>
     </td>
     <td></td>

@@ -6,6 +6,7 @@ import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 import FormatInches from '../../../functional/format-inches.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 
 const {
   mechId,
@@ -86,10 +87,10 @@ function addWeapon(upgradeId, valid, event) {
             {{ item.display_name }}
           </td>
           <td class="text-end">
-            <number :val="item.slots" :invert-color="true"/>
+            <format-number :val="item.slots" :invert-color="true"/>
           </td>
           <td class="text-end">
-            <number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true"/>
           </td>
           <td class="text-end">
             {{ item.damage }}

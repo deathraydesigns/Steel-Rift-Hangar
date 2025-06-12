@@ -1,6 +1,6 @@
 <script setup>
 import {computed} from 'vue';
-import NumberVal from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import {useMechStore} from '../../../../store/mech-store.js';
 import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
@@ -97,10 +97,10 @@ function selectOption(value, valid, event) {
               </BtnToolTip>
             </td>
             <td class="text-end">
-              <number-val :val="item.slots" :invert-color="true"/>
+              <format-number :val="item.slots" :invert-color="true"/>
             </td>
             <td class="text-end">
-              <number-val :val="item.cost" :invert-color="true"/>
+              <format-number :val="item.cost" :invert-color="true"/>
             </td>
             <td class="notes">
               <IconTeamGroupPerks
@@ -140,19 +140,19 @@ function selectOption(value, valid, event) {
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number-val :val="armorUpgrade.armor_mod" invert-color/>
+        <format-number :val="armorUpgrade.armor_mod" invert-color/>
       </div>
     </td>
     <td class="text-end">
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number-val :val="armorUpgrade.slots" invert-color/>
+        <format-number :val="armorUpgrade.slots" invert-color/>
       </div>
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number-val :val="armorUpgrade.cost" invert-color/>
+        <format-number :val="armorUpgrade.cost" invert-color/>
       </div>
     </td>
     <td></td>

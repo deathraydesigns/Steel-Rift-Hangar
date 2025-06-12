@@ -1,7 +1,7 @@
 <script setup>
 import {storeToRefs} from 'pinia';
 import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapons-store.js';
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 import {traitDisplayNames} from '../../../../data/data-helpers.js';
 import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
@@ -61,7 +61,7 @@ const {
             />
           </td>
           <td class="text-end">
-            <number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true"/>
           </td>
           <td>
             {{ traitDisplayNames(item.off_table_weapon.traits) }}

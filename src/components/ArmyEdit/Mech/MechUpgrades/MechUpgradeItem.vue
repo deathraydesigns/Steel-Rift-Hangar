@@ -7,7 +7,7 @@ import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import TraitList from '../../../UI/TraitList.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import {BButton} from 'bootstrap-vue-next';
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 
 const mechStore = useMechStore();
 
@@ -74,10 +74,10 @@ function remove() {
     <td>
     </td>
     <td class="text-end">
-      <number :val="upgrade.slots" :invert-color="true"/>
+      <format-number :val="upgrade.slots" :invert-color="true"/>
     </td>
     <td class="text-end">
-      <number :val="upgrade.cost" :invert-color="true"/>
+      <format-number :val="upgrade.cost" :invert-color="true"/>
     </td>
     <td>
     </td>

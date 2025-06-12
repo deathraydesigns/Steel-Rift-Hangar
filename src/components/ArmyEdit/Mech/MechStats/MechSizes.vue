@@ -1,6 +1,6 @@
 <script setup>
 import {useMechStore} from '../../../../store/mech-store.js';
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import {computed} from 'vue';
 import {useTeamStore} from '../../../../store/team-store.js';
 import {BDropdown} from 'bootstrap-vue-next';
@@ -99,7 +99,7 @@ function selectOption(size_id) {
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number :val="info.size.armor + info.size.structure" :invert-color="true"/>
+        <format-number :val="info.size.armor + info.size.structure" :invert-color="true"/>
       </div>
     </td>
     <td></td>

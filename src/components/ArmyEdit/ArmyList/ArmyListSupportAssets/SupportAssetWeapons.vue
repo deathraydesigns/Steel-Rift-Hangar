@@ -6,7 +6,7 @@ import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../../store/validation-store.js';
 import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapons-store.js';
 import {BButton} from 'bootstrap-vue-next';
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import IconValidationError from '../../../UI/IconValidationError.vue';
 import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
 import SupportAssetNoteList from '../../../UI/SupportAssetNoteList.vue';
@@ -77,7 +77,7 @@ const {
             />
           </td>
           <td class="text-end">
-            <number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true"/>
           </td>
           <td>
             <TraitList :traits="item.off_table_weapon.traits"/>

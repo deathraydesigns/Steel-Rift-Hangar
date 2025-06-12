@@ -6,7 +6,7 @@ import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
 import TraitList from '../../../UI/TraitList.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import {BButton} from 'bootstrap-vue-next';
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
 import RangeFormatter from '../../../UI/RangeFormatter.vue';
 
@@ -77,10 +77,10 @@ function remove() {
 
     </td>
     <td class=" text-end">
-      <number :val="weapon.slots" :invert-color="true"/>
+      <format-number :val="weapon.slots" :invert-color="true"/>
     </td>
     <td class=" text-end">
-      <number :val="weapon.cost" :invert-color="true"/>
+      <format-number :val="weapon.cost" :invert-color="true"/>
     </td>
     <td>
       <small v-if="weapon.duplicate_cost">

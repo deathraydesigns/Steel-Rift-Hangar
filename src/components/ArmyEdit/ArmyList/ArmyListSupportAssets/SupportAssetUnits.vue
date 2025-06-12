@@ -4,7 +4,7 @@ import {useValidationStore} from '../../../../store/validation-store.js';
 import SupportAssetUnitAdd from './SupportAssetUnitAdd.vue';
 import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store.js';
 import {BButton} from 'bootstrap-vue-next';
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import IconValidationError from '../../../UI/IconValidationError.vue';
 
 const store = useSupportAssetUnitsStore();
@@ -51,7 +51,7 @@ const {
             {{ item.display_name }}
           </td>
           <td class="text-end">
-            <number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true"/>
           </td>
           <td class="table-btn-cell text-end">
             <BButton @click="store.removeSupportAssetId(item.id)" variant="danger" size="sm"><span

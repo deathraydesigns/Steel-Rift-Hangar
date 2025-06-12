@@ -1,5 +1,5 @@
 <script setup>
-import Number from '../../../functional/number.vue';
+import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 
 const {
@@ -22,15 +22,19 @@ const {
     type: String,
   },
   usedSlots: {
+    type: Number,
     default: 0,
   },
   usedTons: {
+    type: Number,
     default: 0,
   },
   armor: {
+    type: Number,
     default: 0,
   },
   structure: {
+    type: Number,
     default: 0,
   },
 });
@@ -66,22 +70,22 @@ const {
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number v-if="armor" :val="armor"/>
+        <format-number v-if="armor" :val="armor"/>
       </div>
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number v-if="structure" :val="structure"/>
+        <format-number v-if="structure" :val="structure"/>
       </div>
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number v-if="usedSlots" :val="usedSlots" invert-color/>
+        <format-number v-if="usedSlots" :val="usedSlots" invert-color/>
       </div>
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <number v-if="usedTons" :val="usedTons" invert-color/>
+        <format-number v-if="usedTons" :val="usedTons" invert-color/>
       </div>
     </td>
     <td></td>
