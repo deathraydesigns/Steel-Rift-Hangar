@@ -52,13 +52,11 @@ export function deepFreeze(object, depth = 0) {
 export function makeTraits(items) {
     Object.entries(items)
         .forEach(([id, item]) => {
-            Object.assign(
-                item,
-                {
-                    id,
-                    granted_order_ids: item.granted_order_ids || [],
-                },
-            );
+            items[id] = {
+                ...item,
+                id,
+                granted_order_ids: item.granted_order_ids || [],
+            };
         });
 
     return deepFreeze(items);
