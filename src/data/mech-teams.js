@@ -296,7 +296,7 @@ export const MECH_TEAMS = makeStaticListIds({
         display_name: 'Berserker Team',
         display_name_short: 'Berserker',
         icon: 'team-berserker',
-        secondary_agenda: SA_DRIVE_THEM_OUT,
+        secondary_agenda_id: SA_DRIVE_THEM_OUT,
         groups: makeStaticListIds({
             'A': makeGroup({
                 min_count: 0,
@@ -356,7 +356,7 @@ export const MECH_TEAMS = makeStaticListIds({
         display_name: 'Gunslinger Team',
         display_name_short: 'Gunslinger',
         icon: 'team-gunslinger',
-        secondary_agenda: SA_TROPHY_TAKERS,
+        secondary_agenda_id: SA_TROPHY_TAKERS,
         groups: makeStaticListIds({
             'A': makeGroup({
                 min_count: 0,
@@ -407,7 +407,7 @@ export const MECH_TEAMS = makeStaticListIds({
         display_name: 'Assassination Team',
         display_name_short: 'Assassination',
         icon: 'team-assassination',
-        secondary_agenda: SA_TARGET_ELIMINATED,
+        secondary_agenda_id: SA_TARGET_ELIMINATED,
         groups: makeStaticListIds({
             'A': makeGroup({
                 min_count: 1,
