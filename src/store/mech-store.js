@@ -44,7 +44,7 @@ import {
     TEAM_PERK_JUMP_BOOSTER,
     TEAM_PERK_SMART_HOWITZERS,
 } from '../data/mech-team-perks.js';
-import {TRAIT_UPGRADE_LIMITED} from '../data/upgrade-traits.js';
+import {TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED, UPGRADE_TRAITS} from '../data/upgrade-traits.js';
 import {DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS} from '../data/factions.js';
 import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
 import {TYPE_HEV} from '../data/unit-types.js';
@@ -578,7 +578,7 @@ export const useMechStore = defineStore('mech', {
                     const factionStore = useFactionStore();
 
                     const upgrade = MECH_UPGRADES[upgradeId];
-                    let {size_id} = this.getMech(mechId);
+                    let {size_id, upgrades} = this.getMech(mechId);
                     let {
                         slots,
                         description,
@@ -605,6 +605,23 @@ export const useMechStore = defineStore('mech', {
                                 team_perks.push(perk);
                             }
                         }
+                    }
+                    const traitCompact = find(traits, {id: TRAIT_COMPACT});
+                    if (traitCompact) {
+                        const prevCompact = upgrades.find((upgrade) => {
+                            if (upgrade.upgrade_id === upgradeId) {
+                                return false;
+                            }
+                            const traits = getUpgradeTraits(upgradeId, size_id);
+
+                            return find(traits, {id: TRAIT_COMPACT});
+                        });
+
+                        if (prevCompact) {
+                            valid = false;
+                            validation_message = `Only one Upgrade with the ${UPGRADE_TRAITS[TRAIT_COMPACT].display_name} trait may be selected.`;
+                        }
+
                     }
 
                     if (limited_size_ids) {
