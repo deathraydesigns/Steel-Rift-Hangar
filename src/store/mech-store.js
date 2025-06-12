@@ -727,15 +727,19 @@ export const useMechStore = defineStore('mech', {
             getMechUpgradeAttachmentInfo(state) {
                 return (mechId, mechUpgradeAttachmentId) => {
                     const teamStore = useTeamStore();
-                    const mech = findById(state.mechs, mechId);
+                    const mech = this.getMech(mechId);
                     const upgradeAttachment = findById(mech.upgrades, mechUpgradeAttachmentId);
 
-                    const upgrade_id = upgradeAttachment.upgrade_id;
-                    const info = this.getUpgradeInfo(mechId, upgrade_id);
-                    const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
-                    const isRequired = teamStore.getUpgradeIsRequired(teamId, groupId, upgrade_id);
+                    const upgradeId = upgradeAttachment.upgrade_id;
+                    const info = this.getUpgradeInfo(mechId, upgradeId);
 
-                    return Object.assign({id: mechUpgradeAttachmentId}, info, {required_by_group: isRequired});
+                    const isRequired = teamStore.getMechUpgradeIsRequired(mechId, upgradeId);
+
+                    return {
+                        id: mechUpgradeAttachmentId,
+                        ...info,
+                        required_by_group: isRequired,
+                    };
                 };
             },
             getMechAvailableUpgradesInfo(state) {

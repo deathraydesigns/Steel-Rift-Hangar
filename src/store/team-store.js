@@ -156,9 +156,9 @@ export const useTeamStore = defineStore('team', () => {
                 }
             }
 
-            if(groupInfo.limited_weapons_with_at_least_one_of_trait_ids?.length) {
+            if (groupInfo.limited_weapons_with_at_least_one_of_trait_ids?.length) {
                 const matched = traits.find((trait) => groupInfo.limited_weapons_with_at_least_one_of_trait_ids.includes(trait.id));
-                if(!matched) {
+                if (!matched) {
                     const teamDisplayName = getTeamInfo(teamId).display_name;
                     const requiredTraits = groupInfo.limited_weapons_with_at_least_one_of_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
                     return {
@@ -174,7 +174,8 @@ export const useTeamStore = defineStore('team', () => {
             };
         }
 
-        function getUpgradeIsRequired(teamId, groupId, upgradeId) {
+        function getMechUpgradeIsRequired(mechId, upgradeId) {
+            const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
             const groupDef = MECH_TEAMS[teamId].groups[groupId];
             return groupDef.required_upgrade_ids.includes(upgradeId);
         }
@@ -577,7 +578,7 @@ export const useTeamStore = defineStore('team', () => {
             getTeamGroupInfo,
             getTeamGroupMechIds,
             getWeaponIsRequired,
-            getUpgradeIsRequired,
+            getMechUpgradeIsRequired,
             getMechTeamAndGroupIds,
             getAvailableMechSizes,
             getMechStructureModOptions,
