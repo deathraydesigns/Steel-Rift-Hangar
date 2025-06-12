@@ -28,8 +28,9 @@ const {
 
 const mechStore = useMechStore();
 
-function addWeapon(upgradeId, valid) {
+function addWeapon(upgradeId, valid, event) {
   if (!valid) {
+    event.stopPropagation();
     return;
   }
   mechStore.addMechWeaponAttachment(mechId, upgradeId);
@@ -79,7 +80,7 @@ function addWeapon(upgradeId, valid) {
               'disabled': !item.valid
             }"
             v-for="item in options" :key="item.weapon_id"
-            @click="addWeapon(item.weapon_id, item.valid)"
+            @click="addWeapon(item.weapon_id, item.valid, $event)"
         >
           <td>
             {{ item.display_name }}

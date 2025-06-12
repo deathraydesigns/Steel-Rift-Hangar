@@ -42,7 +42,11 @@ const selectedValueLabel = computed(() => {
   return MECH_BODY_MODS[model.value].display_name;
 });
 
-function selectOption(value) {
+function selectOption(value, valid, event) {
+  if (!valid) {
+    event.stopPropagation();
+    return;
+  }
   model.value = value;
 }
 </script>
@@ -83,7 +87,7 @@ function selectOption(value) {
                 'table-selected':   (item.value == model)
               }"
               v-for="item in options" :key="item.value"
-              @click="selectOption(item.value)"
+              @click="selectOption(item.value, item.valid)"
           >
             <td>
               {{ item.text }}

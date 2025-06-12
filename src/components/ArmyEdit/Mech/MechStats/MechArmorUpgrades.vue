@@ -29,8 +29,9 @@ const armorUpgrade = computed(() => {
   return mechStore.getMechArmorUpgradeInfo(mechId, armor_upgrade_id);
 });
 
-function selectOption(value, valid) {
+function selectOption(value, valid, event) {
   if (!valid) {
+    event.stopPropagation();
     return;
   }
   model.value = value;
@@ -76,7 +77,7 @@ function selectOption(value, valid) {
                 'disabled': !item.valid,
               }"
               v-for="item in options" :key="item.id"
-              @click="selectOption(item.id, item.valid)"
+              @click="selectOption(item.id, item.valid, $event)"
           >
             <td>
               <BtnToolTip
