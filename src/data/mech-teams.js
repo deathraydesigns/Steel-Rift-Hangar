@@ -26,7 +26,7 @@ import {
     TEAM_PERK_SUPPORT_ASSET_DAMAGE,
 } from './mech-team-perks.js';
 import {MOD_REINFORCED, MOD_STANDARD, MOD_STRIPPED} from './mech-body.js';
-import {makeStaticListIds} from './data-helpers.js';
+import {makeFrozenStaticListIds, makeStaticListIds} from './data-helpers.js';
 import {
     ABLATIVE_ARMOR_UPGRADE,
     CERAMIC_ARMOR_UPGRADE,
@@ -60,7 +60,7 @@ export const TEAM_ASSASSIN = 'TEAM_ASSASSIN';
 export const TEAM_BERSERKER = 'TEAM_BERSERKER';
 export const TEAM_GUNSLINGER = 'TEAM_GUNSLINGER';
 
-export const MECH_TEAM_SIZES = makeStaticListIds({
+export const MECH_TEAM_SIZES = makeFrozenStaticListIds({
     [[TEAM_SIZE_SMALL]]: {
         display_name: 'Small',
         description: '2',
@@ -75,7 +75,7 @@ export const MECH_TEAM_SIZES = makeStaticListIds({
     },
 });
 
-export const MECH_TEAMS = makeStaticListIds({
+export const MECH_TEAMS = makeFrozenStaticListIds({
     [[TEAM_GENERAL]]: {
         display_name: 'General Team',
         display_name_short: 'General',

@@ -1,4 +1,5 @@
 import {TEAM_SIZE_LARGE, TEAM_SIZE_MEDIUM, TEAM_SIZE_SMALL} from './mech-teams.js';
+import {makeFrozenStaticListIds} from './data-helpers.js';
 
 export const GAME_SIZE_DUEL = 'GAME_SIZE_DUEL';
 export const GAME_SIZE_RECON = 'GAME_SIZE_RECON';
@@ -6,7 +7,7 @@ export const GAME_SIZE_STRIKE = 'GAME_SIZE_STRIKE';
 export const GAME_SIZE_BATTLE = 'GAME_SIZE_BATTLE';
 export const GAME_SIZE_WAR = 'GAME_SIZE_WAR';
 
-export const GAME_SIZES = {
+export const GAME_SIZES = makeFrozenStaticListIds({
     [[GAME_SIZE_DUEL]]: {
         min_tons: 0,
         max_support_assets: 0,
@@ -62,7 +63,7 @@ export const GAME_SIZES = {
             [[TEAM_SIZE_LARGE]]: 1,
         },
     },
-};
+});
 
 export function getGameSizeId(maxTons) {
     const sizes = [
