@@ -382,7 +382,7 @@ export const useMechStore = defineStore('mech', {
                         range,
                     } = weapon;
 
-                    let {traits, team_perks, faction_perks, range_modifier} = this.getWeaponTraitInfo(mechId, weaponId);
+                    let {traits, team_perks, faction_perks, range_modifier} = this.getWeaponTraitsInfo(mechId, weaponId);
                     const traitLimited = find(traits, {id: TRAIT_LIMITED});
 
                     let max_uses = null;
@@ -437,7 +437,7 @@ export const useMechStore = defineStore('mech', {
                     });
                 };
             },
-            getWeaponTraitInfo(state) {
+            getWeaponTraitsInfo(state) {
                 return (mechId, weaponId) => {
                     const teamStore = useTeamStore();
                     const factionStore = useFactionStore();
@@ -748,7 +748,6 @@ export const useMechStore = defineStore('mech', {
                     return sortBy(result, ['display_name']);
                 };
             },
-
             getMechArmorUpgradeAttachmentInfo(state) {
                 return (mechId) => {
                     let {
@@ -842,7 +841,7 @@ export const useMechStore = defineStore('mech', {
                 const traitIdMap = {};
                 state.mechs.forEach(mech => {
                     mech.weapons.forEach(weapon => {
-                        const traitInfo = this.getWeaponTraitInfo(mech.id, weapon.weapon_id);
+                        const traitInfo = this.getWeaponTraitsInfo(mech.id, weapon.weapon_id);
                         const traitIds = map(traitInfo.traits, 'id');
                         traitIds.forEach(traitId => traitIdMap[traitId] = true);
                     });
