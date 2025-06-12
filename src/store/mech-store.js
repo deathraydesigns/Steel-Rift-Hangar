@@ -668,14 +668,6 @@ export const useMechStore = defineStore('mech', {
                         }
                     }
 
-                    if (upgradeId === COMBAT_SHIELD) {
-                        let perk = find(perks, {id: TEAM_PERK_COMBAT_BUCKLER});
-                        if (perk) {
-                            cost = 3;
-                            team_perks.push(perk);
-                        }
-                    }
-
                     if (upgradeId === NITRO_BOOST) {
                         let perk = find(perks, {id: TEAM_PERK_EXTRA_NITRO});
                         if (perk) {
