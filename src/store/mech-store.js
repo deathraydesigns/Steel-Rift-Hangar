@@ -739,11 +739,13 @@ export const useMechStore = defineStore('mech', {
                     const mech = findById(state.mechs, mechId);
                     const existingUpgradeIds = mech.upgrades.map((item) => item.upgrade_id);
 
-                    return Object.keys(MECH_UPGRADES)
+                    const result = Object.keys(MECH_UPGRADES)
                         .filter((upgradeId) => {
                             return !existingUpgradeIds.includes(upgradeId);
                         })
                         .map((upgradeId) => this.getUpgradeInfo(mechId, upgradeId));
+
+                    return sortBy(result, ['display_name']);
                 };
             },
 
