@@ -19,7 +19,7 @@ export const MECH_MOBILITIES = makeFrozenStaticListIds({
     },
     [[MOBILITY_MULTI_LIMB]]: {
         display_name: 'Multi-Limb',
-        slots: 0,
+        slots: 1,
         granted_order_ids: [ORDER_HUNKER_DOWN],
     },
 });
