@@ -44,7 +44,7 @@ import {
     TEAM_PERK_JUMP_BOOSTER,
     TEAM_PERK_SMART_HOWITZERS,
 } from '../data/mech-team-perks.js';
-import {TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED, UPGRADE_TRAITS} from '../data/upgrade-traits.js';
+import {TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED, UPGRADE_TRAITS, upgradeTraitDisplayName} from '../data/upgrade-traits.js';
 import {DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS} from '../data/factions.js';
 import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
 import {TYPE_HEV} from '../data/unit-types.js';
@@ -572,56 +572,94 @@ export const useMechStore = defineStore('mech', {
                     };
                 };
             },
-            getUpgradeInfo: function (state) {
+            getUpgradeTraitsInfo(state) {
                 return (mechId, upgradeId) => {
                     const teamStore = useTeamStore();
                     const factionStore = useFactionStore();
 
-                    const upgrade = MECH_UPGRADES[upgradeId];
-                    let {size_id, upgrades} = this.getMech(mechId);
-                    let {
-                        slots,
-                        description,
-                        cost_by_size,
-                        limited_size_ids,
-                    } = upgrade;
-
+                    let {size_id} = this.getMech(mechId);
                     let traits = getUpgradeTraits(upgradeId, size_id);
-                    let cost = cost_by_size[size_id];
-                    let validation_message = null;
-                    let valid = true;
 
                     const traitLimited = find(traits, {id: TRAIT_UPGRADE_LIMITED});
 
-                    const perks = teamStore.getTeamPerksInfoByMech(mechId);
-                    const team_perks = [];
+                    const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
+
+                    const used_team_perks = [];
+                    const faction_perks = [];
+
+                    if (upgradeId === NITRO_BOOST) {
+                        let perk = find(teamPerks, {id: TEAM_PERK_EXTRA_NITRO});
+                        if (perk) {
+                            if (traitLimited) {
+                                traitLimited.number += 1;
+                                used_team_perks.push(perk);
+                            }
+                        }
+                    }
+
+                    if (upgradeId === MINEFIELD_DRONE_CARRIER_SYSTEM) {
+                        const materielPerk = factionStore.hasMaterielStockpilesInfo;
+                        if (materielPerk) {
+                            if (traitLimited) {
+                                traitLimited.number += 1;
+                                faction_perks.push(materielPerk);
+                            }
+                        }
+                    }
+
+                    let max_uses = null;
+                    if (traitLimited) {
+                        max_uses = traitLimited.number;
+                    }
+
+                    traits.forEach(trait => {
+                        trait.display_name = upgradeTraitDisplayName(trait);
+                    });
+
+                    return {
+                        used_team_perks,
+                        faction_perks,
+                        traits,
+                        max_uses,
+                    };
+                };
+            },
+            getUpgradeInfo(state) {
+                return (mechId, upgradeId) => {
+                    const teamStore = useTeamStore();
+
+                    let {size_id, upgrades} = this.getMech(mechId);
+                    let {
+                        slots,
+                        display_name,
+                        description,
+                        cost_by_size,
+                        limited_size_ids,
+                    } = MECH_UPGRADES[upgradeId];
+
+                    const {
+                        used_team_perks,
+                        faction_perks,
+                        traits,
+                        max_uses,
+                    } = this.getUpgradeTraitsInfo(mechId, upgradeId);
+
+                    let cost = cost_by_size[size_id];
+
+                    let validation_message = null;
+                    let valid = true;
+
+                    const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
 
                     if (upgradeId === COMBAT_SHIELD) {
-                        let perk = find(perks, {id: TEAM_PERK_COMBAT_BUCKLER});
+                        let perk = find(teamPerks, {id: TEAM_PERK_COMBAT_BUCKLER});
                         if (perk) {
                             limited_size_ids = [...limited_size_ids, SIZE_MEDIUM];
 
                             if (size_id === SIZE_MEDIUM) {
-                                team_perks.push(perk);
+                                used_team_perks.push(perk);
                             }
                         }
-                    }
-                    const traitCompact = find(traits, {id: TRAIT_COMPACT});
-                    if (traitCompact) {
-                        const prevCompact = upgrades.find((upgrade) => {
-                            if (upgrade.upgrade_id === upgradeId) {
-                                return false;
-                            }
-                            const traits = getUpgradeTraits(upgradeId, size_id);
-
-                            return find(traits, {id: TRAIT_COMPACT});
-                        });
-
-                        if (prevCompact) {
-                            valid = false;
-                            validation_message = `Only one Upgrade with the ${UPGRADE_TRAITS[TRAIT_COMPACT].display_name} trait may be selected.`;
-                        }
-
                     }
 
                     if (limited_size_ids) {
@@ -632,77 +670,68 @@ export const useMechStore = defineStore('mech', {
                         }
                     }
 
+                    const traitCompact = find(traits, {id: TRAIT_COMPACT});
+                    if (traitCompact) {
+                        const prevCompact = upgrades.find((upgrade) => {
+                            if (upgrade.upgrade_id === upgradeId) {
+                                return false;
+                            }
+                            const {traits} = this.getUpgradeTraitsInfo(mechId, upgradeId);
+
+                            return find(traits, {id: TRAIT_COMPACT});
+                        });
+
+                        if (prevCompact) {
+                            valid = false;
+                            validation_message = `Only one Upgrade with the ${UPGRADE_TRAITS[TRAIT_COMPACT].display_name} trait may be selected.`;
+                        }
+                    }
+
                     if (upgradeId === TARGET_DESIGNATOR) {
-                        let perk = find(perks, {id: TEAM_PERK_0_SLOT_TARGET_DESIGNATORS});
+                        let perk = find(teamPerks, {id: TEAM_PERK_0_SLOT_TARGET_DESIGNATORS});
                         if (perk) {
                             slots = 0;
-                            team_perks.push(perk);
+                            used_team_perks.push(perk);
                         }
 
-                        perk = find(perks, {id: TEAM_PERK_0_TON_TARGET_DESIGNATORS});
+                        perk = find(teamPerks, {id: TEAM_PERK_0_TON_TARGET_DESIGNATORS});
                         if (perk) {
                             cost = 0;
-                            team_perks.push(perk);
+                            used_team_perks.push(perk);
                         }
                     }
 
                     if (upgradeId === DIRECTIONAL_THRUSTER) {
-                        let perk = find(perks, {id: TEAM_PERK_0_SLOT_DIRECTIONAL_THRUSTERS});
+                        let perk = find(teamPerks, {id: TEAM_PERK_0_SLOT_DIRECTIONAL_THRUSTERS});
                         if (perk) {
                             slots = 0;
-                            team_perks.push(perk);
+                            used_team_perks.push(perk);
                         }
                     }
 
                     if (upgradeId === ELECTRONIC_COUNTERMEASURES) {
-                        let perk = find(perks, {id: TEAM_PERK_0_SLOT_ECM});
+                        let perk = find(teamPerks, {id: TEAM_PERK_0_SLOT_ECM});
                         if (perk) {
                             slots = 0;
-                            team_perks.push(perk);
+                            used_team_perks.push(perk);
                         }
 
-                        perk = find(perks, {id: TEAM_PERK_0_TON_ECM});
+                        perk = find(teamPerks, {id: TEAM_PERK_0_TON_ECM});
                         if (perk) {
                             cost = 0;
-                            team_perks.push(perk);
+                            used_team_perks.push(perk);
                         }
-                    }
-
-                    if (upgradeId === NITRO_BOOST) {
-                        let perk = find(perks, {id: TEAM_PERK_EXTRA_NITRO});
-                        if (perk) {
-                            if (traitLimited) {
-                                traitLimited.number += 1;
-                            }
-                            team_perks.push(perk);
-                        }
-                    }
-
-                    const faction_perks = [];
-                    if (upgradeId === MINEFIELD_DRONE_CARRIER_SYSTEM) {
-                        const materielPerk = factionStore.hasMaterielStockpilesInfo;
-                        if (materielPerk) {
-                            if (traitLimited) {
-                                traitLimited.number += 1;
-                            }
-                            faction_perks.push(materielPerk);
-                        }
-                    }
-
-                    let max_uses = null;
-                    if (traitLimited) {
-                        max_uses = traitLimited.number;
                     }
 
                     return readonly({
                         upgrade_id: upgradeId,
-                        display_name: upgrade.display_name,
+                        display_name,
                         description,
                         valid,
                         validation_message,
                         slots,
                         cost,
-                        team_perks,
+                        team_perks: used_team_perks,
                         faction_perks,
                         max_uses,
                         traits,
