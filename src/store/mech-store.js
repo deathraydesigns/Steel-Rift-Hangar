@@ -877,6 +877,27 @@ export const useMechStore = defineStore('mech', {
                 });
                 return Object.keys(traitIdMap);
             },
+            getUsedUpgradeTraitIds(state) {
+                const traitIdMap = {};
+                state.mechs.forEach(mech => {
+                    mech.upgrades.forEach(upgrade => {
+                        const traitInfo = this.getUpgradeTraitsInfo(mech.id, upgrade.upgrade_id);
+                        const traitIds = map(traitInfo.traits, 'id');
+                        traitIds.forEach(traitId => traitIdMap[traitId] = true);
+                    });
+                });
+                return Object.keys(traitIdMap);
+            },
+            getUsedUpgradeTraitsInfo: function (state) {
+                const results = this.getUsedUpgradeTraitIds.map(traitId => {
+                    return {
+                        ...UPGRADE_TRAITS[traitId],
+                        display_name: upgradeTraitDisplayName({id: traitId, number: 'X'}),
+                    };
+                });
+
+                return sortBy(results, 'display_name');
+            },
             getUsedUpgradeIds(state) {
                 const idMap = {};
                 state.mechs.forEach(mech => {
@@ -885,6 +906,31 @@ export const useMechStore = defineStore('mech', {
                     });
                 });
                 return Object.keys(idMap);
+            },
+            getUsedUpgradesInfo(state) {
+                const results = this.getUsedUpgradeIds.map(upgradeId => {
+                    let upgrade = {
+                        ...MECH_UPGRADES[upgradeId],
+                    };
+
+                    if (!upgrade.traits) {
+                        upgrade.traits = [];
+                        if (upgrade.traits_by_size) {
+                            const entry = Object.values(upgrade.traits_by_size);
+                            upgrade.traits = [entry[0]];
+                        }
+                    }
+
+                    upgrade.traits = upgrade.traits.map(trait => ({...trait}));
+
+                    upgrade.traits.forEach(trait => {
+                        trait.display_name = upgradeTraitDisplayName({id: trait.id, number: 'X'});
+                    });
+
+                    return upgrade;
+                });
+
+                return sortBy(results, 'display_name');
             },
         },
         persist: {

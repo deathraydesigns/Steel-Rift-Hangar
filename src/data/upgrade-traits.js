@@ -16,7 +16,7 @@ export const UPGRADE_TRAITS = makeTraits({
         display_name: 'Dash',
         description: 'This Unit may take the Dash order',
         formatter: inchFormater,
-       granted_order_ids: [ORDER_DASH],
+        granted_order_ids: [ORDER_DASH],
     },
     [[TRAIT_UPGRADE_LIMITED]]: {
         display_name: 'Limited',

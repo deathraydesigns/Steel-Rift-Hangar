@@ -1,19 +1,12 @@
 <script setup>
 import {computed} from 'vue';
 import {useMechStore} from '../../../store/mech-store.js';
-import {MECH_UPGRADES} from '../../../data/mech-upgrades.js';
-import {sortBy} from 'es-toolkit/compat';
 
 const mechStore = useMechStore();
 
 const upgrades = computed(() => {
-  const result = mechStore.getUsedUpgradeIds.map(upgradeId => {
-    return {
-      display_name: MECH_UPGRADES[upgradeId].display_name,
-      description: MECH_UPGRADES[upgradeId].description,
-    };
-  });
-  return sortBy(result, 'display_name');
+  return mechStore.getUsedUpgradesInfo;
+
 });
 </script>
 <template>
@@ -25,7 +18,15 @@ const upgrades = computed(() => {
         <span class="fw-bold">
           {{ item.display_name }}:
         </span>
-        {{ item.description }}</p>
+        <template v-if="item.traits?.length">
+          <span class="fw-medium">
+            Traits:
+          </span>
+          {{ item.traits.map(o => o.display_name).join(', ') }}
+          :
+        </template>
+        {{ item.description }}
+      </p>
     </template>
 
   </div>

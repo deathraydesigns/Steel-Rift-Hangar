@@ -17,7 +17,7 @@ const traitsWithOrders = computed(() => {
   const results = traits.map(trait => {
     return {
       ...trait,
-      grantedOrders: trait.granted_order_ids.map(id => ORDERS[id]),
+      grantedOrders: trait.granted_order_ids?.map(id => ORDERS[id]) || [],
     };
   });
 

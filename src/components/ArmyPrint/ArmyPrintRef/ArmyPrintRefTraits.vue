@@ -10,7 +10,7 @@ const unitStore = useSupportAssetUnitsStore();
 const mechStore = useMechStore();
 
 const unitTraits = computed(() => unitStore.getAllUnitTraits());
-
+const upgradeTraits = computed(() => mechStore.getUsedUpgradeTraitsInfo);
 const weaponTraits = computed(() => {
 
   const traitCollection = makeUniqueItemIdCollection(WEAPON_TRAITS);
@@ -31,5 +31,6 @@ const weaponTraits = computed(() => {
 <template>
   <ArmyPrintRefTraitType title="Unit Traits" :traits="unitTraits"/>
   <ArmyPrintRefTraitType title="Weapon Traits" :traits="weaponTraits"/>
+  <ArmyPrintRefTraitType title="Upgrade Traits" :traits="upgradeTraits"/>
 </template>
 
