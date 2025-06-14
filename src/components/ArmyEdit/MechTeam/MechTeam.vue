@@ -16,9 +16,9 @@ const {teamId} = defineProps({
 });
 
 const show = ref(false);
-const teamInfo = computed(() => teamStore.getTeamInfo(teamId));
+const team = computed(() => teamStore.getTeamDef(teamId));
 const teamMechCount = computed(() => teamStore.getTeamMechCount(teamId));
-const teamPerkIdInfo = computed(() => perkId => MECH_TEAM_PERKS[perkId]);
+const teamPerkIdDef = computed(() => perkId => MECH_TEAM_PERKS[perkId]);
 const sizeDisplayNames = computed(() => sizeIds => {
 
   if (sizeIds.length === 4) {
@@ -39,9 +39,9 @@ const {
     <div class="card-header d-flex">
       <div class="flex-grow-1">
         <span class="d-inline-block py-1 ps-2 pe-1 fw-bold">
-          <Icon :name="teamInfo.icon" color="#fff" />
+          <Icon :name="team.icon" color="#fff" />
           <span class="ms-2">
-            {{ teamInfo.display_name }}
+            {{ team.display_name }}
           </span>
         </span>
         <BtnToolTip>
@@ -98,7 +98,7 @@ const {
     </div>
     <div class="card-body">
       <MechTeamGroup
-          v-for="group in teamInfo.groups"
+          v-for="group in team.groups"
           :key="group.id"
           :team-id="teamId"
           :group-id="group.id"
@@ -108,28 +108,28 @@ const {
   <BOffcanvas
       v-model="show"
       placement="bottom"
-      :title="teamInfo.display_name + ' Perks'"
+      :title="team.display_name + ' Perks'"
       lazy
   >
     <table class="table table-sm table-striped">
       <thead>
       <tr>
         <th>Team Size</th>
-        <th v-for="(sizeIds) in teamInfo.team_size_perk_columns">
+        <th v-for="(sizeIds) in team.team_size_perk_columns">
           {{ sizeDisplayNames(sizeIds) }} HE-Vs
         </th>
       </tr>
       </thead>
       <tbody>
       <tr
-          v-for="(row, count) in teamInfo.team_size_perk_rows"
+          v-for="(row, count) in team.team_size_perk_rows"
           :class="{'table-success': teamMechCount >= count}"
       >
         <td>{{ count }}</td>
         <td v-for="teamPerkIds in row">
           <p class="p-gap" v-for="perkId in teamPerkIds">
-            <strong>{{ teamPerkIdInfo(perkId).display_name }}: </strong>
-            {{ teamPerkIdInfo(perkId).description }}
+            <strong>{{ teamPerkIdDef(perkId).display_name }}: </strong>
+            {{ teamPerkIdDef(perkId).description }}
           </p>
         </td>
       </tr>

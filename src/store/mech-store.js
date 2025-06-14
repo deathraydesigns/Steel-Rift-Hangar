@@ -798,7 +798,7 @@ export const useMechStore = defineStore('mech', {
                     } = this.getMech(mechId);
 
                     const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
-                    const teamDisplayName = teamStore.getTeamInfo(teamId).display_name;
+                    const teamDisplayName = teamStore.getTeamDisplayName(teamId);
                     const groupInfo = teamStore.getTeamGroupInfo(teamId, groupId);
 
                     let {

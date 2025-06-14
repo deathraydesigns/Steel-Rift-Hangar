@@ -21,9 +21,9 @@ const {teamId, groupId} = defineProps({
   },
 });
 
-const teamInfo = computed(() => teamStore.getTeamInfo(teamId));
+const team = computed(() => teamStore.getTeamDef(teamId));
 const groupCount = computed(() => teamStore.getTeamGroupMechCount(teamId, groupId));
-const groupInfo = computed(() => teamStore.getTeamGroupInfo(teamId, groupId));
+const group = computed(() => teamStore.getTeamGroupInfo(teamId, groupId));
 const mechIds = computed(() => teamStore.getTeamGroupMechIds(teamId, groupId));
 const size = computed(() => validationStore.getTeamGroupSizeValidation(teamId, groupId));
 const isGeneralGroup = computed(() => teamId === TEAM_GENERAL);
@@ -67,12 +67,12 @@ const {
                 @mouseleave="mouseleave"
                 class="btn btn-transparent-dark d-inline-block py-1 me-1 fw-bold"
             >
-              <Icon v-if="teamInfo.icon" :name="teamInfo.icon" class="me-2"/>
-              {{ groupInfo.display_name }}
+              <Icon v-if="team.icon" :name="team.icon" class="me-2"/>
+              {{ group.display_name }}
             </div>
           </template>
           <template #content>
-            {{ teamInfo.display_name }} {{ groupInfo.display_name }} HE-Vs
+            {{ team.display_name }} {{ group.display_name }} HE-Vs
           </template>
         </BtnToolTip>
 

@@ -17,7 +17,7 @@ const info = computed(() => mechStore.getMechInfo(mechId));
 
 const team = computed(() => {
   const {teamId} = teamStore.getMechTeamAndGroupIds(mechId);
-  return teamStore.getTeamInfo(teamId);
+  return teamStore.getTeamDef(teamId);
 });
 </script>
 <template>

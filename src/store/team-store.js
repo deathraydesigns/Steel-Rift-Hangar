@@ -55,15 +55,12 @@ export const useTeamStore = defineStore('team', () => {
 
         function addTeam(teamId) {
             const teamDef = MECH_TEAMS[teamId];
-            const groups = [];
-
             const groupIds = Object.keys(teamDef.groups);
-
-            groupIds.forEach((groupId) => {
-                groups.push({
+            const groups = groupIds.map((groupId) => {
+                return {
                     id: groupId,
                     mechs: [],
-                });
+                };
             });
 
             teams.value.push({
@@ -72,21 +69,22 @@ export const useTeamStore = defineStore('team', () => {
             });
 
             groupIds.forEach(groupId => {
-                const min = MECH_TEAMS[teamId].groups[groupId].min_count;
+                const min = getTeamGroupDef(teamId, groupId).min_count;
                 if (min > 0) {
                     addMechToTeam(teamId, groupId);
                 }
             });
         }
 
-        const getTeamInfo = (teamId) => readonly(MECH_TEAMS[teamId]);
-        const getTeamGroupInfo = (teamId, groupId) => readonly(MECH_TEAMS[teamId].groups[groupId]);
+        const getTeamDisplayName = (teamId) => MECH_TEAMS[teamId].display_name;
+        const getTeamDef = (teamId) => MECH_TEAMS[teamId];
+        const getTeamGroupDef = (teamId, groupId) => MECH_TEAMS[teamId].groups[groupId];
 
         function getWeaponIsRequired(teamId, groupId, weaponAttachment, mech) {
-            const groupInfo = getTeamGroupInfo(teamId, groupId);
-            const teamDisplayName = getTeamInfo(teamId).display_name;
+            const groupDef = getTeamGroupDef(teamId, groupId);
+            const teamDisplayName = getTeamDisplayName(teamId);
 
-            if (groupInfo.required_weapon_ids.includes(weaponAttachment.weapon_id)) {
+            if (groupDef.required_weapon_ids.includes(weaponAttachment.weapon_id)) {
                 const prevInstances = mech.weapons.filter((item) => {
                     return item.weapon_id === weaponAttachment.weapon_id && item.display_order < weaponAttachment.display_order;
                 }).length;
@@ -94,12 +92,12 @@ export const useTeamStore = defineStore('team', () => {
                 if (prevInstances === 0) {
                     return {
                         required: true,
-                        required_reason: `Required by ${teamDisplayName} ${groupInfo.display_name}`,
+                        required_reason: `Required by ${teamDisplayName} ${groupDef.display_name}`,
                     };
                 }
             }
 
-            const requiredAtLeastOne = groupInfo.required_at_least_one_of_weapon_ids;
+            const requiredAtLeastOne = groupDef.required_at_least_one_of_weapon_ids;
             if (requiredAtLeastOne.length) {
                 const otherInstances = mech.weapons.filter((item) => {
                     return weaponAttachment.id !== item.id && requiredAtLeastOne.includes(item.weapon_id);
@@ -111,12 +109,12 @@ export const useTeamStore = defineStore('team', () => {
 
                     return {
                         required: true,
-                        required_reason: `${teamDisplayName} ${groupInfo.display_name} require at least one of the following: ${atLeastOneWeapons.join(', ')}`,
+                        required_reason: `${teamDisplayName} ${groupDef.display_name} require at least one of the following: ${atLeastOneWeapons.join(', ')}`,
                     };
                 }
             }
 
-            const requiredAtLeastOneWithTraitId = groupInfo.required_at_least_one_weapon_with_trait_id;
+            const requiredAtLeastOneWithTraitId = groupDef.required_at_least_one_weapon_with_trait_id;
             if (requiredAtLeastOneWithTraitId) {
                 const otherInstances = mech.weapons.filter((item) => {
                     const traits = MECH_WEAPONS[item.weapon_id].traits_by_size[mech.size_id];
@@ -128,7 +126,7 @@ export const useTeamStore = defineStore('team', () => {
 
                     return {
                         required: true,
-                        required_reason: `${teamDisplayName} ${groupInfo.display_name} Requires at least one weapon with the ${traitDisplayName} trait.`,
+                        required_reason: `${teamDisplayName} ${groupDef.display_name} Requires at least one weapon with the ${traitDisplayName} trait.`,
                     };
                 }
             }
@@ -141,29 +139,29 @@ export const useTeamStore = defineStore('team', () => {
 
         function getWeaponIsProhibited(mechId, weaponId, traits) {
             const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
-            const groupInfo = getTeamGroupInfo(teamId, groupId);
+            const groupDef = getTeamGroupDef(teamId, groupId);
 
-            if (groupInfo.prohibited_weapons_with_trait_ids?.length) {
+            if (groupDef.prohibited_weapons_with_trait_ids?.length) {
 
-                const prohibited = traits.find((trait) => groupInfo.prohibited_weapons_with_trait_ids.includes(trait.id));
+                const prohibited = traits.find((trait) => groupDef.prohibited_weapons_with_trait_ids.includes(trait.id));
                 if (prohibited) {
-                    const teamDisplayName = getTeamInfo(teamId).display_name;
-                    const prohibitedTraits = groupInfo.prohibited_weapons_with_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
+                    const teamDisplayName = getTeamDisplayName(teamId);
+                    const prohibitedTraits = groupDef.prohibited_weapons_with_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
                     return {
                         valid: false,
-                        validation_message: `${teamDisplayName} ${groupInfo.display_name}: cannot use weapons with the following traits: ${prohibitedTraits.join(', ')}`,
+                        validation_message: `${teamDisplayName} ${groupDef.display_name}: cannot use weapons with the following traits: ${prohibitedTraits.join(', ')}`,
                     };
                 }
             }
 
-            if (groupInfo.limited_weapons_with_at_least_one_of_trait_ids?.length) {
-                const matched = traits.find((trait) => groupInfo.limited_weapons_with_at_least_one_of_trait_ids.includes(trait.id));
+            if (groupDef.limited_weapons_with_at_least_one_of_trait_ids?.length) {
+                const matched = traits.find((trait) => groupDef.limited_weapons_with_at_least_one_of_trait_ids.includes(trait.id));
                 if (!matched) {
-                    const teamDisplayName = getTeamInfo(teamId).display_name;
-                    const requiredTraits = groupInfo.limited_weapons_with_at_least_one_of_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
+                    const teamDisplayName = getTeamDisplayName(teamId);
+                    const requiredTraits = groupDef.limited_weapons_with_at_least_one_of_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
                     return {
                         valid: false,
-                        validation_message: `${teamDisplayName} ${groupInfo.display_name}: can only use weapons with one of the following traits: ${requiredTraits.join(', ')}`,
+                        validation_message: `${teamDisplayName} ${groupDef.display_name}: can only use weapons with one of the following traits: ${requiredTraits.join(', ')}`,
                     };
                 }
             }
@@ -208,30 +206,26 @@ export const useTeamStore = defineStore('team', () => {
 
         function getAvailableMechSizes(mechId) {
             const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
-            const info = getTeamGroupInfo(teamId, groupId);
+            const groupDef = getTeamGroupDef(teamId, groupId);
 
-            if (!info.size_ids || !info.size_ids.length) {
-                return true;
-            }
-
-            return MECH_SIZES_DROP_DOWN.filter((size) => info.size_ids.includes(size.id));
+            return MECH_SIZES_DROP_DOWN.filter((size) => groupDef.size_ids.includes(size.id));
         }
 
         // internal
         function getMechStructureModValid(mechId, modId) {
             const mech = mechStore.getMech(mechId);
             const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
-            const teamDisplayName = getTeamInfo(teamId).display_name;
-            const info = getTeamGroupInfo(teamId, groupId);
+            const teamDisplayName = getTeamDisplayName(teamId);
+            const groupDef = getTeamGroupDef(teamId, groupId);
 
-            if (!getBodyModValid(info.limited_structure_mod_ids, modId)) {
+            if (!getBodyModValid(groupDef.limited_structure_mod_ids, modId)) {
                 return {
                     valid: false,
-                    validation_message: `Not available to ${teamDisplayName} ${info.display_name}`,
+                    validation_message: `Not available to ${teamDisplayName} ${groupDef.display_name}`,
                 };
             }
 
-            const requiredId = info.required_armor_or_structure_mod_id_once;
+            const requiredId = groupDef.required_armor_or_structure_mod_id_once;
             if (requiredId) {
                 if (!requiredStructureOrArmorModValid(
                     mech.structure_mod_id,
@@ -241,7 +235,7 @@ export const useTeamStore = defineStore('team', () => {
                 )) {
                     return {
                         valid: false,
-                        validation_message: `${teamDisplayName} requires ${info.display_name} structure or armor to be Reinforced`,
+                        validation_message: `${teamDisplayName} requires ${groupDef.display_name} structure or armor to be Reinforced`,
                     };
                 }
             }
@@ -256,17 +250,17 @@ export const useTeamStore = defineStore('team', () => {
         function getMechArmorModValid(mechId, modId) {
             const mech = mechStore.getMech(mechId);
             const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
-            const teamDisplayName = getTeamInfo(teamId).display_name;
-            const info = getTeamGroupInfo(teamId, groupId);
+            const teamDisplayName = getTeamDisplayName(teamId);
+            const groupDef = getTeamGroupDef(teamId, groupId);
 
-            if (!getBodyModValid(info.limited_armor_mod_ids, modId)) {
+            if (!getBodyModValid(groupDef.limited_armor_mod_ids, modId)) {
                 return {
                     valid: false,
-                    validation_message: `Not available to ${teamDisplayName} ${info.display_name}`,
+                    validation_message: `Not available to ${teamDisplayName} ${groupDef.display_name}`,
                 };
             }
 
-            const requiredId = info.required_armor_or_structure_mod_id_once;
+            const requiredId = groupDef.required_armor_or_structure_mod_id_once;
             if (requiredId) {
                 if (!requiredStructureOrArmorModValid(
                     mech.armor_mod_id,
@@ -276,7 +270,7 @@ export const useTeamStore = defineStore('team', () => {
                 )) {
                     return {
                         valid: false,
-                        validation_message: `${teamDisplayName} requires ${info.display_name} structure or armor to be Reinforced`,
+                        validation_message: `${teamDisplayName} requires ${groupDef.display_name} structure or armor to be Reinforced`,
                     };
                 }
             }
@@ -367,8 +361,8 @@ export const useTeamStore = defineStore('team', () => {
         }
 
         function getTeamGroupPerksInfo(teamId, groupId) {
-            const groupInfo = getTeamGroupInfo(teamId, groupId);
-            let result = groupInfo.size_ids.map(sizeId => {
+            const groupDef = getTeamGroupDef(teamId, groupId);
+            let result = groupDef.size_ids.map(sizeId => {
                 const perkIds = getTeamPerkIdsByMechSize(teamId, sizeId);
                 return {
                     size_id: sizeId,
@@ -420,7 +414,6 @@ export const useTeamStore = defineStore('team', () => {
 
             return perkIds.filter(perkId => MECH_TEAM_PERKS[perkId].visible_on_card)
                 .map((perkId) => MECH_TEAM_PERKS[perkId]);
-
         }
 
         // internal
@@ -456,18 +449,20 @@ export const useTeamStore = defineStore('team', () => {
             return perkIds;
         }
 
-        const used_teams_count = computed(() => teams.value.filter((team) => team.id !== TEAM_GENERAL).length);
+        const used_teams_count = computed(() => special_teams.value.length);
         const max_teams_count = computed(() => armyListStore.game_size_info.max_teams);
 
         const max_team_size_info = computed(() => {
             const sizeId = armyListStore.game_size_id;
             return map(GAME_SIZES[sizeId].max_team_sizes, (count, teamSizeId) => {
-                return Object.assign({
+                return {
                     max_instance_count: count,
-                }, MECH_TEAM_SIZES[teamSizeId]);
+                    ...MECH_TEAM_SIZES[teamSizeId],
+                };
             });
         });
 
+        // remove invalid upgrades
         watch(() => {
                 const result = {};
                 teams.value.forEach(team => {
@@ -476,7 +471,6 @@ export const useTeamStore = defineStore('team', () => {
                 return result;
             },
             () => {
-
                 teams.value.forEach(team => {
                     getTeamMechIds(team.id).forEach(mechId => {
                         mechStore.getMechUpgradesAttachmentInfo(mechId)
@@ -491,10 +485,11 @@ export const useTeamStore = defineStore('team', () => {
                             });
                     });
                 });
-            });
+            },
+        );
 
         function addMechToTeam(teamId, groupId, addDefaults = true) {
-            const groupDef = MECH_TEAMS[teamId].groups[groupId];
+            const groupDef = getTeamGroupDef(teamId, groupId);
             const mechOptions = {};
 
             if (addDefaults) {
@@ -558,7 +553,6 @@ export const useTeamStore = defineStore('team', () => {
 
             const index = group.mechs.findIndex(mech => mech.mech_id === mechId);
             move(group.mechs, index, toIndex);
-
         }
 
         return {
@@ -574,8 +568,9 @@ export const useTeamStore = defineStore('team', () => {
             findGroup,
             getTeamMechCount,
             getTeamGroupMechCount,
-            getTeamInfo,
-            getTeamGroupInfo,
+            getTeamDef,
+            getTeamDisplayName,
+            getTeamGroupInfo: getTeamGroupDef,
             getTeamGroupMechIds,
             getWeaponIsRequired,
             getMechUpgradeIsRequired,

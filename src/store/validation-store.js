@@ -42,7 +42,7 @@ export const useValidationStore = defineStore('validation', () => {
             team.groups.forEach((group) => {
                 const {size_valid, size_validation_message} = getTeamGroupSizeValidation(team.id, group.id);
 
-                const teamDisplayName = teamStore.getTeamInfo(team.id).display_name;
+                const teamDisplayName = teamStore.getTeamDisplayName(team.id);
                 const groupDisplayName = teamStore.getTeamGroupInfo(team.id, group.id).display_name;
                 if (!size_valid) {
                     messages.push(`${teamDisplayName} ${groupDisplayName}: ${size_validation_message}`);
