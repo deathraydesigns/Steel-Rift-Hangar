@@ -676,7 +676,7 @@ export const useMechStore = defineStore('mech', {
                             if (upgrade.upgrade_id === upgradeId) {
                                 return false;
                             }
-                            const {traits} = this.getUpgradeTraitsInfo(mechId, upgradeId);
+                            const {traits} = this.getUpgradeTraitsInfo(mechId, upgrade.upgrade_id);
 
                             return find(traits, {id: TRAIT_COMPACT});
                         });
