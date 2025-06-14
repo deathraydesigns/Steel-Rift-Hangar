@@ -23,7 +23,7 @@ const {teamId, groupId} = defineProps({
 
 const team = computed(() => teamStore.getTeamDef(teamId));
 const groupCount = computed(() => teamStore.getTeamGroupMechCount(teamId, groupId));
-const group = computed(() => teamStore.getTeamGroupInfo(teamId, groupId));
+const group = computed(() => teamStore.getTeamGroupDef(teamId, groupId));
 const mechIds = computed(() => teamStore.getTeamGroupMechIds(teamId, groupId));
 const size = computed(() => validationStore.getTeamGroupSizeValidation(teamId, groupId));
 const isGeneralGroup = computed(() => teamId === TEAM_GENERAL);

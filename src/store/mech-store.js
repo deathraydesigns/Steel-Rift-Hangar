@@ -799,7 +799,7 @@ export const useMechStore = defineStore('mech', {
 
                     const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
                     const teamDisplayName = teamStore.getTeamDisplayName(teamId);
-                    const groupInfo = teamStore.getTeamGroupInfo(teamId, groupId);
+                    const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
 
                     let {
                         slots,
@@ -815,10 +815,10 @@ export const useMechStore = defineStore('mech', {
                     let valid = true;
                     let validation_message = null;
 
-                    if (groupInfo.limited_armor_upgrade_ids.length) {
-                        if (!groupInfo.limited_armor_upgrade_ids.includes(armorUpgradeId)) {
+                    if (groupDef.limited_armor_upgrade_ids.length) {
+                        if (!groupDef.limited_armor_upgrade_ids.includes(armorUpgradeId)) {
                             valid = false;
-                            validation_message = `Not available to ${teamDisplayName} ${groupInfo.display_name}`;
+                            validation_message = `Not available to ${teamDisplayName} ${groupDef.display_name}`;
                         }
                     }
 

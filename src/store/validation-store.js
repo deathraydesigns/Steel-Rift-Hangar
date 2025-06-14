@@ -43,7 +43,7 @@ export const useValidationStore = defineStore('validation', () => {
                 const {size_valid, size_validation_message} = getTeamGroupSizeValidation(team.id, group.id);
 
                 const teamDisplayName = teamStore.getTeamDisplayName(team.id);
-                const groupDisplayName = teamStore.getTeamGroupInfo(team.id, group.id).display_name;
+                const groupDisplayName = teamStore.getTeamGroupDef(team.id, group.id).display_name;
                 if (!size_valid) {
                     messages.push(`${teamDisplayName} ${groupDisplayName}: ${size_validation_message}`);
                 }
@@ -91,9 +91,9 @@ export const useValidationStore = defineStore('validation', () => {
         }
 
         const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
-        const groupInfo = teamStore.getTeamGroupInfo(teamId, groupId);
+        const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
 
-        const requiredAtLeastOneWithTraitId = groupInfo.required_at_least_one_weapon_with_trait_id;
+        const requiredAtLeastOneWithTraitId = groupDef.required_at_least_one_weapon_with_trait_id;
         if (requiredAtLeastOneWithTraitId) {
             const result = mech.weapons.find((weapon) => {
                 const traits = MECH_WEAPONS[weapon.weapon_id].traits_by_size[mech.size_id];

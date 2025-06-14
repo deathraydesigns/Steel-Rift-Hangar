@@ -570,7 +570,7 @@ export const useTeamStore = defineStore('team', () => {
             getTeamGroupMechCount,
             getTeamDef,
             getTeamDisplayName,
-            getTeamGroupInfo: getTeamGroupDef,
+            getTeamGroupDef,
             getTeamGroupMechIds,
             getWeaponIsRequired,
             getMechUpgradeIsRequired,
