@@ -472,5 +472,7 @@ function makeGroup(obj) {
             .join(' & ');
     }
 
+
+
     return result;
 }
