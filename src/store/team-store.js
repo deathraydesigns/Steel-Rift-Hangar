@@ -1,10 +1,10 @@
 import {defineStore} from 'pinia';
-import {computed, readonly, ref, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-helper.js';
 import {MECH_TEAM_SIZES, MECH_TEAMS, TEAM_FIRE_SUPPORT, TEAM_GENERAL, TEAM_RECON} from '../data/mech-teams.js';
 import {useMechStore} from './mech-store.js';
 import {difference, each, find, groupBy, map, sortBy, sumBy} from 'es-toolkit/compat';
-import {MECH_BODY_MODS_DROP_DOWN} from '../data/mech-body.js';
+import {MECH_BODY_MODS, MECH_BODY_MODS_DROP_DOWN} from '../data/mech-body.js';
 import {MECH_WEAPONS} from '../data/mech-weapons.js';
 import {useArmyListStore} from './army-list-store.js';
 import {GAME_SIZES} from '../data/game-sizes.js';
@@ -233,9 +233,10 @@ export const useTeamStore = defineStore('team', () => {
                     requiredId,
                     modId,
                 )) {
+                    const requiredDisplayName = MECH_BODY_MODS[requiredId].display_name;
                     return {
                         valid: false,
-                        validation_message: `${teamDisplayName} requires ${groupDef.display_name} structure or armor to be Reinforced`,
+                        validation_message: `${teamDisplayName} requires ${groupDef.display_name} structure or armor to be ${requiredDisplayName}`,
                     };
                 }
             }
