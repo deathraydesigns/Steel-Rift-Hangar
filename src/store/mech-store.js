@@ -486,12 +486,11 @@ export const useMechStore = defineStore('mech', {
                         }
                     }
 
-                    traits = traits.map(trait => Object.assign(
-                        {},
-                        WEAPON_TRAITS[trait.id],
-                        trait,
-                        {display_name: weaponTraitDisplayName(trait)},
-                    ));
+                    traits = traits.map(trait => ({
+                        ...WEAPON_TRAITS[trait.id],
+                        ...trait,
+                        display_name: weaponTraitDisplayName(trait),
+                    }))
 
                     return {traits, team_perks, faction_perks, range_modifier};
                 };
@@ -769,9 +768,7 @@ export const useMechStore = defineStore('mech', {
                     const existingUpgradeIds = mech.upgrades.map((item) => item.upgrade_id);
 
                     const result = Object.keys(MECH_UPGRADES)
-                        .filter((upgradeId) => {
-                            return !existingUpgradeIds.includes(upgradeId);
-                        })
+                        .filter((upgradeId) => !existingUpgradeIds.includes(upgradeId))
                         .map((upgradeId) => this.getUpgradeInfo(mechId, upgradeId));
 
                     return sortBy(result, ['display_name']);
@@ -921,11 +918,10 @@ export const useMechStore = defineStore('mech', {
                         }
                     }
 
-                    upgrade.traits = upgrade.traits.map(trait => ({...trait}));
-
-                    upgrade.traits.forEach(trait => {
-                        trait.display_name = upgradeTraitDisplayName({id: trait.id, number: 'X'});
-                    });
+                    upgrade.traits = upgrade.traits.map(trait => ({
+                        ...trait,
+                        display_name: upgradeTraitDisplayName({id: trait.id, number: 'X'}),
+                    }));
 
                     return upgrade;
                 });
