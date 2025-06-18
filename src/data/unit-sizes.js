@@ -71,9 +71,3 @@ export const MECH_SIZES = makeFrozenStaticListIds({
         smash_damage: 6,
     },
 });
-
-export function getUnitSize(sizeId) {
-    return Object.assign({}, UNIT_SIZES[sizeId]);
-}
-
-export const MECH_SIZES_DROP_DOWN = listToDropDown(MECH_SIZES);

@@ -66,11 +66,11 @@ function remove() {
       <IconRequiredByGroup :required="weapon.required_by_group" :reason="weapon.required_by_group_reason"/>
       <IconTeamGroupPerks
           :perks="weapon.team_perks"
-          class="ms-1"
+          btn-class="ms-1"
       />
       <IconFactionPerks
           :perks="weapon.faction_perks"
-          class="ms-1"
+          btn-class="ms-1"
       />
     </td>
     <td>

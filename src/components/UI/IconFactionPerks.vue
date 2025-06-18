@@ -2,8 +2,12 @@
 
 import {BPopover} from 'bootstrap-vue-next';
 
-const props = defineProps({
-  class: {
+const {
+  perks,
+  size,
+  btnClass,
+} = defineProps({
+  btnClass: {
     type: String,
     default: '',
   },
@@ -16,11 +20,6 @@ const props = defineProps({
   },
 });
 
-const {
-  perks,
-  size,
-} = props;
-
 </script>
 <template>
   <BPopover
@@ -30,7 +29,7 @@ const {
   >
     <template #target><span
         v-show="perks && perks.length"
-        :class="`btn btn-${size} btn-default ${props.class}`">
+        :class="`btn btn-${size} btn-default ${btnClass}`">
 
       <span class="material-symbols-outlined">
         flag

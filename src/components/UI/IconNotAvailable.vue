@@ -2,14 +2,25 @@
 
 import {BPopover} from 'bootstrap-vue-next';
 
-const {valid, validation_message} = defineProps({
+const {
+  valid,
+  validationMessage,
+  size,
+  btnClass,
+} = defineProps({
   valid: {
     type: Boolean,
   },
-  validation_message: {
+  validationMessage: {
     type: String,
   },
-
+  size: {
+    type: String,
+    default: 'sm',
+  },
+  btnClass:{
+    type: String,
+  }
 });
 </script>
 <template>
@@ -20,13 +31,13 @@ const {valid, validation_message} = defineProps({
   >
     <template #target>
       <button
-          class="btn btn-sm btn-danger btn-danger-light"
+          :class="`btn btn-${size} btn-danger btn-danger-light ${btnClass}`"
           v-show="!valid"
       >
         <span class="material-symbols-outlined">block</span>
       </button>
     </template>
 
-    {{ validation_message }}
+    {{ validationMessage }}
   </BPopover>
 </template>

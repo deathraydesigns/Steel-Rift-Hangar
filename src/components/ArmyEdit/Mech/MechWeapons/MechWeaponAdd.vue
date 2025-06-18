@@ -104,18 +104,18 @@ function addWeapon(upgradeId, valid, event) {
           <td class="notes">
             <IconNotAvailable
                 :valid="item.valid"
-                :validation_message="item.validation_message"
+                :validation-message="item.validation_message"
             />
           </td>
           <td class="notes">
             <IconTeamGroupPerks
-                class="ms-1"
+                btn-class="ms-1"
                 :perks="item.team_perks"
             />
           </td>
           <td class="notes">
             <IconFactionPerks
-                class="ms-1"
+                btn-class="ms-1"
                 :perks="item.faction_perks"
             />
           </td>

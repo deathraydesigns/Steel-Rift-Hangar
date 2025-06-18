@@ -171,10 +171,12 @@ export const useValidationStore = defineStore('validation', () => {
         return false;
     }
 
-    function getMechArmorUpgradeAttachmentIsValid(mechId) {
-        return !teamGroupMechArmorUpgradeInvalid(mechId) &&
-            !mechArmorUpgradeInvalid(mechId);
+    function getNotAvailableToTeamGroupMessage(mechId) {
+        const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
+        const teamGroupDisplayName = teamStore.getFullTeamGroupDisplayName(teamId, groupId);
+        return `Not available to ${teamGroupDisplayName}`;
     }
+
     function mechArmorUpgradeInvalid(mechId) {
         let {
             armor_upgrade_id,
@@ -314,12 +316,15 @@ export const useValidationStore = defineStore('validation', () => {
 
     function teamGroupMechSizeInvalid(mechId) {
         const mech = mechStore.getMech(mechId);
-        const groupDef = teamStore.getMechTeamGroupDef(mechId);
 
-        if (!groupDef.size_ids.includes(mech.size_id)) {
-            const currentSize = MECH_SIZES[mech.size_id].display_name;
-            const validSizes = groupDef.size_ids.map(id => MECH_SIZES[id].display_name);
-            return `Invalid Size: ${currentSize}. Valid values: ${validSizes.join(', ')}`;
+        const {
+            valid,
+            current_display_name,
+            valid_sizes_display_names,
+        } = getTeamGroupMechSizeValidation(mechId, mech.size_id);
+
+        if (!valid) {
+            return `Invalid Size: ${current_display_name}. Valid values: ${valid_sizes_display_names}`;
         }
 
         return false;
@@ -402,6 +407,22 @@ export const useValidationStore = defineStore('validation', () => {
         return teamStore.teams.map(team => getTeamValidation(team.id)).filter(i => i);
     });
 
+    function getTeamGroupMechSizeValidation(mechId, sizeId) {
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+        if (!groupDef.size_ids.includes(sizeId)) {
+            return {
+                valid: false,
+                current_display_name: MECH_SIZES[sizeId].display_name,
+                valid_sizes_display_names: groupDef.size_ids.map(id => MECH_SIZES[id].display_name).join(', '),
+            };
+        }
+        return {
+            valid: true,
+            current_display_name: null,
+            valid_sizes_display_names: null,
+        };
+    }
+
     function getTeamValidation(teamId) {
         const team = teamStore.findTeam(teamId);
 
@@ -480,7 +501,7 @@ export const useValidationStore = defineStore('validation', () => {
         teamGroupMechStructureInvalid,
         teamGroupMechArmorInvalid,
 
-        getMechArmorUpgradeAttachmentIsValid,
+        getNotAvailableToTeamGroupMessage,
 
         $reset,
     };

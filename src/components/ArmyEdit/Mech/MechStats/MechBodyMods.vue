@@ -12,6 +12,8 @@ const {
   armor,
   structure,
   options,
+  valid,
+  validationMessage,
 } = defineProps({
   formId: {
     type: String,
@@ -39,6 +41,9 @@ const {
     type: Boolean,
     required: true,
   },
+  validationMessage: {
+    type: String,
+  },
 });
 
 const model = defineModel();
@@ -57,7 +62,7 @@ function selectOption(value) {
     <td colspan="3">
       <BDropdown
           :id="formId"
-          class="dropdown-form dropdown-table"
+          class="dropdown-form dropdown-table d-inline-block"
           :toggle-class="{'border-danger': !valid}"
           variant="default"
           :text="selectedValueLabel"
@@ -100,13 +105,19 @@ function selectOption(value) {
             <td class="notes">
               <IconNotAvailable
                   :valid="item.valid"
-                  :validation_message="item.validation_message"
+                  :validation-message="item.validation_message"
               />
             </td>
           </tr>
           </tbody>
         </table>
       </BDropdown>
+      <IconNotAvailable
+          btn-class="ms-1"
+          size="md"
+          :valid="valid"
+          :validation-message="validationMessage"
+      />
     </td>
     <td class="text-end">
       <div class="col-form-label">

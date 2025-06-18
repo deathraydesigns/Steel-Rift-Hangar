@@ -9,7 +9,7 @@ import {MECH_WEAPONS} from '../data/mech-weapons.js';
 import {useArmyListStore} from './army-list-store.js';
 import {GAME_SIZES} from '../data/game-sizes.js';
 import {MECH_TEAM_PERKS} from '../data/mech-team-perks.js';
-import {MECH_SIZES, MECH_SIZES_DROP_DOWN, SIZE_HEAVY, SIZE_MEDIUM} from '../data/unit-sizes.js';
+import {MECH_SIZES, SIZE_HEAVY, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
 import {toaster} from '../toaster.js';
 import {makeUniqueItemIdCollection} from './helpers/helpers.js';
@@ -77,7 +77,17 @@ export const useTeamStore = defineStore('team', () => {
         }
 
         const getTeamDisplayName = (teamId) => MECH_TEAMS[teamId].display_name;
+
+        const getTeamGroupDisplayName = (teamId, groupId) => MECH_TEAMS[teamId].groups[groupId].display_name;
+
+        const getFullTeamGroupDisplayName = (teamId, groupId) => {
+            const team = getTeamDisplayName(teamId);
+            const group = getTeamGroupDisplayName(teamId, groupId);
+            return `${team} ${group}`;
+        };
+
         const getTeamDef = (teamId) => MECH_TEAMS[teamId];
+
         const getTeamGroupDef = (teamId, groupId) => MECH_TEAMS[teamId].groups[groupId];
 
         function getWeaponIsRequired(teamId, groupId, weaponAttachment, mech) {
@@ -213,7 +223,12 @@ export const useTeamStore = defineStore('team', () => {
             const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
             const groupDef = getTeamGroupDef(teamId, groupId);
 
-            return MECH_SIZES_DROP_DOWN;
+            return Object.values(MECH_SIZES).map(size => {
+                return {
+                    valid: groupDef.size_ids.includes(size.id),
+                    ...size,
+                };
+            });
         }
 
         // internal
@@ -581,6 +596,8 @@ export const useTeamStore = defineStore('team', () => {
             getTeamGroupMechCount,
             getTeamDef,
             getTeamDisplayName,
+            getTeamGroupDisplayName,
+            getFullTeamGroupDisplayName,
             getTeamGroupDef,
             getTeamGroupMechIds,
             getWeaponIsRequired,

@@ -44,6 +44,7 @@ const structureModOptions = computed(() => teamStore.getMechStructureModOptions(
 const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId));
 const structureModValid = computed(() => !validationStore.teamGroupMechStructureInvalid(mechId));
 const armorModValid = computed(() => !validationStore.teamGroupMechArmorInvalid(mechId));
+const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeamGroupMessage(mechId));
 
 </script>
 <template>
@@ -91,6 +92,7 @@ const armorModValid = computed(() => !validationStore.teamGroupMechArmorInvalid(
           :structure="null"
           :options="armorModOptions"
           :valid="armorModValid"
+          :validation-message="notAvailableMessage"
 
       />
       <MechBodyMods
@@ -103,6 +105,7 @@ const armorModValid = computed(() => !validationStore.teamGroupMechArmorInvalid(
           :structure="info.structure_mod.modifier"
           :options="structureModOptions"
           :valid="structureModValid"
+          :validation-message="notAvailableMessage"
       />
       <MechArmorUpgrades
           label="Armor Upgrades"

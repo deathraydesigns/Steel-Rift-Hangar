@@ -104,7 +104,10 @@ function select(id, valid) {
             <TraitList :traits="item.traits"/>
           </td>
           <td>
-            <IconNotAvailable :valid="item.valid !== false" :validation_message="item.validation_message"/>
+            <IconNotAvailable
+                :valid="item.valid !== false"
+                :validation-message="item.validation_message"
+            />
           </td>
         </tr>
         </tbody>

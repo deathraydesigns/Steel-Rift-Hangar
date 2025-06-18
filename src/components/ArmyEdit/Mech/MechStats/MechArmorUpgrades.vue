@@ -31,7 +31,7 @@ const armorUpgrade = computed(() => {
   return mechStore.getMechArmorUpgradeInfo(mechId, armor_upgrade_id);
 });
 
-const valid = computed(() => validationStore.getMechArmorUpgradeAttachmentIsValid(mechId));
+const info = computed(() => mechStore.getMechArmorUpgradeAttachmentInfo(mechId));
 
 function selectOption(value) {
   model.value = value;
@@ -49,7 +49,7 @@ function selectOption(value) {
       <BDropdown
           :id="'mech-input-armor-upgrade-' + mechId"
           class="dropdown-form dropdown-table d-inline-block"
-          :toggle-class="{'border-danger': !valid}"
+          :toggle-class="{'border-danger': !info.valid}"
           :text="armorUpgrade.display_name"
           variant="default"
           lazy
@@ -78,7 +78,7 @@ function selectOption(value) {
                 'disabled': !item.valid,
               }"
               v-for="item in options" :key="item.id"
-              @click="selectOption(item.id, $event)"
+              @click="selectOption(item.id)"
           >
             <td>
               <BtnToolTip
@@ -105,22 +105,29 @@ function selectOption(value) {
             </td>
             <td class="notes">
               <IconTeamGroupPerks
-                  class="me-1"
+                  btn-class="me-1"
                   :perks="item.team_perks"
               />
             </td>
             <td class="notes">
               <IconNotAvailable
                   :valid="item.valid"
-                  :validation_message="item.validation_message"
+                  :validation-message="item.validation_message"
               />
             </td>
           </tr>
           </tbody>
         </table>
       </BDropdown>
+      <IconNotAvailable
+          size="md"
+          btn-class="ms-1"
+          :valid="info.valid"
+          :validation-message="info.validation_message"
+      />
       <IconTeamGroupPerks
           size="md"
+          btn-class="ms-1"
           :perks="armorUpgrade.team_perks"
       />
       <BtnToolTip

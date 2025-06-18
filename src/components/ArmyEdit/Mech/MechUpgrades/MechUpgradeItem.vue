@@ -64,11 +64,11 @@ function remove() {
       <IconRequiredByGroup :required="upgrade.required_by_group"/>
       <IconTeamGroupPerks
           :perks="upgrade.team_perks"
-          class="ms-1"
+          btn-class="ms-1"
       />
       <IconFactionPerks
           :perks="upgrade.faction_perks"
-          class="ms-1"
+          btn-class="ms-1"
       />
     </td>
     <td>

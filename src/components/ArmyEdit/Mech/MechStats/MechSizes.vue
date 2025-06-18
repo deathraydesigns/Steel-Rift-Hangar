@@ -5,6 +5,7 @@ import {computed} from 'vue';
 import {useTeamStore} from '../../../../store/team-store.js';
 import {BDropdown} from 'bootstrap-vue-next';
 import {useValidationStore} from '../../../../store/validation-store.js';
+import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();
@@ -17,8 +18,8 @@ const options = computed(() => teamStore.getAvailableMechSizes(mechId));
 
 const mech = computed(() => mechStore.getMech(mechId));
 const info = computed(() => mechStore.getMechInfo(mechId));
-
 const valid = computed(() => !validationStore.teamGroupMechSizeInvalid(mechId));
+const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeamGroupMessage(mechId));
 
 function selectOption(size_id) {
   mechStore.updateMech(mechId, {size_id});
@@ -34,7 +35,7 @@ function selectOption(size_id) {
     <td colspan="3">
       <BDropdown
           :id="'mech-input-size-' + mechId"
-          class="dropdown-form dropdown-table"
+          class="dropdown-form dropdown-table d-inline-block"
           :toggle-class="{'border-danger': !valid}"
           :text="info.size.display_name"
           variant="default"
@@ -58,19 +59,21 @@ function selectOption(size_id) {
             <td class="text-end">
               Tons
             </td>
+            <td></td>
           </tr>
           </thead>
           <tbody>
           <tr
               :class="{
                 'dropdown-row': true,
-                'table-selected':   (item.value == mech.size_id)
+                'table-selected':   (item.id == mech.size_id),
+                'disabled': !item.valid
               }"
-              v-for="item in options" :key="item.value"
-              @click="selectOption(item.value)"
+              v-for="item in options" :key="item.id"
+              @click="selectOption(item.id)"
           >
             <td>
-              {{ item.text }}
+              {{ item.display_name }}
             </td>
             <td class="text-end">
               {{ item.armor }}
@@ -84,10 +87,22 @@ function selectOption(size_id) {
             <td class="text-end">
               {{ item.max_tons }}
             </td>
+            <td class="notes">
+              <IconNotAvailable
+                  :valid="item.valid"
+                  :validation-message="notAvailableMessage"
+              />
+            </td>
           </tr>
           </tbody>
         </table>
       </BDropdown>
+      <IconNotAvailable
+          size="md"
+          btn-class="ms-1"
+          :valid="valid"
+          :validation-message="notAvailableMessage"
+      />
     </td>
     <td class="text-end">
       <div class="col-form-label">
