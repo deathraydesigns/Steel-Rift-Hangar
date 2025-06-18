@@ -8,6 +8,7 @@ import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 import FormatNumber from '../../../functional/format-number.vue';
+import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
 
 const {mechId} = defineProps({
   mechId: {
@@ -52,7 +53,7 @@ function addUpgrade(upgradeId, valid, event) {
           <td>
             Traits
           </td>
-          <td colspan="3">
+          <td colspan="4">
             Notes
           </td>
         </tr>
@@ -90,6 +91,12 @@ function addUpgrade(upgradeId, valid, event) {
           </td>
           <td class="notes">
             <TraitList :traits="item.traits"/>
+          </td>
+          <td class="notes">
+            <IconRequiredByGroup
+                :required="item.required_by_group"
+                btn-class="ms-1"
+            />
           </td>
           <td class="notes">
             <IconNotAvailable

@@ -54,14 +54,16 @@ function remove() {
     </td>
     <td class="table-btn-cell">
       <BButton
-          v-if="!upgrade.required_by_group"
           @click="remove()"
           variant="danger"
           size="sm"
       >
         <span class="material-symbols-outlined">delete</span>
       </BButton>
-      <IconRequiredByGroup :required="upgrade.required_by_group"/>
+      <IconRequiredByGroup
+          :required="upgrade.required_by_group"
+          btn-class="ms-1"
+      />
       <IconTeamGroupPerks
           :perks="upgrade.team_perks"
           btn-class="ms-1"

@@ -735,6 +735,7 @@ export const useMechStore = defineStore('mech', {
                         faction_perks,
                         max_uses,
                         traits,
+                        required_by_group: teamStore.getMechUpgradeIsRequired(mechId, upgradeId),
                     });
                 };
             },
@@ -747,19 +748,15 @@ export const useMechStore = defineStore('mech', {
             },
             getMechUpgradeAttachmentInfo(state) {
                 return (mechId, mechUpgradeAttachmentId) => {
-                    const teamStore = useTeamStore();
                     const mech = this.getMech(mechId);
                     const upgradeAttachment = findById(mech.upgrades, mechUpgradeAttachmentId);
 
                     const upgradeId = upgradeAttachment.upgrade_id;
                     const info = this.getUpgradeInfo(mechId, upgradeId);
 
-                    const isRequired = teamStore.getMechUpgradeIsRequired(mechId, upgradeId);
-
                     return {
                         id: mechUpgradeAttachmentId,
                         ...info,
-                        required_by_group: isRequired,
                     };
                 };
             },

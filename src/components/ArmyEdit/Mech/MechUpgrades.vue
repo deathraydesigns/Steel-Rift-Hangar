@@ -4,8 +4,11 @@ import MechUpgradeItem from './MechUpgrades/MechUpgradeItem.vue';
 import MechUpgradeAdd from './MechUpgrades/MechUpgradeAdd.vue';
 import {computed} from 'vue';
 import draggable from 'vuedraggable';
+import {useValidationStore} from '../../../store/validation-store.js';
+import IconValidationError from '../../UI/IconValidationError.vue';
 
 const mechStore = useMechStore();
+const validationStore = useValidationStore();
 
 const {mechId} = defineProps({
   mechId: {
@@ -14,6 +17,9 @@ const {mechId} = defineProps({
 });
 
 const mech = computed(() => mechStore.getMech(mechId));
+
+const validationMessages = computed(() => validationStore.getInvalidTeamGroupMechUpgradeMessages(mechId));
+const valid = computed(() => !validationMessages.value.length);
 
 function onSortableChange(event) {
   let moved = event.moved;
@@ -26,9 +32,18 @@ function onSortableChange(event) {
 
 </script>
 <template>
-  <thead class="tbody-btn table-tinted">
+  <thead :class="{
+    'tbody-btn': true,
+    'table-tinted': valid,
+    'table-danger': !valid
+  }">
   <tr>
-    <th></th>
+    <th class="table-btn-cell">
+      <IconValidationError
+          size="sm"
+          :message-array="validationMessages"
+      />
+    </th>
     <th>
       Upgrades
     </th>

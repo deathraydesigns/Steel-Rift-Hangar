@@ -131,6 +131,20 @@ export const useValidationStore = defineStore('validation', () => {
         return messageValid;
     });
 
+    function getInvalidTeamGroupMechUpgradeMessages(mechId) {
+        return [
+            teamGroupRequiredUpgradesInvalid(mechId),
+        ].filter(i => i);
+    }
+
+    function getInvalidTeamGroupMechWeaponMessages(mechId) {
+        return [
+            teamGroupRequiredWeaponsInvalid(mechId),
+            teamGroupRequiredOneOfWeaponsInvalid(mechId),
+            teamGroupAtLeastOneWeaponWithTraitInvalid(mechId),
+        ].filter(i => i);
+    }
+
     function getInvalidTeamGroupMechMessages(mechId) {
         return [
             teamGroupAtLeastOneWeaponWithTraitInvalid(mechId),
@@ -491,6 +505,9 @@ export const useValidationStore = defineStore('validation', () => {
 
         getInvalidMechMessages,
         getInvalidTeamGroupMechMessages,
+        getInvalidTeamGroupMechWeaponMessages,
+        getInvalidTeamGroupMechUpgradeMessages,
+
 
         getTeamGroupSizeValidation,
         getTeamGroupMechArmorUpgradeValidation,
@@ -500,6 +517,7 @@ export const useValidationStore = defineStore('validation', () => {
         teamGroupMechSizeInvalid,
         teamGroupMechStructureInvalid,
         teamGroupMechArmorInvalid,
+        teamGroupMechArmorUpgradeInvalid,
 
         getNotAvailableToTeamGroupMessage,
 
