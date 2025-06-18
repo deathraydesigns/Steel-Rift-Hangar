@@ -20,7 +20,7 @@ import {
     TRAIT_TETHER,
 } from './weapon-traits.js';
 import {makeFrozenStaticListIds, trait} from './data-helpers.js';
-import {find} from 'es-toolkit/compat';
+import {find, groupBy} from 'es-toolkit/compat';
 
 export const AUTO_CANNON = 'AUTO_CANNON';
 export const HOWITZER = 'HOWITZER';
@@ -525,4 +525,24 @@ export function getRangeFromShortTrait(traits) {
         }
     }
     return range;
+}
+
+export const MECH_WEAPONS_BY_TYPE = groupBy(
+    Object.keys(MECH_WEAPONS),
+    (weaponId) => {
+        if (weaponHasTrait(weaponId, TRAIT_MELEE)) {
+            return 'melee';
+        }
+
+        return 'ranged';
+    },
+);
+
+export function weaponHasTrait(weaponId, traitId) {
+    const weapon = MECH_WEAPONS[weaponId];
+    const sizes = Object.keys(weapon.traits_by_size);
+
+    return sizes.find(sizeId => {
+        return find(weapon.traits_by_size[sizeId], {id: traitId});
+    });
 }

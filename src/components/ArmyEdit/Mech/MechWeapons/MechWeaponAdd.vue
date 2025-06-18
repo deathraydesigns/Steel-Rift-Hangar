@@ -7,6 +7,7 @@ import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 import FormatInches from '../../../functional/format-inches.vue';
 import FormatNumber from '../../../functional/format-number.vue';
+import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
 
 const {
   mechId,
@@ -29,11 +30,7 @@ const {
 
 const mechStore = useMechStore();
 
-function addWeapon(upgradeId, valid, event) {
-  if (!valid) {
-    event.stopPropagation();
-    return;
-  }
+function addWeapon(upgradeId) {
   mechStore.addMechWeaponAttachment(mechId, upgradeId);
 }
 
@@ -69,7 +66,7 @@ function addWeapon(upgradeId, valid, event) {
           <td>
             Traits
           </td>
-          <td colspan="3">
+          <td colspan="4">
             Notes
           </td>
         </tr>
@@ -81,7 +78,7 @@ function addWeapon(upgradeId, valid, event) {
               'disabled': !item.valid
             }"
             v-for="item in options" :key="item.weapon_id"
-            @click="addWeapon(item.weapon_id, item.valid, $event)"
+            @click="addWeapon(item.weapon_id)"
         >
           <td>
             {{ item.display_name }}
@@ -102,9 +99,17 @@ function addWeapon(upgradeId, valid, event) {
             <TraitList :traits="item.traits"/>
           </td>
           <td class="notes">
+            <IconRequiredByGroup
+                :required="item.meets_requirements"
+                :reason="item.meets_requirements_reason"
+                btn-class="ms-1"
+            />
+          </td>
+          <td class="notes">
             <IconNotAvailable
                 :valid="item.valid"
                 :validation-message="item.validation_message"
+                btn-class="ms-1"
             />
           </td>
           <td class="notes">

@@ -3,7 +3,7 @@ import {MECH_SIZES, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {MECH_BODY_MODS, MOD_STANDARD} from '../data/mech-body.js';
 import {MECH_ARMOR_UPGRADES, NO_ARMOR_UPGRADE} from '../data/mech-armor-upgrades.js';
 import {updateObject} from '../data/data-helpers.js';
-import {cloneDeep, find, groupBy, map, sortBy, sumBy} from 'es-toolkit/compat';
+import {cloneDeep, find, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {
     TRAIT_LIMITED,
     TRAIT_MELEE,
@@ -12,7 +12,7 @@ import {
     WEAPON_TRAITS,
     weaponTraitDisplayName,
 } from '../data/weapon-traits.js';
-import {HOWITZER, MECH_WEAPONS, MISSILES, ROCKET_PACK} from '../data/mech-weapons.js';
+import {HOWITZER, MECH_WEAPONS, MECH_WEAPONS_BY_TYPE, MISSILES, ROCKET_PACK} from '../data/mech-weapons.js';
 import {readonly} from 'vue';
 import {
     COMBAT_SHIELD,
@@ -435,6 +435,7 @@ export const useMechStore = defineStore('mech', {
                         max_uses,
                         valid,
                         validation_message,
+
                     });
                 };
             },
@@ -526,7 +527,7 @@ export const useMechStore = defineStore('mech', {
                     let {
                         required,
                         required_reason,
-                    } = teamStore.getWeaponIsRequired(teamId, groupId, weaponAttachment, mech);
+                    } = teamStore.getWeaponAttachmentIsRequired(teamId, groupId, weaponAttachment, mech);
                     if (required) {
                         required_by_group = true;
                         required_by_group_reason = required_reason;
@@ -545,30 +546,28 @@ export const useMechStore = defineStore('mech', {
                 };
             },
             getMechAvailableWeaponsInfo(state) {
-                const groups = groupBy(Object.keys(MECH_WEAPONS), weaponId => {
-                    const sizes = Object.keys(MECH_WEAPONS[weaponId].traits_by_size);
-                    for (let i = 0; i < sizes.length; i++) {
-                        const sizeId = sizes[i];
-                        const result = find(MECH_WEAPONS[weaponId].traits_by_size[sizeId], {id: TRAIT_MELEE});
-                        if (result) {
-                            return 'melee';
-                        }
-                    }
-
-                    return 'ranged';
-                });
-
                 return (mechId) => {
+                    const teamStore = useTeamStore();
 
-                    let melee = groups.melee.map((weaponId) => this.getWeaponInfo(mechId, weaponId));
-                    let ranged = groups.ranged.map((weaponId) => this.getWeaponInfo(mechId, weaponId));
+                    const makeList = (weapons) => {
+                        const result = weapons.map((weaponId) => {
+                            const {
+                                required,
+                                reason,
+                            } = teamStore.getMechWeaponIsRequiredInfo(mechId, weaponId);
 
-                    melee = sortBy(melee, ['display_name']);
-                    ranged = sortBy(ranged, ['display_name']);
+                            return {
+                                ...this.getWeaponInfo(mechId, weaponId),
+                                meets_requirements: required,
+                                meets_requirements_reason: reason,
+                            };
+                        });
+                        return sortBy(result, ['display_name']);
+                    };
 
                     return {
-                        melee,
-                        ranged,
+                        melee: makeList(MECH_WEAPONS_BY_TYPE.melee),
+                        ranged: makeList(MECH_WEAPONS_BY_TYPE.ranged),
                     };
                 };
             },

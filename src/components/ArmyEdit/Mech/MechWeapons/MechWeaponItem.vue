@@ -56,14 +56,17 @@ function remove() {
     </td>
     <td class="table-btn-cell">
       <BButton
-          v-if="!weapon.required_by_group"
           @click="remove()"
           variant="danger"
           size="sm"
       >
         <span class="material-symbols-outlined">delete</span>
       </BButton>
-      <IconRequiredByGroup :required="weapon.required_by_group" :reason="weapon.required_by_group_reason"/>
+      <IconRequiredByGroup
+          btn-class="ms-1"
+          :required="weapon.required_by_group"
+          :reason="weapon.required_by_group_reason"
+      />
       <IconTeamGroupPerks
           :perks="weapon.team_perks"
           btn-class="ms-1"

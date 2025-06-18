@@ -4,8 +4,11 @@ import {computed} from 'vue';
 import MechWeaponItem from './MechWeapons/MechWeaponItem.vue';
 import draggable from 'vuedraggable';
 import MechWeaponAdd from './MechWeapons/MechWeaponAdd.vue';
+import {useValidationStore} from '../../../store/validation-store.js';
+import IconValidationError from '../../UI/IconValidationError.vue';
 
 const mechStore = useMechStore();
+const validationStore = useValidationStore();
 
 const {mechId} = defineProps({
   mechId: {
@@ -14,6 +17,9 @@ const {mechId} = defineProps({
 });
 
 const mech = computed(() => mechStore.getMech(mechId));
+
+const validationMessages = computed(() => validationStore.getInvalidTeamGroupMechWeaponMessages(mechId));
+const valid = computed(() => !validationMessages.value.length);
 
 function onSortableChange(event) {
   let moved = event.moved;
@@ -28,9 +34,18 @@ const weapons = computed(() => mechStore.getMechAvailableWeaponsInfo(mechId));
 
 </script>
 <template>
-  <tbody class="tbody-btn">
-  <tr class="table-tinted">
-    <th></th>
+  <thead :class="{
+    'tbody-btn': true,
+    'table-tinted': valid,
+    'table-danger': !valid
+  }">
+  <tr>
+    <th class="table-btn-cell">
+      <IconValidationError
+          size="sm"
+          :message-array="validationMessages"
+      />
+    </th>
     <th>
       Weapons
     </th>
@@ -65,7 +80,7 @@ const weapons = computed(() => mechStore.getMechAvailableWeaponsInfo(mechId));
     </th>
     <th></th>
   </tr>
-  </tbody>
+  </thead>
   <draggable
       :list="mech.weapons"
       draggable=".list-item-sortable"

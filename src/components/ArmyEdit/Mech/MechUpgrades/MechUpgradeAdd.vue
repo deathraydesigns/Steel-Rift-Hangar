@@ -20,11 +20,7 @@ const {mechId} = defineProps({
 const mechStore = useMechStore();
 const options = computed(() => mechStore.getMechAvailableUpgradesInfo(mechId));
 
-function addUpgrade(upgradeId, valid, event) {
-  if (!valid) {
-    event.stopPropagation();
-    return;
-  }
+function addUpgrade(upgradeId) {
   mechStore.addMechUpgradeAttachment(mechId, upgradeId);
 }
 </script>
@@ -65,7 +61,7 @@ function addUpgrade(upgradeId, valid, event) {
               'disabled': !item.valid
             }"
             v-for="item in options" :key="item.upgrade_id"
-            @click="addUpgrade(item.upgrade_id, item.valid, $event)"
+            @click="addUpgrade(item.upgrade_id)"
         >
           <td>
             <BtnToolTip>
