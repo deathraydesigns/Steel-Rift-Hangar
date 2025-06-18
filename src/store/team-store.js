@@ -178,6 +178,11 @@ export const useTeamStore = defineStore('team', () => {
             return groupDef.required_upgrade_ids.includes(upgradeId);
         }
 
+        function getMechTeamGroupDef(mechId) {
+            const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
+            return getTeamGroupDef(teamId, groupId);
+        }
+
         function getMechTeamAndGroupIds(mechId) {
             let teamId = null;
             let groupId = null;
@@ -208,7 +213,7 @@ export const useTeamStore = defineStore('team', () => {
             const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
             const groupDef = getTeamGroupDef(teamId, groupId);
 
-            return MECH_SIZES_DROP_DOWN.filter((size) => groupDef.size_ids.includes(size.id));
+            return MECH_SIZES_DROP_DOWN;
         }
 
         // internal
@@ -319,6 +324,10 @@ export const useTeamStore = defineStore('team', () => {
         function getTeamGroupMechIds(teamId, groupId) {
             const group = findGroup(teamId, groupId);
             return map(group.mechs, 'mech_id');
+        }
+
+        function findTeam(teamId) {
+            return find(teams.value, {id: teamId});
         }
 
         function findGroup(teamId, groupId) {
@@ -494,7 +503,6 @@ export const useTeamStore = defineStore('team', () => {
             const mechOptions = {};
 
             if (addDefaults) {
-
                 if (groupDef?.size_ids?.length) {
                     mechOptions.size_id = groupDef.size_ids[0];
                 }
@@ -511,6 +519,7 @@ export const useTeamStore = defineStore('team', () => {
                     mechOptions.structure_mod_id = groupDef.required_armor_or_structure_mod_id_once;
                 }
             }
+
             const mech = mechStore.addMech(mechOptions);
 
             if (addDefaults) {
@@ -566,6 +575,7 @@ export const useTeamStore = defineStore('team', () => {
 
             allUsedTeamAbilityPerkIds,
 
+            findTeam,
             findGroup,
             getTeamMechCount,
             getTeamGroupMechCount,
@@ -584,6 +594,7 @@ export const useTeamStore = defineStore('team', () => {
             getTeamGroupPerksInfo,
             getMechHasTeamPerkId,
             getUsedTeamAbilityPerksInfo,
+            getMechTeamGroupDef,
             getTeamMechIds,
 
             addMechToTeam,

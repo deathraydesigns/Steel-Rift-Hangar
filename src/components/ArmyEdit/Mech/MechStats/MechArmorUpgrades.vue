@@ -6,8 +6,10 @@ import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {BDropdown} from 'bootstrap-vue-next';
+import {useValidationStore} from '../../../../store/validation-store.js';
 
 const mechStore = useMechStore();
+const validationStore = useValidationStore();
 
 const {
   label,
@@ -29,11 +31,9 @@ const armorUpgrade = computed(() => {
   return mechStore.getMechArmorUpgradeInfo(mechId, armor_upgrade_id);
 });
 
-function selectOption(value, valid, event) {
-  if (!valid) {
-    event.stopPropagation();
-    return;
-  }
+const valid = computed(() => validationStore.getMechArmorUpgradeAttachmentIsValid(mechId));
+
+function selectOption(value) {
   model.value = value;
 }
 
@@ -49,6 +49,7 @@ function selectOption(value, valid, event) {
       <BDropdown
           :id="'mech-input-armor-upgrade-' + mechId"
           class="dropdown-form dropdown-table d-inline-block"
+          :toggle-class="{'border-danger': !valid}"
           :text="armorUpgrade.display_name"
           variant="default"
           lazy
@@ -77,7 +78,7 @@ function selectOption(value, valid, event) {
                 'disabled': !item.valid,
               }"
               v-for="item in options" :key="item.id"
-              @click="selectOption(item.id, item.valid, $event)"
+              @click="selectOption(item.id, $event)"
           >
             <td>
               <BtnToolTip

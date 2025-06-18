@@ -32,21 +32,19 @@ const {
     default: 0,
   },
   options: {
-    required: true,
     type: Array,
+    required: true,
+  },
+  valid: {
+    type: Boolean,
+    required: true,
   },
 });
 
 const model = defineModel();
-const selectedValueLabel = computed(() => {
-  return MECH_BODY_MODS[model.value].display_name;
-});
+const selectedValueLabel = computed(() => MECH_BODY_MODS[model.value].display_name);
 
-function selectOption(value, valid, event) {
-  if (!valid) {
-    event.stopPropagation();
-    return;
-  }
+function selectOption(value) {
   model.value = value;
 }
 </script>
@@ -60,6 +58,7 @@ function selectOption(value, valid, event) {
       <BDropdown
           :id="formId"
           class="dropdown-form dropdown-table"
+          :toggle-class="{'border-danger': !valid}"
           variant="default"
           :text="selectedValueLabel"
           lazy

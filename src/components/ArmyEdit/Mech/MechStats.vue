@@ -13,10 +13,12 @@ import MechArmorUpgrades from './MechStats/MechArmorUpgrades.vue';
 import MechBodyMods from './MechStats/MechBodyMods.vue';
 import MechSizes from './MechStats/MechSizes.vue';
 import MechMobilities from './MechStats/MechMobilities.vue';
+import {useValidationStore} from '../../../store/validation-store.js';
 
 const mechStore = useMechStore();
 const factionStore = useFactionStore();
 const teamStore = useTeamStore();
+const validationStore = useValidationStore();
 
 const {mechId} = defineProps({
   mechId: {
@@ -40,6 +42,8 @@ const {
 
 const structureModOptions = computed(() => teamStore.getMechStructureModOptions(mechId));
 const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId));
+const structureModValid = computed(() => !validationStore.teamGroupMechStructureInvalid(mechId));
+const armorModValid = computed(() => !validationStore.teamGroupMechArmorInvalid(mechId));
 
 </script>
 <template>
@@ -86,6 +90,8 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId))
           :armor="info.armor_mod.modifier"
           :structure="null"
           :options="armorModOptions"
+          :valid="armorModValid"
+
       />
       <MechBodyMods
           label="Structure Type"
@@ -96,6 +102,7 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId))
           :armor="null"
           :structure="info.structure_mod.modifier"
           :options="structureModOptions"
+          :valid="structureModValid"
       />
       <MechArmorUpgrades
           label="Armor Upgrades"

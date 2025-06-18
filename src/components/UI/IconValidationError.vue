@@ -2,8 +2,19 @@
 
 import {computed} from 'vue';
 import {BPopover} from 'bootstrap-vue-next';
+import SvgIcon from './Icon.vue';
 
-const {messageArray, message, size} = defineProps({
+const {
+  title,
+  messageArray,
+  message,
+  size,
+  icon,
+  btnClass,
+} = defineProps({
+  title: {
+    type: String,
+  },
   message: {
     default: '',
   },
@@ -13,6 +24,10 @@ const {messageArray, message, size} = defineProps({
   size: {
     type: String,
     default: 'md',
+  },
+  btnClass: {},
+  icon: {
+    type: String,
   },
 });
 
@@ -27,7 +42,8 @@ const hasMessage = computed(() => {
     <template #target>
       <button
           v-show="!!hasMessage"
-          :class="`btn btn-${size} btn-danger`">
+          :class="`btn btn-${size} btn-danger ${btnClass}`">
+        <SvgIcon :name="icon" v-if="icon"/>
         <span class="material-symbols-outlined">
           warning
         </span>
@@ -35,7 +51,7 @@ const hasMessage = computed(() => {
     </template>
 
     <template #title>
-      Validation error
+      {{ title || 'Validation Error' }}
       <span class="material-symbols-outlined">
         warning
       </span>
@@ -45,8 +61,8 @@ const hasMessage = computed(() => {
       <template v-for="message in messageArray">
         {{ message }}<br>
       </template>
-
     </template>
+
     {{ message }}
   </BPopover>
 </template>

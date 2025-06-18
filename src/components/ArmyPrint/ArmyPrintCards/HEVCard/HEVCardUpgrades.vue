@@ -6,6 +6,7 @@ import {useTeamStore} from '../../../../store/team-store.js';
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
 import {TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
 import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../../../../data/mech-mobility.js';
+import {NO_ARMOR_UPGRADE} from '../../../../data/mech-armor-upgrades.js';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();
@@ -17,10 +18,9 @@ const {mechId} = defineProps({
 });
 
 const upgrades = computed(() => {
-  const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId);
-
+  const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId)
   const armorUpgradeArray = [];
-  if (armorUpgrade) {
+  if (armorUpgrade.id !== NO_ARMOR_UPGRADE) {
     armorUpgradeArray.push({
       display_name: armorUpgrade.card_upgrade_display_name,
     });
@@ -71,7 +71,7 @@ const orders = computed(() => {
     </div>
     <div class="upgrades">
       <span v-for="(upgrade, index) in upgrades">
-        {{ upgrade.display_name }}<small v-if="upgrade.card_note"> ({{upgrade.card_note}})</small><Icon v-if="upgrade.is_team_perk" name="team-perk" size="18px"/>
+        {{ upgrade.display_name }}<small v-if="upgrade.card_note"> ({{ upgrade.card_note }})</small><Icon v-if="upgrade.is_team_perk" name="team-perk" size="18px"/>
         <template v-if="upgrade.max_uses">&nbsp;</template>
         <span
             v-if="upgrade.max_uses"
@@ -87,7 +87,7 @@ const orders = computed(() => {
       <span v-if="orders.length">
         <span class="fw-bold"> Special Orders: </span>
         <span v-for="(order, index) in orders">
-          {{order.display_name}}
+          {{ order.display_name }}
           <span v-if="index !== orders.length -1">, </span>
         </span>
       </span>

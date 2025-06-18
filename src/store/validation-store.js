@@ -3,14 +3,18 @@ import {computed} from 'vue';
 import {useArmyListStore} from './army-list-store.js';
 import {useTeamStore} from './team-store.js';
 import {useMechStore} from './mech-store.js';
-import {MECH_TEAMS, TEAM_GENERAL} from '../data/mech-teams.js';
+import {MECH_TEAMS} from '../data/mech-teams.js';
 import {useSupportAssetCountsStore} from './support-asset-count-store.js';
 import {MECH_WEAPONS} from '../data/mech-weapons.js';
 import {countBy} from 'es-toolkit';
-import {max, min} from 'es-toolkit/compat';
+import {difference, max, min} from 'es-toolkit/compat';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
 import {GAME_SIZE_BATTLE, GAME_SIZE_DUEL, GAME_SIZE_RECON, GAME_SIZE_STRIKE} from '../data/game-sizes.js';
 import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
+import {MECH_UPGRADES} from '../data/mech-upgrades.js';
+import {MECH_SIZES} from '../data/unit-sizes.js';
+import {MECH_ARMOR_UPGRADES} from '../data/mech-armor-upgrades.js';
+import {MECH_BODY_MODS} from '../data/mech-body.js';
 
 export const useValidationStore = defineStore('validation', () => {
 
@@ -24,12 +28,14 @@ export const useValidationStore = defineStore('validation', () => {
 
     }
 
-    const list_is_valid = computed(() => !list_validation.value.length);
+    const list_is_valid = computed(() => {
+        return !list_validation.value.length && !team_validation.value.length;
+    });
 
     const list_validation = computed(() => {
         let messages = [
-            invalid_number_of_teams.value,
             invalid_army_list_tons.value,
+            invalid_number_of_teams.value,
             invalid_number_of_support_assets.value,
         ];
 
@@ -37,28 +43,6 @@ export const useValidationStore = defineStore('validation', () => {
         if (!sizeValidation.valid) {
             messages.push(sizeValidation.validation_message + ' for this game size');
         }
-
-        teamStore.teams.forEach(team => {
-            team.groups.forEach((group) => {
-                const {size_valid, size_validation_message} = getTeamGroupSizeValidation(team.id, group.id);
-
-                const teamDisplayName = teamStore.getTeamDisplayName(team.id);
-                const groupDisplayName = teamStore.getTeamGroupDef(team.id, group.id).display_name;
-                if (!size_valid) {
-                    messages.push(`${teamDisplayName} ${groupDisplayName}: ${size_validation_message}`);
-                }
-
-                const mechIds = teamStore.getTeamGroupMechIds(team.id, group.id);
-
-                mechIds.map(mechId => {
-                    let mechMessages = getInvalidMechMessages(mechId);
-                    if (team.id !== TEAM_GENERAL) {
-                        mechMessages = mechMessages.map(message => `[${teamDisplayName} ${groupDisplayName}] ${message}`);
-                    }
-                    messages = messages.concat(mechMessages);
-                });
-            });
-        });
 
         messages = messages.concat(supportAssetUnitsStore.validation_messages);
         return messages.filter(i => i);
@@ -72,60 +56,6 @@ export const useValidationStore = defineStore('validation', () => {
         }
         return false;
     });
-
-    function getInvalidMechMessages(mechId) {
-        const teamStore = useTeamStore();
-        const mech = mechStore.getMech(mechId);
-        const mechDisplayName = mechStore.getMechInfo(mechId).display_name;
-
-        const tonsValidation = getInvalidMechTons(mechId);
-        const messages = [];
-
-        if (tonsValidation) {
-            messages.push(`${mechDisplayName}: ${tonsValidation}`);
-        }
-        const slotsValidation = getInvalidMechSlots(mechId);
-
-        if (slotsValidation) {
-            messages.push(`${mechDisplayName}: ${slotsValidation}`);
-        }
-
-        const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
-        const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
-
-        const requiredAtLeastOneWithTraitId = groupDef.required_at_least_one_weapon_with_trait_id;
-        if (requiredAtLeastOneWithTraitId) {
-            const result = mech.weapons.find((weapon) => {
-                const traits = MECH_WEAPONS[weapon.weapon_id].traits_by_size[mech.size_id];
-                return traits.find(trait => trait.id === requiredAtLeastOneWithTraitId);
-            });
-            if (!result) {
-                const traitDisplayName = WEAPON_TRAITS[requiredAtLeastOneWithTraitId].display_name;
-
-                messages.push(`Requires at least one weapon with the ${traitDisplayName} trait.`);
-            }
-        }
-
-        return messages;
-    }
-
-    function getInvalidMechTons(mechId) {
-        const {max_tons, used_tons} = mechStore.getMechInfo(mechId);
-
-        if (max_tons < used_tons) {
-            return `uses ${used_tons}/${max_tons} tons`;
-        }
-        return false;
-    }
-
-    function getInvalidMechSlots(mechId) {
-        const {max_slots, used_slots} = mechStore.getMechInfo(mechId);
-
-        if (max_slots < used_slots) {
-            return `uses ${used_slots}/${max_slots} slots`;
-        }
-        return false;
-    }
 
     const invalid_number_of_teams = computed(() => {
         const usedTeams = teamStore.used_teams_count;
@@ -146,35 +76,6 @@ export const useValidationStore = defineStore('validation', () => {
 
         return false;
     });
-
-    function getTeamGroupSizeValidation(teamId, groupId) {
-        const {min_count, max_count} = MECH_TEAMS[teamId].groups[groupId];
-        const group = teamStore.findGroup(teamId, groupId);
-        const mechCount = group.mechs.length;
-
-        let size_valid = true;
-        let size_validation_message = 'Valid Group Size';
-        if (min_count !== false) {
-            if (min_count > mechCount) {
-                size_valid = false;
-                size_validation_message = 'Group has less than the minimum number of HE-V: ' + min_count;
-            }
-        }
-
-        if (max_count !== false) {
-            if (max_count < mechCount) {
-                size_valid = false;
-                size_validation_message = 'Group has more than the maximum number of HE-V: ' + max_count;
-            }
-        }
-
-        return {
-            min_count,
-            max_count,
-            size_valid,
-            size_validation_message,
-        };
-    }
 
     const team_size_count_validation = computed(() => {
         const messageValid = {
@@ -230,16 +131,357 @@ export const useValidationStore = defineStore('validation', () => {
         return messageValid;
     });
 
+    function getInvalidTeamGroupMechMessages(mechId) {
+        return [
+            teamGroupAtLeastOneWeaponWithTraitInvalid(mechId),
+            teamGroupRequiredWeaponsInvalid(mechId),
+            teamGroupRequiredUpgradesInvalid(mechId),
+            teamGroupRequiredOneOfWeaponsInvalid(mechId),
+            teamGroupMechSizeInvalid(mechId),
+            teamGroupMechArmorUpgradeInvalid(mechId),
+            teamGroupMechStructureInvalid(mechId),
+            teamGroupMechArmorInvalid(mechId),
+
+        ].filter(i => i);
+    }
+
+    function getInvalidMechMessages(mechId) {
+        return [
+            mechTonsInvalid(mechId),
+            mechSlotsInvalid(mechId),
+            mechArmorUpgradeInvalid(mechId),
+        ].filter(i => i);
+    }
+
+    function mechTonsInvalid(mechId) {
+        const {max_tons, used_tons} = mechStore.getMechInfo(mechId);
+
+        if (max_tons < used_tons) {
+            return `Uses ${used_tons}/${max_tons} tons`;
+        }
+        return false;
+    }
+
+    function mechSlotsInvalid(mechId) {
+        const {max_slots, used_slots} = mechStore.getMechInfo(mechId);
+
+        if (max_slots < used_slots) {
+            return `Uses ${used_slots}/${max_slots} slots`;
+        }
+        return false;
+    }
+
+    function getMechArmorUpgradeAttachmentIsValid(mechId) {
+        return !teamGroupMechArmorUpgradeInvalid(mechId) &&
+            !mechArmorUpgradeInvalid(mechId);
+    }
+    function mechArmorUpgradeInvalid(mechId) {
+        let {
+            armor_upgrade_id,
+        } = mechStore.getMech(mechId);
+
+        const {
+            valid,
+            current_display_name,
+            valid_size_display_names,
+        } = getMechArmorUpgradeValidation(mechId, armor_upgrade_id);
+
+        if (!valid) {
+            return `Invalid Armor Upgrade: ${current_display_name}. Only available to HE-V size(s): ${valid_size_display_names}`;
+        }
+
+        return false;
+    }
+
+    function getMechArmorUpgradeValidation(mechId, armorUpgradeId) {
+        let {
+            size_id,
+        } = mechStore.getMech(mechId);
+
+        const {limited_size_ids, display_name} = MECH_ARMOR_UPGRADES[armorUpgradeId];
+        if (limited_size_ids.length && !limited_size_ids.includes(size_id)) {
+            return {
+                valid: false,
+                current_display_name: display_name,
+                valid_size_display_names: limited_size_ids.map(sizeId => MECH_SIZES[sizeId].display_name).join(', '),
+            };
+        }
+
+        return {
+            valid: true,
+            current_display_name: null,
+            valid_size_display_names: [],
+        };
+    }
+
+    function getTeamGroupSizeValidation(teamId, groupId) {
+        const {min_count, max_count} = MECH_TEAMS[teamId].groups[groupId];
+        const group = teamStore.findGroup(teamId, groupId);
+        const mechCount = group.mechs.length;
+
+        let size_valid = true;
+        let size_validation_message = 'Valid Group Size';
+        if (min_count !== false) {
+            if (min_count > mechCount) {
+                size_valid = false;
+                size_validation_message = 'Group has less than the minimum number of HE-V: ' + min_count;
+            }
+        }
+
+        if (max_count !== false) {
+            if (max_count < mechCount) {
+                size_valid = false;
+                size_validation_message = 'Group has more than the maximum number of HE-V: ' + max_count;
+            }
+        }
+
+        return {
+            min_count,
+            max_count,
+            size_valid,
+            size_validation_message,
+        };
+    }
+
+    function teamGroupAtLeastOneWeaponWithTraitInvalid(mechId) {
+        const mech = mechStore.getMech(mechId);
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+
+        const requiredAtLeastOneWithTraitId = groupDef.required_at_least_one_weapon_with_trait_id;
+        if (requiredAtLeastOneWithTraitId) {
+            const result = mech.weapons.find((weapon) => {
+                const traits = MECH_WEAPONS[weapon.weapon_id].traits_by_size[mech.size_id];
+                return traits.find(trait => trait.id === requiredAtLeastOneWithTraitId);
+            });
+            if (!result) {
+                const traitDisplayName = WEAPON_TRAITS[requiredAtLeastOneWithTraitId].display_name;
+
+                return `Team group requires at least one weapon with the ${traitDisplayName} trait.`;
+            }
+        }
+
+        return false;
+    }
+
+    function teamGroupRequiredWeaponsInvalid(mechId) {
+        const mech = mechStore.getMech(mechId);
+        const weaponIds = mech.weapons.map(weapon => weapon.weapon_id);
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+
+        const missingWeaponIds = difference(groupDef.required_weapon_ids, weaponIds);
+
+        if (missingWeaponIds.length) {
+            const weapons = missingWeaponIds.map(weaponId => MECH_WEAPONS[weaponId].display_name);
+            return `Team Group requires weapon(s): ${weapons.join(', ')}`;
+        }
+
+        return false;
+    }
+
+    function teamGroupRequiredOneOfWeaponsInvalid(mechId) {
+        const mech = mechStore.getMech(mechId);
+        const weaponIds = mech.weapons.map(weapon => weapon.weapon_id);
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+
+        if (!groupDef.required_at_least_one_of_weapon_ids?.length) {
+            return false;
+        }
+        const match = groupDef.required_at_least_one_of_weapon_ids.find(requiredWeaponId => {
+            return weaponIds.includes(requiredWeaponId);
+        });
+
+        if (!match) {
+            const weapons = groupDef.required_at_least_one_of_weapon_ids.map(weaponId => MECH_WEAPONS[weaponId].display_name);
+            return `Team Group requires at least one of the following weapon(s): ${weapons.join(', ')}`;
+        }
+
+        return false;
+    }
+
+    function teamGroupRequiredUpgradesInvalid(mechId) {
+        const mech = mechStore.getMech(mechId);
+        const upgradeIds = mech.upgrades.map(upgrade => upgrade.upgrade_id);
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+        const missingUpgradeIds = difference(groupDef.required_upgrade_ids, upgradeIds);
+
+        if (missingUpgradeIds.length) {
+            const upgrades = missingUpgradeIds.map(id => MECH_UPGRADES[id].display_name);
+            return `Team Group requires upgrade(s): ${upgrades.join(', ')}`;
+        }
+
+        return false;
+    }
+
+    function teamGroupMechSizeInvalid(mechId) {
+        const mech = mechStore.getMech(mechId);
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+
+        if (!groupDef.size_ids.includes(mech.size_id)) {
+            const currentSize = MECH_SIZES[mech.size_id].display_name;
+            const validSizes = groupDef.size_ids.map(id => MECH_SIZES[id].display_name);
+            return `Invalid Size: ${currentSize}. Valid values: ${validSizes.join(', ')}`;
+        }
+
+        return false;
+    }
+
+    function getTeamGroupMechArmorUpgradeValidation(mechId, armorUpgradeId) {
+        const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
+        const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
+        const validIds = groupDef.limited_armor_upgrade_ids;
+
+        if (validIds?.length) {
+            if (!validIds.includes(armorUpgradeId)) {
+                return {
+                    valid: false,
+                    current_display_name: MECH_ARMOR_UPGRADES[armorUpgradeId].display_name,
+                    valid_armor_upgrade_display_names: validIds.map(id => MECH_ARMOR_UPGRADES[id].display_name),
+                    team_display_name: teamStore.getTeamDisplayName(teamId),
+                    group_display_name: groupDef.display_name,
+                };
+
+            }
+        }
+
+        return {
+            valid: true,
+            current_display_name: null,
+            valid_armor_upgrade_display_names: [],
+            team_display_name: null,
+            group_display_name: null,
+        };
+    }
+
+    function teamGroupMechArmorUpgradeInvalid(mechId) {
+        const mech = mechStore.getMech(mechId);
+        const {
+            valid,
+            current_display_name,
+            valid_armor_upgrade_display_names,
+        } = getTeamGroupMechArmorUpgradeValidation(mechId, mech.armor_upgrade_id);
+
+        if (!valid) {
+            return `Invalid Armor Upgrade: ${current_display_name}. Valid values: ${valid_armor_upgrade_display_names.join(', ')}`;
+        }
+
+        return false;
+    }
+
+    function teamGroupMechStructureInvalid(mechId) {
+        const mech = mechStore.getMech(mechId);
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+
+        if (groupDef.limited_structure_mod_ids?.length) {
+            if (!groupDef.limited_structure_mod_ids.includes(mech.structure_mod_id)) {
+                const currentDisplayName = MECH_BODY_MODS[mech.structure_mod_id].display_name;
+                const validMods = groupDef.limited_structure_mod_ids.map(id => MECH_BODY_MODS[id].display_name);
+                return `Invalid Structure Type: ${currentDisplayName}. Valid values: ${validMods.join(', ')}`;
+            }
+        }
+
+        return false;
+    }
+
+    function teamGroupMechArmorInvalid(mechId) {
+        const mech = mechStore.getMech(mechId);
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+
+        if (groupDef.limited_armor_mod_ids?.length) {
+            if (!groupDef.limited_armor_mod_ids.includes(mech.armor_mod_id)) {
+                const currentDisplayName = MECH_BODY_MODS[mech.armor_mod_id].display_name;
+
+                const validMods = groupDef.limited_armor_mod_ids.map(id => MECH_BODY_MODS[id].display_name);
+                return `Invalid Armor Type: ${currentDisplayName}. Valid values: ${validMods.join(', ')}`;
+            }
+        }
+
+        return false;
+    }
+
+    const team_validation = computed(() => {
+        return teamStore.teams.map(team => getTeamValidation(team.id)).filter(i => i);
+    });
+
+    function getTeamValidation(teamId) {
+        const team = teamStore.findTeam(teamId);
+
+        const {display_name, icon} = teamStore.getTeamDef(team.id);
+
+        const groups = team.groups.map(group => getTeamGroupValidation(teamId, group.id)).filter(i => i);
+        if (!groups.length) {
+            return false;
+        }
+
+        return {
+            id: team.id,
+            display_name,
+            icon,
+            groups,
+        };
+    }
+
+    function getTeamGroupValidation(teamId, groupId) {
+        const {size_valid, size_validation_message} = getTeamGroupSizeValidation(teamId, groupId);
+        const validation_messages = [];
+        if (!size_valid) {
+            validation_messages.push(size_validation_message);
+        }
+
+        const {display_name} = teamStore.getTeamGroupDef(teamId, groupId);
+        const mechIds = teamStore.getTeamGroupMechIds(teamId, groupId);
+
+        let mechs = mechIds.map(mechId => {
+            const group_validation_messages = getInvalidTeamGroupMechMessages(mechId);
+            const mech_validation_messages = [
+                mechTonsInvalid(mechId),
+                mechSlotsInvalid(mechId),
+                mechArmorUpgradeInvalid(mechId),
+            ].filter(i => i);
+
+            if (!group_validation_messages.length && !mech_validation_messages.length) {
+                return false;
+            }
+
+            return {
+                info: mechStore.getMechInfo(mechId),
+                group_validation_messages,
+                mech_validation_messages,
+            };
+        }).filter(i => i);
+
+        if (!mechs.length) {
+            return false;
+        }
+
+        return {
+            id: groupId,
+            display_name,
+            validation_messages,
+            mechs,
+        };
+    }
+
     return {
         list_validation,
-        getInvalidMechMessages,
         list_is_valid,
+        team_validation,
         invalid_number_of_support_assets,
         team_size_count_validation,
 
+        getInvalidMechMessages,
+        getInvalidTeamGroupMechMessages,
+
         getTeamGroupSizeValidation,
+        getTeamGroupMechArmorUpgradeValidation,
+
+        getMechArmorUpgradeValidation,
+
+        teamGroupMechSizeInvalid,
+        teamGroupMechStructureInvalid,
+        teamGroupMechArmorInvalid,
+
+        getMechArmorUpgradeAttachmentIsValid,
 
         $reset,
-
     };
 });

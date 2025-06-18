@@ -5,12 +5,14 @@ import {computed, ref, watch} from 'vue';
 import {BButton, BCollapse} from 'bootstrap-vue-next';
 import {useExpandCollapseAll} from '../functional/expand-collapse.js';
 import {useValidationStore} from '../../store/validation-store.js';
-import IconValidationError from '../UI/IconValidationError.vue';
 import MechStats from './Mech/MechStats.vue';
 import HEVCard from '../ArmyPrint/ArmyPrintCards/HEVCard.vue';
+import IconValidationError from '../UI/IconValidationError.vue';
+import {useTeamStore} from '../../store/team-store.js';
 
 const mechStore = useMechStore();
 const validationStore = useValidationStore();
+const teamStore = useTeamStore();
 
 const {
   mechId,
@@ -24,7 +26,14 @@ const {
 const visible = ref(false);
 const info = computed(() => mechStore.getMechInfo(mechId));
 
-const invalid_mech_messages = computed(() => validationStore.getInvalidMechMessages(mechId));
+const invalidMechMessages = computed(() => validationStore.getInvalidMechMessages(mechId));
+const invalidTeamGroupMessages = computed(() => validationStore.getInvalidTeamGroupMechMessages(mechId));
+const valid = computed(() => !invalidMechMessages.value.length && !invalidTeamGroupMessages.value.length);
+
+const teamIcon = computed(() => {
+  const {teamId} = teamStore.getMechTeamAndGroupIds(mechId);
+  return teamStore.getTeamDef(teamId).icon;
+});
 
 const {
   collapseSignal,
@@ -39,7 +48,7 @@ watch(expandSignal, () => visible.value = true);
   <div
       :class="{
         'card card-mech': true,
-        'border-danger': invalid_mech_messages?.length
+        'border-danger': !valid
       }"
   >
     <div class="card-body">
@@ -54,7 +63,20 @@ watch(expandSignal, () => visible.value = true);
           <div class="d-inline-block py-1">
             <strong class="pe-1">{{ info.display_name }}</strong>
           </div>
-          <IconValidationError size="sm" :message-array="invalid_mech_messages"/>
+          <IconValidationError
+              btn-class="ms-1"
+              size="sm"
+              title="HE-V Validation Errors"
+              icon="hev"
+              :message-array="invalidMechMessages"
+          />
+          <IconValidationError
+              btn-class="ms-1"
+              size="sm"
+              title="Team Group Validation Errors"
+              :icon="teamIcon"
+              :message-array="invalidTeamGroupMessages"
+          />
         </div>
         <div class="col-sm-12 col-md-auto col-lg-6 d-flex">
           <div class="py-1 d-inline-block ms-auto">

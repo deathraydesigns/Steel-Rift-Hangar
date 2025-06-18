@@ -3,12 +3,25 @@
 import {BButton, BModal} from 'bootstrap-vue-next';
 import {useValidationStore} from '../../../store/validation-store.js';
 import {storeToRefs} from 'pinia';
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
+import {TEAM_GENERAL} from '../../../data/mech-teams.js';
+import TeamGroupValidation from './BtnArmyListValidation/TeamGroupValidation.vue';
 
 const modal = ref(false);
 const validationStore = useValidationStore();
 
-const {list_is_valid, list_validation} = storeToRefs(validationStore);
+const {list_is_valid, list_validation, team_validation} = storeToRefs(validationStore);
+
+const generalTeamGroupValidation = computed(() => {
+  const team = team_validation.value.find(team => team.id === TEAM_GENERAL);
+  if (team) {
+    return team.groups[0];
+  }
+});
+
+const specialTeamValidation = computed(() => {
+  return team_validation.value.filter(team => team.id !== TEAM_GENERAL);
+});
 
 function click() {
   if (!list_is_valid.value) {
@@ -47,11 +60,30 @@ function click() {
 
     <template #cancel>&nbsp;</template>
     <template #default>
+      <h5>List</h5>
       <ul>
         <li v-for="item in list_validation">
           {{ item }}
         </li>
       </ul>
+      <TeamGroupValidation
+          v-if="generalTeamGroupValidation"
+          :group="generalTeamGroupValidation"
+      />
+      <template v-if="specialTeamValidation.length">
+        <h5>Teams</h5>
+        <div v-for="team in specialTeamValidation">
+          <div class="fw-bold">{{ team.display_name }}</div>
+          <ul>
+            <li v-for="message in team.validation_messages">
+              {{ message }}
+            </li>
+            <li v-for="group in team.groups">
+              <TeamGroupValidation :group="group"/>
+            </li>
+          </ul>
+        </div>
+      </template>
     </template>
   </BModal>
 </template>

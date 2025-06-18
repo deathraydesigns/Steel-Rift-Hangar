@@ -4,9 +4,11 @@ import FormatNumber from '../../../functional/format-number.vue';
 import {computed} from 'vue';
 import {useTeamStore} from '../../../../store/team-store.js';
 import {BDropdown} from 'bootstrap-vue-next';
+import {useValidationStore} from '../../../../store/validation-store.js';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();
+const validationStore = useValidationStore();
 
 const {mechId} = defineProps({
   mechId: Number,
@@ -15,6 +17,8 @@ const options = computed(() => teamStore.getAvailableMechSizes(mechId));
 
 const mech = computed(() => mechStore.getMech(mechId));
 const info = computed(() => mechStore.getMechInfo(mechId));
+
+const valid = computed(() => !validationStore.teamGroupMechSizeInvalid(mechId));
 
 function selectOption(size_id) {
   mechStore.updateMech(mechId, {size_id});
@@ -31,6 +35,7 @@ function selectOption(size_id) {
       <BDropdown
           :id="'mech-input-size-' + mechId"
           class="dropdown-form dropdown-table"
+          :toggle-class="{'border-danger': !valid}"
           :text="info.size.display_name"
           variant="default"
           lazy

@@ -50,6 +50,7 @@ import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../data/mech-mobility.js';
 import {TYPE_HEV} from '../data/unit-types.js';
 import {makeGrantedOrderCollection} from './helpers/helpers.js';
 import {toaster} from '../toaster.js';
+import {useValidationStore} from './validation-store.js';
 
 export const useMechStore = defineStore('mech', {
         state() {
@@ -490,7 +491,7 @@ export const useMechStore = defineStore('mech', {
                         ...WEAPON_TRAITS[trait.id],
                         ...trait,
                         display_name: weaponTraitDisplayName(trait),
-                    }))
+                    }));
 
                     return {traits, team_perks, faction_perks, range_modifier};
                 };
@@ -780,23 +781,18 @@ export const useMechStore = defineStore('mech', {
                         armor_upgrade_id,
                     } = this.getMech(mechId);
 
-                    if (armor_upgrade_id === NO_ARMOR_UPGRADE) {
-                        return;
-                    }
                     return this.getMechArmorUpgradeInfo(mechId, armor_upgrade_id);
                 };
             },
             getMechArmorUpgradeInfo(state) {
                 return function (mechId, armorUpgradeId) {
+                    const validationStore = useValidationStore();
+
                     const teamStore = useTeamStore();
 
                     let {
                         size_id,
                     } = this.getMech(mechId);
-
-                    const {teamId, groupId} = teamStore.getMechTeamAndGroupIds(mechId);
-                    const teamDisplayName = teamStore.getTeamDisplayName(teamId);
-                    const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
 
                     let {
                         slots,
@@ -804,7 +800,6 @@ export const useMechStore = defineStore('mech', {
                         display_name,
                         card_upgrade_display_name,
                         armor_mod,
-                        limited_size_ids,
                         description,
                     } = MECH_ARMOR_UPGRADES[armorUpgradeId];
 
@@ -812,17 +807,25 @@ export const useMechStore = defineStore('mech', {
                     let valid = true;
                     let validation_message = null;
 
-                    if (groupDef.limited_armor_upgrade_ids.length) {
-                        if (!groupDef.limited_armor_upgrade_ids.includes(armorUpgradeId)) {
-                            valid = false;
-                            validation_message = `Not available to ${teamDisplayName} ${groupDef.display_name}`;
-                        }
+                    const {
+                        valid: armorValid,
+                        team_display_name,
+                        group_display_name,
+                    } = validationStore.getTeamGroupMechArmorUpgradeValidation(mechId, armorUpgradeId);
+
+                    if (!armorValid) {
+                        valid = false;
+                        validation_message = `Not available to ${team_display_name} ${group_display_name}`;
                     }
 
-                    if (limited_size_ids && !limited_size_ids.includes(size_id)) {
+                    const {
+                        valid: armorSizeValid,
+                        valid_size_display_names,
+                    } = validationStore.getMechArmorUpgradeValidation(mechId, armorUpgradeId);
+
+                    if (!armorSizeValid) {
                         valid = false;
-                        const sizeDisplayNames = limited_size_ids.map(sizeId => MECH_SIZES[sizeId].display_name).join(', ');
-                        validation_message = `Only available to HE-V size(s): ${sizeDisplayNames}`;
+                        validation_message = `Only available to HE-V size(s): ${valid_size_display_names}`;
                     }
 
                     const perks = teamStore.getTeamPerksInfoByMech(mechId);
