@@ -44,7 +44,7 @@ export const SECONDARY_AGENDAS = makeSecondaryAgendas({
         description: 'Score 1 VP if there are no active enemy Units within 10” of any of your deployment edges or corners at the end of the Mission.',
     },
     [[SA_TARGET_ELIMINATED]]: {
-        display_name: 'Territorial',
+        display_name: 'Target Eliminated',
         description: 'At the end of the mission, score 1 VP if the heaviest HE-V deployed by the opposing Commander has been destroyed by a member of this Team. If the Opposing Commander has multiple HE-Vs in that size class, select one and note that secretly after forces are deployed.',
     },
     [[SA_DRIVE_THEM_OUT]]: {

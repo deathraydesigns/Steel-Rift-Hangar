@@ -64,19 +64,19 @@ export const useSecondaryAgendaStore = defineStore('secondary-agenda', () => {
 
         const sizesByCount = countBy(mechStore.mechs, mech => mech.size_id);
 
-        if (sizesByCount[SIZE_LIGHT] === 2) {
+        if (sizesByCount[SIZE_LIGHT] >= 2) {
             result.push(SECONDARY_AGENDAS[SA_STALKERS]);
         }
 
-        if (sizesByCount[SIZE_MEDIUM] === 2) {
+        if (sizesByCount[SIZE_MEDIUM] >= 2) {
             result.push(SECONDARY_AGENDAS[SA_BRAWLERS]);
         }
 
-        if (sizesByCount[SIZE_HEAVY] === 2) {
+        if (sizesByCount[SIZE_HEAVY] >= 2) {
             result.push(SECONDARY_AGENDAS[SA_ENFORCERS]);
         }
 
-        if (sizesByCount[SIZE_ULTRA] === 2) {
+        if (sizesByCount[SIZE_ULTRA] >= 2) {
             result.push(SECONDARY_AGENDAS[SA_TITAN_KILLERS]);
         }
 
