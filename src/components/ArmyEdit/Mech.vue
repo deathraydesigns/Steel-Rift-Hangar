@@ -7,6 +7,7 @@ import {useExpandCollapseAll} from '../functional/expand-collapse.js';
 import {useValidationStore} from '../../store/validation-store.js';
 import MechStats from './Mech/MechStats.vue';
 import HEVCard from '../ArmyPrint/ArmyPrintCards/HEVCard.vue';
+import BtnMoveToTeamGroup from './Mech/BtnMoveToTeamGroup.vue';
 import IconValidationError from '../UI/IconValidationError.vue';
 import {useTeamStore} from '../../store/team-store.js';
 
@@ -47,6 +48,7 @@ watch(expandSignal, () => visible.value = true);
 <template>
   <div
       :class="{
+        'draggable-item': true,
         'card card-mech': true,
         'border-danger': !valid
       }"
@@ -97,7 +99,7 @@ watch(expandSignal, () => visible.value = true);
               <fraction :a="info.used_tons" :b="info.max_tons"/>
             </span>
           </div>
-
+          <BtnMoveToTeamGroup :mech-id="mechId"/>
           <BButton
               size="sm"
               class="mx-1"

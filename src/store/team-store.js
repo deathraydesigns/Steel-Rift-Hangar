@@ -599,6 +599,20 @@ export const useTeamStore = defineStore('team', () => {
             move(group.mechs, index, toIndex);
         }
 
+        function moveMechToTeamGroup(teamId, groupId, mechId, newIndex) {
+            const mech = mechStore.getMech(mechId);
+            const groupDef = getTeamGroupDef(teamId, groupId);
+
+            removeMechFromTeam(mechId);
+
+            const group = findGroup(teamId, groupDef.id);
+
+            group.mechs.splice(newIndex, 0, {
+                mech_id: mech.id,
+            });
+            setDisplayOrders(group.mechs);
+        }
+
         return {
             teams,
             addable_teams,
@@ -633,6 +647,7 @@ export const useTeamStore = defineStore('team', () => {
             getUsedTeamAbilityPerksInfo,
             getMechTeamGroupDef,
             getTeamMechIds,
+            moveMechToTeamGroup,
 
             addMechToTeam,
             removeMechFromTeam,

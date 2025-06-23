@@ -203,3 +203,12 @@ body[data-bs-theme="dark"] {
     color: var(--bs-danger-text-emphasis);
   }
 }
+
+.dndrop-container.vertical > .dndrop-draggable-wrapper {
+  overflow: visible;
+}
+
+.mech-drag-wrapper {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}

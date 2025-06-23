@@ -1,6 +1,5 @@
 <script setup>
 import Mech from '../Mech.vue';
-import draggable from 'vuedraggable';
 import {computed, ref} from 'vue';
 import {useTeamStore} from '../../../store/team-store.js';
 import {TEAM_GENERAL} from '../../../data/mech-teams.js';
@@ -8,6 +7,7 @@ import {useExpandCollapseAll} from '../../functional/expand-collapse.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../store/validation-store.js';
 import {BButton} from 'bootstrap-vue-next';
+import {Container, Draggable} from 'vue-dndrop';
 
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
@@ -38,20 +38,68 @@ const teamGroupPerkCount = computed(() => {
   return count;
 });
 
-const dragging = ref(false);
+const draggingMechId = ref(null);
 
-function onSortableChange(event) {
-  let moved = event.moved;
-  if (!moved) {
-    return;
-  }
-  teamStore.moveGroupMech(teamId, groupId, moved.element, moved.newIndex);
+function dragStart(event) {
+  draggingMechId.value = mechIds.value[event.oldIndex];
 }
 
+function dragEnd(event) {
+  const {
+    teamId: newTeamId,
+    groupId: newGroupId,
+  } = event.to.__draggable_component__.componentData;
+
+  const {newIndex} = event;
+  const mechId = draggingMechId.value;
+
+  teamStore.moveMechToTeamGroup(
+      newTeamId,
+      newGroupId,
+      mechId,
+      newIndex,
+  );
+}
+
+const componentData = computed(() => {
+  return {
+    teamId,
+    groupId,
+    tag: 'div',
+    type: 'transition-group',
+  };
+});
 const {
   expandAll,
   collapseAll,
 } = useExpandCollapseAll();
+
+function getChildPayload(index) {
+  return {
+    teamId,
+    groupId,
+    mechId: mechIds.value[index],
+  };
+}
+
+function onDrop(toTeamId, toGroupId, dropResult) {
+  console.log('onDrop', dropResult);
+
+  if (dropResult.addedIndex !== null) {
+    teamStore.moveMechToTeamGroup(
+        toTeamId,
+        toGroupId,
+        dropResult.payload.mechId,
+        dropResult.addedIndex,
+    );
+  }
+}
+
+const placeholder = ref({
+  className: 'cards-drop-preview',
+  animationDuration: '150',
+  showOnTop: true,
+});
 
 </script>
 <template>
@@ -167,24 +215,24 @@ const {
       </div>
     </div>
     <div class="card-body">
-      <draggable
-          :list="mechIds"
-          item-key="id"
-          :group="'mechs-' + teamId + '-' + groupId"
-          handle=".btn-grab"
-          ghost-class="ghost"
-          @start="dragging = true"
-          @end="dragging = false"
-          @change="onSortableChange"
-          :animation="200"
-          :preventOnFilter="false"
+
+      <Container
+          :get-child-payload="getChildPayload"
+          group-name="mechs"
+          drag-handle-selector=".btn-grab"
+          @drop="onDrop(teamId, groupId, $event)"
+          :drop-placeholder="placeholder"
+          drag-class="card-ghost"
+          drop-class="card-ghost-drop"
       >
-        <template #item="{ element }">
-          <mech
-              :mech-id="element"
-          />
-        </template>
-      </draggable>
+        <Draggable
+            class="mech-drag-wrapper"
+            v-for="mechId in mechIds"
+            :key="mechId"
+        >
+          <mech :mech-id="mechId"/>
+        </Draggable>
+      </Container>
     </div>
   </div>
 </template>
