@@ -26,8 +26,8 @@ const {
 const visible = ref(false);
 const info = computed(() => mechStore.getMechInfo(mechId));
 
-const invalidMechMessages = computed(() => validationStore.getInvalidMechMessages(mechId));
-const invalidTeamGroupMessages = computed(() => validationStore.getInvalidTeamGroupMechMessages(mechId));
+const invalidMechMessages = computed(() => validationStore.mechMessages(mechId));
+const invalidTeamGroupMessages = computed(() => validationStore.mechTeamGroupMessages(mechId));
 const valid = computed(() => !invalidMechMessages.value.length && !invalidTeamGroupMessages.value.length);
 
 const teamIcon = computed(() => {

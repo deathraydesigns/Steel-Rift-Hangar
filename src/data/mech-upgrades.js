@@ -236,5 +236,9 @@ function makeUpgrade(item) {
         item.slots = 1;
     }
 
+    if (!item.limited_size_ids) {
+        item.limited_size_ids = [];
+    }
+
     return item;
 }

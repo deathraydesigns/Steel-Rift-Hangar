@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {computed, ref, watch} from 'vue';
+import {computed, ref} from 'vue';
 import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-helper.js';
 import {MECH_TEAM_SIZES, MECH_TEAMS, TEAM_FIRE_SUPPORT, TEAM_GENERAL, TEAM_RECON} from '../data/mech-teams.js';
 import {useMechStore} from './mech-store.js';
@@ -11,7 +11,6 @@ import {GAME_SIZES} from '../data/game-sizes.js';
 import {MECH_TEAM_PERKS} from '../data/mech-team-perks.js';
 import {MECH_SIZES, SIZE_HEAVY, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
-import {toaster} from '../toaster.js';
 import {makeUniqueItemIdCollection} from './helpers/helpers.js';
 
 export const useTeamStore = defineStore('team', () => {
@@ -158,12 +157,11 @@ export const useTeamStore = defineStore('team', () => {
             };
         }
 
-        function getWeaponIsProhibited(mechId, weaponId, traits) {
+        function getWeaponTraitIsProhibited(mechId, weaponId, traits) {
             const {teamId, groupId} = getMechTeamAndGroupIds(mechId);
             const groupDef = getTeamGroupDef(teamId, groupId);
 
             if (groupDef.prohibited_weapons_with_trait_ids?.length) {
-
                 const prohibited = traits.find((trait) => groupDef.prohibited_weapons_with_trait_ids.includes(trait.id));
                 if (prohibited) {
                     const teamGroupDisplayName = getFullTeamGroupDisplayName(teamId, groupId);
@@ -534,32 +532,6 @@ export const useTeamStore = defineStore('team', () => {
             });
         });
 
-        // remove invalid upgrades
-        watch(() => {
-                const result = {};
-                teams.value.forEach(team => {
-                    result[team.id] = getUsedTeamAbilityPerkIds(team.id);
-                });
-                return result;
-            },
-            () => {
-                teams.value.forEach(team => {
-                    getTeamMechIds(team.id).forEach(mechId => {
-                        mechStore.getMechUpgradesAttachmentInfo(mechId)
-                            .forEach(upgrade => {
-                                if (!upgrade.valid) {
-                                    mechStore.removeMechUpgradeAttachment(mechId, upgrade.id);
-                                    const mechInfo = mechStore.getMechInfo(mechId);
-
-                                    toaster().info(`${mechInfo.size.display_name} HE-V (${mechInfo.display_name})`,
-                                        `${upgrade.display_name} removed: (${upgrade.validation_message})`);
-                                }
-                            });
-                    });
-                });
-            },
-        );
-
         function addMechToTeam(teamId, groupId, addDefaults = true) {
             const groupDef = getTeamGroupDef(teamId, groupId);
             const mechOptions = {};
@@ -653,7 +625,7 @@ export const useTeamStore = defineStore('team', () => {
             getAvailableMechSizes,
             getMechStructureModOptions,
             getMechArmorModOptions,
-            getWeaponIsProhibited,
+            getWeaponTraitIsProhibited,
             getMechWeaponIsRequiredInfo,
             getTeamPerksInfoByMech,
             getTeamGroupPerksInfo,

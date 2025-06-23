@@ -9,6 +9,7 @@ import {BButton} from 'bootstrap-vue-next';
 import FormatNumber from '../../../functional/format-number.vue';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
 import RangeFormatter from '../../../UI/RangeFormatter.vue';
+import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 
 const mechStore = useMechStore();
 
@@ -29,7 +30,12 @@ function remove() {
 }
 </script>
 <template>
-  <tr class="list-item-sortable tr-btn">
+  <tr
+      :class="{
+        'list-item-sortable tr-btn': true,
+        'table-danger-subtle': !weapon.valid
+      }"
+  >
     <td class="table-btn-cell">
       <span class="btn btn-sm btn-grab btn-transparent me-2">:::</span>
     </td>
@@ -62,6 +68,11 @@ function remove() {
       >
         <span class="material-symbols-outlined">delete</span>
       </BButton>
+      <IconNotAvailable
+          btn-class="ms-1"
+          :valid="weapon.valid"
+          :validation-message="weapon.validation_message"
+      />
       <IconRequiredByGroup
           btn-class="ms-1"
           :required="weapon.required_by_group"

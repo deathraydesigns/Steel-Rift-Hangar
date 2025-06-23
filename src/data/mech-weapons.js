@@ -505,6 +505,8 @@ function makeWeapon({
         slots = 1;
     }
 
+    limited_size_ids = limited_size_ids || [];
+
     return {
         display_name,
         damage_by_size,

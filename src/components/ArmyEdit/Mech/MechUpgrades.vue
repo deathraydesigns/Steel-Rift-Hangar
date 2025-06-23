@@ -18,7 +18,7 @@ const {mechId} = defineProps({
 
 const mech = computed(() => mechStore.getMech(mechId));
 
-const validationMessages = computed(() => validationStore.getInvalidTeamGroupMechUpgradeMessages(mechId));
+const validationMessages = computed(() => validationStore.mechAllUpgradesMessages(mechId));
 const valid = computed(() => !validationMessages.value.length);
 
 function onSortableChange(event) {

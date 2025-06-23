@@ -8,6 +8,7 @@ import TraitList from '../../../UI/TraitList.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import {BButton} from 'bootstrap-vue-next';
 import FormatNumber from '../../../functional/format-number.vue';
+import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 
 const mechStore = useMechStore();
 
@@ -29,7 +30,12 @@ function remove() {
 
 </script>
 <template>
-  <tr class="list-item-sortable tr-btn">
+  <tr
+      :class="{
+        'list-item-sortable tr-btn': true,
+        'table-danger-subtle': !upgrade.valid
+      }"
+  >
     <td class="table-btn-cell">
       <span class="btn btn-sm btn-grab btn-transparent me-2">:::</span>
     </td>
@@ -60,6 +66,11 @@ function remove() {
       >
         <span class="material-symbols-outlined">delete</span>
       </BButton>
+      <IconNotAvailable
+          btn-class="ms-1"
+          :valid="upgrade.valid"
+          :validation-message="upgrade.validation_message"
+      />
       <IconRequiredByGroup
           :required="upgrade.required_by_group"
           btn-class="ms-1"

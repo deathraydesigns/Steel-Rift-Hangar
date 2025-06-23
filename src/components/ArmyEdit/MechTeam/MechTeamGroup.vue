@@ -28,6 +28,7 @@ const mechIds = computed(() => teamStore.getTeamGroupMechIds(teamId, groupId));
 const size = computed(() => validationStore.getTeamGroupSizeValidation(teamId, groupId));
 const isGeneralGroup = computed(() => teamId === TEAM_GENERAL);
 const teamGroupPerks = computed(() => teamStore.getTeamGroupPerksInfo(teamId, groupId));
+const valid = computed(() => validationStore.getTeamGroupValidation(teamId, groupId).valid);
 const teamGroupPerkCount = computed(() => {
   let count = 0;
   teamGroupPerks.value.forEach((group) => {
@@ -56,7 +57,7 @@ const {
 <template>
   <div :class="{
     'card card-mech-team-group': true,
-    'border-danger': !size.size_valid,
+    'border-danger': !valid,
   }">
     <div class="card-header d-flex text-bg-primary">
       <div class="flex-grow-1">

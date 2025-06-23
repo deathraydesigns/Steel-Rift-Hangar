@@ -15,7 +15,6 @@ import {
 import {HOWITZER, MECH_WEAPONS, MECH_WEAPONS_BY_TYPE, MISSILES, ROCKET_PACK} from '../data/mech-weapons.js';
 import {readonly} from 'vue';
 import {
-    COMBAT_SHIELD,
     DIRECTIONAL_THRUSTER,
     ELECTRONIC_COUNTERMEASURES,
     getUpgradeTraits,
@@ -37,7 +36,6 @@ import {
     TEAM_PERK_0_TON_ECM,
     TEAM_PERK_0_TON_TARGET_DESIGNATORS,
     TEAM_PERK_BARREL_EXTENSIONS,
-    TEAM_PERK_COMBAT_BUCKLER,
     TEAM_PERK_EXTRA_MISSILE_AMMO,
     TEAM_PERK_EXTRA_NITRO,
     TEAM_PERK_EXTRA_TONNAGE,
@@ -394,16 +392,20 @@ export const useMechStore = defineStore('mech', {
                     let validation_message = null;
                     let valid = true;
 
-                    if (limited_size_ids) {
-                        valid = limited_size_ids.includes(size_id);
-                        if (!valid) {
-                            const sizeDisplayNames = limited_size_ids.map(sizeId => MECH_SIZES[sizeId].display_name).join('/');
-                            validation_message = `Only available for ${sizeDisplayNames} HE-Vs`;
-                        }
+                    let validationStore = useValidationStore();
+
+                    const {
+                        valid: sizeValid,
+                        validSizeDisplayNames,
+                    } = validationStore.getMechWeaponSizeValidation(mechId, weaponId);
+
+                    if (!sizeValid) {
+                        valid = false;
+                        validation_message = `Only available for ${validSizeDisplayNames.join('/')} HE-Vs`;
                     }
 
                     if (valid) {
-                        const prohibited = teamStore.getWeaponIsProhibited(mechId, weaponId, traits);
+                        const prohibited = teamStore.getWeaponTraitIsProhibited(mechId, weaponId, traits);
                         valid = prohibited.valid;
                         validation_message = prohibited.validation_message;
                     }
@@ -533,7 +535,8 @@ export const useMechStore = defineStore('mech', {
                         required_by_group_reason = required_reason;
                     }
 
-                    const result = Object.assign({}, weaponInfo, {
+                    return readonly({
+                        ...weaponInfo,
                         base_cost: cost,
                         cost: cost + duplicate_cost,
                         duplicate_cost,
@@ -541,8 +544,6 @@ export const useMechStore = defineStore('mech', {
                         required_by_group_reason,
                         duplicate_percent: previousWeaponInstances * 50,
                     });
-
-                    return readonly(result);
                 };
             },
             getMechAvailableWeaponsInfo(state) {
@@ -650,23 +651,21 @@ export const useMechStore = defineStore('mech', {
 
                     const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
 
-                    if (upgradeId === COMBAT_SHIELD) {
-                        let perk = find(teamPerks, {id: TEAM_PERK_COMBAT_BUCKLER});
-                        if (perk) {
-                            limited_size_ids = [...limited_size_ids, SIZE_MEDIUM];
+                    const validationStore = useValidationStore();
 
-                            if (size_id === SIZE_MEDIUM) {
-                                used_team_perks.push(perk);
-                            }
-                        }
+                    const {
+                        valid: sizeValid,
+                        validSizeDisplayNames,
+                        sizeTeamPerk,
+                    } = validationStore.getMechUpgradeSizeValidation(mechId, upgradeId);
+
+                    if (sizeTeamPerk) {
+                        used_team_perks.push(sizeTeamPerk);
                     }
 
-                    if (limited_size_ids) {
-                        valid = limited_size_ids.includes(size_id);
-                        if (!valid) {
-                            const sizeDisplayNames = limited_size_ids.map(sizeId => MECH_SIZES[sizeId].display_name).join('/');
-                            validation_message = `Only available for ${sizeDisplayNames} HE-Vs`;
-                        }
+                    if (!sizeValid) {
+                        valid = false;
+                        validation_message = `Only available for ${validSizeDisplayNames.join('/')} HE-Vs`;
                     }
 
                     const traitCompact = find(traits, {id: TRAIT_COMPACT});
@@ -805,23 +804,23 @@ export const useMechStore = defineStore('mech', {
 
                     const {
                         valid: armorValid,
-                        team_display_name,
-                        group_display_name,
-                    } = validationStore.getTeamGroupMechArmorUpgradeValidation(mechId, armorUpgradeId);
+                        teamDisplayName,
+                        groupDisplayName,
+                    } = validationStore.getMechTeamGroupArmorUpgradeValidation(mechId, armorUpgradeId);
 
                     if (!armorValid) {
                         valid = false;
-                        validation_message = `Not available to ${team_display_name} ${group_display_name}`;
+                        validation_message = `Not available to ${teamDisplayName} ${groupDisplayName}`;
                     }
 
                     const {
                         valid: armorSizeValid,
-                        valid_size_display_names,
-                    } = validationStore.getMechArmorUpgradeValidation(mechId, armorUpgradeId);
+                        validSizeDisplayNames,
+                    } = validationStore.getMechArmorUpgradeSizeValidation(mechId, armorUpgradeId);
 
                     if (!armorSizeValid) {
                         valid = false;
-                        validation_message = `Only available to HE-V size(s): ${valid_size_display_names}`;
+                        validation_message = `Only available to HE-V size(s): ${validSizeDisplayNames.join('/')}`;
                     }
 
                     const perks = teamStore.getTeamPerksInfoByMech(mechId);

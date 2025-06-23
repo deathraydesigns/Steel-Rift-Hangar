@@ -7,8 +7,10 @@ import {MECH_SIZES} from '../../../data/unit-sizes.js';
 import {MECH_TEAM_PERKS} from '../../../data/mech-team-perks.js';
 import {useExpandCollapseAll} from '../../functional/expand-collapse.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
+import {useValidationStore} from '../../../store/validation-store.js';
 
 const teamStore = useTeamStore();
+const validationStore = useValidationStore();
 
 const {teamId} = defineProps({
   teamId: String,
@@ -19,6 +21,7 @@ const show = ref(false);
 const team = computed(() => teamStore.getTeamDef(teamId));
 const teamMechCount = computed(() => teamStore.getTeamMechCount(teamId));
 const teamPerkIdDef = computed(() => perkId => MECH_TEAM_PERKS[perkId]);
+const valid = computed(() => validationStore.getTeamValidation(teamId)).valid;
 const sizeDisplayNames = computed(() => sizeIds => {
 
   if (sizeIds.length === 4) {
@@ -35,11 +38,14 @@ const {
 } = useExpandCollapseAll();
 </script>
 <template>
-  <div class="card card-mech-team">
+  <div :class="{
+    'card card-mech-team': true,
+    'border-danger': !valid,
+  }">
     <div class="card-header d-flex">
       <div class="flex-grow-1">
         <span class="d-inline-block py-1 ps-2 pe-1 fw-bold">
-          <Icon :name="team.icon" color="#fff" />
+          <Icon :name="team.icon" color="#fff"/>
           <span class="ms-2">
             {{ team.display_name }}
           </span>
