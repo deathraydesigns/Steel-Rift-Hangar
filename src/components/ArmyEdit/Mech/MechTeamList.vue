@@ -14,7 +14,7 @@ const {teams, special_teams} = storeToRefs(teamStore);
 const generalMechCount = computed(() => teamStore.getTeamMechCount(TEAM_GENERAL));
 
 function addGeneralMech() {
-  teamStore.addMechToTeam(TEAM_GENERAL, 'A');
+  teamStore.addMechToTeamWithDefaults(TEAM_GENERAL, 'A');
 }
 
 </script>

@@ -118,7 +118,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                     groupId,
                 } = teamStore.getMechTeamAndGroupIds(mechId);
 
-                const newMechId = teamStore.addMechToTeam(teamId, groupId, false);
+                const newMechId = teamStore.addMechToTeam(teamId, groupId);
 
                 const {
                     structure_mod_id,

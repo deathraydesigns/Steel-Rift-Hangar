@@ -60,11 +60,17 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
                 visible: true,
                 groups,
             });
+        }
 
-            groupIds.forEach(groupId => {
-                const min = getTeamGroupDef(teamId, groupId).min_count;
+        function addTeamWithDefaultMechs(teamId) {
+            addTeam(teamId);
+
+            const team = findTeam(teamId);
+
+            team.groups.forEach(group => {
+                const min = getTeamGroupDef(teamId, group.id).min_count;
                 if (min > 0) {
-                    addMechToTeam(teamId, groupId);
+                    addMechToTeamWithDefaults(teamId, group.id);
                 }
             });
         }
@@ -550,7 +556,39 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             });
         });
 
-        function addMechToTeam(teamId, groupId, addDefaults = true) {
+        function addMechToTeam(
+            teamId,
+            groupId,
+            mechOptions = {},
+            weaponIds = [],
+            upgradeIds = [],
+        ) {
+            const group = findGroup(teamId, groupId);
+            const mechId = mechStore.addMech(mechOptions);
+
+            group.mechs.push({
+                mech_id: mechId,
+            });
+            setDisplayOrders(group.mechs);
+
+            weaponIds.forEach((weaponId) => {
+                mechStore.addMechWeaponAttachment(mechId, weaponId);
+            });
+            upgradeIds.forEach((upgradeId) => {
+                mechStore.addMechUpgradeAttachment(mechId, upgradeId);
+            });
+
+            return mechId;
+        }
+
+        function normalizePreferredTeamId(teamId) {
+            if (teamId === TEAM_BENCH) {
+                return TEAM_GENERAL;
+            }
+            return teamId;
+        }
+
+        function addMechToTeamWithDefaults(teamId, groupId) {
             const groupDef = getTeamGroupDef(teamId, groupId);
             const mechOptions = {};
 

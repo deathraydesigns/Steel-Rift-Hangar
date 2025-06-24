@@ -14,7 +14,7 @@ const {addable_teams} = storeToRefs(teamStore);
   >
     <BDropdownItem
         v-for="item in addable_teams"
-        @click="teamStore.addTeam(item.id)"
+        @click="teamStore.addTeamWithDefaultMechs(item.id)"
     >
       <Icon :name="item.icon"/>
 

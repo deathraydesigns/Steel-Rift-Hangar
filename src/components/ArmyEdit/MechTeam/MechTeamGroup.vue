@@ -181,7 +181,7 @@ const placeholder = ref({
         <div class="d-flex">
           <button
               class="btn btn-sm ms-1 btn-secondary"
-              @click="teamStore.addMechToTeam(teamId, groupId)"
+              @click="teamStore.addMechToTeamWithDefaults(teamId, groupId)"
           >
             Add
             <Icon name="hev"/>

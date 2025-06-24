@@ -86,10 +86,17 @@ export function migrateLoadData(data) {
                     if (vehicle.vehicle_id === 'ENGINEERING') {
                         vehicle.vehicle_id = 'RIFLEMAN';
                     }
-                    console.log(vehicle.vehicle_id)
                 });
             }
         });
+    }
+
+    const benchTeam = data?.team?.teams?.find(team => {
+        return team.id === TEAM_BENCH;
+    });
+
+    if (!benchTeam) {
+        data.team.teams.push(makeBenchTeam());
     }
 
     return data;
