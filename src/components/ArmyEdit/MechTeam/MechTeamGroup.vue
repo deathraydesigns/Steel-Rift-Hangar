@@ -60,7 +60,7 @@ function getChildPayload(index) {
 }
 
 function onDrop(toTeamId, toGroupId, dropResult) {
-  if (dropResult.addedIndex !== null) {
+  if (dropResult.addedIndex !== null && dropResult.addedIndex !== undefined) {
     teamStore.moveMechToTeamGroup(
         toTeamId,
         toGroupId,

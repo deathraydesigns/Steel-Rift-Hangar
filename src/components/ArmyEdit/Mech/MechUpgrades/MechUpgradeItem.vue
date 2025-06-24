@@ -37,7 +37,7 @@ function remove() {
       }"
   >
     <td class="table-btn-cell">
-      <span class="btn btn-sm btn-grab btn-transparent me-2">:::</span>
+      <span class="btn btn-sm btn-grab-upgrade btn-transparent me-2">:::</span>
     </td>
     <td>
       <BtnToolTip>

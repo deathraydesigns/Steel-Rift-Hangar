@@ -87,7 +87,7 @@ const weapons = computed(() => mechStore.getMechAvailableWeaponsInfo(mechId));
       tag="tbody"
       item-key="id"
       :group="'mech-' + mechId +'-weapons'"
-      handle=".btn-grab"
+      handle=".btn-grab-weapon"
       ghost-class="ghost"
       @change="onSortableChange"
       :animation="200"

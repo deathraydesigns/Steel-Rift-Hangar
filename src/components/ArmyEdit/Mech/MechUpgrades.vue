@@ -71,7 +71,7 @@ function onSortableChange(event) {
       tag="tbody"
       item-key="id"
       :group="'mech-' + mechId +'-upgrades'"
-      handle=".btn-grab"
+      handle=".btn-grab-upgrade"
       ghost-class="ghost"
       @change="onSortableChange"
       :animation="200"
