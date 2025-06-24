@@ -554,7 +554,7 @@ export const useValidationStore = defineStore('validation', () => {
 
         const {display_name, icon} = teamStore.getTeamDef(team.id);
         const groups = team.groups.map(group => getTeamGroupValidation(teamId, group.id))
-            .filter(i => i);
+            .filter(i => !i.valid);
 
         return {
             id: team.id,
@@ -579,16 +579,15 @@ export const useValidationStore = defineStore('validation', () => {
             const group_validation_messages = mechTeamGroupMessages(mechId);
             const mech_validation_messages = mechMessages(mechId);
 
-            if (!group_validation_messages.length && !mech_validation_messages.length) {
-                return false;
-            }
+            const valid = !group_validation_messages.length && !mech_validation_messages.length;
 
             return {
                 info: mechStore.getMechInfo(mechId),
+                valid,
                 group_validation_messages,
                 mech_validation_messages,
             };
-        }).filter(i => i);
+        }).filter(i => !i.valid);
 
         return {
             id: groupId,

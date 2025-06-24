@@ -1,6 +1,10 @@
 <script setup>
 
 const {group} = defineProps({
+  showTitle: {
+    type: Boolean,
+    default: true,
+  },
   group: {
     type: Object,
     required: true,
@@ -9,9 +13,8 @@ const {group} = defineProps({
 </script>
 
 <template>
-  <div class="fw-bold">{{ group.display_name }}</div>
+  <div class="fw-bold" v-show="showTitle">{{ group.display_name }}</div>
   <ul>
-
     <li v-for="message in group.validation_messages">
       {{ message }}
     </li>

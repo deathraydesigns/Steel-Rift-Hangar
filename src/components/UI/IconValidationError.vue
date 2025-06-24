@@ -11,6 +11,7 @@ const {
   size,
   icon,
   btnClass,
+  visible,
 } = defineProps({
   title: {
     type: String,
@@ -29,9 +30,16 @@ const {
   icon: {
     type: String,
   },
+  visible: {
+    default: null,
+  },
 });
 
-const hasMessage = computed(() => {
+const isVisible = computed(() => {
+  if (visible === true || visible === false) {
+    return visible;
+  }
+
   return message || messageArray?.length;
 });
 </script>
@@ -41,7 +49,7 @@ const hasMessage = computed(() => {
   >
     <template #target>
       <button
-          v-show="!!hasMessage"
+          v-show="isVisible"
           :class="`btn btn-${size} btn-danger ${btnClass}`">
         <SvgIcon :name="icon" v-if="icon"/>
         <span class="material-symbols-outlined">
@@ -64,5 +72,6 @@ const hasMessage = computed(() => {
     </template>
 
     {{ message }}
+    <slot name="default"></slot>
   </BPopover>
 </template>

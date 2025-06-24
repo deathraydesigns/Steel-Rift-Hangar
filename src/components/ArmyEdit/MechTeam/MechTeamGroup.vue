@@ -2,11 +2,12 @@
 import Mech from '../Mech.vue';
 import {computed, ref} from 'vue';
 import {useTeamStore} from '../../../store/team-store.js';
-import {TEAM_GENERAL} from '../../../data/mech-teams.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../store/validation-store.js';
 import {BButton, BCollapse} from 'bootstrap-vue-next';
 import {Container, Draggable} from 'vue-dndrop';
+import IconValidationError from '../../UI/IconValidationError.vue';
+import TeamGroupValidation from '../ArmyList/BtnArmyListValidation/TeamGroupValidation.vue';
 
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
@@ -28,7 +29,9 @@ const mechIds = computed(() => teamStore.getTeamGroupMechIds(teamId, groupId));
 const size = computed(() => validationStore.getTeamGroupSizeValidation(teamId, groupId));
 const isSpecialTeam = computed(() => teamStore.isSpecialTeam(teamId));
 const teamGroupPerks = computed(() => teamStore.getTeamGroupPerksInfo(teamId, groupId));
-const valid = computed(() => validationStore.getTeamGroupValidation(teamId, groupId).valid);
+const valid = computed(() => validation.value.valid);
+const validation = computed(() => validationStore.getTeamGroupValidation(teamId, groupId));
+
 const teamGroupPerkCount = computed(() => {
   let count = 0;
   teamGroupPerks.value.forEach((group) => {
@@ -37,7 +40,6 @@ const teamGroupPerkCount = computed(() => {
 
   return count;
 });
-
 const collapsing = ref(false);
 
 function expandAll() {
@@ -166,6 +168,14 @@ const placeholder = ref({
             </template>
           </template>
         </BtnToolTip>
+        <IconValidationError
+            btn-class="ms-1"
+            size="sm"
+            title="Group HE-V Validation Errors"
+            :visible="!valid"
+        >
+          <TeamGroupValidation :group="validation" :show-title="false"/>
+        </IconValidationError>
       </div>
       <div class="text-end">
         <div class="d-flex">

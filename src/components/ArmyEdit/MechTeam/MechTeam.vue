@@ -7,6 +7,8 @@ import {MECH_SIZES} from '../../../data/unit-sizes.js';
 import {MECH_TEAM_PERKS} from '../../../data/mech-team-perks.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../store/validation-store.js';
+import IconValidationError from '../../UI/IconValidationError.vue';
+import TeamGroupValidation from '../ArmyList/BtnArmyListValidation/TeamGroupValidation.vue';
 
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
@@ -20,7 +22,9 @@ const showTeamPerks = ref(false);
 const team = computed(() => teamStore.getTeamDef(teamId));
 const teamMechCount = computed(() => teamStore.getTeamMechCount(teamId));
 const teamPerkIdDef = computed(() => perkId => MECH_TEAM_PERKS[perkId]);
-const valid = computed(() => validationStore.getTeamValidation(teamId)).valid;
+const validation = computed(() => validationStore.getTeamValidation(teamId));
+const valid = computed(() => validation.value.valid);
+
 const sizeDisplayNames = computed(() => sizeIds => {
   if (sizeIds.length === 4) {
     return 'All';
@@ -29,6 +33,11 @@ const sizeDisplayNames = computed(() => sizeIds => {
   return sizeIds
       .map((sizeId) => MECH_SIZES[sizeId].display_name)
       .join('/');
+});
+const validationMessage = computed(() => {
+  if (!valid.value) {
+    return 'Team Not Valid';
+  }
 });
 
 function expandAll() {
@@ -75,6 +84,16 @@ function collapseAll() {
             Team Size
           </template>
         </BtnToolTip>
+        <IconValidationError
+            btn-class="ms-1"
+            size="sm"
+            title="Team HE-V Validation Errors"
+            :visible="!valid"
+        >
+          <template v-for="group in validation.groups">
+            <TeamGroupValidation :group="group"/>
+          </template>
+        </IconValidationError>
       </div>
       <div class="text-end">
         <div class="d-flex">
