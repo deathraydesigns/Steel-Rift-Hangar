@@ -1,9 +1,8 @@
 <script setup>
 import {useMechStore} from '../../store/mech-store.js';
 import Fraction from '../functional/fraction.vue';
-import {computed, ref, watch} from 'vue';
+import {computed} from 'vue';
 import {BButton, BCollapse} from 'bootstrap-vue-next';
-import {useExpandCollapseAll} from '../functional/expand-collapse.js';
 import {useValidationStore} from '../../store/validation-store.js';
 import MechStats from './Mech/MechStats.vue';
 import HEVCard from '../ArmyPrint/ArmyPrintCards/HEVCard.vue';
@@ -24,7 +23,14 @@ const {
   },
 });
 
-const visible = ref(false);
+const visible = computed({
+  get() {
+    return mechStore.getMechVisible(mechId);
+  },
+  set(val) {
+    mechStore.setMechVisible(mechId, val);
+  },
+});
 const info = computed(() => mechStore.getMechInfo(mechId));
 
 const invalidMechMessages = computed(() => validationStore.mechMessages(mechId));
@@ -35,14 +41,6 @@ const teamIcon = computed(() => {
   const {teamId} = teamStore.getMechTeamAndGroupIds(mechId);
   return teamStore.getTeamDef(teamId).icon;
 });
-
-const {
-  collapseSignal,
-  expandSignal,
-} = useExpandCollapseAll();
-
-watch(collapseSignal, () => visible.value = false);
-watch(expandSignal, () => visible.value = true);
 
 </script>
 <template>

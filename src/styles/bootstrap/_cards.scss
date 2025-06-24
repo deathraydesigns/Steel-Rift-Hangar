@@ -44,6 +44,25 @@ $mech-team-group-bg: mix($dark-bg-subtle, $body-bg, 50%);
   --bs-card-border-color: #{$primary-border};
 }
 
+.card-mech-team,
+.card-mech-team-group {
+  > .card-header {
+    border: 0;
+
+    &.card-header-collapsing {
+      transition: border-radius .35s ease;
+    }
+
+    &.card-header-collapsed {
+      border-radius: var(--bs-card-inner-border-radius);
+    }
+  }
+
+  > .card-body {
+    border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
+  }
+}
+
 @include color-mode(dark) {
   .card-mech-team-group {
     --bs-card-bg: #{mix($mech-team-bg-dark, $body-bg-dark, 50%)};

@@ -27,6 +27,7 @@ export const useTeamStore = defineStore('team', () => {
         function makeGeneralTeam() {
             return {
                 id: TEAM_GENERAL,
+                visible: true,
                 groups: [
                     {
                         id: 'A',
@@ -72,6 +73,30 @@ export const useTeamStore = defineStore('team', () => {
                 if (min > 0) {
                     addMechToTeam(teamId, groupId);
                 }
+            });
+        }
+
+        function getTeamVisibleComputed(teamId) {
+            return computed({
+                get() {
+                    return findTeam(teamId).visible;
+                },
+                set(newVal) {
+                    const team = findTeam(teamId);
+                    team.visible = newVal;
+                },
+            });
+        }
+
+        function getTeamGroupVisibleComputed(teamId, groupId) {
+            return computed({
+                get() {
+                    return findGroup(teamId, groupId).visible;
+                },
+                set(newVal) {
+                    const group = findGroup(teamId, groupId);
+                    return group.visible = newVal;
+                },
             });
         }
 
@@ -613,6 +638,18 @@ export const useTeamStore = defineStore('team', () => {
             setDisplayOrders(group.mechs);
         }
 
+        function setGroupsOfTeamVisible(teamId, visible) {
+            findTeam(teamId).groups.forEach((group) => group.visible = visible);
+        }
+
+        function setMechsOfTeamVisible(teamId, visible) {
+            getTeamMechIds(teamId).forEach((mechId) => mechStore.setMechVisible(mechId, visible));
+        }
+
+        function setMechsOfGroupVisible(teamId, groupId, visible) {
+            getTeamGroupMechIds(teamId, groupId).forEach((mechId) => mechStore.setMechVisible(mechId, visible));
+        }
+
         return {
             teams,
             addable_teams,
@@ -648,6 +685,14 @@ export const useTeamStore = defineStore('team', () => {
             getMechTeamGroupDef,
             getTeamMechIds,
             moveMechToTeamGroup,
+
+            getTeamVisibleComputed,
+            getTeamGroupVisibleComputed,
+
+
+            setGroupsOfTeamVisible,
+            setMechsOfTeamVisible,
+            setMechsOfGroupVisible,
 
             addMechToTeam,
             removeMechFromTeam,
