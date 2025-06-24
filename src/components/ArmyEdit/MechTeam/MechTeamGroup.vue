@@ -4,10 +4,9 @@ import draggable from 'vuedraggable';
 import {computed, ref} from 'vue';
 import {useTeamStore} from '../../../store/team-store.js';
 import {TEAM_GENERAL} from '../../../data/mech-teams.js';
-import {useExpandCollapseAll} from '../../functional/expand-collapse.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../store/validation-store.js';
-import {BButton} from 'bootstrap-vue-next';
+import {BButton, BCollapse} from 'bootstrap-vue-next';
 
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
@@ -21,6 +20,7 @@ const {teamId, groupId} = defineProps({
   },
 });
 
+const visible = teamStore.getTeamGroupVisibleComputed(teamId, groupId);
 const team = computed(() => teamStore.getTeamDef(teamId));
 const groupCount = computed(() => teamStore.getTeamGroupMechCount(teamId, groupId));
 const group = computed(() => teamStore.getTeamGroupDef(teamId, groupId));
@@ -37,7 +37,7 @@ const teamGroupPerkCount = computed(() => {
   return count;
 });
 
-const dragging = ref(false);
+const collapsing = ref(false);
 
 function onSortableChange(event) {
   let moved = event.moved;
@@ -47,10 +47,14 @@ function onSortableChange(event) {
   teamStore.moveGroupMech(teamId, groupId, moved.element, moved.newIndex);
 }
 
-const {
-  expandAll,
-  collapseAll,
-} = useExpandCollapseAll();
+function expandAll() {
+  visible.value = true;
+  teamStore.setMechsOfGroupVisible(teamId, groupId, true);
+}
+
+function collapseAll() {
+  teamStore.setMechsOfGroupVisible(teamId, groupId, false);
+}
 
 </script>
 <template>
@@ -58,7 +62,13 @@ const {
     'card card-mech-team-group': true,
     'border-danger': !size.size_valid,
   }">
-    <div class="card-header d-flex text-bg-primary">
+    <div
+        :class="{
+          'card-header d-flex text-bg-primary': true,
+          'card-header-collapsed': !visible,
+          'card-header-collapsing': collapsing,
+        }
+    ">
       <div class="flex-grow-1">
         <BtnToolTip>
           <template #target="{mouseover, mouseleave}">
@@ -140,50 +150,65 @@ const {
         </BtnToolTip>
       </div>
       <div class="text-end">
-        <button
-            class="btn btn-sm ms-1 btn-secondary"
-            @click="teamStore.addMechToTeam(teamId, groupId)"
-        >
-          Add
-          <Icon name="hev"/>
-        </button>
-        <BButton
-            size="sm"
-            variant="transparent-dark"
-            class="ms-1"
-            @click="collapseAll"
-        >
-          <span class="material-symbols-outlined">keyboard_double_arrow_up</span>
-        </BButton>
-        <BButton
-            size="sm"
-            variant="transparent-dark"
-            class="ms-1"
-            @click="expandAll"
-        >
-          <span class="material-symbols-outlined">keyboard_double_arrow_down</span>
-        </BButton>
+        <div class="d-flex">
+          <button
+              class="btn btn-sm ms-1 btn-secondary"
+              @click="teamStore.addMechToTeam(teamId, groupId)"
+          >
+            Add
+            <Icon name="hev"/>
+          </button>
+          <BButton
+              size="sm"
+              variant="transparent-dark"
+              class="ms-1"
+              @click="collapseAll"
+          >
+            <span class="material-symbols-outlined">keyboard_double_arrow_up</span>
+          </BButton>
+          <BButton
+              size="sm"
+              variant="transparent-dark"
+              class="ms-1"
+              @click="expandAll"
+          >
+            <span class="material-symbols-outlined">keyboard_double_arrow_down</span>
+          </BButton>
+          <BButton
+              :class="'btn-collapse btn-collapse-team ms-1 ' + (visible ? null : 'collapsed')"
+              size="sm"
+              variant="transparent-dark"
+              :aria-expanded="visible ? 'true' : 'false'"
+              :aria-controls="'collapse-' + teamId"
+              @click="visible = !visible"
+          />
+        </div>
       </div>
     </div>
-    <div class="card-body">
-      <draggable
-          :list="mechIds"
-          item-key="id"
-          :group="'mechs-' + teamId + '-' + groupId"
-          handle=".btn-grab"
-          ghost-class="ghost"
-          @start="dragging = true"
-          @end="dragging = false"
-          @change="onSortableChange"
-          :animation="200"
-          :preventOnFilter="false"
-      >
-        <template #item="{ element }">
-          <mech
-              :mech-id="element"
-          />
-        </template>
-      </draggable>
-    </div>
+    <BCollapse
+        :id="'collapse-' + teamId"
+        v-model="visible"
+        @hide="collapsing = true"
+        @hidden="collapsing = false"
+    >
+      <div class="card-body">
+        <draggable
+            :list="mechIds"
+            item-key="id"
+            :group="'mechs-' + teamId + '-' + groupId"
+            handle=".btn-grab"
+            ghost-class="ghost"
+            @change="onSortableChange"
+            :animation="200"
+            :preventOnFilter="false"
+        >
+          <template #item="{ element }">
+            <mech
+                :mech-id="element"
+            />
+          </template>
+        </draggable>
+      </div>
+    </BCollapse>
   </div>
 </template>

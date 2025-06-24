@@ -62,6 +62,11 @@
   }
 }
 
+.btn-collapse-light {
+  --#{$prefix}accordion-btn-icon: #{escape-svg($accordion-button-icon-dark)};
+  --#{$prefix}accordion-btn-active-icon: #{escape-svg($accordion-button-active-icon-dark)};
+}
+
 @include color-mode(dark) {
   .btn-collapse:not(.btn-transparent-dark)::after {
     --#{$prefix}accordion-btn-icon: #{escape-svg($accordion-button-icon-dark)};

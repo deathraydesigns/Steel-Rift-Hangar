@@ -1,9 +1,8 @@
 <script setup>
 import {useMechStore} from '../../store/mech-store.js';
 import Fraction from '../functional/fraction.vue';
-import {computed, ref, watch} from 'vue';
+import {computed} from 'vue';
 import {BButton, BCollapse} from 'bootstrap-vue-next';
-import {useExpandCollapseAll} from '../functional/expand-collapse.js';
 import {useValidationStore} from '../../store/validation-store.js';
 import IconValidationError from '../UI/IconValidationError.vue';
 import MechStats from './Mech/MechStats.vue';
@@ -21,18 +20,17 @@ const {
   },
 });
 
-const visible = ref(false);
+const visible = computed({
+  get() {
+    return mechStore.getMechVisible(mechId);
+  },
+  set(val) {
+    mechStore.setMechVisible(mechId, val);
+  },
+});
 const info = computed(() => mechStore.getMechInfo(mechId));
 
 const invalid_mech_messages = computed(() => validationStore.getInvalidMechMessages(mechId));
-
-const {
-  collapseSignal,
-  expandSignal,
-} = useExpandCollapseAll();
-
-watch(collapseSignal, () => visible.value = false);
-watch(expandSignal, () => visible.value = true);
 
 </script>
 <template>

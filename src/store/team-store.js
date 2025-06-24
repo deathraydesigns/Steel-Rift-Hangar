@@ -28,6 +28,7 @@ export const useTeamStore = defineStore('team', () => {
         function makeGeneralTeam() {
             return {
                 id: TEAM_GENERAL,
+                visible: true,
                 groups: [
                     {
                         id: 'A',
@@ -73,6 +74,30 @@ export const useTeamStore = defineStore('team', () => {
                 if (min > 0) {
                     addMechToTeam(teamId, groupId);
                 }
+            });
+        }
+
+        function getTeamVisibleComputed(teamId) {
+            return computed({
+                get() {
+                    return findTeam(teamId).visible;
+                },
+                set(newVal) {
+                    const team = findTeam(teamId);
+                    team.visible = newVal;
+                },
+            });
+        }
+
+        function getTeamGroupVisibleComputed(teamId, groupId) {
+            return computed({
+                get() {
+                    return findGroup(teamId, groupId).visible;
+                },
+                set(newVal) {
+                    const group = findGroup(teamId, groupId);
+                    return group.visible = newVal;
+                },
             });
         }
 
@@ -321,6 +346,10 @@ export const useTeamStore = defineStore('team', () => {
             return map(group.mechs, 'mech_id');
         }
 
+        function findTeam(teamId) {
+            return find(teams.value, {id: teamId});
+        }
+
         function findGroup(teamId, groupId) {
             const team = find(teams.value, {id: teamId});
             return find(team.groups, {id: groupId});
@@ -556,6 +585,18 @@ export const useTeamStore = defineStore('team', () => {
             move(group.mechs, index, toIndex);
         }
 
+        function setGroupsOfTeamVisible(teamId, visible) {
+            findTeam(teamId).groups.forEach((group) => group.visible = visible);
+        }
+
+        function setMechsOfTeamVisible(teamId, visible) {
+            getTeamMechIds(teamId).forEach((mechId) => mechStore.setMechVisible(mechId, visible));
+        }
+
+        function setMechsOfGroupVisible(teamId, groupId, visible) {
+            getTeamGroupMechIds(teamId, groupId).forEach((mechId) => mechStore.setMechVisible(mechId, visible));
+        }
+
         return {
             teams,
             addable_teams,
@@ -566,6 +607,7 @@ export const useTeamStore = defineStore('team', () => {
 
             allUsedTeamAbilityPerkIds,
 
+            findTeam,
             findGroup,
             getTeamMechCount,
             getTeamGroupMechCount,
@@ -585,6 +627,14 @@ export const useTeamStore = defineStore('team', () => {
             getMechHasTeamPerkId,
             getUsedTeamAbilityPerksInfo,
             getTeamMechIds,
+
+            getTeamVisibleComputed,
+            getTeamGroupVisibleComputed,
+
+
+            setGroupsOfTeamVisible,
+            setMechsOfTeamVisible,
+            setMechsOfGroupVisible,
 
             addMechToTeam,
             removeMechFromTeam,

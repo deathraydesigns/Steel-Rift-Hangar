@@ -216,8 +216,17 @@ export const useMechStore = defineStore('mech', {
                 });
 
             },
+            setMechVisible(mechId, visible) {
+                const mech = this.getMech(mechId);
+                mech.visible = visible;
+            },
         },
         getters: {
+            getMechVisible(state) {
+                return (mechId) => {
+                    return !!this.getMech(mechId).visible;
+                };
+            },
             totalTons(state) {
                 let tons = 0;
                 state.mechs.forEach((mech) => {
@@ -490,7 +499,7 @@ export const useMechStore = defineStore('mech', {
                         ...WEAPON_TRAITS[trait.id],
                         ...trait,
                         display_name: weaponTraitDisplayName(trait),
-                    }))
+                    }));
 
                     return {traits, team_perks, faction_perks, range_modifier};
                 };
