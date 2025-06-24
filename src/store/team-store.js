@@ -24,20 +24,11 @@ export const useTeamStore = defineStore('team', () => {
             teams.value = [makeGeneralTeam()];
         }
 
-        function makeGeneralTeam() {
-            return {
-                id: TEAM_GENERAL,
-                visible: true,
-                groups: [
-                    {
-                        id: 'A',
-                        mechs: [],
-                    },
-                ],
-            };
+        function isSpecialTeam(teamId) {
+            return teamId !== TEAM_GENERAL;
         }
 
-        const special_teams = computed(() => teams.value.filter(item => item.id !== TEAM_GENERAL));
+        const special_teams = computed(() => teams.value.filter(item => isSpecialTeam(item.id)));
 
         const addable_teams = computed(() => {
             const currentTeamIds = map(teams.value, 'id');
@@ -59,12 +50,14 @@ export const useTeamStore = defineStore('team', () => {
             const groups = groupIds.map((groupId) => {
                 return {
                     id: groupId,
+                    visible: true,
                     mechs: [],
                 };
             });
 
             teams.value.push({
                 id: teamId,
+                visible: true,
                 groups,
             });
 
@@ -513,7 +506,7 @@ export const useTeamStore = defineStore('team', () => {
 
         // internal
         function getTeamPerkIdsByMechSize(teamId, sizeId) {
-            if (teamId === TEAM_GENERAL) {
+            if (!isSpecialTeam(teamId)) {
                 return [];
             }
             const columns = MECH_TEAMS[teamId].team_size_perk_columns;
@@ -624,7 +617,7 @@ export const useTeamStore = defineStore('team', () => {
             move(group.mechs, index, toIndex);
         }
 
-        function moveMechToTeamGroup(teamId, groupId, mechId, newIndex) {
+        function moveMechToTeamGroup(teamId, groupId, mechId, newIndex = null) {
             const mech = mechStore.getMech(mechId);
             const groupDef = getTeamGroupDef(teamId, groupId);
 
@@ -632,9 +625,15 @@ export const useTeamStore = defineStore('team', () => {
 
             const group = findGroup(teamId, groupDef.id);
 
+            if (newIndex !== null) {
             group.mechs.splice(newIndex, 0, {
                 mech_id: mech.id,
             });
+            } else {
+                group.mechs.push({
+                    mech_id: mech.id,
+                });
+            }
             setDisplayOrders(group.mechs);
         }
 
@@ -660,6 +659,7 @@ export const useTeamStore = defineStore('team', () => {
 
             allUsedTeamAbilityPerkIds,
 
+            isSpecialTeam,
             findTeam,
             findGroup,
             getTeamMechCount,
@@ -688,7 +688,6 @@ export const useTeamStore = defineStore('team', () => {
 
             getTeamVisibleComputed,
             getTeamGroupVisibleComputed,
-
 
             setGroupsOfTeamVisible,
             setMechsOfTeamVisible,
@@ -760,4 +759,18 @@ function perkIdsToInfo(perkIds) {
     });
 
     return sortBy(result, 'display_order');
+}
+
+function makeGeneralTeam() {
+    return {
+        id: TEAM_GENERAL,
+        visible: true,
+        groups: [
+            {
+                id: 'A',
+                visible: true,
+                mechs: [],
+            },
+        ],
+    };
 }

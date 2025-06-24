@@ -1,12 +1,12 @@
 <script setup>
 import {useTeamStore} from '../../../store/team-store.js';
 import {computed} from 'vue';
-import {MECH_TEAMS, TEAM_GENERAL} from '../../../data/mech-teams.js';
+import {MECH_TEAMS} from '../../../data/mech-teams.js';
 
 const teamStore = useTeamStore();
 const teamPerks = computed(() => {
   return teamStore.teams
-      .filter((team) => team.id !== TEAM_GENERAL && teamStore.getTeamMechCount(team.id))
+      .filter((team) => teamStore.isSpecialTeam(team.id) && teamStore.getTeamMechCount(team.id))
       .map((team) => {
         return {
           ...MECH_TEAMS[team.id],

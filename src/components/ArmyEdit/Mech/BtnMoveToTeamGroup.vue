@@ -43,13 +43,13 @@ const {
       <span class="material-symbols-outlined">input</span>
     </template>
     <BDropdownHeader>
-      Move to Team
+      Move To
     </BDropdownHeader>
     <BDropdownDivider/>
     <BDropdownGroup
         v-for="item in addable_teams"
     >
-      <BDropdownHeader>
+      <BDropdownHeader v-if="teamStore.isSpecialTeam(item.id)">
         <Icon :name="item.icon"/>
         {{ item.display_name }}
       </BDropdownHeader>

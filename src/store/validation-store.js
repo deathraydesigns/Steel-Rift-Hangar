@@ -553,7 +553,6 @@ export const useValidationStore = defineStore('validation', () => {
         const team = teamStore.findTeam(teamId);
 
         const {display_name, icon} = teamStore.getTeamDef(team.id);
-
         const groups = team.groups.map(group => getTeamGroupValidation(teamId, group.id))
             .filter(i => i);
 

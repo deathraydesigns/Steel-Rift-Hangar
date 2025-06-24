@@ -110,3 +110,14 @@ $mech-team-group-bg: mix($dark-bg-subtle, $body-bg, 50%);
     --bs-body-font-size: 0.5rem;
   }
 }
+
+.cards-drop-preview {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--bs-border-radius);
+}
+
+@include color-mode(dark) {
+  .cards-drop-preview {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}

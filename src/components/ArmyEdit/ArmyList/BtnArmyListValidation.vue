@@ -6,9 +6,12 @@ import {storeToRefs} from 'pinia';
 import {computed, ref} from 'vue';
 import {TEAM_GENERAL} from '../../../data/mech-teams.js';
 import TeamGroupValidation from './BtnArmyListValidation/TeamGroupValidation.vue';
+import {useTeamStore} from '../../../store/team-store.js';
+
+const teamStore = useTeamStore();
+const validationStore = useValidationStore();
 
 const modal = ref(false);
-const validationStore = useValidationStore();
 
 const {list_is_valid, list_validation, team_validation} = storeToRefs(validationStore);
 
@@ -20,7 +23,7 @@ const generalTeamGroupValidation = computed(() => {
 });
 
 const specialTeamValidation = computed(() => {
-  return team_validation.value.filter(team => team.id !== TEAM_GENERAL);
+  return team_validation.value.filter(team => teamStore.isSpecialTeam(team.id));
 });
 
 function click() {

@@ -26,7 +26,7 @@ const groupCount = computed(() => teamStore.getTeamGroupMechCount(teamId, groupI
 const group = computed(() => teamStore.getTeamGroupDef(teamId, groupId));
 const mechIds = computed(() => teamStore.getTeamGroupMechIds(teamId, groupId));
 const size = computed(() => validationStore.getTeamGroupSizeValidation(teamId, groupId));
-const isGeneralGroup = computed(() => teamId === TEAM_GENERAL);
+const isSpecialTeam = computed(() => teamStore.isSpecialTeam(teamId));
 const teamGroupPerks = computed(() => teamStore.getTeamGroupPerksInfo(teamId, groupId));
 const valid = computed(() => validationStore.getTeamGroupValidation(teamId, groupId).valid);
 const teamGroupPerkCount = computed(() => {
@@ -38,38 +38,7 @@ const teamGroupPerkCount = computed(() => {
   return count;
 });
 
-const draggingMechId = ref(null);
 const collapsing = ref(false);
-
-function dragStart(event) {
-  draggingMechId.value = mechIds.value[event.oldIndex];
-}
-
-function dragEnd(event) {
-  const {
-    teamId: newTeamId,
-    groupId: newGroupId,
-  } = event.to.__draggable_component__.componentData;
-
-  const {newIndex} = event;
-  const mechId = draggingMechId.value;
-
-  teamStore.moveMechToTeamGroup(
-      newTeamId,
-      newGroupId,
-      mechId,
-      newIndex,
-  );
-}
-
-const componentData = computed(() => {
-  return {
-    teamId,
-    groupId,
-    tag: 'div',
-    type: 'transition-group',
-  };
-});
 
 function expandAll() {
   visible.value = true;
@@ -89,8 +58,6 @@ function getChildPayload(index) {
 }
 
 function onDrop(toTeamId, toGroupId, dropResult) {
-  console.log('onDrop', dropResult);
-
   if (dropResult.addedIndex !== null) {
     teamStore.moveMechToTeamGroup(
         toTeamId,
@@ -155,7 +122,7 @@ const placeholder = ref({
         <BtnToolTip>
           <template #target="{mouseover, mouseleave}">
             <span
-                v-show="!isGeneralGroup"
+                v-show="isSpecialTeam"
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
                 :class="{
@@ -175,7 +142,7 @@ const placeholder = ref({
         <BtnToolTip>
           <template #target="{mouseover, mouseleave}">
             <span
-                v-show="!isGeneralGroup && teamGroupPerkCount"
+                v-show="!isSpecialTeam && teamGroupPerkCount"
                 @mouseover="mouseover"
                 @mouseleave="mouseleave"
                 class="btn btn-sm btn-overlay mx-1"
