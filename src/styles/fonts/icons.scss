@@ -31,7 +31,7 @@ svg.app-svg-icon {
   }
 
   &.disabled,
-  &:disabled{
+  &:disabled {
     svg.app-svg-icon {
       fill: var(--bs-dropdown-link-disabled-color);
     }
@@ -39,11 +39,6 @@ svg.app-svg-icon {
 }
 
 .btn {
-  &:focus {
-    svg.app-svg-icon {
-      fill: var(--bs-btn-focus-color);
-    }
-  }
 
   &:hover {
     svg.app-svg-icon {
