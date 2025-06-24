@@ -205,7 +205,7 @@ body[data-bs-theme="dark"] {
 }
 
 .dndrop-container.vertical > .dndrop-draggable-wrapper {
-  overflow: visible;
+  overflow: visible !important;
 }
 
 .mech-drag-wrapper {
