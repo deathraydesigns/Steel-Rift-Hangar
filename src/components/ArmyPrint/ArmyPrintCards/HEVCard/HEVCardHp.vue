@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from 'vue';
+import {computed, inject} from 'vue';
 import {SIZE_LIGHT, SIZE_ULTRA} from '../../../../data/unit-sizes.js';
 import {useMechStore} from '../../../../store/mech-store.js';
 import {chunk} from 'es-toolkit/compat';
@@ -11,8 +11,10 @@ import {
   NO_ARMOR_UPGRADE,
 } from '../../../../data/mech-armor-upgrades.js';
 
-const mechStore = useMechStore();
-const factionStore = useFactionStore();
+const prefix = inject('store-prefix')
+
+const mechStore = useMechStore(prefix);
+const factionStore = useFactionStore(prefix);
 
 const {mechId} = defineProps({
   mechId: {

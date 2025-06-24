@@ -1,7 +1,7 @@
 <script setup>
 
 import {useMechStore} from '../../../store/mech-store.js';
-import {computed} from 'vue';
+import {computed, provide} from 'vue';
 import HEVCardWeapons from './HEVCard/HEVCardWeapons.vue';
 import HEVCardUpgrades from './HEVCard/HEVCardUpgrades.vue';
 import HEVCardStats from './HEVCard/HEVCardStats.vue';
@@ -9,14 +9,18 @@ import HEVCardHp from './HEVCard/HEVCardHp.vue';
 import CardHeader from './CardParts/CardHeader.vue';
 import CardFooter from './CardParts/CardFooter.vue';
 
-const mechStore = useMechStore();
-
-const {mechId} = defineProps({
+const {mechId, storePrefix} = defineProps({
   mechId: {
     type: Number,
     required: true,
   },
+  storePrefix: {
+    type: String,
+  },
 });
+
+provide('store-prefix', storePrefix);
+const mechStore = useMechStore(storePrefix);
 
 const info = computed(() => mechStore.getMechInfo(mechId));
 

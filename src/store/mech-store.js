@@ -50,7 +50,7 @@ import {makeGrantedOrderCollection} from './helpers/helpers.js';
 import {toaster} from '../toaster.js';
 import {useValidationStore} from './validation-store.js';
 
-export const useMechStore = defineStore('mech', {
+export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
         state() {
             return {
                 mechs: [],
@@ -109,11 +109,8 @@ export const useMechStore = defineStore('mech', {
                     this.removeInvalidMechAttachments(mechId);
                 }
             },
-            moveMech(mech, toIndex) {
-                moveItem(this.mechs, mech, toIndex);
-            },
             duplicateMech(mechId) {
-                const teamStore = useTeamStore();
+                const teamStore = useTeamStore(prefix);
 
                 const mech = this.getMech(mechId);
                 const {
@@ -150,7 +147,7 @@ export const useMechStore = defineStore('mech', {
                 });
             },
             removeMech(mechId) {
-                const teamStore = useTeamStore();
+                const teamStore = useTeamStore(prefix);
                 teamStore.removeMechFromTeam(mechId);
                 deleteItemById(this.mechs, mechId);
             },
@@ -239,8 +236,8 @@ export const useMechStore = defineStore('mech', {
             },
             getMechInfo(state) {
                 return function (mechId) {
-                    const factionStore = useFactionStore();
-                    const teamStore = useTeamStore();
+                    const factionStore = useFactionStore(prefix);
+                    const teamStore = useTeamStore(prefix);
 
                     let {
                         name,
@@ -375,7 +372,7 @@ export const useMechStore = defineStore('mech', {
             },
             getWeaponInfo(state) {
                 return (mechId, weaponId) => {
-                    const teamStore = useTeamStore();
+                    const teamStore = useTeamStore(prefix);
                     const mech = this.getMech(mechId);
                     const size_id = mech.size_id;
                     const size = MECH_SIZES[size_id];
@@ -401,7 +398,7 @@ export const useMechStore = defineStore('mech', {
                     let validation_message = null;
                     let valid = true;
 
-                    let validationStore = useValidationStore();
+                    let validationStore = useValidationStore(prefix);
 
                     const {
                         valid: sizeValid,
@@ -452,8 +449,8 @@ export const useMechStore = defineStore('mech', {
             },
             getWeaponTraitsInfo(state) {
                 return (mechId, weaponId) => {
-                    const teamStore = useTeamStore();
-                    const factionStore = useFactionStore();
+                    const teamStore = useTeamStore(prefix);
+                    const factionStore = useFactionStore(prefix);
 
                     const mech = this.getMech(mechId);
                     const size_id = mech.size_id;
@@ -517,7 +514,7 @@ export const useMechStore = defineStore('mech', {
             },
             getMechWeaponAttachmentInfo(state) {
                 return (mechId, mechWeaponAttachmentId) => {
-                    const teamStore = useTeamStore();
+                    const teamStore = useTeamStore(prefix);
 
                     const mech = this.getMech(mechId);
                     const weaponAttachment = findById(mech.weapons, mechWeaponAttachmentId);
@@ -557,7 +554,7 @@ export const useMechStore = defineStore('mech', {
             },
             getMechAvailableWeaponsInfo(state) {
                 return (mechId) => {
-                    const teamStore = useTeamStore();
+                    const teamStore = useTeamStore(prefix);
 
                     const makeList = (weapons) => {
                         const result = weapons.map((weaponId) => {
@@ -583,8 +580,8 @@ export const useMechStore = defineStore('mech', {
             },
             getUpgradeTraitsInfo(state) {
                 return (mechId, upgradeId) => {
-                    const teamStore = useTeamStore();
-                    const factionStore = useFactionStore();
+                    const teamStore = useTeamStore(prefix);
+                    const factionStore = useFactionStore(prefix);
 
                     let {size_id} = this.getMech(mechId);
                     let traits = getUpgradeTraits(upgradeId, size_id);
@@ -635,7 +632,7 @@ export const useMechStore = defineStore('mech', {
             },
             getUpgradeInfo(state) {
                 return (mechId, upgradeId) => {
-                    const teamStore = useTeamStore();
+                    const teamStore = useTeamStore(prefix);
 
                     let {size_id, upgrades} = this.getMech(mechId);
                     let {
@@ -660,7 +657,7 @@ export const useMechStore = defineStore('mech', {
 
                     const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
 
-                    const validationStore = useValidationStore();
+                    const validationStore = useValidationStore(prefix);
 
                     const {
                         valid: sizeValid,
@@ -790,9 +787,8 @@ export const useMechStore = defineStore('mech', {
             },
             getMechArmorUpgradeInfo(state) {
                 return function (mechId, armorUpgradeId) {
-                    const validationStore = useValidationStore();
-
-                    const teamStore = useTeamStore();
+                    const validationStore = useValidationStore(prefix);
+                    const teamStore = useTeamStore(prefix);
 
                     let {
                         size_id,
@@ -936,11 +932,6 @@ export const useMechStore = defineStore('mech', {
                 return sortBy(results, 'display_name');
             },
         },
-        persist: {
-            enabled: true,
-            afterHydrate: (ctx) => {
-                // console.log(`hydrated '${ctx.store.$id}'`);
-            },
-        },
+        persist: prefix === '',
     },
-);
+))();

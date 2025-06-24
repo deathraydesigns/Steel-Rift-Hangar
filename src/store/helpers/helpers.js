@@ -88,3 +88,10 @@ export function makeUniqueItemIdCollection(DATA_STORE) {
         all,
     };
 }
+
+export function ifEmptyString(val, result) {
+    if (val === '') {
+        return result;
+    }
+    return false;
+}

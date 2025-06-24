@@ -1,12 +1,13 @@
 <script setup>
-import {computed} from 'vue';
+import {computed, inject} from 'vue';
 import {useTeamStore} from '../../../../store/team-store.js';
 import {useMechStore} from '../../../../store/mech-store.js';
 import {TEAM_GENERAL} from '../../../../data/mech-teams.js';
 import FormatInches from '../../../functional/format-inches.vue';
+const prefix = inject('store-prefix')
 
-const mechStore = useMechStore();
-const teamStore = useTeamStore();
+const mechStore = useMechStore(prefix);
+const teamStore = useTeamStore(prefix);
 
 const {mechId} = defineProps({
   mechId: {
@@ -27,7 +28,7 @@ const team = computed(() => {
         <div class="hev-size">
           {{ info.size.display_name }} HE-V
         </div>
-        <div class="hev-team" v-if="team.id !== TEAM_GENERAL">
+        <div class="hev-team" v-if="teamStore.isSpecialTeam(team.id)">
           {{ team.display_name_short }}
           <Icon :name="team.icon"/>
         </div>

@@ -16,7 +16,7 @@ import {
 } from '../data/factions.js';
 import {find} from 'es-toolkit/compat';
 
-export const useFactionStore = defineStore('faction', () => {
+export const useFactionStore = (prefix = '') => (defineStore(prefix + 'faction', () => {
 
         const defaultFactionId = NO_FACTION;
 
@@ -199,8 +199,6 @@ export const useFactionStore = defineStore('faction', () => {
         };
     },
     {
-        persist: {
-            enabled: true,
-        },
+        persist: prefix === '',
     },
-);
+))();

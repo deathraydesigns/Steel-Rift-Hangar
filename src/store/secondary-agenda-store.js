@@ -16,12 +16,12 @@ import {useMechStore} from './mech-store.js';
 import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from '../data/unit-sizes.js';
 import {countBy} from 'es-toolkit';
 
-export const useSecondaryAgendaStore = defineStore('secondary-agenda', () => {
+export const useSecondaryAgendaStore = (prefix = '') => (defineStore(prefix + 'secondary-agenda', () => {
 
-    const factionStore = useFactionStore();
-    const teamStore = useTeamStore();
-    const armyListStore = useArmyListStore();
-    const mechStore = useMechStore();
+    const factionStore = useFactionStore(prefix);
+    const teamStore = useTeamStore(prefix);
+    const armyListStore = useArmyListStore(prefix);
+    const mechStore = useMechStore(prefix);
 
     function $reset() {
 
@@ -93,4 +93,4 @@ export const useSecondaryAgendaStore = defineStore('secondary-agenda', () => {
         secondary_agendas,
         $reset,
     };
-});
+}))();

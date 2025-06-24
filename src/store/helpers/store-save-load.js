@@ -9,16 +9,16 @@ import {useSupportAssetUnitsStore} from '../support-asset-units-store.js';
 import {MOBILITY_BI_PEDAL} from '../../data/mech-mobility.js';
 import {ULTRA_LIGHT_HEV_SQUADRON} from '../../data/support-assets/ultra-light-hev-squadron.js';
 
-function getStores() {
+function getStores(prefix = null) {
     return [
-        useMechStore(),
-        useFactionStore(),
-        useTeamStore(),
-        useSupportAssetCountsStore(),
-        useSupportAssetWeaponsStore(),
-        useSupportAssetUnitsStore(),
-        useArmyListStore(),
-        usePrintSettingsStore(),
+        useMechStore(prefix),
+        useFactionStore(prefix),
+        useTeamStore(prefix),
+        useSupportAssetCountsStore(prefix),
+        useSupportAssetWeaponsStore(prefix),
+        useSupportAssetUnitsStore(prefix),
+        useArmyListStore(prefix),
+        usePrintSettingsStore(prefix),
     ];
 }
 
@@ -45,17 +45,26 @@ export function makeSaveFileData() {
     return result;
 }
 
-export function loadSaveFileData(data) {
+export function loadSaveFileData(data, prefix = null) {
 
     data = migrateLoadData(data);
 
-    getStores().forEach((store) => {
+    getStores(prefix).forEach((store) => {
+
+        let storeId = store.$id;
+        if (storeId.startsWith(prefix)) {
+            storeId = storeId.replace(prefix, '');
+        }
+
         store.$reset();
-        store.$patch(data[store.$id]);
+        store.$patch(data[storeId]);
+        if (store.afterHydrate) {
+            store.afterHydrate();
+        }
     });
 }
 
-function migrateLoadData(data) {
+export function migrateLoadData(data) {
     if (data.save_schema_version === 1) {
         data?.mech?.mechs?.forEach(mech => {
             if (!mech.mobility_id) {

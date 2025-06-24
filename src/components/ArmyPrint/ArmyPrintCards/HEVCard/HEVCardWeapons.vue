@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from 'vue';
+import {computed, inject} from 'vue';
 import {useMechStore} from '../../../../store/mech-store.js';
 import {TRAIT_LIMITED, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
@@ -7,8 +7,9 @@ import {TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
 import {find} from 'es-toolkit/compat';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
 import RangeFormatter from '../../../UI/RangeFormatter.vue';
+const prefix = inject('store-prefix')
 
-const mechStore = useMechStore();
+const mechStore = useMechStore(prefix);
 const {mechId} = defineProps({
   mechId: {
     type: Number,

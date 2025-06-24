@@ -2,6 +2,7 @@ import {defineStore, storeToRefs} from 'pinia';
 import {computed, ref, watch} from 'vue';
 import {useArmyListStore} from './army-list-store.js';
 import {useFactionStore} from './faction-store.js';
+import {ifEmptyString} from './helpers/helpers.js';
 
 export const PRINT_MODE_CARDS = 'PRINT_MODE_CARDS';
 export const PRINT_MODE_REF = 'PRINT_MODE_REF';
@@ -13,7 +14,7 @@ export const PRINT_MODES = {
         display_name: 'Rules Reference',
     },
 };
-export const usePrintSettingsStore = defineStore('print-settings', () => {
+export const usePrintSettingsStore = (prefix = '') => (defineStore(prefix + 'print-settings', () => {
 
         const one_team_per_page = ref(false);
         const include_army_name_on_cards = ref(true);
@@ -69,7 +70,7 @@ export const usePrintSettingsStore = defineStore('print-settings', () => {
         };
     },
     {
-        persist: {
+        persist: ifEmptyString(prefix, {
             pick: [
                 'one_team_per_page',
                 'include_army_name_on_cards',
@@ -79,5 +80,6 @@ export const usePrintSettingsStore = defineStore('print-settings', () => {
                 'include_faction_perk_2_card',
                 'separate_reference_cards_page',
             ],
-        },
-    });
+        }),
+    }))
+();

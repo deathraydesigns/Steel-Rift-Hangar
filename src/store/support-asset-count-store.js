@@ -5,12 +5,12 @@ import {GAME_SIZES} from '../data/game-sizes.js';
 import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
 import {useSupportAssetWeaponsStore} from './support-asset-weapons-store.js';
 
-export const useSupportAssetCountsStore = defineStore('support-asset-counts', () => {
+export const useSupportAssetCountsStore = (prefix = '') => (defineStore(prefix + 'support-asset-counts', () => {
 
         const armyList = useArmyListStore();
 
-        const supportAssetUnits = useSupportAssetUnitsStore();
-        const supportAssetWeapons = useSupportAssetWeaponsStore();
+        const supportAssetUnits = useSupportAssetUnitsStore(prefix);
+        const supportAssetWeapons = useSupportAssetWeaponsStore(prefix);
 
         const custom_max_support_assets = ref(null);
 
@@ -42,6 +42,6 @@ export const useSupportAssetCountsStore = defineStore('support-asset-counts', ()
         };
     },
     {
-        persist: true,
+        persist: prefix === '',
     },
-);
+))();

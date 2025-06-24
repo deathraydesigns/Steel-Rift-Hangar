@@ -12,10 +12,10 @@ import {
     TEAM_PERK_SUPPORT_ASSET_DAMAGE,
 } from '../data/mech-team-perks.js';
 
-export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', () => {
+export const useSupportAssetWeaponsStore = (prefix = '') => (defineStore(prefix + 'weapon-support-asset', () => {
 
-        const factionStore = useFactionStore();
-        const teamStore = useTeamStore();
+        const factionStore = useFactionStore(prefix);
+        const teamStore = useTeamStore(prefix);
 
         const outrageous_budget_perk_support_asset_id = ref(null);
         const support_asset_weapon_ids = ref([]);
@@ -167,6 +167,6 @@ export const useSupportAssetWeaponsStore = defineStore('weapon-support-asset', (
         };
     },
     {
-        persist: true,
+        persist: prefix === '',
     },
-);
+))();

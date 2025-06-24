@@ -11,12 +11,12 @@ import {GAME_SIZES} from '../data/game-sizes.js';
 import {MECH_TEAM_PERKS} from '../data/mech-team-perks.js';
 import {MECH_SIZES, SIZE_HEAVY, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
-import {makeUniqueItemIdCollection} from './helpers/helpers.js';
+import {ifEmptyString, makeUniqueItemIdCollection} from './helpers/helpers.js';
 
-export const useTeamStore = defineStore('team', () => {
+export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () => {
 
-        const mechStore = useMechStore();
-        const armyListStore = useArmyListStore();
+        const mechStore = useMechStore(prefix);
+        const armyListStore = useArmyListStore(prefix);
 
         const teams = ref([makeGeneralTeam()]);
 
@@ -702,14 +702,13 @@ export const useTeamStore = defineStore('team', () => {
         };
     },
     {
-        persist: {
-            enabled: true,
+        persist: ifEmptyString(prefix, {
             afterHydrate: (ctx) => {
                 // console.log(`hydrated '${ctx.store.$id}'`);
             },
-        },
+        }),
     },
-);
+)());
 
 function perkIdsToInfo(perkIds) {
     const grouped = groupBy(perkIds, (perkId) => perkId);

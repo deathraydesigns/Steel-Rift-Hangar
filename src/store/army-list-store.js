@@ -11,9 +11,9 @@ import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
 import {TRAIT_MSOE_LAUNCHER} from '../data/unit-traits.js';
 import {ORDER_SUPPORT_MSOE} from '../data/orders/support-orders.js';
 
-export const useArmyListStore = defineStore('army-list', () => {
-        const supportAssetWeaponsStore = useSupportAssetWeaponsStore();
-        const supportAssetUnitStore = useSupportAssetUnitsStore();
+export const useArmyListStore = (prefix = '') => (defineStore(prefix + 'army-list', () => {
+        const supportAssetWeaponsStore = useSupportAssetWeaponsStore(prefix);
+        const supportAssetUnitStore = useSupportAssetUnitsStore(prefix);
 
         const defaultArmyName = '';
         const defaultMaxTons = 100;
@@ -76,5 +76,5 @@ export const useArmyListStore = defineStore('army-list', () => {
         };
     },
     {
-        persist: true,
-    });
+        persist: prefix === '',
+    }))();

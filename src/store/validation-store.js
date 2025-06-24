@@ -17,13 +17,13 @@ import {MECH_ARMOR_UPGRADES} from '../data/mech-armor-upgrades.js';
 import {MECH_BODY_MODS} from '../data/mech-body.js';
 import {TEAM_PERK_COMBAT_BUCKLER} from '../data/mech-team-perks.js';
 
-export const useValidationStore = defineStore('validation', () => {
+export const useValidationStore = (prefix = '') => (defineStore(prefix + 'validation', () => {
 
-    const armyListStore = useArmyListStore();
-    const teamStore = useTeamStore();
-    const mechStore = useMechStore();
-    const supportAssetCountStore = useSupportAssetCountsStore();
-    const supportAssetUnitsStore = useSupportAssetUnitsStore();
+    const armyListStore = useArmyListStore(prefix);
+    const teamStore = useTeamStore(prefix);
+    const mechStore = useMechStore(prefix);
+    const supportAssetCountStore = useSupportAssetCountsStore(prefix);
+    const supportAssetUnitsStore = useSupportAssetUnitsStore(prefix);
 
     function $reset() {
 
@@ -631,4 +631,4 @@ export const useValidationStore = defineStore('validation', () => {
 
         $reset,
     };
-});
+}))();

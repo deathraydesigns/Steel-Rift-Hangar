@@ -21,7 +21,7 @@ import {INFANTRY_OUTPOST} from '../data/support-assets/infantry-outpost.js';
 import {makeGrantedOrderCollection, makeUniqueItemIdCollection} from './helpers/helpers.js';
 import {INFANTRY_ORDERS_DATA} from '../data/orders/infantry-orders.js';
 
-export const useSupportAssetUnitsStore = defineStore('support-asset-units', () => {
+export const useSupportAssetUnitsStore = (prefix = '') => (defineStore(prefix + 'support-asset-units', () => {
 
         const support_asset_units = ref([]);
         const support_asset_units_id_increment = ref(0);
@@ -775,6 +775,6 @@ export const useSupportAssetUnitsStore = defineStore('support-asset-units', () =
         };
     },
     {
-        persist: true,
+        persist: prefix === '',
     },
-);
+))();
