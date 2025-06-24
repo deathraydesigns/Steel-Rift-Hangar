@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vueuse/core": "^13.3.0",
     "bootstrap": "^5.3.6",
     "bootstrap-vue-next": "^0.29.3",
     "es-toolkit": "^1.38.0",
