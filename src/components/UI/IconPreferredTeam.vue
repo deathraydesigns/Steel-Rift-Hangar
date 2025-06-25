@@ -2,9 +2,6 @@
 import {BPopover} from 'bootstrap-vue-next';
 import {computed} from 'vue';
 import {MECH_TEAMS} from '../../data/mech-teams.js';
-import {useTeamStore} from '../../store/team-store.js';
-
-const teamStore = useTeamStore();
 
 const {
   teamId,
