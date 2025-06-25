@@ -17,6 +17,9 @@ $card-area-height: $card-height * 3;
 $page-padding-x: ($page-width - $card-area-width) * 0.5;
 $page-padding-y: ($page-height - $card-area-height) * 0.5;
 
+$import-card-width: $card-width * 1.4;
+$import-card-height: $card-height * 1.4;
+
 .page-card-grid {
   box-sizing: content-box;
 }
@@ -24,6 +27,15 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
 @include color-mode(dark) {
   body .output-container {
     --bs-body-color: #000;
+  }
+}
+
+.card-import-hev {
+  width: $import-card-width + 10px;
+
+  .card-body {
+    height: $import-card-height + 10px;
+    padding: 5px;
   }
 }
 
@@ -59,6 +71,21 @@ $page-padding-y: ($page-height - $card-area-height) * 0.5;
     }
   }
 
+  &.import-hev {
+    //font-size: 14pt;
+
+    .game-card {
+      outline: 0;
+      //width: $import-card-width;
+      //height: $import-card-height;
+      transform: scale(1.4);
+      transform-origin: top left;
+
+      .row-damage {
+        //height: auto;
+      }
+    }
+  }
 
   .page-card-grid {
     display: grid;

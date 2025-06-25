@@ -9,7 +9,7 @@ import BtnAddTeam from '../../UI/BtnAddTeam.vue';
 import {BButton} from 'bootstrap-vue-next';
 
 const teamStore = useTeamStore();
-const {teams, special_teams} = storeToRefs(teamStore);
+const {special_teams} = storeToRefs(teamStore);
 
 const baseMechCount = computed(() => teamStore.getTeamMechCount(TEAM_GENERAL) || teamStore.getTeamMechCount(TEAM_BENCH) );
 
@@ -36,7 +36,7 @@ function addGeneralMech() {
         variant="secondary"
         class="me-1"
         @click="addGeneralMech"
-        v-if="!generalMechCount"
+        v-if="!baseMechCount"
     >
       Add
       <Icon name="hev"/>
