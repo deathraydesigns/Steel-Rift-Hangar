@@ -8,7 +8,7 @@ import {TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-tra
 import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../../../../data/mech-mobility.js';
 import {NO_ARMOR_UPGRADE} from '../../../../data/mech-armor-upgrades.js';
 
-const prefix = inject('store-prefix')
+const prefix = inject('store-prefix', '')
 
 const mechStore = useMechStore(prefix);
 const teamStore = useTeamStore(prefix);

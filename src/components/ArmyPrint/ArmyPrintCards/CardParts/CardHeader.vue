@@ -4,7 +4,7 @@ import {usePrintSettingsStore} from '../../../../store/print-settings-store.js';
 import {storeToRefs} from 'pinia';
 import {inject} from 'vue';
 
-const prefix = inject('store-prefix')
+const prefix = inject('store-prefix', '')
 
 const armyStore = useArmyListStore(prefix);
 const {include_army_name_on_cards} = storeToRefs(usePrintSettingsStore(prefix));

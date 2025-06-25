@@ -7,7 +7,7 @@ import {TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
 import {find} from 'es-toolkit/compat';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
 import RangeFormatter from '../../../UI/RangeFormatter.vue';
-const prefix = inject('store-prefix')
+const prefix = inject('store-prefix', '')
 
 const mechStore = useMechStore(prefix);
 const {mechId} = defineProps({

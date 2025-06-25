@@ -11,7 +11,7 @@ import {
   NO_ARMOR_UPGRADE,
 } from '../../../../data/mech-armor-upgrades.js';
 
-const prefix = inject('store-prefix')
+const prefix = inject('store-prefix', '')
 
 const mechStore = useMechStore(prefix);
 const factionStore = useFactionStore(prefix);
