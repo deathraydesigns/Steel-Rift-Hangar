@@ -6,8 +6,11 @@ import {MECH_TEAM_ARRAY, TEAM_GENERAL} from '../../data/mech-teams.js';
 import {useMechStore} from '../../store/mech-store.js';
 import TeamDropDownItems from './TeamDropDownItems.vue';
 import {IMPORT_PREFIX} from '../../composables/file-upload.js';
+import {useArmyListStore} from '../../store/army-list-store.js';
 
 const mechStore = useMechStore(IMPORT_PREFIX);
+const armyListStore = useArmyListStore(IMPORT_PREFIX);
+
 const emit = defineEmits(['import-mechs']);
 const visible = defineModel(false);
 const mechsImports = reactive(new Map());
@@ -71,14 +74,27 @@ function importSelectedMechs() {
       @hidden="onHidden"
   >
     <template #title>
-      Import HE-Vs
+      <strong>
+        Importing HE-Vs
+      </strong>
+      <template v-if="armyListStore.name">
+        (
+        <span class="fw-medium">
+          From Army List:
+        </span>
+
+        <span class="fw-normal">
+          {{ armyListStore.name }}
+        </span>
+        )
+      </template>
     </template>
     <template #default>
-      <div class="d-flex flex-wrap justify-content-center">
-        <div class="card m-1 card-import-hev"
+      <div class="d-flex flex-wrap import-hev-container">
+        <div class="card m-1"
              v-for="item in mechList">
           <div class="card-body">
-            <div class="output-container import-hev">
+            <div class="output-container">
               <HEVCard
                   :mech-id="item.mechId"
                   store-prefix="import"

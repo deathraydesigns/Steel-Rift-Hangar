@@ -30,12 +30,25 @@ $import-card-height: $card-height * 1.4;
   }
 }
 
-.card-import-hev {
-  width: $import-card-width + 10px;
+.import-hev-container {
+  padding-left: 20px;
+  padding-right: 20px;
 
-  .card-body {
-    height: $import-card-height + 10px;
-    padding: 5px;
+  > .card {
+    width: $import-card-width + 10px;
+
+    > .card-body {
+      height: $import-card-height + 10px;
+      padding: 5px;
+
+      .output-container {
+        .game-card {
+          outline: 0;
+          transform: scale(1.4);
+          transform-origin: top left;
+        }
+      }
+    }
   }
 }
 
@@ -68,22 +81,6 @@ $import-card-height: $card-height * 1.4;
     .card-content-container {
       padding: 4pt;
       background: var(--card-bg);
-    }
-  }
-
-  &.import-hev {
-    //font-size: 14pt;
-
-    .game-card {
-      outline: 0;
-      //width: $import-card-width;
-      //height: $import-card-height;
-      transform: scale(1.4);
-      transform-origin: top left;
-
-      .row-damage {
-        //height: auto;
-      }
     }
   }
 
