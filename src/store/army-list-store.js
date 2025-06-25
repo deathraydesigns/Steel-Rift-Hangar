@@ -26,8 +26,8 @@ export const useArmyListStore = (prefix = '') => (defineStore(prefix + 'army-lis
             max_tons.valie = defaultMaxTons;
         }
 
-        const mechStore = useMechStore();
-        const supportAssetCounts = useSupportAssetCountsStore();
+        const mechStore = useMechStore(prefix);
+        const supportAssetCounts = useSupportAssetCountsStore(prefix);
 
         const game_size_id = computed(() => getGameSizeId(max_tons.value));
         const game_size_info = computed(() => GAME_SIZES[game_size_id.value]);
