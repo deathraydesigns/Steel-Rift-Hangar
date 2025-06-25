@@ -3,7 +3,7 @@ import {storeToRefs} from 'pinia';
 import {useTeamStore} from '../../../store/team-store.js';
 import MechTeam from '../MechTeam/MechTeam.vue';
 import {computed} from 'vue';
-import {TEAM_GENERAL} from '../../../data/mech-teams.js';
+import {TEAM_BENCH, TEAM_GENERAL} from '../../../data/mech-teams.js';
 import MechTeamGroup from '../MechTeam/MechTeamGroup.vue';
 import BtnAddTeam from '../../UI/BtnAddTeam.vue';
 import {BButton} from 'bootstrap-vue-next';
@@ -11,7 +11,7 @@ import {BButton} from 'bootstrap-vue-next';
 const teamStore = useTeamStore();
 const {teams, special_teams} = storeToRefs(teamStore);
 
-const generalMechCount = computed(() => teamStore.getTeamMechCount(TEAM_GENERAL));
+const baseMechCount = computed(() => teamStore.getTeamMechCount(TEAM_GENERAL) || teamStore.getTeamMechCount(TEAM_BENCH) );
 
 function addGeneralMech() {
   teamStore.addMechToTeamWithDefaults(TEAM_GENERAL, 'A');
@@ -20,9 +20,15 @@ function addGeneralMech() {
 </script>
 <template>
   <MechTeamGroup
+      :team-id="TEAM_BENCH"
+      group-id="A"
+      v-show="baseMechCount"
+  />
+
+  <MechTeamGroup
       :team-id="TEAM_GENERAL"
       group-id="A"
-      v-show="generalMechCount"
+      v-show="baseMechCount"
   />
 
   <div class="text-end">

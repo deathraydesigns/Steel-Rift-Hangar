@@ -26,7 +26,7 @@ import {
     TEAM_PERK_SUPPORT_ASSET_DAMAGE,
 } from './mech-team-perks.js';
 import {MOD_REINFORCED, MOD_STANDARD, MOD_STRIPPED} from './mech-body.js';
-import {makeFrozenStaticListIds, makeStaticListIds} from './data-helpers.js';
+import {deepFreeze, makeFrozenStaticListIds, makeStaticListIds} from './data-helpers.js';
 import {
     ABLATIVE_ARMOR_UPGRADE,
     CERAMIC_ARMOR_UPGRADE,
@@ -51,6 +51,7 @@ export const TEAM_SIZE_SMALL = 'TEAM_SIZE_SMALL';
 export const TEAM_SIZE_MEDIUM = 'TEAM_SIZE_MEDIUM';
 export const TEAM_SIZE_LARGE = 'TEAM_SIZE_LARGE';
 
+export const TEAM_BENCH = 'TEAM_BENCH';
 export const TEAM_GENERAL = 'TEAM_GENERAL';
 export const TEAM_FIRE_SUPPORT = 'TEAM_FIRE_SUPPORT';
 export const TEAM_RECON = 'TEAM_RECON';
@@ -76,9 +77,26 @@ export const MECH_TEAM_SIZES = makeFrozenStaticListIds({
 });
 
 export const MECH_TEAMS = makeFrozenStaticListIds({
+    [[TEAM_BENCH]]: {
+        display_name: 'Benched HE-Vs',
+        icon: 'hev',
+        groups: makeStaticListIds({
+            'A': makeGroup({
+                display_name: 'Benched HE-Vs',
+                size_ids: [
+                    SIZE_LIGHT,
+                    SIZE_MEDIUM,
+                    SIZE_HEAVY,
+                    SIZE_ULTRA,
+                ],
+                min_count: false,
+                max_count: false,
+            }),
+        }),
+    },
     [[TEAM_GENERAL]]: {
-        display_name: 'General Team',
-        display_name_short: 'General',
+        display_name: 'HE-Vs',
+        icon: 'hev',
         groups: makeStaticListIds({
             'A': makeGroup({
                 display_name: 'HE-Vs',
@@ -451,6 +469,8 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
     },
 });
 
+export const MECH_TEAM_ARRAY = deepFreeze(Object.values(MECH_TEAMS));
+
 function makeGroup(obj) {
 
     const defaults = {
@@ -471,8 +491,6 @@ function makeGroup(obj) {
         result.display_name = obj.size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name)
             .join(' & ');
     }
-
-
 
     return result;
 }

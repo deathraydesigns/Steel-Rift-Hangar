@@ -1,7 +1,14 @@
 import {defineStore} from 'pinia';
 import {computed, ref} from 'vue';
 import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-helper.js';
-import {MECH_TEAM_SIZES, MECH_TEAMS, TEAM_FIRE_SUPPORT, TEAM_GENERAL, TEAM_RECON} from '../data/mech-teams.js';
+import {
+    MECH_TEAM_SIZES,
+    MECH_TEAMS,
+    TEAM_BENCH,
+    TEAM_FIRE_SUPPORT,
+    TEAM_GENERAL,
+    TEAM_RECON,
+} from '../data/mech-teams.js';
 import {useMechStore} from './mech-store.js';
 import {difference, each, find, groupBy, map, sortBy, sumBy} from 'es-toolkit/compat';
 import {MECH_BODY_MODS, MECH_BODY_MODS_DROP_DOWN} from '../data/mech-body.js';
@@ -18,21 +25,35 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
         const mechStore = useMechStore(prefix);
         const armyListStore = useArmyListStore(prefix);
 
-        const teams = ref([makeGeneralTeam()]);
+        const teams = ref([makeGeneralTeam(), makeBenchTeam()]);
 
         function $reset() {
-            teams.value = [makeGeneralTeam()];
+            teams.value = [makeGeneralTeam(), makeBenchTeam()];
+        }
+
+        function afterHydrate() {
+            if (!findTeam(TEAM_BENCH)) {
+                teams.value.push(makeBenchTeam());
+            }
+
+            mechStore.mechs.forEach(mech => {
+                if (!mech.preferred_team_id) {
+                    let {teamId} = getMechTeamAndGroupIds(mech.id);
+                    mech.preferred_team_id = normalizePreferredTeamId(teamId);
+                }
+            });
         }
 
         function isSpecialTeam(teamId) {
-            return teamId !== TEAM_GENERAL;
+            return teamId !== TEAM_GENERAL && teamId !== TEAM_BENCH;
         }
 
+        const non_bench_teams = computed(() => teams.value.filter(team => team.id !== TEAM_BENCH));
         const special_teams = computed(() => teams.value.filter(item => isSpecialTeam(item.id)));
 
         const addable_teams = computed(() => {
             const currentTeamIds = map(teams.value, 'id');
-            const teamIds = Object.keys(MECH_TEAMS);
+            const teamIds = Object.keys(MECH_TEAMS).filter(isSpecialTeam);
             const availableTeamIds = difference(teamIds, currentTeamIds);
             return availableTeamIds.map((teamId) => {
                 const {display_name, icon} = MECH_TEAMS[teamId];
@@ -414,9 +435,26 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             return find(teams.value, {id: teamId});
         }
 
+        function initTeam(teamId) {
+            if (!findTeam(teamId)) {
+                addTeam(teamId);
+            }
+        }
+
         function findGroup(teamId, groupId) {
             const team = find(teams.value, {id: teamId});
             return find(team.groups, {id: groupId});
+        }
+
+        function findGroupIdForSizeId(teamId, sizeId) {
+            const teamDef = getTeamDef(teamId);
+            const group = Object.values(teamDef.groups).find(groupDef => {
+                return groupDef.size_ids.includes(sizeId);
+            });
+
+            if (group) {
+                return group.id;
+            }
         }
 
         function getMechStructureModOptions(mechId) {
@@ -563,6 +601,8 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             weaponIds = [],
             upgradeIds = [],
         ) {
+            initTeam(teamId);
+
             const group = findGroup(teamId, groupId);
             const mechId = mechStore.addMech(mechOptions);
 
@@ -571,12 +611,8 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             });
             setDisplayOrders(group.mechs);
 
-            weaponIds.forEach((weaponId) => {
-                mechStore.addMechWeaponAttachment(mechId, weaponId);
-            });
-            upgradeIds.forEach((upgradeId) => {
-                mechStore.addMechUpgradeAttachment(mechId, upgradeId);
-            });
+            weaponIds.forEach((weaponId) => mechStore.addMechWeaponAttachment(mechId, weaponId));
+            upgradeIds.forEach((upgradeId) => mechStore.addMechUpgradeAttachment(mechId, upgradeId));
 
             return mechId;
         }
@@ -588,50 +624,86 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             return teamId;
         }
 
+        function addMechToTeamFromLoadedFile(mechData, teamId) {
+            initTeam(teamId);
+
+            const {
+                size_id,
+                structure_mod_id,
+                armor_mod_id,
+                armor_upgrade_id,
+                mobility_id,
+                preferred_team_id,
+
+                weapons,
+                upgrades,
+            } = mechData;
+
+            const mechOptions = {
+                size_id,
+                structure_mod_id,
+                armor_mod_id,
+                armor_upgrade_id,
+                mobility_id,
+                preferred_team_id,
+            };
+
+            const weaponIds = weapons.map(weapon => weapon.weapon_id);
+            const upgradeIds = upgrades.map(upgrade => upgrade.upgrade_id);
+            const groupId = findGroupIdForSizeId(teamId, size_id);
+
+            return addMechToTeam(
+                teamId,
+                groupId,
+                mechOptions,
+                weaponIds,
+                upgradeIds,
+            );
+        }
+
         function addMechToTeamWithDefaults(teamId, groupId) {
+
             const groupDef = getTeamGroupDef(teamId, groupId);
-            const mechOptions = {};
 
-            if (addDefaults) {
-                if (groupDef?.size_ids?.length) {
-                    mechOptions.size_id = groupDef.size_ids[0];
-                }
-                if (groupDef?.limited_structure_mod_ids?.length) {
-                    mechOptions.structure_mod_id = groupDef.limited_structure_mod_ids[0];
-                }
-                if (groupDef?.limited_armor_mod_ids?.length) {
-                    mechOptions.armor_mod_id = groupDef.limited_armor_mod_ids[0];
-                }
-                if (groupDef?.limited_armor_upgrade_ids?.length) {
-                    mechOptions.armor_upgrade_id = groupDef.limited_armor_upgrade_ids[0];
-                }
-                if (groupDef?.required_armor_or_structure_mod_id_once) {
-                    mechOptions.structure_mod_id = groupDef.required_armor_or_structure_mod_id_once;
-                }
+            const mechOptions = {
+                preferred_team_id: normalizePreferredTeamId(teamId),
+            };
+
+            if (groupDef?.size_ids?.length) {
+                mechOptions.size_id = groupDef.size_ids[0];
+            }
+            if (groupDef?.limited_structure_mod_ids?.length) {
+                mechOptions.structure_mod_id = groupDef.limited_structure_mod_ids[0];
+            }
+            if (groupDef?.limited_armor_mod_ids?.length) {
+                mechOptions.armor_mod_id = groupDef.limited_armor_mod_ids[0];
+            }
+            if (groupDef?.limited_armor_upgrade_ids?.length) {
+                mechOptions.armor_upgrade_id = groupDef.limited_armor_upgrade_ids[0];
+            }
+            if (groupDef?.required_armor_or_structure_mod_id_once) {
+                mechOptions.structure_mod_id = groupDef.required_armor_or_structure_mod_id_once;
             }
 
-            const mech = mechStore.addMech(mechOptions);
+            const weaponIds = [
+                ...groupDef.required_weapon_ids,
+            ];
 
-            if (addDefaults) {
-                groupDef.required_weapon_ids.forEach((weaponId) => {
-                    mechStore.addMechWeaponAttachment(mech.id, weaponId);
-                });
-                groupDef.required_upgrade_ids.forEach((upgradeId) => {
-                    mechStore.addMechUpgradeAttachment(mech.id, upgradeId);
-                });
-                if (groupDef?.required_at_least_one_of_weapon_ids.length) {
-                    mechStore.addMechWeaponAttachment(mech.id, groupDef?.required_at_least_one_of_weapon_ids[0]);
-                }
+            if (groupDef?.required_at_least_one_of_weapon_ids.length) {
+                weaponIds.push(groupDef.required_at_least_one_of_weapon_ids[0]);
             }
 
-            const group = findGroup(teamId, groupId);
+            const upgradeIds = [
+                ...groupDef.required_upgrade_ids,
+            ];
 
-            group.mechs.push({
-                mech_id: mech.id,
-            });
-            setDisplayOrders(group.mechs);
-
-            return mech.id;
+            return addMechToTeam(
+                teamId,
+                groupId,
+                mechOptions,
+                weaponIds,
+                upgradeIds,
+            );
         }
 
         function removeMechFromTeam(mechId) {
@@ -655,18 +727,35 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             move(group.mechs, index, toIndex);
         }
 
-        function moveMechToTeamGroup(teamId, groupId, mechId, newIndex = null) {
+        function moveMechToTeam(mechId, teamId) {
+            initTeam(teamId);
             const mech = mechStore.getMech(mechId);
-            const groupDef = getTeamGroupDef(teamId, groupId);
+            let groupId = findGroupIdForSizeId(teamId, mech.size_id);
+
+            if (!groupId) {
+                const teamDef = getTeamDef(teamId);
+                groupId = Object.keys(teamDef.groups)[0];
+            }
+            moveMechToTeamGroup(teamId, groupId, mechId);
+
+            return {
+                teamId,
+                groupId,
+            }
+        }
+
+        function moveMechToTeamGroup(teamId, groupId, mechId, newIndex = null) {
+            initTeam(teamId);
+            const mech = mechStore.getMech(mechId);
 
             removeMechFromTeam(mechId);
 
-            const group = findGroup(teamId, groupDef.id);
+            const group = findGroup(teamId, groupId);
 
             if (newIndex !== null) {
-            group.mechs.splice(newIndex, 0, {
-                mech_id: mech.id,
-            });
+                group.mechs.splice(newIndex, 0, {
+                    mech_id: mech.id,
+                });
             } else {
                 group.mechs.push({
                     mech_id: mech.id,
@@ -694,10 +783,12 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             used_teams_count,
             max_teams_count,
             special_teams,
+            non_bench_teams,
 
             allUsedTeamAbilityPerkIds,
 
             isSpecialTeam,
+
             findTeam,
             findGroup,
             getTeamMechCount,
@@ -722,6 +813,7 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             getUsedTeamAbilityPerksInfo,
             getMechTeamGroupDef,
             getTeamMechIds,
+            moveMechToTeam,
             moveMechToTeamGroup,
 
             getTeamVisibleComputed,
@@ -731,10 +823,16 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             setMechsOfTeamVisible,
             setMechsOfGroupVisible,
 
+            normalizePreferredTeamId,
+            afterHydrate,
+
+            addMechToTeamFromLoadedFile,
             addMechToTeam,
+            addMechToTeamWithDefaults,
             removeMechFromTeam,
             moveGroupMech,
             addTeam,
+            addTeamWithDefaultMechs,
             removeTeam,
             $reset,
         };
@@ -742,7 +840,7 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
     {
         persist: ifEmptyString(prefix, {
             afterHydrate: (ctx) => {
-                // console.log(`hydrated '${ctx.store.$id}'`);
+                ctx.store.afterHydrate();
             },
         }),
     },
@@ -801,6 +899,20 @@ function perkIdsToInfo(perkIds) {
 function makeGeneralTeam() {
     return {
         id: TEAM_GENERAL,
+        visible: true,
+        groups: [
+            {
+                id: 'A',
+                visible: true,
+                mechs: [],
+            },
+        ],
+    };
+}
+
+export function makeBenchTeam() {
+    return {
+        id: TEAM_BENCH,
         visible: true,
         groups: [
             {

@@ -16,6 +16,7 @@ const {mechId, storePrefix} = defineProps({
   },
   storePrefix: {
     type: String,
+    default: '',
   },
 });
 

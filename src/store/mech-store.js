@@ -49,6 +49,7 @@ import {TYPE_HEV} from '../data/unit-types.js';
 import {makeGrantedOrderCollection} from './helpers/helpers.js';
 import {toaster} from '../toaster.js';
 import {useValidationStore} from './validation-store.js';
+import {TEAM_BENCH, TEAM_GENERAL} from '../data/mech-teams.js';
 
 export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
         state() {
@@ -64,13 +65,17 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                         armor_mod_id,
                         armor_upgrade_id,
                         mobility_id,
+                        preferred_team_id,
                     }) {
+
+                const teamStore = useTeamStore();
 
                 size_id = size_id ?? SIZE_MEDIUM;
                 structure_mod_id = structure_mod_id ?? MOD_STANDARD;
                 armor_mod_id = armor_mod_id ?? MOD_STANDARD;
                 armor_upgrade_id = armor_upgrade_id ?? NO_ARMOR_UPGRADE;
                 mobility_id = mobility_id ?? MOBILITY_BI_PEDAL;
+                preferred_team_id = teamStore.normalizePreferredTeamId(preferred_team_id ?? TEAM_GENERAL);
 
                 let id = this.mechs_id_increment++;
                 let mech = {
@@ -81,6 +86,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                     armor_mod_id,
                     armor_upgrade_id,
                     mobility_id,
+                    preferred_team_id,
                     weapons: [],
                     weapons_id_increment: 1,
                     upgrades: [],
@@ -92,7 +98,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                 this.mechs.push(mech);
                 mech.display_order = findItemIndex(this.mechs, mech);
 
-                return mech;
+                return id;
             },
             updateMech(mechId, data) {
                 let mech = findById(this.mechs, mechId);
@@ -103,6 +109,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                     'armor_mod_id',
                     'armor_upgrade_id',
                     'mobility_id',
+                    'preferred_team_id',
                 ]);
 
                 if (data.size_id) {
@@ -224,10 +231,15 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                 };
             },
             totalTons(state) {
+                const teamStore = useTeamStore(prefix);
                 let tons = 0;
+
                 state.mechs.forEach((mech) => {
-                    const {size} = this.getMechInfo(mech.id);
-                    tons += size.max_tons;
+                    const {teamId} = teamStore.getMechTeamAndGroupIds(mech.id);
+                    if (teamId !== TEAM_BENCH) {
+                        const {size} = this.getMechInfo(mech.id);
+                        tons += size.max_tons;
+                    }
                 });
                 return tons;
             },
@@ -248,6 +260,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                         mobility_id,
                         weapons,
                         upgrades,
+                        preferred_team_id,
                     } = this.getMech(mechId);
 
                     const placeholder_name = ('HE-V-' + mechId).padStart(1);
@@ -345,6 +358,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                         tonnage_stat,
                         defense,
                         smash_damage,
+                        preferred_team_id,
                     });
                 };
             },

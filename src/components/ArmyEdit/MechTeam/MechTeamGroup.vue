@@ -2,9 +2,10 @@
 import Mech from '../Mech.vue';
 import {computed, ref} from 'vue';
 import {useTeamStore} from '../../../store/team-store.js';
+import {TEAM_BENCH} from '../../../data/mech-teams.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../store/validation-store.js';
-import {BButton, BCollapse} from 'bootstrap-vue-next';
+import {BButton, BCollapse, BPopover} from 'bootstrap-vue-next';
 import {Container, Draggable} from 'vue-dndrop';
 import IconValidationError from '../../UI/IconValidationError.vue';
 import TeamGroupValidation from '../ArmyList/BtnArmyListValidation/TeamGroupValidation.vue';
@@ -179,6 +180,19 @@ const placeholder = ref({
       </div>
       <div class="text-end">
         <div class="d-flex">
+          <BPopover
+              :delay="{show: 100, hide: 0}"
+          >
+            <template #target>
+              <span
+                  v-show="teamId === TEAM_BENCH"
+                  class="btn btn-sm btn-overlay"
+              >
+                ?
+              </span>
+            </template>
+              Benched HE-Vs are not included in your Army List but are saved
+          </BPopover>
           <button
               class="btn btn-sm ms-1 btn-secondary"
               @click="teamStore.addMechToTeamWithDefaults(teamId, groupId)"
@@ -222,7 +236,7 @@ const placeholder = ref({
       <div class="card-body">
         <Container
             :get-child-payload="getChildPayload"
-            group-name="mechs"
+            group-name="mechsImportSettings"
             drag-handle-selector=".btn-grab"
             @drop="onDrop(teamId, groupId, $event)"
             :drop-placeholder="placeholder"
