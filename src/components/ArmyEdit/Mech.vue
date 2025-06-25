@@ -11,7 +11,7 @@ import IconValidationError from '../UI/IconValidationError.vue';
 import {useTeamStore} from '../../store/team-store.js';
 import MechPreferredTeamDropDown from './Mech/MechStats/MechPreferredTeamDropDown.vue';
 import IconPreferredTeam from '../UI/IconPreferredTeam.vue';
-import {TEAM_BENCH} from '../../data/mech-teams.js';
+import {TEAM_SHELF} from '../../data/mech-teams.js';
 
 const mechStore = useMechStore();
 const validationStore = useValidationStore();
@@ -45,7 +45,7 @@ const teamId = computed(() => {
   return teamId;
 });
 const teamIcon = computed(() => teamStore.getTeamDef(teamId.value).icon);
-const showPreferredTeam = computed(() => teamId.value === TEAM_BENCH);
+const showPreferredTeam = computed(() => teamId.value === TEAM_SHELF);
 
 </script>
 <template>
@@ -108,7 +108,7 @@ const showPreferredTeam = computed(() => teamId.value === TEAM_BENCH);
           <BtnMoveMechToTeam :mech-id="mechId"/>
           <BButton
               size="sm"
-              class="mx-1"
+              class="ms-1"
               variant="secondary"
               @click="mechStore.duplicateMech(mechId)"
           >
@@ -117,7 +117,7 @@ const showPreferredTeam = computed(() => teamId.value === TEAM_BENCH);
 
           <BButton
               size="sm"
-              class="mx-1"
+              class="ms-1"
               variant="danger"
               @click="mechStore.removeMech(mechId)"
           >
@@ -125,7 +125,7 @@ const showPreferredTeam = computed(() => teamId.value === TEAM_BENCH);
           </BButton>
 
           <BButton
-              :class="'btn-collapse ' + (visible ? null : 'collapsed')"
+              :class="'btn-collapse ms-1 ' + (visible ? null : 'collapsed')"
               size="sm"
               variant="transparent"
               :aria-expanded="visible ? 'true' : 'false'"

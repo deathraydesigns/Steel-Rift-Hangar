@@ -1,6 +1,6 @@
 import {useMechStore} from '../mech-store.js';
 import {useFactionStore} from '../faction-store.js';
-import {makeBenchTeam, useTeamStore} from '../team-store.js';
+import {makeShelfTeam, useTeamStore} from '../team-store.js';
 import {useSupportAssetCountsStore} from '../support-asset-count-store.js';
 import {useArmyListStore} from '../army-list-store.js';
 import {usePrintSettingsStore} from '../print-settings-store.js';
@@ -8,7 +8,7 @@ import {useSupportAssetWeaponsStore} from '../support-asset-weapons-store.js';
 import {useSupportAssetUnitsStore} from '../support-asset-units-store.js';
 import {MOBILITY_BI_PEDAL} from '../../data/mech-mobility.js';
 import {ULTRA_LIGHT_HEV_SQUADRON} from '../../data/support-assets/ultra-light-hev-squadron.js';
-import {TEAM_BENCH} from '../../data/mech-teams.js';
+import {TEAM_SHELF} from '../../data/mech-teams.js';
 
 function getStores(prefix = '') {
     return [
@@ -91,12 +91,12 @@ export function migrateLoadData(data) {
         });
     }
 
-    const benchTeam = data?.team?.teams?.find(team => {
-        return team.id === TEAM_BENCH;
+    const shelfTeam = data?.team?.teams?.find(team => {
+        return team.id === TEAM_SHELF;
     });
 
-    if (!benchTeam) {
-        data.team.teams.push(makeBenchTeam());
+    if (!shelfTeam) {
+        data.team.teams.push(makeShelfTeam());
     }
 
     return data;

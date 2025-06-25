@@ -49,7 +49,7 @@ import {TYPE_HEV} from '../data/unit-types.js';
 import {makeGrantedOrderCollection} from './helpers/helpers.js';
 import {toaster} from '../toaster.js';
 import {useValidationStore} from './validation-store.js';
-import {TEAM_BENCH, TEAM_GENERAL} from '../data/mech-teams.js';
+import {TEAM_SHELF, TEAM_GENERAL} from '../data/mech-teams.js';
 
 export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
         state() {
@@ -236,7 +236,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
 
                 state.mechs.forEach((mech) => {
                     const {teamId} = teamStore.getMechTeamAndGroupIds(mech.id);
-                    if (teamId !== TEAM_BENCH) {
+                    if (teamId !== TEAM_SHELF) {
                         const {size} = this.getMechInfo(mech.id);
                         tons += size.max_tons;
                     }

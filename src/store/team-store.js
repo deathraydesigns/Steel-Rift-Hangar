@@ -4,7 +4,7 @@ import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-he
 import {
     MECH_TEAM_SIZES,
     MECH_TEAMS,
-    TEAM_BENCH,
+    TEAM_SHELF,
     TEAM_FIRE_SUPPORT,
     TEAM_GENERAL,
     TEAM_RECON,
@@ -25,15 +25,15 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
         const mechStore = useMechStore(prefix);
         const armyListStore = useArmyListStore(prefix);
 
-        const teams = ref([makeGeneralTeam(), makeBenchTeam()]);
+        const teams = ref([makeGeneralTeam(), makeShelfTeam()]);
 
         function $reset() {
-            teams.value = [makeGeneralTeam(), makeBenchTeam()];
+            teams.value = [makeGeneralTeam(), makeShelfTeam()];
         }
 
         function afterHydrate() {
-            if (!findTeam(TEAM_BENCH)) {
-                teams.value.push(makeBenchTeam());
+            if (!findTeam(TEAM_SHELF)) {
+                teams.value.push(makeShelfTeam());
             }
 
             mechStore.mechs.forEach(mech => {
@@ -45,10 +45,10 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
         }
 
         function isSpecialTeam(teamId) {
-            return teamId !== TEAM_GENERAL && teamId !== TEAM_BENCH;
+            return teamId !== TEAM_GENERAL && teamId !== TEAM_SHELF;
         }
 
-        const non_bench_teams = computed(() => teams.value.filter(team => team.id !== TEAM_BENCH));
+        const non_shelf_teams = computed(() => teams.value.filter(team => team.id !== TEAM_SHELF));
         const special_teams = computed(() => teams.value.filter(item => isSpecialTeam(item.id)));
 
         const addable_teams = computed(() => {
@@ -618,7 +618,7 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
         }
 
         function normalizePreferredTeamId(teamId) {
-            if (teamId === TEAM_BENCH) {
+            if (teamId === TEAM_SHELF) {
                 return TEAM_GENERAL;
             }
             return teamId;
@@ -783,7 +783,7 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             used_teams_count,
             max_teams_count,
             special_teams,
-            non_bench_teams,
+            non_shelf_teams,
 
             allUsedTeamAbilityPerkIds,
 
@@ -910,9 +910,9 @@ function makeGeneralTeam() {
     };
 }
 
-export function makeBenchTeam() {
+export function makeShelfTeam() {
     return {
-        id: TEAM_BENCH,
+        id: TEAM_SHELF,
         visible: true,
         groups: [
             {

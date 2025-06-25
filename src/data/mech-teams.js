@@ -51,7 +51,7 @@ export const TEAM_SIZE_SMALL = 'TEAM_SIZE_SMALL';
 export const TEAM_SIZE_MEDIUM = 'TEAM_SIZE_MEDIUM';
 export const TEAM_SIZE_LARGE = 'TEAM_SIZE_LARGE';
 
-export const TEAM_BENCH = 'TEAM_BENCH';
+export const TEAM_SHELF = 'TEAM_SHELF';
 export const TEAM_GENERAL = 'TEAM_GENERAL';
 export const TEAM_FIRE_SUPPORT = 'TEAM_FIRE_SUPPORT';
 export const TEAM_RECON = 'TEAM_RECON';
@@ -77,12 +77,12 @@ export const MECH_TEAM_SIZES = makeFrozenStaticListIds({
 });
 
 export const MECH_TEAMS = makeFrozenStaticListIds({
-    [[TEAM_BENCH]]: {
-        display_name: 'Benched HE-Vs',
+    [[TEAM_SHELF]]: {
+        display_name: 'Shelved HE-Vs',
         icon: 'hev',
         groups: makeStaticListIds({
             'A': makeGroup({
-                display_name: 'Benched HE-Vs',
+                display_name: 'Shelved HE-Vs',
                 size_ids: [
                     SIZE_LIGHT,
                     SIZE_MEDIUM,

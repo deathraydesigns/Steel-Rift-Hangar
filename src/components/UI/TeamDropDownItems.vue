@@ -4,7 +4,7 @@ import {computed} from 'vue';
 import {sortBy} from 'es-toolkit';
 import {groupBy} from 'es-toolkit/compat';
 import {useTeamStore} from '../../store/team-store.js';
-import {MECH_TEAM_ARRAY, MECH_TEAMS, TEAM_BENCH, TEAM_GENERAL} from '../../data/mech-teams.js';
+import {MECH_TEAM_ARRAY, MECH_TEAMS, TEAM_SHELF, TEAM_GENERAL} from '../../data/mech-teams.js';
 
 const teamStore = useTeamStore();
 const selectedTeamId = defineModel();
@@ -27,7 +27,7 @@ const sortTeamsByOriginalIndex = (team) => MECH_TEAM_ARRAY.indexOf(t => t.id ===
 const existingTeams = computed(() => {
   return [
     MECH_TEAMS[TEAM_GENERAL],
-    MECH_TEAMS[TEAM_BENCH],
+    MECH_TEAMS[TEAM_SHELF],
     ...sortBy(specialTeamTypes.value.existing, [sortTeamsByOriginalIndex]),
   ];
 });

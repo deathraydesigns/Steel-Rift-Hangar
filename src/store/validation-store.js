@@ -3,7 +3,7 @@ import {computed} from 'vue';
 import {useArmyListStore} from './army-list-store.js';
 import {useTeamStore} from './team-store.js';
 import {useMechStore} from './mech-store.js';
-import {MECH_TEAMS, TEAM_BENCH} from '../data/mech-teams.js';
+import {MECH_TEAMS, TEAM_SHELF} from '../data/mech-teams.js';
 import {useSupportAssetCountsStore} from './support-asset-count-store.js';
 import {MECH_WEAPONS} from '../data/mech-weapons.js';
 import {countBy} from 'es-toolkit';
@@ -530,7 +530,7 @@ export const useValidationStore = (prefix = '') => (defineStore(prefix + 'valida
     }
 
     const team_validation = computed(() => {
-        return teamStore.non_bench_teams.map(team => getTeamValidation(team.id)).filter(i => !i.valid);
+        return teamStore.non_shelf_teams.map(team => getTeamValidation(team.id)).filter(i => !i.valid);
     });
 
     function getTeamGroupMechSizeValidation(mechId, sizeId) {
@@ -568,7 +568,7 @@ export const useValidationStore = (prefix = '') => (defineStore(prefix + 'valida
     function getTeamGroupValidation(teamId, groupId) {
         const {display_name} = teamStore.getTeamGroupDef(teamId, groupId);
         const validation_messages = [];
-        if (teamId === TEAM_BENCH) {
+        if (teamId === TEAM_SHELF) {
             return {
                 id: groupId,
                 valid: true,

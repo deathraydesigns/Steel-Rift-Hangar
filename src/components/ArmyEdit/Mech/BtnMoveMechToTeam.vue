@@ -38,6 +38,7 @@ const currentTeamId = computed({
   <BDropdown
       variant="secondary"
       class="d-inline-block"
+      no-caret
   >
     <template #button-content>
       <span class="material-symbols-outlined">input</span>

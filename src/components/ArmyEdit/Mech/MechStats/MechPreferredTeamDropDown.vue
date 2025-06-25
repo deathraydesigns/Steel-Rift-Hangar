@@ -32,7 +32,7 @@ function setPreferredTeamId(teamId) {
           ?
         </span>
       </template>
-      Used for reference when the HE-V is Benched and when importing this HE-V to another Army List.
+      Used for reference when the HE-V is Shelved and when importing this HE-V to another Army List.
     </BPopover>
   </div>
   <BDropdown

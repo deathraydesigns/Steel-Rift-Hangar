@@ -1,7 +1,7 @@
 <script setup>
 import {ref, toRaw, useTemplateRef} from 'vue';
 import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
-import ModalLoadBench from './ModalLoadBench.vue';
+import ModalImportMechs from './ModalImportMechs.vue';
 import {loadSaveFileData} from '../../store/helpers/store-save-load.js';
 import {IMPORT_PREFIX, jsonFileParser} from '../../composables/file-upload.js';
 import {useTeamStore} from '../../store/team-store.js';
@@ -55,7 +55,7 @@ function importMechs(mechs) {
       Import HE-Vs from File
     </BDropdownItem>
   </BDropdown>
-  <ModalLoadBench
+  <ModalImportMechs
       v-model="modalVisible"
       @import-mechs="importMechs"
   />

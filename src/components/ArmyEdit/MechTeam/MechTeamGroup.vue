@@ -2,7 +2,7 @@
 import Mech from '../Mech.vue';
 import {computed, ref} from 'vue';
 import {useTeamStore} from '../../../store/team-store.js';
-import {TEAM_BENCH} from '../../../data/mech-teams.js';
+import {TEAM_SHELF} from '../../../data/mech-teams.js';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import {useValidationStore} from '../../../store/validation-store.js';
 import {BButton, BCollapse, BPopover} from 'bootstrap-vue-next';
@@ -91,6 +91,7 @@ const placeholder = ref({
         }
     ">
       <div class="flex-grow-1">
+
         <BtnToolTip>
           <template #target="{mouseover, mouseleave}">
             <div
@@ -103,7 +104,12 @@ const placeholder = ref({
             </div>
           </template>
           <template #content>
-            {{ team.display_name }} {{ group.display_name }} HE-Vs
+            <template v-if="teamStore.isSpecialTeam(team.id)">
+              {{ team.display_name }} {{ group.display_name }} HE-Vs
+            </template>
+            <template v-else>
+              {{ team.display_name }}
+            </template>
           </template>
         </BtnToolTip>
 
@@ -185,13 +191,13 @@ const placeholder = ref({
           >
             <template #target>
               <span
-                  v-show="teamId === TEAM_BENCH"
+                  v-show="teamId === TEAM_SHELF"
                   class="btn btn-sm btn-overlay"
               >
                 ?
               </span>
             </template>
-              Benched HE-Vs are not included in your Army List but are saved
+            Shelved HE-Vs are not included in your Army List but are saved
           </BPopover>
           <button
               class="btn btn-sm ms-1 btn-secondary"
