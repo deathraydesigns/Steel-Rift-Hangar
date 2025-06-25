@@ -58,33 +58,32 @@ function remove() {
     <td colspan="3">
       <TraitList :traits="upgrade.traits"/>
     </td>
-    <td class="table-btn-cell">
+    <td class="table-btn-cell" colspan="2">
       <BButton
           @click="remove()"
           variant="danger"
           size="sm"
+          class="me-1"
       >
         <span class="material-symbols-outlined">delete</span>
       </BButton>
       <IconNotAvailable
-          btn-class="ms-1"
+          btn-class="me-1"
           :valid="upgrade.valid"
           :validation-message="upgrade.validation_message"
       />
       <IconRequiredByGroup
           :required="upgrade.required_by_group"
-          btn-class="ms-1"
+          btn-class="me-1"
       />
       <IconTeamGroupPerks
           :perks="upgrade.team_perks"
-          btn-class="ms-1"
+          btn-class="me-1"
       />
       <IconFactionPerks
           :perks="upgrade.faction_perks"
-          btn-class="ms-1"
+          btn-class="me-1"
       />
-    </td>
-    <td>
     </td>
     <td class="text-end">
       <format-number :val="upgrade.slots" :invert-color="true"/>

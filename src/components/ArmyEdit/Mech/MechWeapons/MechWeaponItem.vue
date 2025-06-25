@@ -60,35 +60,33 @@ function remove() {
     <td>
       <TraitList :traits="weapon.traits"/>
     </td>
-    <td class="table-btn-cell">
+    <td class="table-btn-cell" colspan="2">
       <BButton
           @click="remove()"
           variant="danger"
           size="sm"
+          class="me-1"
       >
         <span class="material-symbols-outlined">delete</span>
       </BButton>
       <IconNotAvailable
-          btn-class="ms-1"
+          btn-class="me-1"
           :valid="weapon.valid"
           :validation-message="weapon.validation_message"
       />
       <IconRequiredByGroup
-          btn-class="ms-1"
+          btn-class="me-1"
           :required="weapon.required_by_group"
           :reason="weapon.required_by_group_reason"
       />
       <IconTeamGroupPerks
           :perks="weapon.team_perks"
-          btn-class="ms-1"
+          btn-class="me-1"
       />
       <IconFactionPerks
           :perks="weapon.faction_perks"
-          btn-class="ms-1"
+          btn-class="me-1"
       />
-    </td>
-    <td>
-
     </td>
     <td class=" text-end">
       <format-number :val="weapon.slots" :invert-color="true"/>
