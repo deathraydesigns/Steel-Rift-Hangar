@@ -197,7 +197,16 @@ const placeholder = ref({
                 ?
               </span>
             </template>
-            Shelved HE-Vs are not included in your Army List but are saved
+            <template #title>
+              Shelved HE-Vs
+            </template>
+
+            Not included in your
+
+            <strong>Printed Army List</strong>
+            but are saved in your
+            <strong>Army List File</strong>
+            and can be imported.
           </BPopover>
           <button
               class="btn btn-sm ms-1 btn-secondary"

@@ -603,6 +603,10 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
         ) {
             initTeam(teamId);
 
+            if (teamId !== TEAM_SHELF) {
+                mechOptions.preferred_team_id = teamId;
+            }
+
             const group = findGroup(teamId, groupId);
             const mechId = mechStore.addMech(mechOptions);
 
@@ -741,7 +745,7 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             return {
                 teamId,
                 groupId,
-            }
+            };
         }
 
         function moveMechToTeamGroup(teamId, groupId, mechId, newIndex = null) {
@@ -760,6 +764,10 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
                 group.mechs.push({
                     mech_id: mech.id,
                 });
+            }
+
+            if (teamId !== TEAM_SHELF) {
+                mech.preferred_team_id = teamId;
             }
             setDisplayOrders(group.mechs);
         }

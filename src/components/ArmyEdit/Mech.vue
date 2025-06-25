@@ -145,7 +145,7 @@ const showPreferredTeam = computed(() => teamId.value === TEAM_SHELF);
           <div class="output-container ms-3">
             <div class="fw-bold mb-2 pt-2">Card Preview</div>
             <HEVCard :mech-id="mechId" class="shadow"/>
-            <MechPreferredTeamDropDown :mech-id="mechId"/>
+            <MechPreferredTeamDropDown :mech-id="mechId" v-if="teamId === TEAM_SHELF"/>
           </div>
         </div>
       </BCollapse>
