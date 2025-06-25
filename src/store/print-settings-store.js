@@ -39,8 +39,8 @@ export const usePrintSettingsStore = (prefix = '') => (defineStore(prefix + 'pri
             separate_reference_cards_page.value = false;
         }
 
-        const {includes_mine_drones} = storeToRefs(useArmyListStore());
-        const {perk_1_id, perk_2_id} = storeToRefs(useFactionStore());
+        const {includes_mine_drones} = storeToRefs(useArmyListStore(prefix));
+        const {perk_1_id, perk_2_id} = storeToRefs(useFactionStore(prefix));
 
         watch(includes_mine_drones, () => {
             include_mine_drone_card.value = includes_mine_drones.value;

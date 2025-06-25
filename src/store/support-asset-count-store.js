@@ -7,7 +7,7 @@ import {useSupportAssetWeaponsStore} from './support-asset-weapons-store.js';
 
 export const useSupportAssetCountsStore = (prefix = '') => (defineStore(prefix + 'support-asset-counts', () => {
 
-        const armyList = useArmyListStore();
+        const armyList = useArmyListStore(prefix);
 
         const supportAssetUnits = useSupportAssetUnitsStore(prefix);
         const supportAssetWeapons = useSupportAssetWeaponsStore(prefix);
