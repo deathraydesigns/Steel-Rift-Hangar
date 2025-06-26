@@ -1,19 +1,22 @@
 <script setup>
 import {ref, toRaw, useTemplateRef} from 'vue';
-import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
+import {BDropdown, BDropdownItem, BFormTextarea, BModal} from 'bootstrap-vue-next';
 import ModalImportMechs from './ModalImportMechs.vue';
 import {loadSaveFileData} from '../../store/helpers/store-save-load.js';
 import {IMPORT_PREFIX, jsonFileParser} from '../../composables/file-upload.js';
 import {useTeamStore} from '../../store/team-store.js';
 import {useMechStore} from '../../store/mech-store.js';
+import {decodeArmyListJsonFromUrl} from '../../composables/url-data-parser.js';
 
 const teamStore = useTeamStore();
 const mechStore = useMechStore(IMPORT_PREFIX);
 
 const fileUpload = useTemplateRef('file-upload');
 const fileImport = useTemplateRef('file-import');
+const urlImportString = ref('');
 
-const modalVisible = ref(false);
+const importModalVisible = ref(false);
+const dataUrlModalVisible = ref(false);
 
 const fileUploadChange = jsonFileParser((jsonData) => {
   loadSaveFileData(jsonData);
@@ -22,7 +25,7 @@ const fileUploadChange = jsonFileParser((jsonData) => {
 
 const fileImportChange = jsonFileParser((jsonData) => {
   loadSaveFileData(jsonData, IMPORT_PREFIX);
-  modalVisible.value = true;
+  importModalVisible.value = true;
   fileImport.value.value = null;
 });
 
@@ -33,6 +36,12 @@ function importMechs(mechs) {
   });
 }
 
+function importFromUrl() {
+  const jsonData = decodeArmyListJsonFromUrl(urlImportString.value);
+  loadSaveFileData(jsonData, IMPORT_PREFIX);
+  importModalVisible.value = true;
+  urlImportString.value = '';
+}
 </script>
 <template>
   <input ref="file-upload" type="file" @change="fileUploadChange" accept="application/json" hidden>
@@ -54,9 +63,32 @@ function importMechs(mechs) {
       <span class="material-symbols-outlined">place_item</span>
       Import HE-Vs from File
     </BDropdownItem>
+    <BDropdownItem @click="dataUrlModalVisible = true">
+      <span class="material-symbols-outlined">place_item</span>
+      Import HE-Vs from Data URL
+    </BDropdownItem>
   </BDropdown>
   <ModalImportMechs
-      v-model="modalVisible"
+      v-model="importModalVisible"
       @import-mechs="importMechs"
   />
+  <BModal
+      lazy
+      v-model="dataUrlModalVisible"
+      size="lg"
+      ok-variant="secondary"
+      @ok="importFromUrl"
+  >
+    <template #title>
+      <strong>
+        Importing HE-Vs
+      </strong>
+    </template>
+
+    <template #default>
+      <div class="fw-bold">Pase Data Url here</div>
+      <BFormTextarea v-model="urlImportString"/>
+    </template>
+
+  </BModal>
 </template>
