@@ -1,12 +1,9 @@
 <script setup>
 import {BFormTextarea, BModal} from 'bootstrap-vue-next';
 import {ref} from 'vue';
-import {ROUTE_ARMY_LIST_DATA} from '../../../router.js';
-import {useRouter} from 'vue-router';
 import {urlDataStringToJson} from '../../../composables/url-data-parser.js';
 import {toaster} from '../../../toaster.js';
 
-const router = useRouter();
 const visible = defineModel();
 const urlImportString = ref('');
 
@@ -41,13 +38,8 @@ function submit() {
   try {
     let url = tryOrInvalid(() => new URL(urlImportString.value), 'Not a URL');
 
-    let path = tryOrInvalid(
-        () => {
-          let path = url.pathname;
-          if (path.startsWith(baseUrl)) {
-            return path.slice(baseUrl.length);
-          }
-        },
+    tryOrInvalid(
+        () => baseUrl === url.pathname,
         'Invalid URL Path',
     );
 
@@ -55,11 +47,6 @@ function submit() {
         () => new URLSearchParams(url.search).get('payload'),
         'Invalid URL Query Parameter',
     );
-
-    const resolvedRoute = router.resolve(path);
-    if (resolvedRoute.name !== ROUTE_ARMY_LIST_DATA) {
-      throw makeInvalidError('Incorrect Path');
-    }
 
     const json = tryOrInvalid(
         () => urlDataStringToJson(dataString),

@@ -1,11 +1,11 @@
-import {ROUTE_ARMY_LIST_DATA, router} from '../router.js';
+import {ROUTE_HOME, router} from '../router.js';
 
 export function makeArmyListDataUrl(data) {
     const jsonString = JSON.stringify(data);
     const encodedJson = encodeBase64(jsonString);
 
     const route = router.resolve({
-        name: ROUTE_ARMY_LIST_DATA,
+        name: ROUTE_HOME,
         query: {payload: encodedJson},
     });
 
