@@ -3,7 +3,6 @@ import {BPopover} from 'bootstrap-vue-next';
 
 const {enabled} = defineProps({
   enabled: {
-    type: Boolean,
     default: true,
   },
 });
