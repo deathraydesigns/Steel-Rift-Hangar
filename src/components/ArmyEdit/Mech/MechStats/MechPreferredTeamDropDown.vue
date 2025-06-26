@@ -26,9 +26,7 @@ const preferredTeamOptions = computed(() => MECH_TEAM_ARRAY.filter(t => t.id !==
 <template>
   <div class="fw-bold m-2">
     Preferred Team
-    <BPopover
-        :delay="{show: 100, hide: 0}"
-    >
+    <BPopover>
       <template #target>
         <span class="btn btn-sm btn-overlay">
           ?

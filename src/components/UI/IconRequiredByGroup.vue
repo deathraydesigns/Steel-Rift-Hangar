@@ -24,11 +24,7 @@ const requiredReason = computed(() => {
 });
 </script>
 <template>
-  <BPopover
-      :hover="true"
-      :close-on-hide="true"
-      :delay="{show: 100, hide: 0}"
-  >
+  <BPopover>
     <template #target>
       <button
           :class="`btn btn-sm btn-default btn-danger-light ${btnClass}`"

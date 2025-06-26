@@ -56,12 +56,8 @@ const {
         <tr v-for="item in support_asset_weapons_info" :key="item.id">
           <td>
             <BtnToolTip>
-              <template #target="{mouseover, mouseleave}">
-                <span
-                    @mouseover="mouseover"
-                    @mouseleave="mouseleave"
-                    class="text-tooltip"
-                >
+              <template #target>
+                <span class="text-tooltip">
                   {{ item.display_name }}
                 </span>
               </template>

@@ -70,14 +70,9 @@ function selectOption(value) {
               @click="selectOption(item.id)"
           >
             <td class="text-nowrap">
-              <BtnToolTip
-                  :enabled="!!item.granted_order_ids.length">
-                <template #target="{mouseover, mouseleave}">
-                  <span
-                      @mouseover="mouseover"
-                      @mouseleave="mouseleave"
-                      :class="{'text-tooltip': item.granted_order_ids.length}"
-                  >
+              <BtnToolTip :enabled="item.granted_order_ids.length">
+                <template #target>
+                  <span :class="{'text-tooltip': item.granted_order_ids.length}">
                     {{ item.display_name }}
                   </span>
                 </template>
@@ -94,13 +89,11 @@ function selectOption(value) {
         </table>
       </BDropdown>
 
-      <BtnToolTip lazy>
-        <template #target="{mouseover, mouseleave}">
+      <BtnToolTip>
+        <template #target>
           <span
-              @mouseover="mouseover"
-              @mouseleave="mouseleave"
               class="btn btn-md btn-default ms-1"
-              v-show="!!mobility.granted_order_ids?.length"
+              v-show="mobility.granted_order_ids?.length"
           >
             ?
           </span>

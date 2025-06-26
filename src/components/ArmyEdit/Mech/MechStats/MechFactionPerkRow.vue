@@ -48,12 +48,8 @@ const {
     </td>
     <td colspan="3" class="fw-bold">
       <BtnToolTip :enabled="!!description">
-        <template #target="{mouseover, mouseleave}">
-          <span
-              @mouseover="mouseover"
-              @mouseleave="mouseleave"
-              class="btn btn-default"
-          >
+        <template #target>
+          <span class="btn btn-default">
             {{ text }}
             <span class="material-symbols-outlined">flag</span>
           </span>

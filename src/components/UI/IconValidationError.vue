@@ -44,9 +44,7 @@ const isVisible = computed(() => {
 });
 </script>
 <template>
-  <BPopover
-      :close-on-hide="true"
-  >
+  <BPopover>
     <template #target>
       <button
           v-show="isVisible"

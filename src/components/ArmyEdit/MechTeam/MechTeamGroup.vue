@@ -93,12 +93,8 @@ const placeholder = ref({
       <div class="flex-grow-1">
 
         <BtnToolTip>
-          <template #target="{mouseover, mouseleave}">
-            <div
-                @mouseover="mouseover"
-                @mouseleave="mouseleave"
-                class="btn btn-transparent-dark d-inline-block py-1 me-1 fw-bold"
-            >
+          <template #target>
+            <div class="btn btn-transparent-dark d-inline-block py-1 me-1 fw-bold">
               <Icon v-if="team.icon" :name="team.icon" class="me-2"/>
               {{ group.display_name }}
             </div>
@@ -114,12 +110,8 @@ const placeholder = ref({
         </BtnToolTip>
 
         <BtnToolTip>
-          <template #target="{mouseover, mouseleave}">
-            <span
-                @mouseover="mouseover"
-                @mouseleave="mouseleave"
-                class="btn btn-sm btn-overlay mx-1"
-            >
+          <template #target>
+            <span class="btn btn-sm btn-overlay mx-1">
               {{ groupCount }}
               <Icon name="hev"/>
             </span>
@@ -129,11 +121,9 @@ const placeholder = ref({
           </template>
         </BtnToolTip>
         <BtnToolTip>
-          <template #target="{mouseover, mouseleave}">
+          <template #target>
             <span
                 v-show="isSpecialTeam"
-                @mouseover="mouseover"
-                @mouseleave="mouseleave"
                 :class="{
                   'btn btn-sm btn-overlay mx-1': true,
                   'btn-outline-danger border-danger': !size.size_valid,
@@ -149,11 +139,9 @@ const placeholder = ref({
         </BtnToolTip>
 
         <BtnToolTip>
-          <template #target="{mouseover, mouseleave}">
+          <template #target>
             <span
                 v-show="!isSpecialTeam && teamGroupPerkCount"
-                @mouseover="mouseover"
-                @mouseleave="mouseleave"
                 class="btn btn-sm btn-overlay mx-1"
             >
               Group Perks
@@ -186,9 +174,7 @@ const placeholder = ref({
       </div>
       <div class="text-end">
         <div class="d-flex">
-          <BPopover
-              :delay="{show: 100, hide: 0}"
-          >
+          <BPopover>
             <template #target>
               <span
                   v-show="teamId === TEAM_SHELF"

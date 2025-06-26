@@ -70,12 +70,8 @@ function collapseAll() {
           </span>
         </span>
         <BtnToolTip>
-          <template #target="{mouseover, mouseleave}">
-            <span
-                @mouseover="mouseover"
-                @mouseleave="mouseleave"
-                class="btn btn-sm mx-1 btn-light-outline"
-            >
+          <template #target>
+            <span class="btn btn-sm mx-1 btn-light-outline">
               {{ teamMechCount }}
               <Icon name="hev"/>
             </span>

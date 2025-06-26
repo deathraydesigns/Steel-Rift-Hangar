@@ -17,9 +17,7 @@ const visible = computed(() => show);
 const team = computed(() => MECH_TEAMS[teamId] || {});
 </script>
 <template>
-  <BPopover
-      :delay="{show: 100, hide: 0}"
-  >
+  <BPopover>
     <template #target>
       <span
           :class="`btn btn-transparent ${btnClass}`"

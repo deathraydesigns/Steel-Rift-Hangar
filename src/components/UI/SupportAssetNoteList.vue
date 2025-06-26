@@ -18,20 +18,23 @@ function title(note) {
 </script>
 <template>
   <template v-for="(note, index) in notes">
-    <BtnToolTip :enabled="!!note.description"
-                :title="title(note)">
-      <template #target="{mouseover, mouseleave}">
+    <BtnToolTip :enabled="note.description">
+      <template #target>
         <div
-            @mouseover="mouseover"
-            @mouseleave="mouseleave"
-            :class="{'text-tooltip': !!note.description, 'text-nowrap d-inline-block': true}"
+            :class="{
+              'text-nowrap d-inline-block': true,
+              'text-tooltip': note.description,
+            }"
         >
           {{ note.display_name }}
           <Icon v-if="note.is_team_perk" name="team-perk" size="18px"/>
           <span class="material-symbols-outlined" v-if="note.is_faction_perk">flag</span>
-          <template v-if="index !== notes.length-1">, </template>
+          <template v-if="index !== notes.length-1">,</template>
         </div>
 
+      </template>
+      <template #title>
+        {{ title(note) }}
       </template>
       <template #content>
         {{ note.description }}

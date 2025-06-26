@@ -24,11 +24,7 @@ const {
 });
 </script>
 <template>
-  <BPopover
-      :hover="true"
-      :close-on-hide="true"
-      :delay="{show: 100, hide: 0}"
-  >
+  <BPopover>
     <template #target>
       <button
           :class="`btn btn-${size} btn-danger btn-danger-light ${btnClass}`"

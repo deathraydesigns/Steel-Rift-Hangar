@@ -16,16 +16,11 @@ function show(trait) {
 <template>
   <template v-for="(trait, index) in traits">
     <BtnToolTip :enabled="show(trait)">
-      <template #target="{mouseover, mouseleave}">
-        <span
-            @mouseover="mouseover"
-            @mouseleave="mouseleave"
-            :class="{'text-tooltip': show(trait)}"
-        >
+      <template #target>
+        <span :class="{'text-tooltip': show(trait)}">
           <span class="text-nowrap">{{ trait.display_name }}</span>
         </span>
         <span v-if="index !== traits.length - 1">, </span>
-
       </template>
       <template #content>
         {{ trait.description }}

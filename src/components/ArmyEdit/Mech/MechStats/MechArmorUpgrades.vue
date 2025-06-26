@@ -6,10 +6,8 @@ import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import {BDropdown} from 'bootstrap-vue-next';
-import {useValidationStore} from '../../../../store/validation-store.js';
 
 const mechStore = useMechStore();
-const validationStore = useValidationStore();
 
 const {
   label,
@@ -83,12 +81,8 @@ function selectOption(value) {
             <td>
               <BtnToolTip
                   :enabled="!!item.description">
-                <template #target="{mouseover, mouseleave}">
-                  <span
-                      @mouseover="mouseover"
-                      @mouseleave="mouseleave"
-                      :class="{'text-tooltip': item.description}"
-                  >
+                <template #target>
+                  <span :class="{'text-tooltip': item.description}">
                     {{ item.display_name }}
                   </span>
                 </template>
@@ -130,12 +124,9 @@ function selectOption(value) {
           btn-class="ms-1"
           :perks="armorUpgrade.team_perks"
       />
-      <BtnToolTip
-          :enabled="!!armorUpgrade.description">
-        <template #target="{mouseover, mouseleave}">
+      <BtnToolTip :enabled="armorUpgrade.description">
+        <template #target>
           <span
-              @mouseover="mouseover"
-              @mouseleave="mouseleave"
               class="btn btn-md btn-default ms-1"
           >
             <span class="material-symbols-outlined">shield_question</span>

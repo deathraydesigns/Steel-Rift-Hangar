@@ -51,10 +51,8 @@ function setUpgradePodChoice(upgradePodId) {
           {{ info.display_name }}
         </span>
         <BtnToolTip>
-          <template #target="{mouseover, mouseleave}">
+          <template #target>
             <span
-                @mouseover="mouseover"
-                @mouseleave="mouseleave"
                 :class="{
                   'btn btn-sm mx-1': true,
                   'btn-default': unit_points_valid,

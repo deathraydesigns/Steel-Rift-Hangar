@@ -65,12 +65,8 @@ function addUpgrade(upgradeId) {
         >
           <td>
             <BtnToolTip>
-              <template #target="{mouseover, mouseleave}">
-                <span
-                    @mouseover="mouseover"
-                    @mouseleave="mouseleave"
-                    class="text-tooltip"
-                >
+              <template #target>
+                <span class="text-tooltip">
                   {{ item.display_name }}
                 </span>
               </template>

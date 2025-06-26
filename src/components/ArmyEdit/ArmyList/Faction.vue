@@ -2,7 +2,6 @@
 import {useFactionStore} from '../../../store/faction-store.js';
 import {storeToRefs} from 'pinia';
 import {computed, ref} from 'vue';
-import {DWC_OUTRAGEOUS_SUPPORT_BUDGET} from '../../../data/faction-perks.js';
 import FactionPerkGrid from './FactionPerkGrid.vue';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store.js';
@@ -36,10 +35,8 @@ const modal = ref(false);
   </button>
 
   <BtnToolTip>
-    <template #target="{mouseover, mouseleave}">
+    <template #target>
       <button
-          @mouseover="mouseover"
-          @mouseleave="mouseleave"
           v-show="perk_1_info?.display_name"
           class="btn btn-default text-start mb-1 w-100"
       >
@@ -54,10 +51,8 @@ const modal = ref(false);
   </BtnToolTip>
 
   <BtnToolTip>
-    <template #target="{mouseover, mouseleave}">
+    <template #target>
       <button
-          @mouseover="mouseover"
-          @mouseleave="mouseleave"
           v-show="perk_2_info?.display_name"
           class="btn btn-default text-start mb-1 w-100"
       >

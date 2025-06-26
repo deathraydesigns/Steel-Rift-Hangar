@@ -22,11 +22,7 @@ const {
 
 </script>
 <template>
-  <BPopover
-      :hover="true"
-      :close-on-hide="true"
-      :delay="{show: 0, hide: 0}"
-  >
+  <BPopover>
     <template #target><span
         v-show="perks && perks.length"
         :class="`btn btn-${size} btn-default ${btnClass}`">

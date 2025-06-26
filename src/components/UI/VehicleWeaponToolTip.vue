@@ -11,12 +11,8 @@ const {weapon} = defineProps({
 </script>
 <template>
   <BtnToolTip>
-    <template #target="{mouseover, mouseleave}">
-      <span
-          @mouseover="mouseover"
-          @mouseleave="mouseleave"
-          class="text-tooltip"
-      >
+    <template #target>
+      <span class="text-tooltip">
         <span class="text-nowrap">{{ weapon.display_name }}</span>
       </span>
     </template>
