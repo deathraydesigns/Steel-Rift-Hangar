@@ -49,9 +49,21 @@ export const toaster = defineStore('toaster', () => {
         });
     }
 
+    function validationError(text, body = null) {
+        message({
+            bodyClass: 'toast-body-error',
+            modelValue: 20000,
+            title: text,
+            body,
+            textVariant: 'danger',
+            progressVariant: 'danger',
+        });
+    }
+
     return {
         message,
         info,
         error,
+        validationError,
     };
 })

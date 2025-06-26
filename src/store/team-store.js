@@ -4,10 +4,10 @@ import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-he
 import {
     MECH_TEAM_SIZES,
     MECH_TEAMS,
-    TEAM_SHELF,
     TEAM_FIRE_SUPPORT,
     TEAM_GENERAL,
     TEAM_RECON,
+    TEAM_SHELF,
 } from '../data/mech-teams.js';
 import {useMechStore} from './mech-store.js';
 import {difference, each, find, groupBy, map, sortBy, sumBy} from 'es-toolkit/compat';
@@ -455,6 +455,8 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             if (group) {
                 return group.id;
             }
+
+            return Object.keys(teamDef.groups)[0];
         }
 
         function getMechStructureModOptions(mechId) {
@@ -736,10 +738,6 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             const mech = mechStore.getMech(mechId);
             let groupId = findGroupIdForSizeId(teamId, mech.size_id);
 
-            if (!groupId) {
-                const teamDef = getTeamDef(teamId);
-                groupId = Object.keys(teamDef.groups)[0];
-            }
             moveMechToTeamGroup(teamId, groupId, mechId);
 
             return {

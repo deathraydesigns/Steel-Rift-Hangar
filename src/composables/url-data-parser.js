@@ -1,26 +1,20 @@
-const KEY = 'army-list-data';
-
-export function extractArmyListBase64FromUrl(urlString) {
-    const baseUrl = new URL(urlString);
-    const hash = baseUrl.hash.slice(1);
-    const proxyUrl = baseUrl.origin + '?' + hash;
-    const url = new URL(proxyUrl);
-    const params = url.searchParams;
-    if (params.has(KEY)) {
-        return params.get(KEY);
-    }
-}
-export function decodeArmyListJsonFromUrl(urlString) {
-    const base64String = extractArmyListBase64FromUrl(urlString);
-    const jsonString = decodeBase64(base64String)
-    return JSON.parse(jsonString);
-}
+import {ROUTE_ARMY_LIST_DATA, router} from '../router.js';
 
 export function makeArmyListDataUrl(data) {
     const jsonString = JSON.stringify(data);
     const encodedJson = encodeBase64(jsonString);
 
-    return `${window.location.origin}#${KEY}=${encodedJson}`;
+    const route = router.resolve({
+        name: ROUTE_ARMY_LIST_DATA,
+        params: {urlData: encodedJson},
+    });
+
+    return new URL(route.href, window.location.origin + import.meta.env.BASE_URL).href;
+}
+
+export function urlDataStringToJson(dataString) {
+    const jsonString = decodeBase64(dataString);
+    return JSON.parse(jsonString);
 }
 
 function encodeBase64(jsonData) {

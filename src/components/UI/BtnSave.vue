@@ -24,7 +24,7 @@ function saveToUrl() {
     try {
       await navigator.clipboard.writeText(text);
     } catch (err) {
-      console.error('Failed to copy text:', err);
+      toaster().error('Failed to copy text', err.message);
     }
   }
 
@@ -33,7 +33,7 @@ function saveToUrl() {
 
   copyToClipboard(url);
 
-  toaster().info('Data URL Copied to clipboard');
+  toaster().info('Data URL Copied to clipboard', 'This URL contains your Army List and can be shared.');
 }
 </script>
 <template>

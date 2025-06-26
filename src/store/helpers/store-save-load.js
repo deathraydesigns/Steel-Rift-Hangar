@@ -23,9 +23,16 @@ function getStores(prefix = '') {
     ];
 }
 
-export function resetStores() {
-    getStores().forEach((store) => {
+export function resetStores(prefix = '') {
+    window.localStorage.clear();
+    getStores(prefix).forEach((store) => {
         store.$reset();
+    });
+}
+
+export function disposeStores(prefix = '') {
+    getStores(prefix).forEach((store) => {
+        store.$dispose();
     });
 }
 
@@ -51,10 +58,9 @@ export function loadSaveFileData(data, prefix = '') {
     data = migrateLoadData(data);
 
     getStores(prefix).forEach((store) => {
-
         let storeId = store.$id;
         if (storeId.startsWith(prefix)) {
-            storeId = storeId.replace(prefix, '');
+            storeId = storeId.slice(prefix.length);
         }
         store.$reset();
         store.$patch(data[storeId]);
@@ -91,9 +97,7 @@ export function migrateLoadData(data) {
         });
     }
 
-    const shelfTeam = data?.team?.teams?.find(team => {
-        return team.id === TEAM_SHELF;
-    });
+    const shelfTeam = data?.team?.teams?.find(team => team.id === TEAM_SHELF);
 
     if (!shelfTeam) {
         data.team.teams.push(makeShelfTeam());

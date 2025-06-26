@@ -19,5 +19,3 @@ export function jsonFileParser(cb) {
         }
     };
 }
-
-export const IMPORT_PREFIX = 'import';

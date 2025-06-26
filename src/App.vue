@@ -1,11 +1,7 @@
 <script setup>
-import {computed, h, onErrorCaptured, onMounted, provide, ref} from 'vue';
+import {h, onErrorCaptured, onMounted, provide} from 'vue';
 import AppHeader from './components/AppHeader.vue';
-import {ROUTE_PRINT} from './routes.js';
-import ArmyPrint from './components/ArmyPrint.vue';
-import ArmyEdit from './components/ArmyEdit.vue';
 import {BModalOrchestrator, BToastOrchestrator, useColorMode, useModalController} from 'bootstrap-vue-next';
-import ArmyListUrlDataHandler from './components/ArmyListUrlDataHandler.vue';
 
 const {create} = useModalController();
 onErrorCaptured((error) => {
@@ -25,19 +21,11 @@ onMounted(() => {
   document.getElementById('failsafe-container')?.remove();
 });
 
-const currentPath = ref(window.location.hash);
-provide('currentPath', currentPath);
-window.addEventListener('hashchange', () => {
-  currentPath.value = window.location.hash;
-});
-const showPrint = computed(() => currentPath.value.slice(1) === ROUTE_PRINT);
-
 const mode = useColorMode({
   emitAuto: true,
   persist: true,
 });
 provide('color_mode', mode);
-
 
 </script>
 <template>
@@ -45,11 +33,9 @@ provide('color_mode', mode);
 
     <BToastOrchestrator/>
     <BModalOrchestrator/>
-    <ArmyListUrlDataHandler/>
 
     <AppHeader/>
-    <ArmyPrint v-show="showPrint"/>
-    <ArmyEdit v-show="!showPrint"/>
+    <RouterView/>
 
     <div class="no-print text-bg-dark py-4 mt-auto">
       <div class="container text-center">

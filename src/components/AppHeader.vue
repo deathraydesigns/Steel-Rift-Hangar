@@ -6,8 +6,8 @@ import {useArmyListStore} from '../store/army-list-store.js';
 import {storeToRefs} from 'pinia';
 import {useTeamStore} from '../store/team-store.js';
 import {useSupportAssetCountsStore} from '../store/support-asset-count-store.js';
-import {inject, ref} from 'vue';
-import {ROUTE_HOME, ROUTE_PRINT} from '../routes.js';
+import {ref} from 'vue';
+import {ROUTE_HOME, ROUTE_PRINT} from '../router.js';
 import Navbar from './Navbar.vue';
 import Fraction from './functional/fraction.vue';
 import {resetStores} from '../store/helpers/store-save-load.js';
@@ -18,7 +18,6 @@ const {used_teams_count, max_teams_count} = storeToRefs(useTeamStore());
 const {used_support_assets, max_support_assets} = storeToRefs(useSupportAssetCountsStore());
 const {used_tons, max_tons, name} = storeToRefs(useArmyListStore());
 
-const currentPath = inject('currentPath');
 const resetModal = ref(false);
 
 </script>
@@ -82,18 +81,20 @@ const resetModal = ref(false);
               Reset
             </BButton>
             <div class="btn-group d-inline-block ms-1 mt-2 mt-xl-0" role="group">
-              <a :href="`#${ROUTE_HOME}`" :class="{
-                  'btn btn-sm btn-default': true,
-                  'active': currentPath === `#${ROUTE_HOME}` || currentPath === ''
-                }">
+              <router-link
+                  :to="{ name: ROUTE_HOME }"
+                  class="btn btn-sm btn-default"
+                  activeClass="active"
+              >
                 Edit
-              </a>
-              <a :href="`#${ROUTE_PRINT}`" :class="{
-                  'btn btn-sm btn-default': true,
-                  'active': currentPath === `#${ROUTE_PRINT}`
-                }">
+              </router-link>
+              <router-link
+                  :to="{ name: ROUTE_PRINT }"
+                  class="btn btn-sm btn-default"
+                  activeClass="active"
+              >
                 Print
-              </a>
+              </router-link>
             </div>
           </div>
         </div>

@@ -1,19 +1,14 @@
 <script setup>
-import {ref, toRaw, useTemplateRef} from 'vue';
-import {BDropdown, BDropdownItem, BFormTextarea, BModal} from 'bootstrap-vue-next';
-import ModalImportMechs from './ModalImportMechs.vue';
+import {ref, useTemplateRef} from 'vue';
+import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
+import ModalImportMechs from './Modal/ModalImportMechs.vue';
 import {loadSaveFileData} from '../../store/helpers/store-save-load.js';
-import {IMPORT_PREFIX, jsonFileParser} from '../../composables/file-upload.js';
-import {useTeamStore} from '../../store/team-store.js';
-import {useMechStore} from '../../store/mech-store.js';
-import {decodeArmyListJsonFromUrl} from '../../composables/url-data-parser.js';
-
-const teamStore = useTeamStore();
-const mechStore = useMechStore(IMPORT_PREFIX);
+import {jsonFileParser} from '../../composables/file-upload.js';
+import ModalDataUrlImport from './Modal/ModalDataUrlImport.vue';
 
 const fileUpload = useTemplateRef('file-upload');
 const fileImport = useTemplateRef('file-import');
-const urlImportString = ref('');
+const modalImportMechs = useTemplateRef('modal-import-mechs');
 
 const importModalVisible = ref(false);
 const dataUrlModalVisible = ref(false);
@@ -24,24 +19,13 @@ const fileUploadChange = jsonFileParser((jsonData) => {
 });
 
 const fileImportChange = jsonFileParser((jsonData) => {
-  loadSaveFileData(jsonData, IMPORT_PREFIX);
-  importModalVisible.value = true;
+  modalImportMechs.value.importJsonData(jsonData);
   fileImport.value.value = null;
 });
 
-function importMechs(mechs) {
-  toRaw(mechs).forEach(({mechId, teamId}) => {
-    const mech = mechStore.getMech(mechId);
-    teamStore.addMechToTeamFromLoadedFile(mech, teamId);
-  });
-}
-
-function importFromUrl() {
-  const jsonData = decodeArmyListJsonFromUrl(urlImportString.value);
-  loadSaveFileData(jsonData, IMPORT_PREFIX);
-  importModalVisible.value = true;
-  urlImportString.value = '';
-}
+const onImportFromUrlData = (jsonData) => {
+  modalImportMechs.value.importJsonData(jsonData);
+};
 </script>
 <template>
   <input ref="file-upload" type="file" @change="fileUploadChange" accept="application/json" hidden>
@@ -68,27 +52,12 @@ function importFromUrl() {
       Import HE-Vs from Data URL
     </BDropdownItem>
   </BDropdown>
-  <ModalImportMechs
-      v-model="importModalVisible"
-      @import-mechs="importMechs"
-  />
-  <BModal
-      lazy
+  <ModalDataUrlImport
       v-model="dataUrlModalVisible"
-      size="lg"
-      ok-variant="secondary"
-      @ok="importFromUrl"
-  >
-    <template #title>
-      <strong>
-        Importing HE-Vs
-      </strong>
-    </template>
-
-    <template #default>
-      <div class="fw-bold">Pase Data Url here</div>
-      <BFormTextarea v-model="urlImportString"/>
-    </template>
-
-  </BModal>
+      @data-url-success="onImportFromUrlData"
+  />
+  <ModalImportMechs
+      ref="modal-import-mechs"
+      v-model="importModalVisible"
+  />
 </template>

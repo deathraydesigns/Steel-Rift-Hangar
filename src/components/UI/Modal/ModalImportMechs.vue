@@ -1,34 +1,37 @@
 <script setup>
 import {computed, reactive, toRaw} from 'vue';
 import {BDropdown, BModal} from 'bootstrap-vue-next';
-import HEVCard from '../ArmyPrint/ArmyPrintCards/HEVCard.vue';
-import {MECH_TEAMS, TEAM_SHELF} from '../../data/mech-teams.js';
-import {useMechStore} from '../../store/mech-store.js';
-import TeamDropDownItems from './TeamDropDownItems.vue';
-import {IMPORT_PREFIX} from '../../composables/file-upload.js';
-import {useArmyListStore} from '../../store/army-list-store.js';
-import {useTeamStore} from '../../store/team-store.js';
+import HEVCard from '../../ArmyPrint/ArmyPrintCards/HEVCard.vue';
+import {MECH_TEAMS, TEAM_SHELF} from '../../../data/mech-teams.js';
+import {useMechStore} from '../../../store/mech-store.js';
+import TeamDropDownItems from '../TeamDropDownItems.vue';
+import {useArmyListStore} from '../../../store/army-list-store.js';
+import {useTeamStore} from '../../../store/team-store.js';
+import {disposeStores, loadSaveFileData} from '../../../store/helpers/store-save-load.js';
+
+const IMPORT_PREFIX = 'import';
 
 const mechStore = useMechStore(IMPORT_PREFIX);
 const teamStore = useTeamStore(IMPORT_PREFIX);
 const armyListStore = useArmyListStore(IMPORT_PREFIX);
 
-const emit = defineEmits(['import-mechs']);
+const appTeamStore = useTeamStore();
+
 const visible = defineModel(false);
-const mechsImports = reactive(new Map());
+const mechImports = reactive(new Map());
 
 const mechList = computed(() => {
   return mechStore.mechs.map(mech => {
 
     mech = toRaw(mech);
-    const existing = mechsImports.get(mech.id);
+    const existing = mechImports.get(mech.id);
     const {teamId} = teamStore.getMechTeamAndGroupIds(mech.id);
     const targetTeamId = existing?.teamId || mech.preferred_team_id || teamId;
 
     return {
       mechId: mech.id,
       willImport: existing?.import,
-      currentTeam: MECH_TEAMS[teamId],
+      shelved: teamId === TEAM_SHELF,
       preferredTeam: MECH_TEAMS[mech.preferred_team_id],
       targetTeam: MECH_TEAMS[targetTeamId],
     };
@@ -36,12 +39,12 @@ const mechList = computed(() => {
 });
 
 function add(mechId, teamId) {
-  const existing = mechsImports.get(mechId);
+  const existing = mechImports.get(mechId);
   if (existing) {
     existing.teamId = teamId;
     existing.import = true;
   } else {
-    mechsImports.set(mechId, {
+    mechImports.set(mechId, {
       mechId,
       teamId,
       import: true,
@@ -49,18 +52,45 @@ function add(mechId, teamId) {
   }
 }
 
+function addAll() {
+  mechList.value.forEach(({mechId, preferredTeam}) => {
+    const existing = mechImports.get(mechId);
+    if (existing) {
+      existing.import = true;
+      return;
+    }
+
+    add(mechId, preferredTeam.id);
+  });
+}
+
+function resetAll() {
+  [...mechImports.keys()].forEach((key) => mechImports.delete(key));
+}
+
 function remove(mechId) {
-  const existing = mechsImports.get(mechId);
+  const existing = mechImports.get(mechId);
   existing.import = false;
 }
 
-function onHidden() {
-  mechsImports.value = new Map();
-}
+defineExpose({
+  importJsonData(jsonData) {
+    loadSaveFileData(jsonData, IMPORT_PREFIX);
+    visible.value = true;
+  },
+});
 
 function importSelectedMechs() {
-  emit('import-mechs', [...mechsImports.values()].filter((item) => item.import));
+  const mechs = [...mechImports.values()].filter(item => item.import);
+
+  toRaw(mechs).forEach(({mechId, teamId}) => {
+    const mech = mechStore.getMech(mechId);
+    appTeamStore.addMechToTeamFromLoadedFile(mech, teamId);
+  });
+
+  disposeStores(IMPORT_PREFIX);
 }
+
 </script>
 <template>
   <BModal
@@ -69,7 +99,7 @@ function importSelectedMechs() {
       size="xl"
       ok-variant="secondary"
       @ok="importSelectedMechs"
-      @hidden="onHidden"
+      @hidden="resetAll"
   >
     <template #title>
       <strong>
@@ -102,15 +132,16 @@ function importSelectedMechs() {
 
           <div class="card-footer">
             <div class="p-2">
-              <template v-if="item.currentTeam.id === TEAM_SHELF">
+              <template v-if="item.shelved">
                 <strong>Preferred Team:</strong>
-                {{ item.preferredTeam.display_name }}
-                <Icon :name="item.preferredTeam.icon"/>
               </template>
               <template v-else>
                 <strong>Current Team:</strong>
-                {{ item.currentTeam.display_name }}
-                <Icon :name="item.currentTeam.icon"/>
+              </template>
+              {{ item.preferredTeam.display_name }}
+              <Icon :name="item.preferredTeam.icon"/>
+              <template v-if="item.shelved">
+                (shelved)
               </template>
             </div>
             <button
@@ -149,7 +180,13 @@ function importSelectedMechs() {
 
           </div>
         </div>
+        <div class="p-1">
+
+          <button class="btn btn-primary me-1" @click="addAll">Add All</button>
+          <button class="btn btn-danger" @click="resetAll">Reset All</button>
+        </div>
       </div>
+
     </template>
   </BModal>
 </template>
