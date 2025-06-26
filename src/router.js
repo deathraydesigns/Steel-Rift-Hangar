@@ -20,7 +20,7 @@ const routes = [
     },
     {
         name: ROUTE_ARMY_LIST_DATA,
-        path: '/army-list-data=:urlData',
+        path: '/army-list-data',
         component: ArmyListUrlDataLoader,
     },
 ];

@@ -9,7 +9,7 @@ import {onMounted} from 'vue';
 const route = useRoute();
 
 onMounted(() => {
-  const dataString = route.params.urlData;
+  const dataString = route.query.payload;
 
   try {
     const json = urlDataStringToJson(dataString);

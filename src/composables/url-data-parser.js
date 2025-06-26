@@ -6,10 +6,11 @@ export function makeArmyListDataUrl(data) {
 
     const route = router.resolve({
         name: ROUTE_ARMY_LIST_DATA,
-        params: {urlData: encodedJson},
+        query: {payload: encodedJson},
     });
 
-    return new URL(route.href, window.location.origin + import.meta.env.BASE_URL).href;
+    const base = window.location.origin + import.meta.env.BASE_URL;
+    return new URL(route.href, base).href;
 }
 
 export function urlDataStringToJson(dataString) {

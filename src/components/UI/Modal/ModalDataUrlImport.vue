@@ -36,10 +36,24 @@ function tryOrInvalid(cb, errorMessage) {
 };
 
 function submit() {
+  const baseUrl = import.meta.env.BASE_URL;
+
   try {
-    const path = tryOrInvalid(
-        () => new URL(urlImportString.value).pathname,
-        'Not a URL'
+    let url = tryOrInvalid(() => new URL(urlImportString.value), 'Not a URL');
+
+    let path = tryOrInvalid(
+        () => {
+          let path = url.pathname;
+          if (path.startsWith(baseUrl)) {
+            return path.slice(baseUrl.length);
+          }
+        },
+        'Invalid URL Path',
+    );
+
+    let dataString = tryOrInvalid(
+        () => new URLSearchParams(url.search).get('payload'),
+        'Invalid URL Query Parameter',
     );
 
     const resolvedRoute = router.resolve(path);
@@ -47,10 +61,9 @@ function submit() {
       throw makeInvalidError('Incorrect Path');
     }
 
-    const dataString = resolvedRoute.params.urlData;
     const json = tryOrInvalid(
         () => urlDataStringToJson(dataString),
-        'Invalid JSON'
+        'Invalid JSON',
     );
 
     emit('data-url-success', json);
@@ -63,7 +76,6 @@ function submit() {
   }
 }
 </script>
-
 <template>
   <BModal
       lazy
