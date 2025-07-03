@@ -12,44 +12,60 @@ import MineDroneCard from './ArmyPrintCards/MineDroneCard.vue';
 import FactionPerkCard from './ArmyPrintCards/FactionPerkCard.vue';
 import SupportAssetWeaponCard from './ArmyPrintCards/SupportAssetWeaponCard.vue';
 import SupportAssetUnitCard from './ArmyPrintCards/SupportAssetUnitCard.vue';
-import {sortBy} from 'es-toolkit';
+import {flatMap, sortBy} from 'es-toolkit';
 import MSOECard from './ArmyPrintCards/MSOECard.vue';
 
 const printSettingsStore = usePrintSettingsStore();
 const teamStore = useTeamStore();
-const mechStore = useMechStore();
 const factionStore = useFactionStore();
 const supportAssetWeaponsStore = useSupportAssetWeaponsStore();
 const supportAssetUnitsStore = useSupportAssetUnitsStore();
 
+function getMechCardsByTeam() {
+  let results = {};
+
+  teamStore.non_shelf_teams.forEach(team => {
+    const teamMechIds = teamStore.getTeamMechIds(team.id);
+    if (teamMechIds.length) {
+      results[team.id] = mechIdsToCards(teamMechIds);
+    }
+  });
+
+  return results;
+}
+
 const pages = computed(() => {
 
+  const mechCardsByTeam = getMechCardsByTeam();
+
   if (printSettingsStore.one_team_per_page) {
-    let pages = [];
-
-    teamStore.teams.forEach(team => {
-      const teamMechIds = teamStore.getTeamMechIds(team.id);
-      if (teamMechIds.length) {
-
-        const cards = mechIdsToCards(teamMechIds);
-        pages = pages.concat(chunk(cards, 9));
-      }
+    let cardPages = [];
+    Object.values(mechCardsByTeam).forEach(mechCards => {
+      const teamPages = chunk(mechCards, 9);
+      cardPages = cardPages.concat(teamPages);
     });
 
     const refPages = chunk(referenceCards.value, 9);
-    return pages.concat(refPages);
+    return [
+      ...cardPages,
+      ...refPages,
+    ];
   }
 
-  const mechIds = mechStore.mechs.map(mech => mech.id);
-
-  let cards = mechIdsToCards(mechIds);
-
+  let cards = flatMap(Object.values(mechCardsByTeam), (cards) => cards);
   if (printSettingsStore.separate_reference_cards_page) {
+    const cardPages = chunk(cards, 9);
     const refPages = chunk(referenceCards.value, 9);
-    return chunk(cards, 9).concat(refPages);
+    return [
+      ...cardPages,
+      ...refPages,
+    ];
   }
 
-  cards = cards.concat(referenceCards.value);
+  cards = [
+    ...cards,
+    ...referenceCards.value,
+  ];
   return chunk(cards, 9);
 
 });
@@ -112,7 +128,7 @@ const supportAssetPages = computed(() => {
 
   });
 
-  cards = sortBy(cards, ['cardSize'])
+  cards = sortBy(cards, ['cardSize']);
 
   supportAssetWeaponsStore.support_asset_weapon_ids.forEach(supportAssetId => {
     cards.push({
