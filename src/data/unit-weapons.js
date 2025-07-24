@@ -1,4 +1,5 @@
 import {
+    TRAIT_ANTI_AIR,
     TRAIT_AP,
     TRAIT_BLAST,
     TRAIT_CONCUSSIVE,
@@ -93,6 +94,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds({
             trait(TRAIT_LIGHT),
             trait(TRAIT_FLAK),
             trait(TRAIT_KINETIC),
+            trait(TRAIT_ANTI_AIR)
         ],
     }),
     [[DOZER_BLADE]]: makeWeapon({
