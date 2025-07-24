@@ -8,6 +8,7 @@ import {filterUniqueById, findById, findItemIndexById} from './helpers/collectio
 import {
     freshUnitTrait,
     TRAIT_GARRISON,
+    TRAIT_SQUADRON,
     TRAIT_SUPPORT_MINE_DRONE_LAYER,
     TRAIT_UL_HEV_LAUNCH_GEAR,
     UNIT_TRAITS,
@@ -166,6 +167,11 @@ export const useSupportAssetUnitsStore = (prefix = '') => (defineStore(prefix + 
             }
 
             return weapons;
+        }
+
+        function isSquadron(unitAttachmentId) {
+            const info = getUnitAttachmentInfo(unitAttachmentId);
+            return info.traits.find(trait => trait.id === TRAIT_SQUADRON);
         }
 
         function getAllUnitTraits() {
@@ -762,6 +768,7 @@ export const useSupportAssetUnitsStore = (prefix = '') => (defineStore(prefix + 
             getUnitAttachmentGarrisonGrantedOrdersCollection,
             getAllUnitTraits,
             getAllWeaponTraitsCollection,
+            isSquadron,
 
             setUnitVehicleGarrisonChoice,
             setUnitUpgradePod,
