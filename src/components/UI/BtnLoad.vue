@@ -1,10 +1,13 @@
 <script setup>
 import {ref, useTemplateRef} from 'vue';
-import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
+import {BDropdown, BDropdownHeader, BDropdownItem} from 'bootstrap-vue-next';
 import ModalImportMechs from './Modal/ModalImportMechs.vue';
-import {loadSaveFileData} from '../../store/helpers/store-save-load.js';
+import {loadSaveFileData, resetStores} from '../../store/helpers/store-save-load.js';
 import {jsonFileParser} from '../../composables/file-upload.js';
 import ModalDataUrlImport from './Modal/ModalDataUrlImport.vue';
+import {HEV_PACKS} from '../../data/hev-packs.js';
+import {useMechStore} from '../../store/mech-store.js';
+import {useTeamStore} from '../../store/team-store.js';
 
 const fileUpload = useTemplateRef('file-upload');
 const fileImport = useTemplateRef('file-import');
@@ -26,6 +29,21 @@ const fileImportChange = jsonFileParser((jsonData) => {
 const onImportFromUrlData = (jsonData) => {
   modalImportMechs.value.importJsonData(jsonData);
 };
+
+function importHevPack(quickBuild) {
+  const IMPORT_PREFIX = 'quick-build';
+  const mechStore = useMechStore(IMPORT_PREFIX);
+  loadSaveFileData(quickBuild.data, IMPORT_PREFIX);
+
+  const appTeamStore = useTeamStore();
+  mechStore.mechs.forEach(({id}) => {
+    const mech = mechStore.getMech(id);
+    appTeamStore.addMechToTeamFromLoadedFile(mech, quickBuild.team_id);
+  });
+
+  resetStores(IMPORT_PREFIX);
+}
+
 </script>
 <template>
   <input ref="file-upload" type="file" @change="fileUploadChange" accept="application/json" hidden>
@@ -50,6 +68,13 @@ const onImportFromUrlData = (jsonData) => {
     <BDropdownItem @click="dataUrlModalVisible = true">
       <span class="material-symbols-outlined">place_item</span>
       Import HE-Vs from Data URL
+    </BDropdownItem>
+    <BDropdownHeader>
+      Import Quick Builds
+    </BDropdownHeader>
+    <BDropdownItem v-for="item in HEV_PACKS" @click="importHevPack(item)">
+      <span class="material-symbols-outlined">place_item</span>
+      {{ item.name }}
     </BDropdownItem>
   </BDropdown>
   <ModalDataUrlImport
