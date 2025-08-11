@@ -49,7 +49,7 @@ import {TYPE_HEV} from '../data/unit-types.js';
 import {makeGrantedOrderCollection} from './helpers/helpers.js';
 import {toaster} from '../toaster.js';
 import {useValidationStore} from './validation-store.js';
-import {TEAM_SHELF, TEAM_GENERAL} from '../data/mech-teams.js';
+import {TEAM_GENERAL, TEAM_SHELF} from '../data/mech-teams.js';
 
 export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
         state() {
@@ -66,6 +66,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                         armor_upgrade_id,
                         mobility_id,
                         preferred_team_id,
+                        name,
                     }) {
 
                 const teamStore = useTeamStore();
@@ -80,7 +81,7 @@ export const useMechStore = (prefix = '') => (defineStore(prefix + 'mech', {
                 let id = this.mechs_id_increment++;
                 let mech = {
                     id,
-                    name: null,
+                    name,
                     size_id,
                     structure_mod_id,
                     armor_mod_id,

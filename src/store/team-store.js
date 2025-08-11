@@ -640,6 +640,7 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
                 armor_upgrade_id,
                 mobility_id,
                 preferred_team_id,
+                name,
 
                 weapons,
                 upgrades,
@@ -652,6 +653,7 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
                 armor_upgrade_id,
                 mobility_id,
                 preferred_team_id,
+                name,
             };
 
             const weaponIds = weapons.map(weapon => weapon.weapon_id);
