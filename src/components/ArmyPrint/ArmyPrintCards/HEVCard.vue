@@ -1,27 +1,28 @@
 <script setup>
 
 import {useMechStore} from '../../../store/mech-store.js';
-import {computed, provide} from 'vue';
+import {computed} from 'vue';
 import HEVCardWeapons from './HEVCard/HEVCardWeapons.vue';
 import HEVCardUpgrades from './HEVCard/HEVCardUpgrades.vue';
 import HEVCardStats from './HEVCard/HEVCardStats.vue';
 import HEVCardHp from './HEVCard/HEVCardHp.vue';
 import CardHeader from './CardParts/CardHeader.vue';
 import CardFooter from './CardParts/CardFooter.vue';
+import {setComponentScope} from 'pinia-scope';
 
-const {mechId, storePrefix} = defineProps({
+const {mechId, storeScope} = defineProps({
   mechId: {
     type: Number,
     required: true,
   },
-  storePrefix: {
+  storeScope: {
     type: String,
     default: '',
   },
 });
 
-provide('store-prefix', storePrefix);
-const mechStore = useMechStore(storePrefix);
+setComponentScope(storeScope);
+const mechStore = useMechStore(storeScope);
 
 const info = computed(() => mechStore.getMechInfo(mechId));
 

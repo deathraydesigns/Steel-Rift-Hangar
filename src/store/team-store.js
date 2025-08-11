@@ -1,4 +1,3 @@
-import {defineStore} from 'pinia';
 import {computed, ref} from 'vue';
 import {findItemIndexById, move, setDisplayOrders} from './helpers/collection-helper.js';
 import {
@@ -19,11 +18,12 @@ import {MECH_TEAM_PERKS} from '../data/mech-team-perks.js';
 import {MECH_SIZES, SIZE_HEAVY, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {WEAPON_TRAITS} from '../data/weapon-traits.js';
 import {ifEmptyString, makeUniqueItemIdCollection} from './helpers/helpers.js';
+import {defineScopeableStore} from 'pinia-scope';
 
-export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () => {
+export const useTeamStore = defineScopeableStore('team', ({scope}) => {
 
-        const mechStore = useMechStore(prefix);
-        const armyListStore = useArmyListStore(prefix);
+        const mechStore = useMechStore(scope);
+        const armyListStore = useArmyListStore(scope);
 
         const teams = ref([makeGeneralTeam(), makeShelfTeam()]);
 
@@ -845,14 +845,16 @@ export const useTeamStore = (prefix = '') => (defineStore(prefix + 'team', () =>
             $reset,
         };
     },
-    {
-        persist: ifEmptyString(prefix, {
-            afterHydrate: (ctx) => {
-                ctx.store.afterHydrate();
-            },
-        }),
+    (scope) => {
+        return {
+            persist: ifEmptyString(scope, {
+                afterHydrate: (ctx) => {
+                    ctx.store.afterHydrate();
+                },
+            }),
+        };
     },
-)());
+);
 
 function perkIdsToInfo(perkIds) {
     const grouped = groupBy(perkIds, (perkId) => perkId);

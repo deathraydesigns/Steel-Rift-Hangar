@@ -1,6 +1,7 @@
 import {createApp} from 'vue';
 import {createPinia} from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import {attachPiniaScope} from 'pinia-scope';
 
 import {createBootstrap} from 'bootstrap-vue-next';
 import App from './App.vue';
@@ -18,6 +19,7 @@ const bootstrap = createBootstrap({
 });
 
 pinia.use(piniaPluginPersistedstate);
+attachPiniaScope(pinia)
 
 app.config.performance = true;
 app.use(router);

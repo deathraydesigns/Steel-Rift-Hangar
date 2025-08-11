@@ -1,4 +1,3 @@
-import {defineStore} from 'pinia';
 import {computed, ref} from 'vue';
 import {useMechStore} from './mech-store.js';
 import {GAME_SIZES, getGameSizeId} from '../data/game-sizes.js';
@@ -10,10 +9,11 @@ import {find} from 'es-toolkit/compat';
 import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
 import {TRAIT_MSOE_LAUNCHER} from '../data/unit-traits.js';
 import {ORDER_SUPPORT_MSOE} from '../data/orders/support-orders.js';
+import {defineScopeableStore} from 'pinia-scope';
 
-export const useArmyListStore = (prefix = '') => (defineStore(prefix + 'army-list', () => {
-        const supportAssetWeaponsStore = useSupportAssetWeaponsStore(prefix);
-        const supportAssetUnitStore = useSupportAssetUnitsStore(prefix);
+export const useArmyListStore = defineScopeableStore('army-list', ({scope}) => {
+        const supportAssetWeaponsStore = useSupportAssetWeaponsStore(scope);
+        const supportAssetUnitStore = useSupportAssetUnitsStore(scope);
 
         const defaultArmyName = '';
         const defaultMaxTons = 100;
@@ -26,8 +26,8 @@ export const useArmyListStore = (prefix = '') => (defineStore(prefix + 'army-lis
             max_tons.valie = defaultMaxTons;
         }
 
-        const mechStore = useMechStore(prefix);
-        const supportAssetCounts = useSupportAssetCountsStore(prefix);
+        const mechStore = useMechStore(scope);
+        const supportAssetCounts = useSupportAssetCountsStore(scope);
 
         const game_size_id = computed(() => getGameSizeId(max_tons.value));
         const game_size_info = computed(() => GAME_SIZES[game_size_id.value]);
@@ -75,6 +75,8 @@ export const useArmyListStore = (prefix = '') => (defineStore(prefix + 'army-lis
             $reset,
         };
     },
-    {
-        persist: prefix === '',
-    }))();
+    (scope) => {
+        return {
+            persist: scope === '',
+        };
+    });

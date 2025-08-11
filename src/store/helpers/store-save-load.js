@@ -9,29 +9,30 @@ import {useSupportAssetUnitsStore} from '../support-asset-units-store.js';
 import {MOBILITY_BI_PEDAL} from '../../data/mech-mobility.js';
 import {ULTRA_LIGHT_HEV_SQUADRON} from '../../data/support-assets/ultra-light-hev-squadron.js';
 import {TEAM_SHELF} from '../../data/mech-teams.js';
+import {getStoreUnscopedId} from 'pinia-scope';
 
-function getStores(prefix = '') {
+function getStores(scope = '') {
     return [
-        useMechStore(prefix),
-        useFactionStore(prefix),
-        useTeamStore(prefix),
-        useSupportAssetCountsStore(prefix),
-        useSupportAssetWeaponsStore(prefix),
-        useSupportAssetUnitsStore(prefix),
-        useArmyListStore(prefix),
-        usePrintSettingsStore(prefix),
+        useMechStore(scope),
+        useFactionStore(scope),
+        useTeamStore(scope),
+        useSupportAssetCountsStore(scope),
+        useSupportAssetWeaponsStore(scope),
+        useSupportAssetUnitsStore(scope),
+        useArmyListStore(scope),
+        usePrintSettingsStore(scope),
     ];
 }
 
-export function resetStores(prefix = '') {
+export function resetStores(scope = '') {
     window.localStorage.clear();
-    getStores(prefix).forEach((store) => {
+    getStores(scope).forEach((store) => {
         store.$reset();
     });
 }
 
-export function disposeStores(prefix = '') {
-    getStores(prefix).forEach((store) => {
+export function disposeStores(scope = '') {
+    getStores(scope).forEach((store) => {
         store.$dispose();
     });
 }
@@ -53,15 +54,12 @@ export function makeSaveFileData() {
     return result;
 }
 
-export function loadSaveFileData(data, prefix = '') {
+export function loadSaveFileData(data, scope = '') {
 
     data = migrateLoadData(data);
 
-    getStores(prefix).forEach((store) => {
-        let storeId = store.$id;
-        if (storeId.startsWith(prefix)) {
-            storeId = storeId.slice(prefix.length);
-        }
+    getStores(scope).forEach((store) => {
+        const storeId = getStoreUnscopedId(store)
         store.$reset();
         store.$patch(data[storeId]);
         if (store.afterHydrate) {

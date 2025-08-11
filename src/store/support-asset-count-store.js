@@ -1,16 +1,16 @@
-import {defineStore} from 'pinia';
 import {computed, ref} from 'vue';
 import {useArmyListStore} from './army-list-store.js';
 import {GAME_SIZES} from '../data/game-sizes.js';
 import {useSupportAssetUnitsStore} from './support-asset-units-store.js';
 import {useSupportAssetWeaponsStore} from './support-asset-weapons-store.js';
+import {defineScopeableStore} from 'pinia-scope';
 
-export const useSupportAssetCountsStore = (prefix = '') => (defineStore(prefix + 'support-asset-counts', () => {
+export const useSupportAssetCountsStore = defineScopeableStore('support-asset-counts', ({scope}) => {
 
-        const armyList = useArmyListStore(prefix);
+        const armyList = useArmyListStore(scope);
 
-        const supportAssetUnits = useSupportAssetUnitsStore(prefix);
-        const supportAssetWeapons = useSupportAssetWeaponsStore(prefix);
+        const supportAssetUnits = useSupportAssetUnitsStore(scope);
+        const supportAssetWeapons = useSupportAssetWeaponsStore(scope);
 
         const custom_max_support_assets = ref(null);
 
@@ -41,7 +41,9 @@ export const useSupportAssetCountsStore = (prefix = '') => (defineStore(prefix +
             $reset,
         };
     },
-    {
-        persist: prefix === '',
+    (scope) => {
+        return {
+            persist: scope === '',
+        };
     },
-))();
+);

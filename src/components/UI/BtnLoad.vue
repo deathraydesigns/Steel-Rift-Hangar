@@ -2,12 +2,13 @@
 import {ref, useTemplateRef} from 'vue';
 import {BDropdown, BDropdownHeader, BDropdownItem} from 'bootstrap-vue-next';
 import ModalImportMechs from './Modal/ModalImportMechs.vue';
-import {loadSaveFileData, resetStores} from '../../store/helpers/store-save-load.js';
+import {loadSaveFileData} from '../../store/helpers/store-save-load.js';
 import {jsonFileParser} from '../../composables/file-upload.js';
 import ModalDataUrlImport from './Modal/ModalDataUrlImport.vue';
 import {HEV_PACKS} from '../../data/hev-packs.js';
 import {useMechStore} from '../../store/mech-store.js';
 import {useTeamStore} from '../../store/team-store.js';
+import {disposeOfPiniaScope} from 'pinia-scope';
 
 const fileUpload = useTemplateRef('file-upload');
 const fileImport = useTemplateRef('file-import');
@@ -31,9 +32,9 @@ const onImportFromUrlData = (jsonData) => {
 };
 
 function importHevPack(quickBuild) {
-  const IMPORT_PREFIX = 'quick-build';
-  const mechStore = useMechStore(IMPORT_PREFIX);
-  loadSaveFileData(quickBuild.data, IMPORT_PREFIX);
+  const SCOPE = 'quick-build';
+  const mechStore = useMechStore(SCOPE);
+  loadSaveFileData(quickBuild.data, SCOPE);
 
   const appTeamStore = useTeamStore();
   mechStore.mechs.forEach(({id}) => {
@@ -41,7 +42,7 @@ function importHevPack(quickBuild) {
     appTeamStore.addMechToTeamFromLoadedFile(mech, quickBuild.team_id);
   });
 
-  resetStores(IMPORT_PREFIX);
+  disposeOfPiniaScope(SCOPE)
 }
 
 </script>

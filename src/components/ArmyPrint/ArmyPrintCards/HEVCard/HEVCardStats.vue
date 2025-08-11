@@ -1,13 +1,11 @@
 <script setup>
-import {computed, inject} from 'vue';
+import {computed} from 'vue';
 import {useTeamStore} from '../../../../store/team-store.js';
 import {useMechStore} from '../../../../store/mech-store.js';
-import {TEAM_GENERAL} from '../../../../data/mech-teams.js';
 import FormatInches from '../../../functional/format-inches.vue';
-const prefix = inject('store-prefix', '')
 
-const mechStore = useMechStore(prefix);
-const teamStore = useTeamStore(prefix);
+const mechStore = useMechStore();
+const teamStore = useTeamStore();
 
 const {mechId} = defineProps({
   mechId: {

@@ -1,4 +1,3 @@
-import {defineStore} from 'pinia';
 import {computed, readonly, ref} from 'vue';
 import {
     DWC_OUTRAGEOUS_SUPPORT_BUDGET,
@@ -15,8 +14,9 @@ import {
     RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS,
 } from '../data/factions.js';
 import {find} from 'es-toolkit/compat';
+import {defineScopeableStore} from 'pinia-scope';
 
-export const useFactionStore = (prefix = '') => (defineStore(prefix + 'faction', () => {
+export const useFactionStore = defineScopeableStore('faction', ({scope}) => {
 
         const defaultFactionId = NO_FACTION;
 
@@ -198,7 +198,9 @@ export const useFactionStore = (prefix = '') => (defineStore(prefix + 'faction',
             $reset,
         };
     },
-    {
-        persist: prefix === '',
+    (scope) => {
+        return {
+            persist: scope === '',
+        };
     },
-))();
+);

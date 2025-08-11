@@ -1,4 +1,4 @@
-import {defineStore, storeToRefs} from 'pinia';
+import {storeToRefs} from 'pinia';
 import {computed, readonly, ref, watch} from 'vue';
 import {sumBy} from 'es-toolkit/compat';
 import {useFactionStore} from './faction-store.js';
@@ -11,11 +11,12 @@ import {
     TEAM_PERK_DIRECTIONAL_ASSETS,
     TEAM_PERK_SUPPORT_ASSET_DAMAGE,
 } from '../data/mech-team-perks.js';
+import {defineScopeableStore} from 'pinia-scope';
 
-export const useSupportAssetWeaponsStore = (prefix = '') => (defineStore(prefix + 'weapon-support-asset', () => {
+export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-asset', ({scope}) => {
 
-        const factionStore = useFactionStore(prefix);
-        const teamStore = useTeamStore(prefix);
+        const factionStore = useFactionStore(scope);
+        const teamStore = useTeamStore(scope);
 
         const outrageous_budget_perk_support_asset_id = ref(null);
         const support_asset_weapon_ids = ref([]);
@@ -166,7 +167,9 @@ export const useSupportAssetWeaponsStore = (prefix = '') => (defineStore(prefix 
             $reset,
         };
     },
-    {
-        persist: prefix === '',
+    (scope) => {
+        return {
+            persist: scope === '',
+        };
     },
-))();
+);

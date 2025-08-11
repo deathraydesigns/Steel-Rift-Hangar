@@ -1,4 +1,3 @@
-import {defineStore} from 'pinia';
 import {computed} from 'vue';
 import {useFactionStore} from './faction-store.js';
 import {FACTIONS} from '../data/factions.js';
@@ -15,13 +14,14 @@ import {useArmyListStore} from './army-list-store.js';
 import {useMechStore} from './mech-store.js';
 import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA} from '../data/unit-sizes.js';
 import {countBy} from 'es-toolkit';
+import {defineScopeableStore} from 'pinia-scope';
 
-export const useSecondaryAgendaStore = (prefix = '') => (defineStore(prefix + 'secondary-agenda', () => {
+export const useSecondaryAgendaStore = defineScopeableStore( 'secondary-agenda', ({scope}) => {
 
-    const factionStore = useFactionStore(prefix);
-    const teamStore = useTeamStore(prefix);
-    const armyListStore = useArmyListStore(prefix);
-    const mechStore = useMechStore(prefix);
+    const factionStore = useFactionStore(scope);
+    const teamStore = useTeamStore(scope);
+    const armyListStore = useArmyListStore(scope);
+    const mechStore = useMechStore(scope);
 
     function $reset() {
 
@@ -93,4 +93,4 @@ export const useSecondaryAgendaStore = (prefix = '') => (defineStore(prefix + 's
         secondary_agendas,
         $reset,
     };
-}))();
+});

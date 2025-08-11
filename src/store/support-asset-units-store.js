@@ -1,4 +1,3 @@
-import {defineStore} from 'pinia';
 import {computed, readonly, ref} from 'vue';
 import {SUPPORT_ASSET_UNITS} from '../data/support-asset-units.js';
 import {freshWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT, WEAPON_TRAITS} from '../data/weapon-traits.js';
@@ -21,8 +20,9 @@ import {TYPE_INFANTRY, UNIT_TYPES} from '../data/unit-types.js';
 import {INFANTRY_OUTPOST} from '../data/support-assets/infantry-outpost.js';
 import {makeGrantedOrderCollection, makeUniqueItemIdCollection} from './helpers/helpers.js';
 import {INFANTRY_ORDERS_DATA} from '../data/orders/infantry-orders.js';
+import {defineScopeableStore} from 'pinia-scope';
 
-export const useSupportAssetUnitsStore = (prefix = '') => (defineStore(prefix + 'support-asset-units', () => {
+export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-units', ({scope}) => {
 
         const support_asset_units = ref([]);
         const support_asset_units_id_increment = ref(0);
@@ -781,7 +781,9 @@ export const useSupportAssetUnitsStore = (prefix = '') => (defineStore(prefix + 
             $reset,
         };
     },
-    {
-        persist: prefix === '',
+    (scope) => {
+        return {
+            persist: scope === '',
+        };
     },
-))();
+);

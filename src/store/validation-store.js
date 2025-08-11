@@ -1,4 +1,3 @@
-import {defineStore} from 'pinia';
 import {computed} from 'vue';
 import {useArmyListStore} from './army-list-store.js';
 import {useTeamStore} from './team-store.js';
@@ -16,14 +15,15 @@ import {MECH_SIZES, SIZE_MEDIUM} from '../data/unit-sizes.js';
 import {MECH_ARMOR_UPGRADES} from '../data/mech-armor-upgrades.js';
 import {MECH_BODY_MODS} from '../data/mech-body.js';
 import {TEAM_PERK_COMBAT_BUCKLER} from '../data/mech-team-perks.js';
+import {defineScopeableStore} from 'pinia-scope';
 
-export const useValidationStore = (prefix = '') => (defineStore(prefix + 'validation', () => {
+export const useValidationStore = defineScopeableStore('validation', ({scope}) => {
 
-    const armyListStore = useArmyListStore(prefix);
-    const teamStore = useTeamStore(prefix);
-    const mechStore = useMechStore(prefix);
-    const supportAssetCountStore = useSupportAssetCountsStore(prefix);
-    const supportAssetUnitsStore = useSupportAssetUnitsStore(prefix);
+    const armyListStore = useArmyListStore(scope);
+    const teamStore = useTeamStore(scope);
+    const mechStore = useMechStore(scope);
+    const supportAssetCountStore = useSupportAssetCountsStore(scope);
+    const supportAssetUnitsStore = useSupportAssetUnitsStore(scope);
 
     function $reset() {
 
@@ -641,4 +641,4 @@ export const useValidationStore = (prefix = '') => (defineStore(prefix + 'valida
 
         $reset,
     };
-}))();
+});

@@ -7,13 +7,14 @@ import {useMechStore} from '../../../store/mech-store.js';
 import TeamDropDownItems from '../TeamDropDownItems.vue';
 import {useArmyListStore} from '../../../store/army-list-store.js';
 import {useTeamStore} from '../../../store/team-store.js';
-import {disposeStores, loadSaveFileData} from '../../../store/helpers/store-save-load.js';
+import {loadSaveFileData} from '../../../store/helpers/store-save-load.js';
+import {disposeOfPiniaScope} from 'pinia-scope';
 
-const IMPORT_PREFIX = 'import';
+const SCOPE = 'import';
 
-const mechStore = useMechStore(IMPORT_PREFIX);
-const teamStore = useTeamStore(IMPORT_PREFIX);
-const armyListStore = useArmyListStore(IMPORT_PREFIX);
+const mechStore = useMechStore(SCOPE);
+const teamStore = useTeamStore(SCOPE);
+const armyListStore = useArmyListStore(SCOPE);
 
 const appTeamStore = useTeamStore();
 
@@ -75,7 +76,7 @@ function remove(mechId) {
 
 defineExpose({
   importJsonData(jsonData) {
-    loadSaveFileData(jsonData, IMPORT_PREFIX);
+    loadSaveFileData(jsonData, SCOPE);
     visible.value = true;
   },
 });
@@ -88,7 +89,7 @@ function importSelectedMechs() {
     appTeamStore.addMechToTeamFromLoadedFile(mech, teamId);
   });
 
-  disposeStores(IMPORT_PREFIX);
+  disposeOfPiniaScope(SCOPE);
 }
 
 </script>
@@ -125,7 +126,7 @@ function importSelectedMechs() {
             <div class="output-container">
               <HEVCard
                   :mech-id="item.mechId"
-                  store-prefix="import"
+                  :store-scope="SCOPE"
               />
             </div>
           </div>

@@ -1,8 +1,9 @@
-import {defineStore, storeToRefs} from 'pinia';
+import {storeToRefs} from 'pinia';
 import {computed, ref, watch} from 'vue';
 import {useArmyListStore} from './army-list-store.js';
 import {useFactionStore} from './faction-store.js';
 import {ifEmptyString} from './helpers/helpers.js';
+import {defineScopeableStore} from 'pinia-scope';
 
 export const PRINT_MODE_CARDS = 'PRINT_MODE_CARDS';
 export const PRINT_MODE_REF = 'PRINT_MODE_REF';
@@ -14,7 +15,8 @@ export const PRINT_MODES = {
         display_name: 'Rules Reference',
     },
 };
-export const usePrintSettingsStore = (prefix = '') => (defineStore(prefix + 'print-settings', () => {
+
+export const usePrintSettingsStore = defineScopeableStore('print-settings', ({scope}) => {
 
         const one_team_per_page = ref(false);
         const include_army_name_on_cards = ref(true);
@@ -39,8 +41,8 @@ export const usePrintSettingsStore = (prefix = '') => (defineStore(prefix + 'pri
             separate_reference_cards_page.value = false;
         }
 
-        const {includes_mine_drones} = storeToRefs(useArmyListStore(prefix));
-        const {perk_1_id, perk_2_id} = storeToRefs(useFactionStore(prefix));
+        const {includes_mine_drones} = storeToRefs(useArmyListStore(scope));
+        const {perk_1_id, perk_2_id} = storeToRefs(useFactionStore(scope));
 
         watch(includes_mine_drones, () => {
             include_mine_drone_card.value = includes_mine_drones.value;
@@ -69,17 +71,19 @@ export const usePrintSettingsStore = (prefix = '') => (defineStore(prefix + 'pri
             $reset,
         };
     },
-    {
-        persist: ifEmptyString(prefix, {
-            pick: [
-                'one_team_per_page',
-                'include_army_name_on_cards',
-                'include_mine_drone_card',
-                'include_msoe_card',
-                'include_faction_perk_1_card',
-                'include_faction_perk_2_card',
-                'separate_reference_cards_page',
-            ],
-        }),
-    }))
-();
+    (scope) => {
+        return {
+            persist: ifEmptyString(scope, {
+                pick: [
+                    'one_team_per_page',
+                    'include_army_name_on_cards',
+                    'include_mine_drone_card',
+                    'include_msoe_card',
+                    'include_faction_perk_1_card',
+                    'include_faction_perk_2_card',
+                    'separate_reference_cards_page',
+                ],
+            }),
+        };
+    },
+);
