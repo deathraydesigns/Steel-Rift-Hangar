@@ -868,7 +868,7 @@ export const useMechStore = defineScopeableStore('mech', ({scope}) => {
 
         const getUsedUpgradeTraitIds = computed(() => {
             const traitIdMap = {};
-            mechs.forEach(mech => {
+            mechs.value.forEach(mech => {
                 mech.upgrades.forEach(upgrade => {
                     const traitInfo = getUpgradeTraitsInfo(mech.id, upgrade.upgrade_id);
                     const traitIds = map(traitInfo.traits, 'id');
