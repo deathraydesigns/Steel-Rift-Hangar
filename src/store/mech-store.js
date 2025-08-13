@@ -59,8 +59,8 @@ export const useMechStore = defineScopeableStore('mech', ({scope}) => {
         const mechs = ref([]);
         const mechs_id_increment = ref(1);
 
-        function $reset(){
-            mechs.value = []
+        function $reset() {
+            mechs.value = [];
             mechs_id_increment.value = 1;
         }
 
@@ -909,7 +909,7 @@ export const useMechStore = defineScopeableStore('mech', ({scope}) => {
                     upgrade.traits = [];
                     if (upgrade.traits_by_size) {
                         const entry = Object.values(upgrade.traits_by_size);
-                        upgrade.traits = [entry[0]];
+                        upgrade.traits = entry[0];
                     }
                 }
 
