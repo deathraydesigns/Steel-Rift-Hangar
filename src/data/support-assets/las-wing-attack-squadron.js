@@ -20,7 +20,7 @@ const baseStats = {
 };
 
 export const LAS_WING_ATTACK_SQUADRON_DATA = {
-    [[LAS_WING_ATTACK_SQUADRON]]: {
+    [LAS_WING_ATTACK_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_LIGHT,
         display_name: 'LAS-Wing Attack Squadron',

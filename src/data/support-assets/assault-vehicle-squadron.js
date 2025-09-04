@@ -37,7 +37,7 @@ const baseStats = {
     structure: 2,
 };
 export const ASSAULT_VEHICLE_SQUADRON_DATA = {
-    [[ASSAULT_VEHICLE_SQUADRON]]: {
+    [ASSAULT_VEHICLE_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_MEDIUM,
         display_name: 'Assault Vehicle Squadron',

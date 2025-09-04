@@ -30,74 +30,74 @@ export const TEAM_PERK_QUICKDRAW = 'TEAM_PERK_QUICKDRAW';
 export const TEAM_PERK_BARREL_EXTENSIONS = 'TEAM_PERK_BARREL_EXTENSIONS';
 
 export const MECH_TEAM_PERKS = makeTeamPerks({
-    [[TEAM_PERK_0_SLOT_TARGET_DESIGNATORS]]: makeMini(upgradeDisplayName(TARGET_DESIGNATOR)),
-    [[TEAM_PERK_0_TON_TARGET_DESIGNATORS]]: makeLightWeight(upgradeDisplayName(TARGET_DESIGNATOR)),
-    [[TEAM_PERK_0_SLOT_ECM]]: makeMini(upgradeDisplayName(ELECTRONIC_COUNTERMEASURES)),
-    [[TEAM_PERK_0_TON_ECM]]: makeLightWeight(upgradeDisplayName(ELECTRONIC_COUNTERMEASURES)),
-    [[TEAM_PERK_0_SLOT_ARMOR_UPGRADES]]: makeMini('Armor Upgrades'),
-    [[TEAM_PERK_0_TON_ARMOR_UPGRADES]]: makeLightWeight('Armor Upgrades'),
-    [[TEAM_PERK_0_SLOT_DIRECTIONAL_THRUSTERS]]: makeMini(upgradeDisplayName(DIRECTIONAL_THRUSTER)),
-    [[TEAM_PERK_SMART_HOWITZERS]]: {
+    [TEAM_PERK_0_SLOT_TARGET_DESIGNATORS]: makeMini(upgradeDisplayName(TARGET_DESIGNATOR)),
+    [TEAM_PERK_0_TON_TARGET_DESIGNATORS]: makeLightWeight(upgradeDisplayName(TARGET_DESIGNATOR)),
+    [TEAM_PERK_0_SLOT_ECM]: makeMini(upgradeDisplayName(ELECTRONIC_COUNTERMEASURES)),
+    [TEAM_PERK_0_TON_ECM]: makeLightWeight(upgradeDisplayName(ELECTRONIC_COUNTERMEASURES)),
+    [TEAM_PERK_0_SLOT_ARMOR_UPGRADES]: makeMini('Armor Upgrades'),
+    [TEAM_PERK_0_TON_ARMOR_UPGRADES]: makeLightWeight('Armor Upgrades'),
+    [TEAM_PERK_0_SLOT_DIRECTIONAL_THRUSTERS]: makeMini(upgradeDisplayName(DIRECTIONAL_THRUSTER)),
+    [TEAM_PERK_SMART_HOWITZERS]: {
         display_name: 'Smart Howitzers',
         description: 'Howitzers gain the Smart Trait.',
     },
-    [[TEAM_PERK_RECON_INITIATIVE]]: {
+    [TEAM_PERK_RECON_INITIATIVE]: {
         display_name: 'Recon Initiative',
         description: 'If one or more HE-Vs from this Team is within 18" of an enemy Deployment Edge or Corner, you gain +1 to the Initiative Roll.',
         visible_on_card: true,
     },
-    [[TEAM_PERK_SUPPORT_ASSET_DAMAGE]]: {
+    [TEAM_PERK_SUPPORT_ASSET_DAMAGE]: {
         display_name: 'OT Asset Damage',
         description: 'Off-Table Support Assets gain +1 to their Damage Rating.',
         visible_on_card: true,
     },
-    [[TEAM_PERK_DIRECTIONAL_ASSETS]]: {
+    [TEAM_PERK_DIRECTIONAL_ASSETS]: {
         display_name: 'Mobile OT Assets',
         description: 'When determining the origin of direction for an Off-Table Support Asset directed by a member of this team, it can be from any direction.',
         visible_on_card: true,
     },
-    [[TEAM_PERK_EXTRA_TONNAGE]]: {
+    [TEAM_PERK_EXTRA_TONNAGE]: {
         display_name: `Objective Tonnage (5)`,
         description: 'Team Units count as 5 Tons heavier for the purpose of the Security Objective.',
     },
-    [[TEAM_PERK_SIDE_DEFENSE]]: {
+    [TEAM_PERK_SIDE_DEFENSE]: {
         display_name: 'Side Defense',
         description: 'Enemy Units do not gain bonuses to their Damage Rating for Side Arcs.',
         visible_on_card: true,
     },
-    [[TEAM_PERK_FORWARD_DEPLOY_HEVS]]: {
+    [TEAM_PERK_FORWARD_DEPLOY_HEVS]: {
         display_name: 'Forward Deploy HE-Vs',
         description: 'HE-Vs in this Team may deploy as Support Assets.',
         visible_on_card: true,
     },
-    [[TEAM_PERK_MELEE_FLANK]]: {
+    [TEAM_PERK_MELEE_FLANK]: {
         display_name: 'Melee Flank',
         description: 'Weapons with the Melee Trait targeting opposing HE-Vs that are base to base with 2 or more Units in this Team receive the Frag trait.',
         visible_on_card: true,
     },
-    [[TEAM_PERK_COUNTER_ATTACK]]: {
+    [TEAM_PERK_COUNTER_ATTACK]: {
         display_name: 'Counter Attack',
         description: 'When targeted by an Engage or Smash Order, an HE-V in this Team without an Activated Marker may gain an Activated Marker. If they do, they may make a Smash Order before resolving the Opposing Commander’s Order.',
         visible_on_card: true,
     },
-    [[TEAM_PERK_JUMP_BOOSTER]]: {
+    [TEAM_PERK_JUMP_BOOSTER]: {
         display_name: 'Jump Boost',
         description: '+1” Jump Distance',
     },
-    [[TEAM_PERK_COMBAT_BUCKLER]]: {
+    [TEAM_PERK_COMBAT_BUCKLER]: {
         display_name: 'Combat Buckler',
         description: 'Medium HE-V may purchase a Combat Shield for 3 Tons.',
     },
-    [[TEAM_PERK_EXTRA_NITRO]]: {
+    [TEAM_PERK_EXTRA_NITRO]: {
         display_name: 'Extra Nitro',
         description: 'Nitro Boost may be used a second time during the game.',
     },
-    [[TEAM_PERK_QUICKDRAW]]: {
+    [TEAM_PERK_QUICKDRAW]: {
         display_name: 'Quickdraw',
         description: 'Returning Fire generates a Redline Marker instead of an Activation Marker.',
         visible_on_card: true,
     },
-    [[TEAM_PERK_EXTRA_MISSILE_AMMO]]: {
+    [TEAM_PERK_EXTRA_MISSILE_AMMO]: {
         renderDisplayName: makeRenderDisplayName('Extra Guided Ammo'),
         renderDesc(baseValue, repeatCount = 1) {
             let repeatStr = renderDescriptionRepeat(baseValue, repeatCount);
@@ -107,7 +107,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
         value: 1,
         stackable: true,
     },
-    [[TEAM_PERK_BARREL_EXTENSIONS]]: {
+    [TEAM_PERK_BARREL_EXTENSIONS]: {
         renderDisplayName: makeRenderDisplayName('Barrel Extensions'),
         renderDesc(baseValue, repeatCount = 1) {
             let repeatStr = renderDescriptionRepeat(baseValue, repeatCount);

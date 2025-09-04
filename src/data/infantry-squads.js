@@ -32,7 +32,7 @@ const baseSuitStats = {
 };
 
 export const INFANTRY_SQUADS = makeFrozenStaticListIds({
-    [[INFANTRY_RIFLE_SQUAD]]: {
+    [INFANTRY_RIFLE_SQUAD]: {
         ...baseInfantryStats,
         display_name: 'Rifle',
         weapon_ids: [
@@ -42,7 +42,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
             trait(TRAIT_SUPPRESSIVE_FIRE),
         ],
     },
-    [[INFANTRY_ANTI_TANK_SQUAD]]: {
+    [INFANTRY_ANTI_TANK_SQUAD]: {
         ...baseInfantryStats,
         display_name: 'Anti-Tank',
         weapon_ids: [
@@ -51,7 +51,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
         ],
         traits: [],
     },
-    [[INFANTRY_RECON_SQUAD]]: {
+    [INFANTRY_RECON_SQUAD]: {
         ...baseInfantryStats,
         display_name: 'Recon',
         weapon_ids: [
@@ -61,7 +61,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
             trait(TRAIT_TARGET_DESIGNATOR),
         ],
     },
-    [[INFANTRY_ENGINEER_SQUAD]]: {
+    [INFANTRY_ENGINEER_SQUAD]: {
         ...baseInfantryStats,
         display_name: 'Engineers',
         weapon_ids: [
@@ -71,7 +71,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
             trait(TRAIT_MINE_SWEEPER),
         ],
     },
-    [[INFANTRY_ARC_SUIT_SQUAD]]: {
+    [INFANTRY_ARC_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 4,
         armor: 0,
@@ -85,7 +85,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
             trait(TRAIT_SUPPRESSIVE_FIRE),
         ],
     },
-    [[INFANTRY_REAPER_SUIT_SQUAD]]: {
+    [INFANTRY_REAPER_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 4,
         armor: 0,
@@ -97,7 +97,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds({
         ],
         traits: [],
     },
-    [[INFANTRY_VIPER_SUIT_SQUAD]]: {
+    [INFANTRY_VIPER_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 5,
         armor: 0,

@@ -20,7 +20,7 @@ import {TYPE_FORTIFICATION} from '../unit-types.js';
 export const INFANTRY_OUTPOST = 'INFANTRY_OUTPOST';
 
 export const INFANTRY_OUTPOST_DATA = {
-    [[INFANTRY_OUTPOST]]: {
+    [INFANTRY_OUTPOST]: {
         unit_type_id: TYPE_FORTIFICATION,
         size_id: SIZE_ULTRA,
         display_name: 'Infantry Outpost',

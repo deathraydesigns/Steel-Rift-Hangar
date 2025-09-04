@@ -24,7 +24,7 @@ const baseStats = {
 };
 
 export const SUPPORT_VEHICLE_SQUADRON_DATA = {
-    [[SUPPORT_VEHICLE_SQUADRON]]: {
+    [SUPPORT_VEHICLE_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_MEDIUM,
         display_name: 'Support Vehicle Squadron',

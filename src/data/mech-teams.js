@@ -62,22 +62,22 @@ export const TEAM_BERSERKER = 'TEAM_BERSERKER';
 export const TEAM_GUNSLINGER = 'TEAM_GUNSLINGER';
 
 export const MECH_TEAM_SIZES = makeFrozenStaticListIds({
-    [[TEAM_SIZE_SMALL]]: {
+    [TEAM_SIZE_SMALL]: {
         display_name: 'Small',
         description: '2',
     },
-    [[TEAM_SIZE_MEDIUM]]: {
+    [TEAM_SIZE_MEDIUM]: {
         display_name: 'Medium',
         description: '2-3',
     },
-    [[TEAM_SIZE_LARGE]]: {
+    [TEAM_SIZE_LARGE]: {
         display_name: 'Large',
         description: '2-4',
     },
 });
 
 export const MECH_TEAMS = makeFrozenStaticListIds({
-    [[TEAM_SHELF]]: {
+    [TEAM_SHELF]: {
         display_name: 'Shelved HE-Vs',
         icon: 'hev',
         groups: makeStaticListIds({
@@ -94,7 +94,7 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
             }),
         }),
     },
-    [[TEAM_GENERAL]]: {
+    [TEAM_GENERAL]: {
         display_name: 'HE-Vs',
         icon: 'hev',
         groups: makeStaticListIds({
@@ -111,7 +111,7 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
             }),
         }),
     },
-    [[TEAM_FIRE_SUPPORT]]: {
+    [TEAM_FIRE_SUPPORT]: {
         display_name: 'Fire Support Team',
         display_name_short: 'Fire Support',
         icon: 'team-fire-support',
@@ -153,7 +153,7 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[TEAM_RECON]]: {
+    [TEAM_RECON]: {
         display_name: 'Recon Team',
         display_name_short: 'Recon',
         icon: 'team-recon',
@@ -193,7 +193,7 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[TEAM_SECURITY]]: {
+    [TEAM_SECURITY]: {
         display_name: 'Security Team',
         display_name_short: 'Security',
         icon: 'team-security',
@@ -265,7 +265,7 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[TEAM_TACTICAL]]: {
+    [TEAM_TACTICAL]: {
         display_name: 'Tactical Team',
         display_name_short: 'Tactical',
         icon: 'team-tactical',
@@ -310,7 +310,7 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[TEAM_BERSERKER]]: {
+    [TEAM_BERSERKER]: {
         display_name: 'Berserker Team',
         display_name_short: 'Berserker',
         icon: 'team-berserker',
@@ -370,7 +370,7 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[TEAM_GUNSLINGER]]: {
+    [TEAM_GUNSLINGER]: {
         display_name: 'Gunslinger Team',
         display_name_short: 'Gunslinger',
         icon: 'team-gunslinger',
@@ -421,7 +421,7 @@ export const MECH_TEAMS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[TEAM_ASSASSIN]]: {
+    [TEAM_ASSASSIN]: {
         display_name: 'Assassination Team',
         display_name_short: 'Assassination',
         icon: 'team-assassination',

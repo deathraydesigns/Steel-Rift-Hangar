@@ -46,106 +46,106 @@ export const PULSE_SALVO = 'PULSE_SALVO';
 export const SHOCK_NET = 'SHOCK_NET';
 
 export const MECH_WEAPONS = makeFrozenStaticListIds({
-    [[AUTO_CANNON]]: makeWeapon({
+    [AUTO_CANNON]: makeWeapon({
         display_name: 'Auto-Cannon',
         damage_by_size: {
-            [[SIZE_LIGHT]]: 3,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_LIGHT]: 3,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 6,
         },
         traits: [
             trait(TRAIT_KINETIC),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 3,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_LIGHT]: 3,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 6,
         },
     }),
-    [[HOWITZER]]: makeWeapon({
+    [HOWITZER]: makeWeapon({
         display_name: 'Howitzer',
         damage_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 3,
-            [[SIZE_ULTRA]]: 4,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 3,
+            [SIZE_ULTRA]: 4,
         },
         traits: [
             trait(TRAIT_BLAST, 3),
             trait(TRAIT_KINETIC),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
     }),
-    [[LASER]]: makeWeapon({
+    [LASER]: makeWeapon({
         display_name: 'Laser',
         damage: 2,
         traits: [
             trait(TRAIT_DRAINING),
         ],
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_AP, 1)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_AP, 1)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_AP, 2)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_AP, 3)],
+            [SIZE_LIGHT]: [trait(TRAIT_AP, 1)],
+            [SIZE_MEDIUM]: [trait(TRAIT_AP, 1)],
+            [SIZE_HEAVY]: [trait(TRAIT_AP, 2)],
+            [SIZE_ULTRA]: [trait(TRAIT_AP, 3)],
         },
         cost_by_size: {
-            [[SIZE_LIGHT]]: 3,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 7,
+            [SIZE_LIGHT]: 3,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 7,
         },
     }),
-    [[MELEE_WEAPON]]: makeWeapon({
+    [MELEE_WEAPON]: makeWeapon({
         display_name: 'Melee Weapon',
         damage: 0,
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_MELEE, 1)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_MELEE, 1)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_MELEE, 2)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_MELEE, 2)],
+            [SIZE_LIGHT]: [trait(TRAIT_MELEE, 1)],
+            [SIZE_MEDIUM]: [trait(TRAIT_MELEE, 1)],
+            [SIZE_HEAVY]: [trait(TRAIT_MELEE, 2)],
+            [SIZE_ULTRA]: [trait(TRAIT_MELEE, 2)],
         },
         cost_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 3,
-            [[SIZE_ULTRA]]: 4,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 3,
+            [SIZE_ULTRA]: 4,
         },
     }),
-    [[MISSILES]]: makeWeapon({
+    [MISSILES]: makeWeapon({
         display_name: 'Missiles',
         damage: 0,
         damage_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 8,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 8,
         },
         traits: [
             trait(TRAIT_SMART),
             trait(TRAIT_LIMITED, 3),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
     }),
-    [[PARTICLE_CANNON]]: makeWeapon({
+    [PARTICLE_CANNON]: makeWeapon({
         display_name: 'Particle Cannon ',
         damage: 0,
         damage_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 8,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 8,
         },
         traits: [
             trait(TRAIT_SHORT, 18),
@@ -153,44 +153,44 @@ export const MECH_WEAPONS = makeFrozenStaticListIds({
             trait(TRAIT_DISRUPTIVE),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 6,
         },
     }),
-    [[RAIL_GUN]]: makeWeapon({
+    [RAIL_GUN]: makeWeapon({
         display_name: 'Rail gun',
         damage: 1,
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
         traits: [
             trait(TRAIT_KINETIC),
         ],
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_AP, 1)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_AP, 1)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_AP, 2)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_AP, 3)],
+            [SIZE_LIGHT]: [trait(TRAIT_AP, 1)],
+            [SIZE_MEDIUM]: [trait(TRAIT_AP, 1)],
+            [SIZE_HEAVY]: [trait(TRAIT_AP, 2)],
+            [SIZE_ULTRA]: [trait(TRAIT_AP, 3)],
         },
     }),
-    [[ROCKET_PACK]]: makeWeapon({
+    [ROCKET_PACK]: makeWeapon({
         display_name: 'Rocket Pack',
         damage_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 8,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 8,
         },
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
         traits: [
             trait(TRAIT_SMART),
@@ -198,32 +198,32 @@ export const MECH_WEAPONS = makeFrozenStaticListIds({
             trait(TRAIT_LIMITED, 2),
         ],
     }),
-    [[ROTARY_CANNON]]: makeWeapon({
+    [ROTARY_CANNON]: makeWeapon({
         display_name: 'Rotary Cannon',
         damage_by_size: {
-            [[SIZE_LIGHT]]: 5,
-            [[SIZE_MEDIUM]]: 7,
-            [[SIZE_HEAVY]]: 11,
-            [[SIZE_ULTRA]]: 13,
+            [SIZE_LIGHT]: 5,
+            [SIZE_MEDIUM]: 7,
+            [SIZE_HEAVY]: 11,
+            [SIZE_ULTRA]: 13,
         },
         traits: [
             trait(TRAIT_SHORT, 12),
             trait(TRAIT_LIGHT),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 8,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 8,
         },
     }),
-    [[SHOT_CANNON]]: makeWeapon({
+    [SHOT_CANNON]: makeWeapon({
         display_name: 'Shot Cannon',
         damage_by_size: {
-            [[SIZE_LIGHT]]: 6,
-            [[SIZE_MEDIUM]]: 8,
-            [[SIZE_HEAVY]]: 10,
-            [[SIZE_ULTRA]]: 12,
+            [SIZE_LIGHT]: 6,
+            [SIZE_MEDIUM]: 8,
+            [SIZE_HEAVY]: 10,
+            [SIZE_ULTRA]: 12,
         },
         traits: [
             trait(TRAIT_SHORT, 6),
@@ -231,35 +231,35 @@ export const MECH_WEAPONS = makeFrozenStaticListIds({
             trait(TRAIT_FRAG),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 6,
         },
     }),
-    [[SUBMUNITIONS]]: makeWeapon({
+    [SUBMUNITIONS]: makeWeapon({
         display_name: 'Submunitions',
         damage_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 3,
-            [[SIZE_ULTRA]]: 4,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 3,
+            [SIZE_ULTRA]: 4,
         },
         traits: [
             trait(TRAIT_SHORT, 6),
             trait(TRAIT_FLAK),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 3,
-            [[SIZE_ULTRA]]: 4,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 3,
+            [SIZE_ULTRA]: 4,
         },
     }),
-    [[ARC_GUN]]: makeWeapon({
+    [ARC_GUN]: makeWeapon({
         display_name: 'Arc Gun',
         damage_by_size: {
-            [[SIZE_LIGHT]]: 6,
+            [SIZE_LIGHT]: 6,
         },
         traits: [
             trait(TRAIT_LIGHT),
@@ -269,42 +269,42 @@ export const MECH_WEAPONS = makeFrozenStaticListIds({
         cost: 2,
         limited_size_ids: [SIZE_LIGHT],
     }),
-    [[COMBAT_BLADE]]: makeWeapon({
+    [COMBAT_BLADE]: makeWeapon({
         display_name: 'Combat Blade',
         damage: 0,
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
         traits: [
             trait(TRAIT_PARRY),
         ],
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_MELEE, 1)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_MELEE, 1)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_MELEE, 2)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_MELEE, 2)],
+            [SIZE_LIGHT]: [trait(TRAIT_MELEE, 1)],
+            [SIZE_MEDIUM]: [trait(TRAIT_MELEE, 1)],
+            [SIZE_HEAVY]: [trait(TRAIT_MELEE, 2)],
+            [SIZE_ULTRA]: [trait(TRAIT_MELEE, 2)],
         },
     }),
-    [[DEMOLITION_CUTTER]]: makeWeapon({
+    [DEMOLITION_CUTTER]: makeWeapon({
         display_name: 'Demolition Cutter',
         damage: 0,
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_MELEE, 1), trait(TRAIT_AP, 1)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_MELEE, 1), trait(TRAIT_AP, 2)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_MELEE, 2), trait(TRAIT_AP, 2)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_MELEE, 2), trait(TRAIT_AP, 3)],
+            [SIZE_LIGHT]: [trait(TRAIT_MELEE, 1), trait(TRAIT_AP, 1)],
+            [SIZE_MEDIUM]: [trait(TRAIT_MELEE, 1), trait(TRAIT_AP, 2)],
+            [SIZE_HEAVY]: [trait(TRAIT_MELEE, 2), trait(TRAIT_AP, 2)],
+            [SIZE_ULTRA]: [trait(TRAIT_MELEE, 2), trait(TRAIT_AP, 3)],
         },
     }),
-    [[HARPOON_GUN]]: makeWeapon({
+    [HARPOON_GUN]: makeWeapon({
         display_name: 'Harpoon Gun',
         damage: 6,
         cost: 7,
@@ -315,136 +315,136 @@ export const MECH_WEAPONS = makeFrozenStaticListIds({
         ],
         limited_size_ids: [SIZE_ULTRA],
     }),
-    [[IMPACT_HAMMER]]: makeWeapon({
+    [IMPACT_HAMMER]: makeWeapon({
         display_name: 'Impact Hammer',
         damage: 0,
         slots: 2,
         cost_by_size: {
-            [[SIZE_LIGHT]]: 3,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_LIGHT]: 3,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 6,
         },
         traits: [
             trait(TRAIT_CONCUSSIVE, 4),
         ],
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_MELEE, 2)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_MELEE, 2)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_MELEE, 3)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_MELEE, 3)],
+            [SIZE_LIGHT]: [trait(TRAIT_MELEE, 2)],
+            [SIZE_MEDIUM]: [trait(TRAIT_MELEE, 2)],
+            [SIZE_HEAVY]: [trait(TRAIT_MELEE, 3)],
+            [SIZE_ULTRA]: [trait(TRAIT_MELEE, 3)],
         },
     }),
-    [[MAG_TETHER]]: makeWeapon({
+    [MAG_TETHER]: makeWeapon({
         display_name: 'Mag Tether',
         damage_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
         cost_by_size: {
-            [[SIZE_LIGHT]]: 3,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_LIGHT]: 3,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 6,
         },
         traits: [
             trait(TRAIT_SHORT, 12),
             trait(TRAIT_TETHER),
         ],
     }),
-    [[MASS_TETSUBO]]: makeWeapon({
+    [MASS_TETSUBO]: makeWeapon({
         display_name: 'Mass Tetsubo',
         damage: 0,
         slots: 2,
         cost_by_size: {
-            [[SIZE_LIGHT]]: 3,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_LIGHT]: 3,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 6,
         },
         traits: [
             trait(TRAIT_CONCUSSIVE, 2),
         ],
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_MELEE, 2)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_MELEE, 2), trait(TRAIT_REACH, 1)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_MELEE, 3), trait(TRAIT_REACH, 1)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_MELEE, 3), trait(TRAIT_REACH, 2)],
+            [SIZE_LIGHT]: [trait(TRAIT_MELEE, 2)],
+            [SIZE_MEDIUM]: [trait(TRAIT_MELEE, 2), trait(TRAIT_REACH, 1)],
+            [SIZE_HEAVY]: [trait(TRAIT_MELEE, 3), trait(TRAIT_REACH, 1)],
+            [SIZE_ULTRA]: [trait(TRAIT_MELEE, 3), trait(TRAIT_REACH, 2)],
         },
     }),
-    [[MEGA_GLAIVE]]: makeWeapon({
+    [MEGA_GLAIVE]: makeWeapon({
         display_name: 'Mega Glaive',
         damage: 0,
         slots: 2,
         cost_by_size: {
-            [[SIZE_LIGHT]]: 4,
-            [[SIZE_MEDIUM]]: 5,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 7,
+            [SIZE_LIGHT]: 4,
+            [SIZE_MEDIUM]: 5,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 7,
         },
         traits: [],
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_MELEE, 3), trait(TRAIT_REACH, 1)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_MELEE, 3), trait(TRAIT_REACH, 2)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_MELEE, 4), trait(TRAIT_REACH, 2)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_MELEE, 4), trait(TRAIT_REACH, 3)],
+            [SIZE_LIGHT]: [trait(TRAIT_MELEE, 3), trait(TRAIT_REACH, 1)],
+            [SIZE_MEDIUM]: [trait(TRAIT_MELEE, 3), trait(TRAIT_REACH, 2)],
+            [SIZE_HEAVY]: [trait(TRAIT_MELEE, 4), trait(TRAIT_REACH, 2)],
+            [SIZE_ULTRA]: [trait(TRAIT_MELEE, 4), trait(TRAIT_REACH, 3)],
         },
     }),
-    [[PLASMA_BLADE]]: makeWeapon({
+    [PLASMA_BLADE]: makeWeapon({
         display_name: 'Plasma Blade ',
         damage: 0,
         cost_by_size: {
-            [[SIZE_LIGHT]]: 4,
-            [[SIZE_MEDIUM]]: 5,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 7,
+            [SIZE_LIGHT]: 4,
+            [SIZE_MEDIUM]: 5,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 7,
         },
         traits: [
             trait(TRAIT_DISRUPTIVE),
         ],
         traits_by_size: {
-            [[SIZE_LIGHT]]: [trait(TRAIT_MELEE, 2), trait(TRAIT_AP, 1)],
-            [[SIZE_MEDIUM]]: [trait(TRAIT_MELEE, 2), trait(TRAIT_AP, 2)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_MELEE, 3), trait(TRAIT_AP, 2)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_MELEE, 3), trait(TRAIT_AP, 3)],
+            [SIZE_LIGHT]: [trait(TRAIT_MELEE, 2), trait(TRAIT_AP, 1)],
+            [SIZE_MEDIUM]: [trait(TRAIT_MELEE, 2), trait(TRAIT_AP, 2)],
+            [SIZE_HEAVY]: [trait(TRAIT_MELEE, 3), trait(TRAIT_AP, 2)],
+            [SIZE_ULTRA]: [trait(TRAIT_MELEE, 3), trait(TRAIT_AP, 3)],
         },
     }),
-    [[PULSE_SALVO]]: makeWeapon({
+    [PULSE_SALVO]: makeWeapon({
         display_name: 'Pulse Salvo',
         damage: 0,
         damage_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 8,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 8,
         },
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
         traits: [
             trait(TRAIT_LIMITED, 2),
             trait(TRAIT_DISRUPTIVE),
         ],
     }),
-    [[SHOCK_NET]]: makeWeapon({
+    [SHOCK_NET]: makeWeapon({
         display_name: 'Shock Net',
         damage: 0,
         damage_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 8,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 8,
         },
         cost_by_size: {
-            [[SIZE_LIGHT]]: 3,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 5,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_LIGHT]: 3,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 5,
+            [SIZE_ULTRA]: 6,
         },
         traits: [
             trait(TRAIT_MELEE, 1),
@@ -470,19 +470,19 @@ function makeWeapon({
 
     if (!cost_by_size) {
         cost_by_size = {
-            [[SIZE_LIGHT]]: cost,
-            [[SIZE_MEDIUM]]: cost,
-            [[SIZE_HEAVY]]: cost,
-            [[SIZE_ULTRA]]: cost,
+            [SIZE_LIGHT]: cost,
+            [SIZE_MEDIUM]: cost,
+            [SIZE_HEAVY]: cost,
+            [SIZE_ULTRA]: cost,
         };
     }
 
     if (!traits_by_size) {
         traits_by_size = {
-            [[SIZE_LIGHT]]: [],
-            [[SIZE_MEDIUM]]: [],
-            [[SIZE_HEAVY]]: [],
-            [[SIZE_ULTRA]]: [],
+            [SIZE_LIGHT]: [],
+            [SIZE_MEDIUM]: [],
+            [SIZE_HEAVY]: [],
+            [SIZE_ULTRA]: [],
         };
     }
 
@@ -493,10 +493,10 @@ function makeWeapon({
 
     if (!damage_by_size) {
         damage_by_size = {
-            [[SIZE_LIGHT]]: damage,
-            [[SIZE_MEDIUM]]: damage,
-            [[SIZE_HEAVY]]: damage,
-            [[SIZE_ULTRA]]: damage,
+            [SIZE_LIGHT]: damage,
+            [SIZE_MEDIUM]: damage,
+            [SIZE_HEAVY]: damage,
+            [SIZE_ULTRA]: damage,
         };
     }
     let range = getRangeFromShortTrait(traits);

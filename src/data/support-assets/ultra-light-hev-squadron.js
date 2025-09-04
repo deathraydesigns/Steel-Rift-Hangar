@@ -30,7 +30,7 @@ const baseStats = {
 };
 
 export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
-    [[ULTRA_LIGHT_HEV_SQUADRON]]: {
+    [ULTRA_LIGHT_HEV_SQUADRON]: {
         unit_type_id: TYPE_HEV,
         size_id: SIZE_ULTRA_LIGHT,
         display_name: 'Ultra-Light HE-V Squadron',

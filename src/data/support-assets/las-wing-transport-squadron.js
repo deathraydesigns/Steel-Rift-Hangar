@@ -29,7 +29,7 @@ const baseStats = {
 };
 
 export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
-    [[LAS_WING_TRANSPORT_SQUADRON]]: {
+    [LAS_WING_TRANSPORT_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_LIGHT,
         display_name: 'LAS-Wing Transport Squadron',

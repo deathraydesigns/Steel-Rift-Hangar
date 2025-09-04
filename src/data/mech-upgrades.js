@@ -26,173 +26,173 @@ export const NITRO_BOOST = 'NITRO_BOOST';
 export const COMBAT_SHIELD = 'COMBAT_SHIELD';
 
 export const MECH_UPGRADES = makeFrozenStaticListIds({
-    [[ANTI_MISSILE_SYSTEM]]: makeUpgrade({
+    [ANTI_MISSILE_SYSTEM]: makeUpgrade({
         display_name: 'Anti-Missile System',
         description: 'This unit may not be targeted by a Weapon System using the Smart trait to Engage them from outside of Line of Sight of the Active Model.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 1,
-            [[SIZE_HEAVY]]: 2,
-            [[SIZE_ULTRA]]: 2,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 1,
+            [SIZE_HEAVY]: 2,
+            [SIZE_ULTRA]: 2,
         },
     }),
-    [[ELECTRONIC_COUNTERMEASURES]]: makeUpgrade({
+    [ELECTRONIC_COUNTERMEASURES]: makeUpgrade({
         display_name: 'Electronic Countermeasures',
         description: 'The Lock On order may not be taken against this model.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 1,
-            [[SIZE_ULTRA]]: 1,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 1,
+            [SIZE_ULTRA]: 1,
         },
     }),
-    [[HEAVY_REACTOR]]: makeUpgrade({
+    [HEAVY_REACTOR]: makeUpgrade({
         display_name: 'Heavy Reactor',
         description: 'Roll 1D6 when this model would take Structure damage from Redlining, on a 4+ this damage is ignored.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 1,
-            [[SIZE_HEAVY]]: 2,
-            [[SIZE_ULTRA]]: 2,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 1,
+            [SIZE_HEAVY]: 2,
+            [SIZE_ULTRA]: 2,
         },
     }),
-    [[JUMP_JETS]]: makeUpgrade({
+    [JUMP_JETS]: makeUpgrade({
         display_name: 'Jump Jets',
         description: 'This model may take the Jump Jet action.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 3,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 2,
-            [[SIZE_ULTRA]]: 2,
+            [SIZE_LIGHT]: 3,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 2,
+            [SIZE_ULTRA]: 2,
         },
     }),
-    [[MINEFIELD_DRONE_CARRIER_SYSTEM]]: makeUpgrade({
+    [MINEFIELD_DRONE_CARRIER_SYSTEM]: makeUpgrade({
         display_name: 'Minefield Drone Carrier System',
         description: 'ORDER: Place a Mine Drone token (as per the Support Asset) within 3” of the Active model and not within 6” of another Mine Drone token.',
         cost_by_size: {
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 6,
-            [[SIZE_ULTRA]]: 6,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 6,
+            [SIZE_ULTRA]: 6,
         },
         traits_by_size: {
-            [[SIZE_MEDIUM]]: [trait(TRAIT_UPGRADE_LIMITED, 1)],
-            [[SIZE_HEAVY]]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
-            [[SIZE_ULTRA]]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
+            [SIZE_MEDIUM]: [trait(TRAIT_UPGRADE_LIMITED, 1)],
+            [SIZE_HEAVY]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
+            [SIZE_ULTRA]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
         },
         limited_size_ids: [SIZE_MEDIUM, SIZE_HEAVY, SIZE_ULTRA],
     }),
-    [[MINEFIELD_DRONE_TRACKING_SYSTEM]]: makeUpgrade({
+    [MINEFIELD_DRONE_TRACKING_SYSTEM]: makeUpgrade({
         display_name: 'Minefield Drone Tracking Submunitions',
         description: 'ORDER: This model makes an immediate Engage order against a Mine Field token in range. The Commander of the target Minefield makes a Defense Roll on a 3+. If at least one point of Damage would be inflicted, remove the Token.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 1,
-            [[SIZE_HEAVY]]: 2,
-            [[SIZE_ULTRA]]: 2,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 1,
+            [SIZE_HEAVY]: 2,
+            [SIZE_ULTRA]: 2,
         },
         upgrade_required: [SUBMUNITIONS],
     }),
-    [[OPTIC_CAMO]]: makeUpgrade({
+    [OPTIC_CAMO]: makeUpgrade({
         display_name: 'Optic Camouflage',
         description: 'Add +1 to Defense Rolls for this unit when the attacker is outside of 10”',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 5,
-            [[SIZE_MEDIUM]]: 4,
-            [[SIZE_HEAVY]]: 3,
-            [[SIZE_ULTRA]]: 2,
+            [SIZE_LIGHT]: 5,
+            [SIZE_MEDIUM]: 4,
+            [SIZE_HEAVY]: 3,
+            [SIZE_ULTRA]: 2,
         },
     }),
-    [[TARGET_DESIGNATOR]]: makeUpgrade({
+    [TARGET_DESIGNATOR]: makeUpgrade({
         display_name: 'Target Designator',
         description: 'Once per turn, friendly models in the same force may use this vehicle to draw Line of Sight for Weapon Systems using the Smart trait. Use this model for determining the AttackPool and Line of Sight. This Upgrade may also be required for certain Support Assets. Its use can be canceled by Electronic Counter measures.',
         cost: 1,
     }),
-    [[COOLANT_TANKS]]: makeUpgrade({
+    [COOLANT_TANKS]: makeUpgrade({
         display_name: 'Coolant Tanks',
         description: 'Twice per game, before issuing an Order you may remove a Redline Marker from this HE-V.',
         traits: [
             trait(TRAIT_UPGRADE_LIMITED, 2),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 1,
-            [[SIZE_HEAVY]]: 2,
-            [[SIZE_ULTRA]]: 2,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 1,
+            [SIZE_HEAVY]: 2,
+            [SIZE_ULTRA]: 2,
         },
     }),
-    [[DIRECTIONAL_THRUSTER]]: makeUpgrade({
+    [DIRECTIONAL_THRUSTER]: makeUpgrade({
         display_name: 'Directional Thruster',
         description: 'This unit gains the Dash Order',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 3,
-            [[SIZE_ULTRA]]: 4,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 3,
+            [SIZE_ULTRA]: 4,
         },
         traits: [
             trait(TRAIT_DASH, 2),
         ],
     }),
-    [[HAPTIC_SUIT]]: makeUpgrade({
+    [HAPTIC_SUIT]: makeUpgrade({
         display_name: 'Haptic Suit',
         description: 'When performing Return Fire, you may reroll all failed Defense Rolls.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 1,
-            [[SIZE_ULTRA]]: 1,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 1,
+            [SIZE_ULTRA]: 1,
         },
         traits: [
             trait(TRAIT_COMPACT),
         ],
         slots: 0,
     }),
-    [[HIGH_SPEED_SERVOS]]: makeUpgrade({
+    [HIGH_SPEED_SERVOS]: makeUpgrade({
         display_name: 'High Speed Servos',
         description: 'After performing a Smash Order, this Unit may perform a second Smash Order for free.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
     }),
-    [[NEURAL_INPUT]]: makeUpgrade({
+    [NEURAL_INPUT]: makeUpgrade({
         display_name: 'Neural Input',
         description: 'Reduce the Damage Rating of Smash Orders targeting this Unit by 1.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 2,
-            [[SIZE_MEDIUM]]: 2,
-            [[SIZE_HEAVY]]: 1,
-            [[SIZE_ULTRA]]: 1,
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 2,
+            [SIZE_HEAVY]: 1,
+            [SIZE_ULTRA]: 1,
         },
         traits: [
             trait(TRAIT_COMPACT),
         ],
         slots: 0,
     }),
-    [[NITRO_BOOST]]: makeUpgrade({
+    [NITRO_BOOST]: makeUpgrade({
         display_name: 'Nitro Boost',
         description: 'Once per game, at the beginning of a Move Order, you may move an additional 4”',
         traits: [
             trait(TRAIT_UPGRADE_LIMITED, 1),
         ],
         cost_by_size: {
-            [[SIZE_LIGHT]]: 1,
-            [[SIZE_MEDIUM]]: 1,
-            [[SIZE_HEAVY]]: 2,
-            [[SIZE_ULTRA]]: 2,
+            [SIZE_LIGHT]: 1,
+            [SIZE_MEDIUM]: 1,
+            [SIZE_HEAVY]: 2,
+            [SIZE_ULTRA]: 2,
         },
     }),
-    [[COMBAT_SHIELD]]: makeUpgrade({
+    [COMBAT_SHIELD]: makeUpgrade({
         display_name: 'Combat Shield',
         description: 'When this HE-V is damaged by an Attack originating from its front or side arcs, and it has more than 0 Armor remaining, roll 1D6 for each point of Damage it would receive. On a 5+, that point of Damage is ignored. Damage negated by this rule is treated as not having happened for the purposes of other weapon Trait effects, such as AP. If this HE-V performs an Engage Order, all of its Weapon Systems receive a -1 to their Damage Rating.',
         cost_by_size: {
-            [[SIZE_LIGHT]]: 0,
+            [SIZE_LIGHT]: 0,
             // only available in medium with TEAM_PERK_COMBAT_BUCKLER
-            [[SIZE_MEDIUM]]: 3,
-            [[SIZE_HEAVY]]: 4,
-            [[SIZE_ULTRA]]: 5,
+            [SIZE_MEDIUM]: 3,
+            [SIZE_HEAVY]: 4,
+            [SIZE_ULTRA]: 5,
         },
         limited_size_ids: [SIZE_HEAVY, SIZE_ULTRA],
     }),
@@ -225,10 +225,10 @@ export function getUpgradeTraits(upgradeId, sizeId) {
 function makeUpgrade(item) {
     if (!item.cost_by_size) {
         item.cost_by_size = {
-            [[SIZE_LIGHT]]: item.cost,
-            [[SIZE_MEDIUM]]: item.cost,
-            [[SIZE_HEAVY]]: item.cost,
-            [[SIZE_ULTRA]]: item.cost,
+            [SIZE_LIGHT]: item.cost,
+            [SIZE_MEDIUM]: item.cost,
+            [SIZE_HEAVY]: item.cost,
+            [SIZE_ULTRA]: item.cost,
         };
     }
 

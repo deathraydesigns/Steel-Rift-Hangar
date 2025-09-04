@@ -7,7 +7,7 @@ export const MINE_DRONE_BARRAGE = 'MINE_DRONE_BARRAGE';
 export const ORBITAL_LASER = 'ORBITAL_LASER';
 
 export const SUPPORT_ASSET_WEAPONS = makeFrozenStaticListIds({
-    [[ARTILLERY_BARRAGE]]: {
+    [ARTILLERY_BARRAGE]: {
         display_name: 'Artillery Barrage',
         description: 'Once per Game Round, instead of activating or redlining a model, a Commander may call down an Artillery Barrage from off-table. This Barrage is an Engage Order. The target must be in Line of Sight of a model with a Target Designator or this Support Asset may not be used.',
         cost: 10,
@@ -19,7 +19,7 @@ export const SUPPORT_ASSET_WEAPONS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[MASS_DRIVER]]: {
+    [MASS_DRIVER]: {
         display_name: 'Mass Driver',
         description: 'Once per Game Round, instead of activating or redlining a model, a Commander may drop a tungsten mass rod from orbit. This is an Engage Order. Use the center of the Active Player’s Deployment edge as the origin of the attack. The target must be in Line of Sight of a model with a Target Designator or this Support Asset may not be used. Treat the size of the attacker as Ultra-Heavy for the purposes of the Kinetic trait.',
         cost: 10,
@@ -31,7 +31,7 @@ export const SUPPORT_ASSET_WEAPONS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[MINE_DRONE_BARRAGE]]: {
+    [MINE_DRONE_BARRAGE]: {
         display_name: 'Mine-Drone Barrage',
         description: 'After Generating Terrain, but before Setting Up Forces, the Commander with this Support Asset may place Mine-Drone tokens (25mm) on the Battlefield not within 12” of an enemy deployment edge, and not within 6” of another friendly Mine-Drone token.',
         cost: 10,
@@ -41,7 +41,7 @@ export const SUPPORT_ASSET_WEAPONS = makeFrozenStaticListIds({
             ],
         },
     },
-    [[ORBITAL_LASER]]: {
+    [ORBITAL_LASER]: {
         display_name: 'Orbital Laser',
         description: 'Once per Game Round, instead of activating or redlining a model, a Commander may request an orbital laser strike. This is an Engage Order. The target must be in the Line of Sight of a model with a Target Designator or this Support Asset may not be used. Line of Sight for this Attack is drawn from the Target Model to itself (therefore it is never obstructed).',
         cost: 10,

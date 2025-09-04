@@ -15,7 +15,7 @@ import {TYPE_VEHICLE} from '../unit-types.js';
 export const LIGHT_VEHICLE_SQUADRON = 'LIGHT_VEHICLE_SQUADRON';
 
 export const LIGHT_VEHICLE_SQUADRON_DATA = {
-    [[LIGHT_VEHICLE_SQUADRON]]: {
+    [LIGHT_VEHICLE_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_ULTRA_LIGHT,
         display_name: 'Light Unit Squadron',

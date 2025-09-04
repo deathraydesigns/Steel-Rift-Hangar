@@ -6,16 +6,16 @@ export const TYPE_INFANTRY = 'TYPE_INFANTRY';
 export const TYPE_FORTIFICATION = 'TYPE_FORTIFICATION';
 
 export const UNIT_TYPES = makeFrozenStaticListIds({
-    [[TYPE_HEV]]: {
+    [TYPE_HEV]: {
         display_name: 'HE-V',
     },
-    [[TYPE_VEHICLE]]: {
+    [TYPE_VEHICLE]: {
         display_name: 'Vehicle',
     },
-    [[TYPE_INFANTRY]]: {
+    [TYPE_INFANTRY]: {
         display_name: 'Infantry',
     },
-    [[TYPE_FORTIFICATION]]: {
+    [TYPE_FORTIFICATION]: {
         display_name: 'Fortification',
     },
 });

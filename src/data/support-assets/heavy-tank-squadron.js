@@ -34,7 +34,7 @@ const baseStats = {
 };
 
 export const HEAVY_TANK_SQUADRON_DATA = {
-    [[HEAVY_TANK_SQUADRON]]: {
+    [HEAVY_TANK_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
         size_id: SIZE_HEAVY,
         display_name: 'Heavy Tank Troop',
