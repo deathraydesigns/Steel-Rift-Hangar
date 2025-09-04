@@ -69,7 +69,7 @@ export const UNIT_TRAITS = makeTraits({
     [TRAIT_MINE_SWEEPER]: {
         display_name: 'Mine Sweeper',
         description: '',
-        granted_order_ids: [ORDER_CLEAR_MINEFIELD]
+        granted_order_ids: [ORDER_CLEAR_MINEFIELD],
     },
     [TRAIT_SHIELD_PROJECTOR]: {
         display_name: 'Shield Projector',
@@ -165,6 +165,7 @@ export const UNIT_TRAITS = makeTraits({
     [TRAIT_FLYING_SQUADRON]: {
         display_name: 'Flying Squadron',
         description: 'This unit has all rules from the Squadron trait, with the following exceptions: All other models in the Squadron must end their deployment or movement within 6” of the Leader Model. When targeted by an engage order, If enough damage is dealt by a Weapon to destroy the Target Model, do not apply any remaining damage to another Model of the squadron. Do not add 2 to the Attack Pool of a Blast Weapon during an Engage Order against a unit with this trait.',
+        dependent_trait_ids: [TRAIT_SQUADRON],
     },
     [TRAIT_HEAVY_SUPPORT_ASSET]: {
         display_name: 'Heavy Support Asset',

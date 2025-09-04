@@ -178,10 +178,15 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             const traitCollection = makeUniqueItemIdCollection(UNIT_TRAITS);
             support_asset_units.value.forEach(asset => {
                 const info = getUnitAttachmentInfo(asset.id);
+                traitCollection.addMultiple(info?.traits ?? []);
                 info.vehicles.forEach(vehicle => {
                     traitCollection.addMultiple(vehicle.traits);
                 });
             });
+            traitCollection.all().forEach(trait => {
+                traitCollection.addIds(trait?.dependent_trait_ids ?? []);
+            });
+
             return traitCollection.all();
         }
 

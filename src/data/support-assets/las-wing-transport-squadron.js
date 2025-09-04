@@ -5,6 +5,7 @@ import {
     TRAIT_FLYING_SQUADRON,
     TRAIT_GARRISON,
     TRAIT_GROUP_COMMAND,
+    TRAIT_HAULER,
     TRAIT_SQUADRON,
     TRAIT_UNIT_SIZE_AND_TYPE,
 } from '../unit-traits.js';
@@ -41,6 +42,7 @@ export const LAS_WING_TRANSPORT_SQUADRON_DATA = {
             trait(TRAIT_UNIT_SIZE_AND_TYPE, null, 'Light Vehicle'),
             trait(TRAIT_FLYING),
             trait(TRAIT_FLYING_SQUADRON),
+            trait(TRAIT_HAULER),
         ],
         vehicles: makeStaticListIds({
             INFANTRY_AIR_TRANSPORT: {

@@ -8,6 +8,8 @@ import UnitVehicles from './UnitVehicles.vue';
 import UnitVehicleAdd from './UnitVehicleAdd.vue';
 import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron.js';
 import UnitGarrisonUnits from './UnitGarrisonUnits.vue';
+import TraitList from '../../UI/TraitList.vue';
+import {TRAIT_UNIT_SIZE_AND_TYPE} from '../../../data/unit-traits.js';
 
 const {supportAssetAttachmentId} = defineProps({
   supportAssetAttachmentId: {
@@ -42,6 +44,13 @@ function addVehicle(id) {
 function setUpgradePodChoice(upgradePodId) {
   unitStore.setUnitUpgradePod(supportAssetAttachmentId, upgradePodId);
 }
+
+const unitTypeTrait = computed(() => {
+  return info.value.traits.find((trait) => trait.id === TRAIT_UNIT_SIZE_AND_TYPE);
+})
+const traits = computed(() => {
+  return info.value.traits.filter((trait) => trait.id !== TRAIT_UNIT_SIZE_AND_TYPE);
+})
 </script>
 <template>
   <div class="card card-dark-border">
@@ -115,7 +124,12 @@ function setUpgradePodChoice(upgradePodId) {
       <div class="card-body">
         <div class="d-flex">
           <div class="ms-2 flex-grow-1">
-            <span class="fw-bold">Unit Size:</span> {{ info.size.display_name }}
+            <span class="fw-bold">Unit Type:</span> {{ unitTypeTrait.type }}
+            <div>
+              <span class="fw-bold">Unit Traits: </span>
+              <TraitList :traits="traits"/>
+            </div>
+
           </div>
 
           <template v-if="upgrade_pod_choices.length">
@@ -140,6 +154,7 @@ function setUpgradePodChoice(upgradePodId) {
             </div>
           </template>
         </div>
+
         <UnitVehicles :support-asset-attachment-id="supportAssetAttachmentId" v-if="info.vehicles.length"/>
         <UnitWeapons :support-asset-attachment-id="supportAssetAttachmentId"/>
         <UnitGarrisonUnits :support-asset-attachment-id="supportAssetAttachmentId" v-if="garrisonUnitChoices.length"/>
