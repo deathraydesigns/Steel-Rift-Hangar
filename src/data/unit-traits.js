@@ -11,6 +11,7 @@ import {
 import {makeTraits} from './data-helpers.js';
 import {numberFormater} from './data-formatters.js';
 import {ORDER_CLEAR_MINEFIELD} from './orders/special-orders.js';
+import {ORDER_INFANTRY_MUSTER} from './orders/infantry-orders.js';
 
 export const TRAIT_ALL_TERRAIN = 'TRAIT_ALL_TERRAIN';
 export const TRAIT_CLOSE_SUPPORT = 'TRAIT_CLOSE_SUPPORT';
@@ -172,6 +173,7 @@ export const UNIT_TRAITS = makeTraits({
     [[TRAIT_HAULER]]: {
         display_name: 'Hauler',
         description: `This unit Garrisons a Unit from a separate Asset, and is not in its Group Command. The Garrisoned Unit must be purchased as a separate Asset, following all rules for its selection. The Garrisoned Unit must still be Activated during the turn, but it may not perform any order other than the following until it has performed this order: Muster: This is the only order that a Garrisoned Unit may perform. The Garrisoned Unit is placed within 1” of its Garrison. If the Garrisoned Unit has the Squadron Trait, place one model within 1” of the Garrison, then place the other models within 3” of that initial model. This Unit is no longer considered Garrisoned, and is now “Mustered”.`,
+        granted_order_ids: [ORDER_INFANTRY_MUSTER],
     },
     // temporary until unit types and sizes are separate stats
     [[TRAIT_UNIT_SIZE_AND_TYPE]]: {
