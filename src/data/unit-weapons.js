@@ -252,7 +252,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds({
     }),
     [UL_INCINERATORS]: makeWeapon({
         display_name: 'UL Incinerators',
-        damage: 3,
+        damage: 4,
         traits: [
             trait(TRAIT_SHORT, 4),
             trait(TRAIT_DISRUPTIVE),

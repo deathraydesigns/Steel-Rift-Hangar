@@ -5,6 +5,7 @@ import {
     UL_AUTO_CANNON,
     UL_GRENADES,
     UL_INCINERATORS,
+    UL_MELEE_WEAPON,
     UL_ROCKET_PACK,
     VEH_SUBMUNITIONS,
 } from '../unit-weapons.js';
@@ -62,6 +63,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA = {
                 display_name: 'Brawler',
                 weapon_ids: [
                     VEH_SUBMUNITIONS,
+                    UL_MELEE_WEAPON,
                 ],
                 traits: [
                     trait(TRAIT_MAGNETIC_GRAPPLES),
