@@ -149,6 +149,11 @@ const PERKS = makeStaticListIds({
     [BLO_EX_MILITARY_VETERANS]: {
         display_name: 'Ex-Military Veterans',
         description: 'Prior to deployment, select one of the Military Training Perks from the Authority Faction. This Perk is active for the duration of this Mission.',
+        optional_perks: [
+            MT_COORDINATED_ASSAULTS,
+            MT_COVERED_ADVANCES,
+            MT_ELITE_PILOT_PROGRAM,
+        ],
     },
 });
 

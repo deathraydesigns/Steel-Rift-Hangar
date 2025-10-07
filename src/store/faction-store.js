@@ -86,8 +86,16 @@ export const useFactionStore = defineScopeableStore('faction', ({scope}) => {
             }
         }
 
-        const perk_1_info = computed(() => FACTION_PERKS[perk_1_id.value]);
-        const perk_2_info = computed(() => FACTION_PERKS[perk_2_id.value]);
+        function getPerkInfo(perkId) {
+            const result = {...FACTION_PERKS[perkId]};
+            if (result.optional_perks?.length) {
+                result.optional_perks = result.optional_perks.map(p => FACTION_PERKS[p]);
+            }
+            return result;
+        }
+
+        const perk_1_info = computed(() => getPerkInfo(perk_1_id.value));
+        const perk_2_info = computed(() => getPerkInfo(perk_2_id.value));
 
         const perk_1_group_id = computed(() => findPerkGroupId(perk_1_id.value));
         const perk_2_group_id = computed(() => findPerkGroupId(perk_2_id.value));

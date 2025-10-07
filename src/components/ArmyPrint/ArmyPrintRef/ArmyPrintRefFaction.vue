@@ -32,6 +32,18 @@ const perks = computed(() => {
           This has already been calculated on generated unit cards.
         </template>
       </p>
+      <template v-if="perk.optional_perks?.length">
+        <strong>Select 1 of the following Military Training Perks before deployment:</strong>
+        <ul>
+          <li v-for="perk2 in perk.optional_perks">
+            <p class="p-gap">
+              <span class="fw-bold">{{ perk2.display_name }}:
+              </span>
+              {{ perk2.description }}
+            </p>
+          </li>
+        </ul>
+      </template>
     </div>
   </div>
 </template>
