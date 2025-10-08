@@ -87,6 +87,9 @@ export const useFactionStore = defineScopeableStore('faction', ({scope}) => {
         }
 
         function getPerkInfo(perkId) {
+            if (!FACTION_PERKS[perkId]) {
+                return;
+            }
             const result = {...FACTION_PERKS[perkId]};
             if (result.optional_perks?.length) {
                 result.optional_perks = result.optional_perks.map(p => FACTION_PERKS[p]);
