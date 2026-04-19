@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import {storeToRefs} from 'pinia';
-import {useValidationStore} from '../../../../store/validation-store.js';
+import {useValidationStore} from '../../../../store/validation-store';
 import SupportAssetUnitAdd from './SupportAssetUnitAdd.vue';
-import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store.js';
+import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store';
 import {BButton} from 'bootstrap-vue-next';
 import FormatNumber from '../../../functional/format-number.vue';
 import IconValidationError from '../../../UI/IconValidationError.vue';
@@ -29,7 +29,7 @@ const {
           On Table Support Assets
         </div>
         <div class="flex-grow-1">
-          <IconValidationError size="sm" :message="invalid_number_of_support_assets"/>
+          <IconValidationError size="sm" v-if="invalid_number_of_support_assets" :message="invalid_number_of_support_assets"/>
         </div>
         <div class="flex-shrink-1 text-end">
           <SupportAssetUnitAdd/>

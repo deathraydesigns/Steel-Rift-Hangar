@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ArmyPrintRefTeams from './ArmyPrintRef/ArmyPrintRefTeams.vue';
 import ArmyPrintRefSecondaryAgendas from './ArmyPrintRef/ArmyPrintRefSecondaryAgendas.vue';
 import ArmyPrintRefUpgrades from './ArmyPrintRef/ArmyPrintRefUpgrades.vue';

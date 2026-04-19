@@ -1,25 +1,20 @@
-<script setup>
+<script setup lang="ts">
 
-import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
+import { BDropdown } from 'bootstrap-vue-next';
+import type { UnitVehicleInfo } from '../../../data/support-assets/_support-asset-types';
+import FormatInches from '../../functional/format-inches.vue';
 import IconNotAvailable from '../../UI/IconNotAvailable.vue';
 import TraitList from '../../UI/TraitList.vue';
-import {BDropdown} from 'bootstrap-vue-next';
-import FormatInches from '../../functional/format-inches.vue';
+import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
 
-const {disabled} = defineProps({
-  disabled: {
-    type: Boolean,
-    required: true,
-  },
-  options: {
-    type: Array,
-    required: true,
-  },
-});
+const { disabled } = defineProps<{
+  disabled: boolean,
+  options: UnitVehicleInfo[]
+}>();
 
 const emit = defineEmits(['selected']);
 
-function select(id, valid) {
+function select(id: string, valid: boolean) {
   if (!valid) {
     return;
   }
@@ -29,11 +24,11 @@ function select(id, valid) {
 </script>
 <template>
   <BDropdown
-      class="dropdown-table d-inline-block"
-      size="sm"
-      variant="secondary"
-      placement="bottom-end"
-      :disabled="disabled"
+    class="dropdown-table d-inline-block"
+    size="sm"
+    variant="secondary"
+    placement="bottom-end"
+    :disabled="disabled"
   >
     <template #button-content>
       <slot></slot>
@@ -65,18 +60,18 @@ function select(id, valid) {
         </thead>
         <tbody>
         <tr
-            :class="{
+          :class="{
               'dropdown-row': true,
               'disabled': !item.valid
             }"
-            v-for="item in options" :key="item.id"
-            @click="select(item.id, item.valid)"
+          v-for="item in options" :key="item.id"
+          @click="select(item.id, item.valid)"
         >
           <td class="text-nowrap">
             {{ item.display_name }}
           </td>
           <td>
-            <format-inches :value="item.move"/>
+            <format-inches :value="item.move" />
           </td>
           <td>
             {{ item.armor }}
@@ -87,26 +82,27 @@ function select(id, valid) {
           <td>
             <template v-if="item.weapons">
               <span v-for="(weapon, index) in item.weapons">
-                <VehicleWeaponToolTip :weapon="weapon"/>
+                <VehicleWeaponToolTip :weapon="weapon" />
                 <template v-if="index !== item.weapons.length - 1">,</template>
               </span>
             </template>
             <template v-if="item.weapons && item.weapon_choices">,</template>
             <template v-if="item.weapon_choices">
               <span v-for="(choices, index1) in item.weapon_choices">
-                <span v-for="(weapon, index2) in choices" class="text-nowrap"> <VehicleWeaponToolTip :weapon="weapon"/>
+                <span v-for="(weapon, index2) in choices" class="text-nowrap">
+                  <VehicleWeaponToolTip :weapon="weapon" />
                   <template v-if="index2 !== choices.length - 1"> or</template>
                 </span><span v-if="index1 !== item.weapon_choices.length - 1">, </span>
               </span>
             </template>
           </td>
           <td>
-            <TraitList :traits="item.traits"/>
+            <TraitList :traits="item.traits" />
           </td>
           <td>
             <IconNotAvailable
-                :valid="item.valid !== false"
-                :validation-message="item.validation_message"
+              :valid="item.valid !== false"
+              :validation-message="item.validation_message"
             />
           </td>
         </tr>

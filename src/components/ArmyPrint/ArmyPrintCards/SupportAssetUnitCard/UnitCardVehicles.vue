@@ -1,5 +1,5 @@
-<script setup>
-import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store.js';
+<script setup lang="ts">
+import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store';
 import {computed} from 'vue';
 import {TRAIT_GARRISON, unitTraitDisplayName} from '../../../../data/unit-traits.js';
 import {chunk} from 'es-toolkit/compat';

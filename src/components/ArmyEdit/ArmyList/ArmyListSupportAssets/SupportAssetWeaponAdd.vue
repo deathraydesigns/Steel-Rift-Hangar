@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import {storeToRefs} from 'pinia';
-import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapons-store.js';
+import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapons-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import {BDropdown} from 'bootstrap-vue-next';
-import {traitDisplayNames} from '../../../../data/data-helpers.js';
+import {traitDisplayNames} from '../../../../data/data-helpers';
 import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
 import SupportAssetNoteList from '../../../UI/SupportAssetNoteList.vue';
 

@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import {computed, inject} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
+import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
 import {BButton, BFormSelect} from 'bootstrap-vue-next';
 import TraitList from '../../UI/TraitList.vue';
-import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron.js';
-import {SUPPORT_ASSET_UNITS} from '../../../data/support-asset-units.js';
+import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron';
+import {SUPPORT_ASSET_UNITS} from '../../../data/support-asset-units';
 import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
 import FormatInches from '../../functional/format-inches.vue';
 

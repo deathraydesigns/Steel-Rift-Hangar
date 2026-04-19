@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
-import {useMechStore} from '../../../../store/mech-store.js';
+import {useMechStore} from '../../../../store/mech-store';
 import {TRAIT_LIMITED, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
 import {TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';

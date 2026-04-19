@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {storeToRefs} from 'pinia';
-import {useTeamStore} from '../../../store/team-store.js';
+import {useTeamStore} from '../../../store/team-store';
 import MechTeam from '../MechTeam/MechTeam.vue';
 import {computed} from 'vue';
 import {TEAM_SHELF, TEAM_GENERAL} from '../../../data/mech-teams.js';

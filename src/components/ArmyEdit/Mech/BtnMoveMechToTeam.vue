@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import {BDropdown} from 'bootstrap-vue-next';
-import {useTeamStore} from '../../../store/team-store.js';
+import {useTeamStore} from '../../../store/team-store';
 import {toaster} from '../../../toaster.js';
-import {useMechStore} from '../../../store/mech-store.js';
+import {useMechStore} from '../../../store/mech-store';
 import {computed} from 'vue';
 import TeamDropDownItems from '../../UI/TeamDropDownItems.vue';
 
@@ -29,7 +29,7 @@ const currentTeamId = computed({
     const mech = mechStore.getMechInfo(mechId);
     const teamGroup = teamStore.getFullTeamGroupDisplayName(teamId, groupId);
 
-    toaster().info(`${mech.display_name} moved to  ${teamGroup}`);
+    toaster().info(`${mech?.display_name} moved to  ${teamGroup}`);
   },
 });
 

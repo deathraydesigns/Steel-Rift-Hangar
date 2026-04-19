@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
-import {computed, inject} from 'vue';
+import { computed, inject, type Ref } from 'vue';
 
-const mode = inject('color_mode');
+const mode = inject<Ref<keyof typeof modes>>('color_mode')!;
 
 const modes = {
   auto: {
@@ -21,7 +21,7 @@ const modes = {
 
 const modeIcon = computed(() => modes[mode.value].icon);
 
-function setMode(value) {
+function setMode(value: keyof typeof modes) {
   mode.value = value;
 }
 </script>

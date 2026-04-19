@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import ArmyPrintSettings from './ArmyPrint/ArmyPrintSettings.vue';
-import {PRINT_MODE_CARDS, PRINT_MODE_REF, PRINT_MODES, usePrintSettingsStore} from '../store/print-settings-store.js';
+import {PRINT_MODE_CARDS, PRINT_MODE_REF, PRINT_MODES, usePrintSettingsStore} from '../store/print-settings-store';
 import {storeToRefs} from 'pinia';
-import {useFactionStore} from '../store/faction-store.js';
-import {useArmyListStore} from '../store/army-list-store.js';
+import {useFactionStore} from '../store/faction-store';
+import {useArmyListStore} from '../store/army-list-store';
 import {BFormCheckbox} from 'bootstrap-vue-next';
 import ArmyPrintCards from './ArmyPrint/ArmyPrintCards.vue';
 import ArmyPrintRef from './ArmyPrint/ArmyPrintRef.vue';

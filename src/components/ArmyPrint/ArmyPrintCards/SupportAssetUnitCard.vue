@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
 import CardHeader from './CardParts/CardHeader.vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
+import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
 import UnitCardWeapons from './SupportAssetUnitCard/UnitCardWeapons.vue';
 import CardFooter from './CardParts/CardFooter.vue';
 import UnitCardGarrisonInfantry from './SupportAssetUnitCard/UnitCardGarrisonInfantry.vue';
 import UnitCardTraits from './SupportAssetUnitCard/UnitCardTraits.vue';
 import UnitCardVehicleHalf from './SupportAssetUnitCard/UnitCardVehicleHalf.vue';
-import {ORDER_SUPPORT} from '../../../data/orders/support-orders.js';
+import {ORDER_SUPPORT} from '../../../data/orders/support-orders';
 
 const store = useSupportAssetUnitsStore();
 

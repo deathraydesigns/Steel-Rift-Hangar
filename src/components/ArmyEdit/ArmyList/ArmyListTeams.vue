@@ -1,8 +1,8 @@
-<script setup>
-import {useTeamStore} from '../../../store/team-store.js';
+<script setup lang="ts">
+import {useTeamStore} from '../../../store/team-store';
 import {storeToRefs} from 'pinia';
 import {computed} from 'vue';
-import {useValidationStore} from '../../../store/validation-store.js';
+import {useValidationStore} from '../../../store/validation-store';
 
 const {team_size_count_validation} = storeToRefs(useValidationStore());
 

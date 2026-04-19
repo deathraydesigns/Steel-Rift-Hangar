@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {h, onErrorCaptured, onMounted, provide} from 'vue';
 import AppHeader from './components/AppHeader.vue';
 import {BModalOrchestrator, BToastOrchestrator, useColorMode, useModalController} from 'bootstrap-vue-next';

@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
-import {useTeamStore} from '../../../../store/team-store.js';
-import {useMechStore} from '../../../../store/mech-store.js';
+import {useTeamStore} from '../../../../store/team-store';
+import {useMechStore} from '../../../../store/mech-store';
 import FormatInches from '../../../functional/format-inches.vue';
 
 const mechStore = useMechStore();

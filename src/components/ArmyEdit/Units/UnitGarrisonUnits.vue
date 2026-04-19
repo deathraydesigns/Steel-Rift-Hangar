@@ -1,16 +1,13 @@
-<script setup>
-import {computed} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
+import FormatInches from '../../functional/format-inches.vue';
 import TraitList from '../../UI/TraitList.vue';
 import UnitWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
-import FormatInches from '../../functional/format-inches.vue';
 
-const {supportAssetAttachmentId} = defineProps({
-  supportAssetAttachmentId: {
-    type: Number,
-    required: true,
-  },
-});
+const { supportAssetAttachmentId } = defineProps<{
+  supportAssetAttachmentId: number
+}>();
 
 const unitStore = useSupportAssetUnitsStore();
 const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarrisonChoicesInfo(supportAssetAttachmentId));
@@ -46,7 +43,7 @@ const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarriso
         {{ unitInfo.display_name }}
       </td>
       <td class="text-end">
-        <format-inches :value="unitInfo.move"/>
+        <format-inches :value="unitInfo.move" />
       </td>
       <td class="text-end">
         {{ unitInfo.armor }}
@@ -57,13 +54,13 @@ const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarriso
       <td :class="{'table-btn-cell': unitInfo.weapons.length}">
         <template v-if="unitInfo.weapons.length">
           <template v-for="(weapon, index) in unitInfo.weapons" :key="weapon.id">
-            <UnitWeaponToolTip :weapon="weapon"/>
+            <UnitWeaponToolTip :weapon="weapon" />
             <span v-if="index !== unitInfo.weapons.length - 1">, </span>
           </template>
         </template>
       </td>
       <td>
-        <TraitList :traits="unitInfo.traits"/>
+        <TraitList :traits="unitInfo.traits" />
       </td>
     </tr>
     </tbody>

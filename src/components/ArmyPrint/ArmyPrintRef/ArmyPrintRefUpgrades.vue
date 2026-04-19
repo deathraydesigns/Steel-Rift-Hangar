@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
-import {useMechStore} from '../../../store/mech-store.js';
+import {useMechStore} from '../../../store/mech-store';
 
 const mechStore = useMechStore();
 

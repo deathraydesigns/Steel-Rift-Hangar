@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 
 import {computed} from 'vue';
-import {useMechStore} from '../../../../store/mech-store.js';
-import {useTeamStore} from '../../../../store/team-store.js';
+import {useMechStore} from '../../../../store/mech-store';
+import {useTeamStore} from '../../../../store/team-store';
 import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
 import {TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
-import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../../../../data/mech-mobility.js';
-import {NO_ARMOR_UPGRADE} from '../../../../data/mech-armor-upgrades.js';
+import {MECH_MOBILITIES, MOBILITY_BI_PEDAL} from '../../../../data/mech-mobility';
+import {NO_ARMOR_UPGRADE} from '../../../../data/mech-armor-upgrades';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();

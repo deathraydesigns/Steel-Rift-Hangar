@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
-import {ORDERS} from '../../data/orders.js';
+import {ORDERS} from '../../data/orders';
 
 const {orderIds} = defineProps({
   orderIds: {

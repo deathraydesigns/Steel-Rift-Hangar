@@ -1,15 +1,15 @@
-<script setup>
-import {BFormFloatingLabel, BFormInput} from 'bootstrap-vue-next';
-import {useArmyListStore} from '../../../store/army-list-store.js';
-import {storeToRefs} from 'pinia';
-import {onMounted, ref, watch} from 'vue';
+<script setup lang="ts">
+import { BFormFloatingLabel, BFormInput } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { onMounted, ref, watch } from 'vue';
+import { useArmyListStore } from '../../../store/army-list-store';
 
 const store = useArmyListStore();
 
-const {max_tons} = storeToRefs(store);
+const { max_tons } = storeToRefs(store);
 
 const disabled = ref(false);
-const armyTypeMaxTons = ref(100);
+const armyTypeMaxTons = ref<number | 'custom'>(100);
 const options = [
   {
     text: 'Recon',
@@ -31,10 +31,9 @@ const options = [
 
 watch(armyTypeMaxTons, () => {
 
-  const isCustom = armyTypeMaxTons.value === 'custom';
-  disabled.value = !isCustom;
+  disabled.value = armyTypeMaxTons.value !== 'custom';
 
-  if (!isCustom) {
+  if (armyTypeMaxTons.value !== 'custom') {
     max_tons.value = armyTypeMaxTons.value;
   }
 });
@@ -43,7 +42,7 @@ function syncArmyType() {
   const result = options.find((option) => option.value === max_tons.value);
 
   if (result) {
-    armyTypeMaxTons.value = result.value;
+    armyTypeMaxTons.value = result.value as number | 'custom';
   }
 }
 
@@ -55,25 +54,25 @@ onMounted(() => {
   <div class="row g-1">
     <div class="col">
       <BFormFloatingLabel
-          label="Tonnage"
-          label-for="list-max-tons"
-          class="mb-1"
+        label="Tonnage"
+        label-for="list-max-tons"
+        class="mb-1"
       >
         <BFormInput
-            id="list-max-tons"
-            v-model="max_tons"
-            type="number"
-            :disabled="disabled"
-            @blur="syncArmyType"
+          id="list-max-tons"
+          v-model="max_tons"
+          type="number"
+          :disabled="disabled"
+          @blur="syncArmyType"
         />
       </BFormFloatingLabel>
     </div>
     <div class="col">
       <div class="form-floating mb-1">
         <BFormSelect
-            v-model="armyTypeMaxTons"
-            :options="options"
-            id="list-army-size-tons"
+          v-model="armyTypeMaxTons"
+          :options="options"
+          id="list-army-size-tons"
         />
         <label for="list-army-size-tons">Army Size</label>
       </div>

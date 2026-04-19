@@ -1,43 +1,33 @@
-<script setup>
+<script setup lang="ts">
 
-import {BPopover} from 'bootstrap-vue-next';
+import { BPopover } from 'bootstrap-vue-next';
+import type { TeamPerkInfo } from '../../store/team-store';
 
 const {
-  btnClass,
+  btnClass = '',
   perks,
-  useFullDisplayName,
-  size,
-} = defineProps({
-  btnClass: {
-    type: String,
-    default: '',
-  },
-  perks: {
-    type: Array,
-  },
-  useFullDisplayName: {
-    type: Boolean,
-    default: false,
-  },
-  size: {
-    type: String,
-    default: 'sm',
-  },
-});
+  useFullDisplayName = false,
+  size = 'sm',
+} = defineProps<{
+  btnClass?: string;
+  perks: TeamPerkInfo[];
+  useFullDisplayName?: boolean;
+  size?: string;
+}>();
 
 </script>
 <template>
   <BPopover>
     <template #target><span
-        v-show="perks && perks.length"
-        :class="`btn btn-${size} btn-default ${btnClass}`">
+      v-show="perks && perks.length"
+      :class="`btn btn-${size} btn-default ${btnClass}`">
 
-      <Icon name="team-perk"/>
+      <Icon name="team-perk" />
     </span></template>
 
     <template #title>
       Group Perks
-      <Icon name="team-perk"/>
+      <Icon name="team-perk" />
     </template>
 
     <template v-for="perk in perks">

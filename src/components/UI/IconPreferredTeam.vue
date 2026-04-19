@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {BPopover} from 'bootstrap-vue-next';
 import {computed} from 'vue';
 import {MECH_TEAMS} from '../../data/mech-teams.js';

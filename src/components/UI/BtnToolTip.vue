@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {BPopover} from 'bootstrap-vue-next';
 
 const {enabled} = defineProps({

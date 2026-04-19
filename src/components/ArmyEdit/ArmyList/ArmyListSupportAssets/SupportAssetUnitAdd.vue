@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {storeToRefs} from 'pinia';
-import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store.js';
+import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import {BDropdown} from 'bootstrap-vue-next';
 

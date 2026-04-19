@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
-import {useTeamStore} from '../../store/team-store.js';
+import {useTeamStore} from '../../store/team-store';
 import {storeToRefs} from 'pinia';
 
 const teamStore = useTeamStore();

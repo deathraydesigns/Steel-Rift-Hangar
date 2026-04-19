@@ -1,19 +1,20 @@
-<script setup>
-import {useMechStore} from '../../../../store/mech-store.js';
+<script setup lang="ts">
+import { BDropdown } from 'bootstrap-vue-next';
+import { computed } from 'vue';
+import type { MechSizeId } from '../../../../data/unit-sizes';
+import { useMechStore } from '../../../../store/mech-store';
+import { useTeamStore } from '../../../../store/team-store';
+import { useValidationStore } from '../../../../store/validation-store';
 import FormatNumber from '../../../functional/format-number.vue';
-import {computed} from 'vue';
-import {useTeamStore} from '../../../../store/team-store.js';
-import {BDropdown} from 'bootstrap-vue-next';
-import {useValidationStore} from '../../../../store/validation-store.js';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
 
-const {mechId} = defineProps({
-  mechId: Number,
-});
+const { mechId } = defineProps<{
+  mechId: number
+}>();
 const options = computed(() => teamStore.getAvailableMechSizes(mechId));
 
 const mech = computed(() => mechStore.getMech(mechId));
@@ -21,8 +22,8 @@ const info = computed(() => mechStore.getMechInfo(mechId));
 const valid = computed(() => !validationStore.teamGroupMechSizeInvalid(mechId));
 const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeamGroupMessage(mechId));
 
-function selectOption(size_id) {
-  mechStore.updateMech(mechId, {size_id});
+function selectOption(size_id: MechSizeId) {
+  mechStore.updateMech(mechId, { size_id });
 }
 
 </script>
@@ -34,12 +35,12 @@ function selectOption(size_id) {
     </td>
     <td colspan="3">
       <BDropdown
-          :id="'mech-input-size-' + mechId"
-          class="dropdown-form dropdown-table d-inline-block"
-          :toggle-class="{'border-danger': !valid}"
-          :text="info.size.display_name"
-          variant="default"
-          lazy
+        :id="'mech-input-size-' + mechId"
+        class="dropdown-form dropdown-table d-inline-block"
+        :toggle-class="{'border-danger': !valid}"
+        :text="info?.size.display_name"
+        variant="default"
+        lazy
       >
         <table class="table table-hover table-borderless">
           <thead>
@@ -64,13 +65,13 @@ function selectOption(size_id) {
           </thead>
           <tbody>
           <tr
-              :class="{
+            :class="{
                 'dropdown-row': true,
-                'table-selected':   (item.id == mech.size_id),
+                'table-selected':   (item.id == mech?.size_id),
                 'disabled': !item.valid
               }"
-              v-for="item in options" :key="item.id"
-              @click="selectOption(item.id)"
+            v-for="item in options" :key="item.id"
+            @click="selectOption(item.id)"
           >
             <td>
               {{ item.display_name }}
@@ -89,8 +90,8 @@ function selectOption(size_id) {
             </td>
             <td class="notes">
               <IconNotAvailable
-                  :valid="item.valid"
-                  :validation-message="notAvailableMessage"
+                :valid="item.valid"
+                :validation-message="notAvailableMessage"
               />
             </td>
           </tr>
@@ -98,20 +99,20 @@ function selectOption(size_id) {
         </table>
       </BDropdown>
       <IconNotAvailable
-          size="md"
-          btn-class="ms-1"
-          :valid="valid"
-          :validation-message="notAvailableMessage"
+        size="md"
+        btn-class="ms-1"
+        :valid="valid"
+        :validation-message="notAvailableMessage"
       />
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        {{ info.size.armor }}
+        {{ info?.size.armor }}
       </div>
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        {{ info.size.structure }}
+        {{ info?.size.structure }}
       </div>
     </td>
     <td class="text-end">
@@ -119,7 +120,7 @@ function selectOption(size_id) {
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <format-number :val="info.size.armor + info.size.structure" :invert-color="true"/>
+        <format-number :val="(info?.size.armor ?? 0) + (info?.size.structure ?? 0)" :invert-color="true" />
       </div>
     </td>
     <td></td>

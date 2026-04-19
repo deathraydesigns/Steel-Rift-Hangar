@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
 import {BLO_EX_MILITARY_VETERANS, FACTION_PERKS} from '../../../data/faction-perks.js';
-import {useFactionStore} from '../../../store/faction-store.js';
+import {useFactionStore} from '../../../store/faction-store';
 import {storeToRefs} from 'pinia';
 import CardHeader from './CardParts/CardHeader.vue';
 import CardFooter from './CardParts/CardFooter.vue';

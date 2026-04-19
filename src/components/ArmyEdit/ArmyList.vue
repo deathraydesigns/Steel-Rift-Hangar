@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Faction from './ArmyList/Faction.vue';
 import ArmyListSize from './ArmyList/ArmyListSize.vue';
 import ArmyListSupportAssetCount from './ArmyList/ArmyListSupportAssetCount.vue';

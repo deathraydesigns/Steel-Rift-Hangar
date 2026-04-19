@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {computed, provide} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
+import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
 import UnitVehicleItem from './UnitVehicleItem.vue';
 
 const {supportAssetAttachmentId} = defineProps({

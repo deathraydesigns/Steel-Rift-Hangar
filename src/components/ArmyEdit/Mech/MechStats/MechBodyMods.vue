@@ -1,55 +1,42 @@
-<script setup>
-import {MECH_BODY_MODS} from '../../../../data/mech-body.js';
-import {computed} from 'vue';
-import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
+<script setup lang="ts">
+import { BDropdown } from 'bootstrap-vue-next';
+import { computed } from 'vue';
+import { MECH_BODY_MODS, type MechBodyModId } from '../../../../data/mech-body';
 import FormatNumber from '../../../functional/format-number.vue';
-import {BDropdown} from 'bootstrap-vue-next';
+import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 
 const {
   formId,
   label,
-  tonnage,
-  armor,
-  structure,
+  tonnage = 0,
+  armor = 0,
+  structure = 0,
   options,
   valid,
   validationMessage,
-} = defineProps({
-  formId: {
-    type: String,
-  },
-  label: {
-    type: String,
-  },
-  modifierLabel: {
-    type: String,
-  },
-  tonnage: {
-    default: 0,
-  },
-  armor: {
-    default: 0,
-  },
-  structure: {
-    default: 0,
-  },
+} = defineProps<{
+  formId: string,
+  label: string,
+  modifierLabel: string,
+  tonnage: number,
+  armor: number | null,
+  structure: number | null,
   options: {
-    type: Array,
-    required: true,
-  },
-  valid: {
-    type: Boolean,
-    required: true,
-  },
-  validationMessage: {
-    type: String,
-  },
-});
+    value: string,
+    text: string,
+    modifier: number,
+    max_tons: number,
+    valid: boolean,
+    validation_message: string | null,
+  }[],
+  valid: boolean,
+  validationMessage: string,
+}>();
 
-const model = defineModel();
+const model = defineModel<MechBodyModId>();
 const selectedValueLabel = computed(() => MECH_BODY_MODS[model.value].display_name);
 
-function selectOption(value) {
+function selectOption(value: MechBodyModId) {
   model.value = value;
 }
 </script>
@@ -61,12 +48,12 @@ function selectOption(value) {
     </td>
     <td colspan="3">
       <BDropdown
-          :id="formId"
-          class="dropdown-form dropdown-table d-inline-block"
-          :toggle-class="{'border-danger': !valid}"
-          variant="default"
-          :text="selectedValueLabel"
-          lazy
+        :id="formId"
+        class="dropdown-form dropdown-table d-inline-block"
+        :toggle-class="{'border-danger': !valid}"
+        variant="default"
+        :text="selectedValueLabel"
+        lazy
       >
         <table class="table table-hover table-borderless">
           <thead>
@@ -85,27 +72,27 @@ function selectOption(value) {
           </thead>
           <tbody>
           <tr
-              :class="{
+            :class="{
                 'disabled': !item.valid,
                 'dropdown-row': true,
                 'table-selected':   (item.value == model)
               }"
-              v-for="item in options" :key="item.value"
-              @click="selectOption(item.value, item.valid)"
+            v-for="item in options" :key="item.value"
+            @click="selectOption(item.value)"
           >
             <td>
               {{ item.text }}
             </td>
             <td class="text-end">
-              <format-number :val="item.modifier"/>
+              <format-number :val="item.modifier" />
             </td>
             <td class="text-end">
-              <format-number :val="item.max_tons" invert invert-color/>
+              <format-number :val="item.max_tons" invert invert-color />
             </td>
             <td class="notes">
               <IconNotAvailable
-                  :valid="item.valid"
-                  :validation-message="item.validation_message"
+                :valid="item.valid"
+                :validation-message="item.validation_message"
               />
             </td>
           </tr>
@@ -113,27 +100,27 @@ function selectOption(value) {
         </table>
       </BDropdown>
       <IconNotAvailable
-          btn-class="ms-1"
-          size="md"
-          :valid="valid"
-          :validation-message="validationMessage"
+        btn-class="ms-1"
+        size="md"
+        :valid="valid"
+        :validation-message="validationMessage"
       />
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <format-number :val="armor" v-if="armor !== null"/>
+        <format-number :val="armor" v-if="armor !== null" />
       </div>
     </td>
     <td class="text-end">
       <div class="col-form-label">
 
-        <format-number :val="structure" v-if="structure !== null"/>
+        <format-number :val="structure" v-if="structure !== null" />
       </div>
     </td>
     <td></td>
     <td class="text-end">
       <div class="col-form-label">
-        <format-number :val="tonnage" :invert-color="true"/>
+        <format-number :val="tonnage" :invert-color="true" />
       </div>
     </td>
     <td></td>

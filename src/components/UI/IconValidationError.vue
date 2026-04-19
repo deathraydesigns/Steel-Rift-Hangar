@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 
 import {computed} from 'vue';
 import {BPopover} from 'bootstrap-vue-next';
@@ -7,33 +7,20 @@ import SvgIcon from './Icon.vue';
 const {
   title,
   messageArray,
-  message,
-  size,
-  icon,
-  btnClass,
-  visible,
-} = defineProps({
-  title: {
-    type: String,
-  },
-  message: {
-    default: '',
-  },
-  messageArray: {
-    type: Array,
-  },
-  size: {
-    type: String,
-    default: 'md',
-  },
-  btnClass: {},
-  icon: {
-    type: String,
-  },
-  visible: {
-    default: null,
-  },
-});
+  message = '',
+  size = 'md',
+  icon = '',
+  btnClass = '',
+  visible = null,
+} = defineProps<{
+  title?: string
+  message?: string
+  size?: string
+  icon?: string
+  btnClass?: string
+  visible?: boolean | null
+  messageArray?: string[]
+}>();
 
 const isVisible = computed(() => {
   if (visible === true || visible === false) {

@@ -1,14 +1,14 @@
-<script setup>
-import {computed, reactive, toRaw} from 'vue';
-import {BDropdown, BModal} from 'bootstrap-vue-next';
+<script setup lang="ts">
+import { BDropdown, BModal } from 'bootstrap-vue-next';
+import { disposeOfPiniaScope } from 'pinia-scope';
+import { computed, reactive, toRaw } from 'vue';
+import { MECH_TEAMS, type MechTeamId, TEAM_SHELF } from '../../../data/mech-teams.js';
+import { useArmyListStore } from '../../../store/army-list-store';
+import { loadSaveFileData } from '../../../store/helpers/store-save-load';
+import { useMechStore } from '../../../store/mech-store';
+import { useTeamStore } from '../../../store/team-store';
 import HEVCard from '../../ArmyPrint/ArmyPrintCards/HEVCard.vue';
-import {MECH_TEAMS, TEAM_SHELF} from '../../../data/mech-teams.js';
-import {useMechStore} from '../../../store/mech-store.js';
 import TeamDropDownItems from '../TeamDropDownItems.vue';
-import {useArmyListStore} from '../../../store/army-list-store.js';
-import {useTeamStore} from '../../../store/team-store.js';
-import {loadSaveFileData} from '../../../store/helpers/store-save-load.js';
-import {disposeOfPiniaScope} from 'pinia-scope';
 
 const SCOPE = 'import';
 
@@ -18,7 +18,7 @@ const armyListStore = useArmyListStore(SCOPE);
 
 const appTeamStore = useTeamStore();
 
-const visible = defineModel(false);
+const visible = defineModel<boolean>({ default: false });
 const mechImports = reactive(new Map());
 
 const mechList = computed(() => {
@@ -26,8 +26,8 @@ const mechList = computed(() => {
 
     mech = toRaw(mech);
     const existing = mechImports.get(mech.id);
-    const {teamId} = teamStore.getMechTeamAndGroupIds(mech.id);
-    const targetTeamId = existing?.teamId || mech.preferred_team_id || teamId;
+    const { teamId } = teamStore.getMechTeamAndGroupIds(mech.id);
+    const targetTeamId: MechTeamId = existing?.teamId || mech.preferred_team_id || teamId;
 
     return {
       mechId: mech.id,
@@ -39,7 +39,7 @@ const mechList = computed(() => {
   });
 });
 
-function add(mechId, teamId) {
+function add(mechId: number, teamId: MechTeamId) {
   const existing = mechImports.get(mechId);
   if (existing) {
     existing.teamId = teamId;
@@ -54,7 +54,7 @@ function add(mechId, teamId) {
 }
 
 function addAll() {
-  mechList.value.forEach(({mechId, preferredTeam}) => {
+  mechList.value.forEach(({ mechId, preferredTeam }) => {
     const existing = mechImports.get(mechId);
     if (existing) {
       existing.import = true;
@@ -69,13 +69,13 @@ function resetAll() {
   [...mechImports.keys()].forEach((key) => mechImports.delete(key));
 }
 
-function remove(mechId) {
+function remove(mechId: number) {
   const existing = mechImports.get(mechId);
   existing.import = false;
 }
 
 defineExpose({
-  importJsonData(jsonData) {
+  importJsonData(jsonData: {}) {
     loadSaveFileData(jsonData, SCOPE);
     visible.value = true;
   },
@@ -84,7 +84,7 @@ defineExpose({
 function importSelectedMechs() {
   const mechs = [...mechImports.values()].filter(item => item.import);
 
-  toRaw(mechs).forEach(({mechId, teamId}) => {
+  toRaw(mechs).forEach(({ mechId, teamId }) => {
     const mech = mechStore.getMech(mechId);
     appTeamStore.addMechToTeamFromLoadedFile(mech, teamId);
   });
@@ -95,12 +95,12 @@ function importSelectedMechs() {
 </script>
 <template>
   <BModal
-      lazy
-      v-model="visible"
-      size="xl"
-      ok-variant="secondary"
-      @ok="importSelectedMechs"
-      @hidden="resetAll"
+    lazy
+    v-model="visible"
+    size="xl"
+    ok-variant="secondary"
+    @ok="importSelectedMechs"
+    @hidden="resetAll"
   >
     <template #title>
       <strong>
@@ -125,8 +125,8 @@ function importSelectedMechs() {
           <div class="card-body">
             <div class="output-container">
               <HEVCard
-                  :mech-id="item.mechId"
-                  :store-scope="SCOPE"
+                :mech-id="item.mechId"
+                :store-scope="SCOPE"
               />
             </div>
           </div>
@@ -140,22 +140,22 @@ function importSelectedMechs() {
                 <strong>Current Team:</strong>
               </template>
               {{ item.preferredTeam.display_name }}
-              <Icon :name="item.preferredTeam.icon"/>
+              <Icon :name="item.preferredTeam.icon" />
               <template v-if="item.shelved">
                 (shelved)
               </template>
             </div>
             <button
-                class="btn btn-primary w-100"
-                v-if="!item.willImport"
-                @click="add(item.mechId, item.targetTeam.id)"
+              class="btn btn-primary w-100"
+              v-if="!item.willImport"
+              @click="add(item.mechId, item.targetTeam.id)"
             >
               Add
             </button>
             <button
-                class="btn btn-danger w-100"
-                v-if="item.willImport"
-                @click="remove(item.mechId)"
+              class="btn btn-danger w-100"
+              v-if="item.willImport"
+              @click="remove(item.mechId)"
             >
               Remove
             </button>
@@ -165,16 +165,16 @@ function importSelectedMechs() {
                 Import To:
               </span>
               <BDropdown
-                  variant="default"
-                  class="d-inline-block"
+                variant="default"
+                class="d-inline-block"
               >
                 <template #button-content>
-                  <Icon :name="item.targetTeam.icon"/>
+                  <Icon :name="item.targetTeam.icon" />
                   {{ item.targetTeam.display_name }}
                 </template>
                 <TeamDropDownItems
-                    @update:modelValue="add(item.mechId, $event)"
-                    :model-value="item.targetTeam.id"
+                  @update:modelValue="add(item.mechId, $event)"
+                  :model-value="item.targetTeam.id"
                 />
               </BDropdown>
             </div>

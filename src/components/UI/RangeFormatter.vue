@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 
 import FormatInches from '../functional/format-inches.vue';
 

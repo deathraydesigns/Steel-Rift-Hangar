@@ -1,15 +1,11 @@
-<script setup>
-import {computed} from 'vue';
-import {sum} from 'es-toolkit';
+<script setup lang="ts">
+import { sum } from 'es-toolkit';
+import { computed } from 'vue';
 
-const {damage, damageModifiers} = defineProps({
-  damage: {
-    type: Number,
-  },
-  damageModifiers: {
-    type: Array,
-  },
-});
+const { damage, damageModifiers } = defineProps<{
+  damage: number,
+  damageModifiers: number[],
+}>();
 
 const total = computed(() => damage + sum(damageModifiers || []));
 

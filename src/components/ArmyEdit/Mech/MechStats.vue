@@ -1,33 +1,31 @@
-<script setup>
-import {BFormInput} from 'bootstrap-vue-next';
-import {useMechStore} from '../../../store/mech-store.js';
-import {useFactionStore} from '../../../store/faction-store.js';
-import MechFactionPerkRow from './MechStats/MechFactionPerkRow.vue';
+<script setup lang="ts">
+import { BFormInput } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import { useFactionStore } from '../../../store/faction-store';
+import { useMechStore } from '../../../store/mech-store';
+import { useTeamStore } from '../../../store/team-store';
+import { useValidationStore } from '../../../store/validation-store';
 import Fraction from '../../functional/fraction.vue';
-import MechWeapons from './MechWeapons.vue';
-import MechUpgrades from './MechUpgrades.vue';
-import {computed} from 'vue';
-import {storeToRefs} from 'pinia';
-import {useTeamStore} from '../../../store/team-store.js';
 import MechArmorUpgrades from './MechStats/MechArmorUpgrades.vue';
 import MechBodyMods from './MechStats/MechBodyMods.vue';
-import MechSizes from './MechStats/MechSizes.vue';
+import MechFactionPerkRow from './MechStats/MechFactionPerkRow.vue';
 import MechMobilities from './MechStats/MechMobilities.vue';
-import {useValidationStore} from '../../../store/validation-store.js';
+import MechSizes from './MechStats/MechSizes.vue';
+import MechUpgrades from './MechUpgrades.vue';
+import MechWeapons from './MechWeapons.vue';
 
 const mechStore = useMechStore();
 const factionStore = useFactionStore();
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
 
-const {mechId} = defineProps({
-  mechId: {
-    type: Number,
-  },
-});
+const { mechId } = defineProps<{
+  mechId: number
+}>();
 
-const mech = computed(() => mechStore.getMech(mechId));
-const info = computed(() => mechStore.getMechInfo(mechId));
+const mech = computed(() => mechStore.getMech(mechId)!);
+const info = computed(() => mechStore.getMechInfo(mechId)!);
 
 const {
   hasAdvancedHardPoints,
@@ -57,7 +55,7 @@ const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeam
           <label class="col-form-label" :for="'mech-input-name-' + mechId">Name</label>
         </td>
         <td colspan="3">
-          <BFormInput :id="'mech-input-name-' + mechId" v-model="mech.name" :placeholder="info.placeholder_name"/>
+          <BFormInput :id="'mech-input-name-' + mechId" v-model="mech.name" :placeholder="info.placeholder_name" />
         </td>
         <td class="text-end pe-1 border-bottom">
           <div class="fw-bold">Armor</div>
@@ -80,58 +78,58 @@ const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeam
       </thead>
       <tbody class="tbody-compact">
       <MechSizes
-          :mech-id="mechId"
+        :mech-id="mechId"
       />
       <MechBodyMods
-          label="Armor Type"
-          modifier-label="Armor Stat"
-          v-model="mech.armor_mod_id"
-          :form-id="'mech-input-armor-mod-' + mechId"
-          :tonnage="info.armor_mod.modifier"
-          :armor="info.armor_mod.modifier"
-          :structure="null"
-          :options="armorModOptions"
-          :valid="armorModValid"
-          :validation-message="notAvailableMessage"
+        label="Armor Type"
+        modifier-label="Armor Stat"
+        v-model="mech.armor_mod_id"
+        :form-id="'mech-input-armor-mod-' + mechId"
+        :tonnage="info.armor_mod.modifier"
+        :armor="info.armor_mod.modifier"
+        :structure="null"
+        :options="armorModOptions"
+        :valid="armorModValid"
+        :validation-message="notAvailableMessage"
 
       />
       <MechBodyMods
-          label="Structure Type"
-          modifier-label="Structure Stat"
-          v-model="mech.structure_mod_id"
-          :form-id="'mech-input-structure-mod-' + mechId"
-          :tonnage="info.structure_mod.modifier"
-          :armor="null"
-          :structure="info.structure_mod.modifier"
-          :options="structureModOptions"
-          :valid="structureModValid"
-          :validation-message="notAvailableMessage"
+        label="Structure Type"
+        modifier-label="Structure Stat"
+        v-model="mech.structure_mod_id"
+        :form-id="'mech-input-structure-mod-' + mechId"
+        :tonnage="info.structure_mod.modifier"
+        :armor="null"
+        :structure="info.structure_mod.modifier"
+        :options="structureModOptions"
+        :valid="structureModValid"
+        :validation-message="notAvailableMessage"
       />
       <MechArmorUpgrades
-          label="Armor Upgrades"
-          v-model="mech.armor_upgrade_id"
-          :mech-id="mech.id"
+        label="Armor Upgrades"
+        v-model="mech.armor_upgrade_id"
+        :mech-id="mech.id"
       />
       <MechMobilities
-          label="Mobility"
-          v-model="mech.mobility_id"
-          :mech-id="mech.id"
+        label="Mobility"
+        v-model="mech.mobility_id"
+        :mech-id="mech.id"
       />
       <MechFactionPerkRow
-          v-if="hasTopEndHardware"
-          :text="topEndHardwareInfo.display_name"
-          :description="topEndHardwareInfo.description"
-          :usedTons="topEndHardwareBonusTons"
+        v-if="hasTopEndHardware"
+        :text="topEndHardwareInfo?.display_name"
+        :description="topEndHardwareInfo?.description"
+        :usedTons="topEndHardwareBonusTons"
       />
       <MechFactionPerkRow
-          v-if="hasAdvancedHardPoints"
-          :text="advancedHardPointsInfo.display_name"
-          :description="advancedHardPointsInfo.description"
-          :usedSlots="advancedHardPointsBonusSlots"
+        v-if="hasAdvancedHardPoints"
+        :text="advancedHardPointsInfo?.display_name"
+        :description="advancedHardPointsInfo?.description"
+        :usedSlots="advancedHardPointsBonusSlots"
       />
       </tbody>
-      <MechUpgrades :mech-id="mech.id"/>
-      <MechWeapons :mech-id="mech.id"/>
+      <MechUpgrades :mech-id="mech.id" />
+      <MechWeapons :mech-id="mech.id" />
       <tfoot>
       <tr>
         <td></td>
@@ -169,12 +167,12 @@ const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeam
         </td>
         <td class="text-end">
           <strong>
-            <fraction :a="info.used_slots" :b="info.max_slots"/>
+            <fraction :a="info.used_slots" :b="info.max_slots" />
           </strong>
         </td>
         <td class="text-end">
           <strong>
-            <fraction :a="info.used_tons" :b="info.max_tons"/>
+            <fraction :a="info.used_tons" :b="info.max_tons" />
           </strong>
         </td>
         <td></td>

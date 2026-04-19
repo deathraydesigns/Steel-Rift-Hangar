@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {unitTraitDisplayName} from '../../../../data/unit-traits.js';
 
 const {traits} = defineProps({

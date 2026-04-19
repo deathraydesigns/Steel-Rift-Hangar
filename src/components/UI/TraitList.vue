@@ -1,15 +1,14 @@
-<script setup>
+<script setup lang="ts">
 
+import type { Trait } from '../../types';
 import BtnToolTip from './BtnToolTip.vue';
 import GrantedOrders from './GrantedOrders.vue';
 
-const {traits} = defineProps({
-  traits: {
-    type: Array,
-  },
-});
+const { traits } = defineProps<{
+  traits: Trait[]
+}>();
 
-function show(trait) {
+function show(trait: Trait) {
   return !!(trait.description || trait.granted_order_ids?.length);
 }
 </script>
@@ -24,7 +23,7 @@ function show(trait) {
       </template>
       <template #content>
         {{ trait.description }}
-        <GrantedOrders :order-ids="trait.granted_order_ids"/>
+        <GrantedOrders :order-ids="trait.granted_order_ids" />
       </template>
     </BtnToolTip>
   </template>

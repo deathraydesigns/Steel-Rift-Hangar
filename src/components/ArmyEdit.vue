@@ -1,14 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import ArmyList from './ArmyEdit/ArmyList.vue';
 import SecondaryAgendas from './ArmyEdit/SecondaryAgendas.vue';
 import MechTeamList from './ArmyEdit/Mech/MechTeamList.vue';
 import {storeToRefs} from 'pinia';
-import {useSupportAssetUnitsStore} from '../store/support-asset-units-store.js';
+import {useSupportAssetUnitsStore} from '../store/support-asset-units-store';
 import UnitItem from './ArmyEdit/Units/UnitItem.vue';
 import {useRoute, useRouter} from 'vue-router';
 import {onMounted} from 'vue';
-import {urlDataStringToJson} from '../composables/url-data-parser.js';
-import {loadSaveFileData} from '../store/helpers/store-save-load.js';
+import {urlDataStringToJson} from '../composables/url-data-parser';
+import {loadSaveFileData} from '../store/helpers/store-save-load';
 import {ROUTE_HOME} from '../router.js';
 import {toaster} from '../toaster.js';
 
@@ -19,7 +19,7 @@ const route = useRoute();
 
 onMounted(() => {
 
-  const dataString = route.query.payload;
+  const dataString = route.query.payload as string;
   if (!dataString) {
     return;
   }
@@ -32,7 +32,7 @@ onMounted(() => {
           toaster().info('Army List loaded from Data Url');
         });
 
-  } catch (error) {
+  } catch (error: any) {
 
     router.push({name: ROUTE_HOME})
         .then(() => {

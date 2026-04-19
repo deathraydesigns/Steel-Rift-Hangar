@@ -1,31 +1,24 @@
-<script setup>
+<script setup lang="ts">
 
-import {BPopover} from 'bootstrap-vue-next';
+import { BPopover } from 'bootstrap-vue-next';
+import type { FactionPerk } from '../../data/faction-perks';
 
 const {
   perks,
-  size,
-  btnClass,
-} = defineProps({
-  btnClass: {
-    type: String,
-    default: '',
-  },
-  perks: {
-    type: Array,
-  },
-  size: {
-    type: String,
-    default: 'sm',
-  },
-});
+  size = 'sm',
+  btnClass = '',
+} = defineProps<{
+  btnClass?: string;
+  perks: FactionPerk[];
+  size?: string;
+}>();
 
 </script>
 <template>
   <BPopover>
     <template #target><span
-        v-show="perks && perks.length"
-        :class="`btn btn-${size} btn-default ${btnClass}`">
+      v-show="perks && perks.length"
+      :class="`btn btn-${size} btn-default ${btnClass}`">
 
       <span class="material-symbols-outlined">
         flag

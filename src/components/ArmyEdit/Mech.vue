@@ -1,14 +1,14 @@
-<script setup>
-import {useMechStore} from '../../store/mech-store.js';
+<script setup lang="ts">
+import {useMechStore} from '../../store/mech-store';
 import Fraction from '../functional/fraction.vue';
 import {computed} from 'vue';
 import {BButton, BCollapse} from 'bootstrap-vue-next';
-import {useValidationStore} from '../../store/validation-store.js';
+import {useValidationStore} from '../../store/validation-store';
 import MechStats from './Mech/MechStats.vue';
 import HEVCard from '../ArmyPrint/ArmyPrintCards/HEVCard.vue';
 import BtnMoveMechToTeam from './Mech/BtnMoveMechToTeam.vue';
 import IconValidationError from '../UI/IconValidationError.vue';
-import {useTeamStore} from '../../store/team-store.js';
+import {useTeamStore} from '../../store/team-store';
 import MechPreferredTeamDropDown from './Mech/MechStats/MechPreferredTeamDropDown.vue';
 import IconPreferredTeam from '../UI/IconPreferredTeam.vue';
 import {TEAM_SHELF} from '../../data/mech-teams.js';

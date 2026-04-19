@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 
 import logoSvg from '/steel-rift-logo.svg';
 import {BCollapse, BNavbarToggle} from 'bootstrap-vue-next';

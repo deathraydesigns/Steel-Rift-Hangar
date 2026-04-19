@@ -1,18 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import {ref, useTemplateRef} from 'vue';
 import {BDropdown, BDropdownHeader, BDropdownItem} from 'bootstrap-vue-next';
 import ModalImportMechs from './Modal/ModalImportMechs.vue';
-import {loadSaveFileData} from '../../store/helpers/store-save-load.js';
-import {jsonFileParser} from '../../composables/file-upload.js';
+import {loadSaveFileData} from '../../store/helpers/store-save-load';
+import {jsonFileParser} from '../../composables/file-upload';
 import ModalDataUrlImport from './Modal/ModalDataUrlImport.vue';
-import {HEV_PACKS} from '../../data/hev-packs.js';
-import {useMechStore} from '../../store/mech-store.js';
-import {useTeamStore} from '../../store/team-store.js';
+import {HEV_PACKS} from '../../data/hev-packs';
+import {useMechStore} from '../../store/mech-store';
+import {useTeamStore} from '../../store/team-store';
 import {disposeOfPiniaScope} from 'pinia-scope';
 
-const fileUpload = useTemplateRef('file-upload');
-const fileImport = useTemplateRef('file-import');
-const modalImportMechs = useTemplateRef('modal-import-mechs');
+const fileUpload = useTemplateRef<HTMLInputElement>('file-upload');
+const fileImport = useTemplateRef<HTMLInputElement>('file-import');
+const modalImportMechs = useTemplateRef<typeof ModalImportMechs>('modal-import-mechs');
 
 const importModalVisible = ref(false);
 const dataUrlModalVisible = ref(false);
@@ -27,7 +27,7 @@ const fileImportChange = jsonFileParser((jsonData) => {
   fileImport.value.value = null;
 });
 
-const onImportFromUrlData = (jsonData) => {
+const onImportFromUrlData = (jsonData: {}) => {
   modalImportMechs.value.importJsonData(jsonData);
 };
 

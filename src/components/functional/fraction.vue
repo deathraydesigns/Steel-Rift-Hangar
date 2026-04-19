@@ -1,27 +1,20 @@
-<script setup>
-import {computed} from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
 const {
   a,
   b,
   successClass,
-} = defineProps({
-  a: {
-    required: true,
-  },
-  b: {
-    required: true,
-  },
-  successClass: {
-    default: null,
-    type: String,
-  },
-});
+} = defineProps<{
+  a: number,
+  b: number,
+  successClass?: string | null
+}>();
 
 const containerClass = computed(() => {
 
   let success = (a == b);
-  let result = {
+  let result: any = {
     'text-success-emphasis': success,
   };
 

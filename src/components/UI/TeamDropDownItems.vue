@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import {BDropdownDivider, BDropdownHeader, BDropdownItem} from 'bootstrap-vue-next';
 import {computed} from 'vue';
 import {sortBy} from 'es-toolkit';
 import {groupBy} from 'es-toolkit/compat';
-import {useTeamStore} from '../../store/team-store.js';
+import {useTeamStore} from '../../store/team-store';
 import {MECH_TEAM_ARRAY, MECH_TEAMS, TEAM_SHELF, TEAM_GENERAL} from '../../data/mech-teams.js';
 
 const teamStore = useTeamStore();

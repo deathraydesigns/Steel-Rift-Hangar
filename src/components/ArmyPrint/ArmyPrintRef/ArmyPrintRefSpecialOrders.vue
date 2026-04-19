@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
-import {makeGrantedOrderCollection} from '../../../store/helpers/helpers.js';
-import {useMechStore} from '../../../store/mech-store.js';
+import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
+import {makeGrantedOrderCollection} from '../../../store/helpers/helpers';
+import {useMechStore} from '../../../store/mech-store';
 
 const mechStore = useMechStore();
 const unitStore = useSupportAssetUnitsStore();

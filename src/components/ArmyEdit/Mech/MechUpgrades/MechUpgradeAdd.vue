@@ -1,5 +1,5 @@
-<script setup>
-import {useMechStore} from '../../../../store/mech-store.js';
+<script setup lang="ts">
+import {useMechStore} from '../../../../store/mech-store';
 import {computed} from 'vue';
 import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
@@ -58,20 +58,20 @@ function addUpgrade(upgradeId) {
         <tr
             :class="{
               'dropdown-row': true,
-              'disabled': !item.valid
+              'disabled': !item?.valid
             }"
-            v-for="item in options" :key="item.upgrade_id"
-            @click="addUpgrade(item.upgrade_id)"
+            v-for="item in options" :key="item?.upgrade_id"
+            @click="addUpgrade(item?.upgrade_id)"
         >
           <td>
             <BtnToolTip>
               <template #target>
                 <span class="text-tooltip">
-                  {{ item.display_name }}
+                  {{ item?.display_name }}
                 </span>
               </template>
               <template #content>
-                {{ item.description }}
+                {{ item?.description }}
               </template>
             </BtnToolTip>
           </td>
@@ -92,20 +92,20 @@ function addUpgrade(upgradeId) {
           </td>
           <td class="notes">
             <IconNotAvailable
-                :valid="item.valid"
-                :validation-message="item.validation_message"
+                :valid="!!item?.valid"
+                :validation-message="item?.validation_message ?? ''"
             />
           </td>
           <td class="notes">
             <IconTeamGroupPerks
                 btn-class="ms-1"
-                :perks="item.team_perks"
+                :perks="item?.team_perks ?? []"
             />
           </td>
           <td class="notes">
             <IconFactionPerks
                 btn-class="ms-1"
-                :perks="item.faction_perks"
+                :perks="item?.faction_perks ?? []"
             />
           </td>
         </tr>

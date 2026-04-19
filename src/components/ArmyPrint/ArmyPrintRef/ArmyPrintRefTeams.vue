@@ -1,5 +1,5 @@
-<script setup>
-import {useTeamStore} from '../../../store/team-store.js';
+<script setup lang="ts">
+import {useTeamStore} from '../../../store/team-store';
 import {computed} from 'vue';
 import {MECH_TEAMS} from '../../../data/mech-teams.js';
 

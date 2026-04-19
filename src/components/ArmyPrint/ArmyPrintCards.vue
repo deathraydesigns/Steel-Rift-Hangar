@@ -1,13 +1,13 @@
-<script setup>
-import {useMechStore} from '../../store/mech-store.js';
+<script setup lang="ts">
+import {useMechStore} from '../../store/mech-store';
 import {computed} from 'vue';
 import {chunk} from 'es-toolkit/compat';
 import HEVCard from './ArmyPrintCards/HEVCard.vue';
-import {usePrintSettingsStore} from '../../store/print-settings-store.js';
-import {useTeamStore} from '../../store/team-store.js';
-import {useFactionStore} from '../../store/faction-store.js';
-import {useSupportAssetWeaponsStore} from '../../store/support-asset-weapons-store.js';
-import {useSupportAssetUnitsStore} from '../../store/support-asset-units-store.js';
+import {usePrintSettingsStore} from '../../store/print-settings-store';
+import {useTeamStore} from '../../store/team-store';
+import {useFactionStore} from '../../store/faction-store';
+import {useSupportAssetWeaponsStore} from '../../store/support-asset-weapons-store';
+import {useSupportAssetUnitsStore} from '../../store/support-asset-units-store';
 import MineDroneCard from './ArmyPrintCards/MineDroneCard.vue';
 import FactionPerkCard from './ArmyPrintCards/FactionPerkCard.vue';
 import SupportAssetWeaponCard from './ArmyPrintCards/SupportAssetWeaponCard.vue';

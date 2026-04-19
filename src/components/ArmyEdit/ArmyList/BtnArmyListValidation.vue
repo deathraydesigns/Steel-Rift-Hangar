@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 
 import {BButton, BModal} from 'bootstrap-vue-next';
-import {useValidationStore} from '../../../store/validation-store.js';
+import {useValidationStore} from '../../../store/validation-store';
 import {storeToRefs} from 'pinia';
 import {computed, ref} from 'vue';
 import {TEAM_GENERAL} from '../../../data/mech-teams.js';
 import TeamGroupValidation from './BtnArmyListValidation/TeamGroupValidation.vue';
-import {useTeamStore} from '../../../store/team-store.js';
+import {useTeamStore} from '../../../store/team-store';
 
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
@@ -78,9 +78,6 @@ function click() {
         <div v-for="team in specialTeamValidation">
           <div class="fw-bold">{{ team.display_name }}</div>
           <ul>
-            <li v-for="message in team.validation_messages">
-              {{ message }}
-            </li>
             <li v-for="group in team.groups">
               <TeamGroupValidation :group="group"/>
             </li>

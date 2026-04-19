@@ -1,10 +1,10 @@
-<script setup>
-import {useMechStore} from '../../../store/mech-store.js';
+<script setup lang="ts">
+import {useMechStore} from '../../../store/mech-store';
 import MechUpgradeItem from './MechUpgrades/MechUpgradeItem.vue';
 import MechUpgradeAdd from './MechUpgrades/MechUpgradeAdd.vue';
 import {computed} from 'vue';
 import draggable from 'vuedraggable';
-import {useValidationStore} from '../../../store/validation-store.js';
+import {useValidationStore} from '../../../store/validation-store';
 import IconValidationError from '../../UI/IconValidationError.vue';
 
 const mechStore = useMechStore();

@@ -1,13 +1,11 @@
-<script setup>
-
-import BtnToolTip from './BtnToolTip.vue';
+<script setup lang="ts">
+import { type UnitWeapon } from '../../data/unit-weapons';
 import FormatInches from '../functional/format-inches.vue';
+import BtnToolTip from './BtnToolTip.vue';
 
-const {weapon} = defineProps({
-  weapon: {
-    type: Object,
-  },
-});
+const { weapon } = defineProps<{
+  weapon: UnitWeapon
+}>();
 </script>
 <template>
   <BtnToolTip>
@@ -29,7 +27,7 @@ const {weapon} = defineProps({
         <tr>
           <td class="text-center">{{ weapon.damage }}</td>
           <td class="text-center">
-            <format-inches :value="weapon.range"/>
+            <format-inches :value="weapon.range" />
           </td>
           <td>{{ weapon.traits.map(t => t.display_name).join(', ') }}</td>
         </tr>

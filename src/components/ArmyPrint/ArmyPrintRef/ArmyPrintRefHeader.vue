@@ -1,9 +1,9 @@
-<script setup>
-import {useArmyListStore} from '../../../store/army-list-store.js';
+<script setup lang="ts">
+import {useArmyListStore} from '../../../store/army-list-store';
 import Fraction from '../../functional/fraction.vue';
 import {storeToRefs} from 'pinia';
-import {useTeamStore} from '../../../store/team-store.js';
-import {useSupportAssetCountsStore} from '../../../store/support-asset-count-store.js';
+import {useTeamStore} from '../../../store/team-store';
+import {useSupportAssetCountsStore} from '../../../store/support-asset-count-store';
 
 const armyListStore = useArmyListStore();
 

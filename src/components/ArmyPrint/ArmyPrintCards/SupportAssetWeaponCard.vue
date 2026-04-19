@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
 import {TRAIT_LIMITED} from '../../../data/weapon-traits.js';
 import CardHeader from './CardParts/CardHeader.vue';
 import CardFooter from './CardParts/CardFooter.vue';
-import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store.js';
+import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store';
 import {find} from 'es-toolkit/compat';
-import {traitDisplayNames} from '../../../data/data-helpers.js';
+import {traitDisplayNames} from '../../../data/data-helpers';
 import SupportAssetWeaponDamageFormatter from '../../UI/SupportAssetWeaponDamageFormatter.vue';
 
 const supportAssetStore = useSupportAssetWeaponsStore();

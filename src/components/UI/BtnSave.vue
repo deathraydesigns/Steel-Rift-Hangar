@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import fileSaver from 'file-saver';
-import {makeSaveFileData} from '../../store/helpers/store-save-load.js';
-import {useArmyListStore} from '../../store/army-list-store.js';
+import {makeSaveFileData} from '../../store/helpers/store-save-load';
+import {useArmyListStore} from '../../store/army-list-store';
 import {storeToRefs} from 'pinia';
 import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
-import {makeArmyListDataUrl} from '../../composables/url-data-parser.js';
+import {makeArmyListDataUrl} from '../../composables/url-data-parser';
 import {toaster} from '../../toaster.js';
 
 function saveFile(fileName, data) {

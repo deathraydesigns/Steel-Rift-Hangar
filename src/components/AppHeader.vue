@@ -1,16 +1,16 @@
-<script setup>
+<script setup lang="ts">
 
 import BtnLoad from './UI/BtnLoad.vue';
 import BtnSave from './UI/BtnSave.vue';
-import {useArmyListStore} from '../store/army-list-store.js';
+import {useArmyListStore} from '../store/army-list-store';
 import {storeToRefs} from 'pinia';
-import {useTeamStore} from '../store/team-store.js';
-import {useSupportAssetCountsStore} from '../store/support-asset-count-store.js';
+import {useTeamStore} from '../store/team-store';
+import {useSupportAssetCountsStore} from '../store/support-asset-count-store';
 import {ref} from 'vue';
 import {ROUTE_HOME, ROUTE_PRINT} from '../router.js';
 import Navbar from './Navbar.vue';
 import Fraction from './functional/fraction.vue';
-import {resetStores} from '../store/helpers/store-save-load.js';
+import {resetStores} from '../store/helpers/store-save-load';
 import {BButton, BModal} from 'bootstrap-vue-next';
 import BtnArmyListValidation from './ArmyEdit/ArmyList/BtnArmyListValidation.vue';
 

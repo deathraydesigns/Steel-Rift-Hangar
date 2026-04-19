@@ -1,27 +1,26 @@
-<script setup>
-import {useMechStore} from '../../../store/mech-store.js';
-import {computed} from 'vue';
-import MechWeaponItem from './MechWeapons/MechWeaponItem.vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import draggable from 'vuedraggable';
-import MechWeaponAdd from './MechWeapons/MechWeaponAdd.vue';
-import {useValidationStore} from '../../../store/validation-store.js';
+import { useMechStore } from '../../../store/mech-store';
+import { useValidationStore } from '../../../store/validation-store';
+import type { MechWeaponAttachment } from '../../../types';
 import IconValidationError from '../../UI/IconValidationError.vue';
+import MechWeaponAdd from './MechWeapons/MechWeaponAdd.vue';
+import MechWeaponItem from './MechWeapons/MechWeaponItem.vue';
 
 const mechStore = useMechStore();
 const validationStore = useValidationStore();
 
-const {mechId} = defineProps({
-  mechId: {
-    type: Number,
-  },
-});
+const { mechId } = defineProps<{
+  mechId: number
+}>();
 
 const mech = computed(() => mechStore.getMech(mechId));
 
 const validationMessages = computed(() => validationStore.mechAllWeaponMessages(mechId));
 const valid = computed(() => !validationMessages.value.length);
 
-function onSortableChange(event) {
+function onSortableChange(event: { moved?: { element: MechWeaponAttachment, newIndex: number } }) {
   let moved = event.moved;
   if (!moved) {
     return;
@@ -42,8 +41,8 @@ const weapons = computed(() => mechStore.getMechAvailableWeaponsInfo(mechId));
   <tr>
     <th class="table-btn-cell">
       <IconValidationError
-          size="sm"
-          :message-array="validationMessages"
+        size="sm"
+        :message-array="validationMessages"
       />
     </th>
     <th>
@@ -60,16 +59,16 @@ const weapons = computed(() => mechStore.getMechAvailableWeaponsInfo(mechId));
     </th>
     <td class="table-btn-cell">
       <MechWeaponAdd
-          :mech-id="mechId"
-          text="Melee"
-          :options="weapons.melee"
+        :mech-id="mechId"
+        text="Melee"
+        :options="weapons.melee"
       />
     </td>
     <td class="table-btn-cell">
       <MechWeaponAdd
-          :mech-id="mechId"
-          text="Ranged"
-          :options="weapons.ranged"
+        :mech-id="mechId"
+        text="Ranged"
+        :options="weapons.ranged"
       />
     </td>
     <th class="fw-medium text-end">
@@ -82,22 +81,22 @@ const weapons = computed(() => mechStore.getMechAvailableWeaponsInfo(mechId));
   </tr>
   </thead>
   <draggable
-      :list="mech.weapons"
-      draggable=".list-item-sortable"
-      tag="tbody"
-      item-key="id"
-      :group="'mech-' + mechId +'-weapons'"
-      handle=".btn-grab-weapon"
-      ghost-class="ghost"
-      @change="onSortableChange"
-      :animation="200"
-      :preventOnFilter="false"
+    :list="mech!.weapons"
+    draggable=".list-item-sortable"
+    tag="tbody"
+    item-key="id"
+    :group="'mech-' + mechId +'-weapons'"
+    handle=".btn-grab-weapon"
+    ghost-class="ghost"
+    @change="onSortableChange"
+    :animation="200"
+    :preventOnFilter="false"
   >
     <template #item="{ element, index }">
       <MechWeaponItem
-          :mech-id="mechId"
-          :mech-weapon-attachment-id="element.id"
-          :index="index"
+        :mech-id="mechId"
+        :mech-weapon-attachment-id="element.id"
+        :index="index"
       />
     </template>
   </draggable>

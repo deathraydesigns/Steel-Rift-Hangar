@@ -1,10 +1,10 @@
-<script setup>
-import {useFactionStore} from '../../../store/faction-store.js';
+<script setup lang="ts">
+import {useFactionStore} from '../../../store/faction-store';
 import {storeToRefs} from 'pinia';
 import {computed, ref} from 'vue';
 import FactionPerkGrid from './FactionPerkGrid.vue';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
-import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store.js';
+import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store';
 
 const factionStore = useFactionStore();
 const supportAssetWeaponsStore = useSupportAssetWeaponsStore();

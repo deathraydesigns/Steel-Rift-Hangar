@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 

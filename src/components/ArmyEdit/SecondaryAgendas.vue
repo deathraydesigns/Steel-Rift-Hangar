@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {storeToRefs} from 'pinia';
-import {useSecondaryAgendaStore} from '../../store/secondary-agenda-store.js';
+import {useSecondaryAgendaStore} from '../../store/secondary-agenda-store';
 import {BModal} from 'bootstrap-vue-next';
 import {ref} from 'vue';
 import SecondaryAgendaDefinition from './SecondaryAgendas/SecondaryAgendaDefinition.vue';

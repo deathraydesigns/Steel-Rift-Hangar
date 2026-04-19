@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
+import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
 import TraitList from '../../UI/TraitList.vue';
 import FormatInches from '../../functional/format-inches.vue';
 

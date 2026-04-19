@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {TRAIT_LIMITED, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
 import {sortBy} from 'es-toolkit';
 import {computed} from 'vue';

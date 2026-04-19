@@ -1,6 +1,6 @@
-<script setup>
-import {useArmyListStore} from '../../../../store/army-list-store.js';
-import {usePrintSettingsStore} from '../../../../store/print-settings-store.js';
+<script setup lang="ts">
+import {useArmyListStore} from '../../../../store/army-list-store';
+import {usePrintSettingsStore} from '../../../../store/print-settings-store';
 import {storeToRefs} from 'pinia';
 
 const armyStore = useArmyListStore();

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import CardHeader from './CardParts/CardHeader.vue';
 </script>
 <template>

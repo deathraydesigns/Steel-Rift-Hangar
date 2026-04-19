@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 
-import {useMechStore} from '../../../store/mech-store.js';
+import {useMechStore} from '../../../store/mech-store';
 import {computed} from 'vue';
 import HEVCardWeapons from './HEVCard/HEVCardWeapons.vue';
 import HEVCardUpgrades from './HEVCard/HEVCardUpgrades.vue';

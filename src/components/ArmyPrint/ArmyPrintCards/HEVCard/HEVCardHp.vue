@@ -1,15 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
 import {SIZE_LIGHT, SIZE_ULTRA} from '../../../../data/unit-sizes.js';
-import {useMechStore} from '../../../../store/mech-store.js';
+import {useMechStore} from '../../../../store/mech-store';
 import {chunk} from 'es-toolkit/compat';
-import {useFactionStore} from '../../../../store/faction-store.js';
+import {useFactionStore} from '../../../../store/faction-store';
 import {RD_ADVANCED_STRUCTURAL_COMPONENTS} from '../../../../data/faction-perks.js';
 import {
   EXTRA_PLATING_ARMOR_UPGRADE,
   HEAVY_PLATING_ARMOR_UPGRADE,
   NO_ARMOR_UPGRADE,
-} from '../../../../data/mech-armor-upgrades.js';
+} from '../../../../data/mech-armor-upgrades';
 
 const mechStore = useMechStore();
 const factionStore = useFactionStore();

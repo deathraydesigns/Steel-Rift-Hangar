@@ -1,27 +1,18 @@
-<script setup>
+<script setup lang="ts">
 
 import {BPopover} from 'bootstrap-vue-next';
 
 const {
   valid,
   validationMessage,
-  size,
-  btnClass,
-} = defineProps({
-  valid: {
-    type: Boolean,
-  },
-  validationMessage: {
-    type: String,
-  },
-  size: {
-    type: String,
-    default: 'sm',
-  },
-  btnClass:{
-    type: String,
-  }
-});
+  size  = 'sm',
+  btnClass = '',
+} = defineProps<{
+  valid: boolean,
+  validationMessage: string,
+  size?: 'sm' | 'md' | 'lg',
+  btnClass?: string,
+}>();
 </script>
 <template>
   <BPopover>

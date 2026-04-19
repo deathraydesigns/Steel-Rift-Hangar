@@ -1,22 +1,19 @@
-<script setup>
-import {computed} from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
 const {
   val,
-  invert,
-  invertColor,
-  positiveSigned,
-} = defineProps({
-  val: Number,
-  invert: Boolean,
-  invertColor: Boolean,
-  positiveSigned: {
-    type: Boolean,
-    default: false,
-  },
-});
+  invert = false,
+  invertColor = false,
+  positiveSigned = false,
+} = defineProps<{
+  val: number,
+  invert?: boolean,
+  invertColor?: boolean,
+  positiveSigned?: boolean,
+}>();
 
-function getValue(){
+function getValue() {
   let result = val;
   if (invert) {
     result = val * -1;
@@ -34,22 +31,24 @@ const attrClass = computed(() => {
 });
 
 const contents = computed(() => {
-  let val = getValue();
+  const val = getValue();
+  let r = '';
   if (positiveSigned) {
-    val = displayNumber(val);
+    r = displayNumber(val);
   }
 
-  return val;
+  return r;
 });
 
-function displayNumber(val) {
+function displayNumber(val: number): string {
+  let r = '';
   if (val > 0) {
-    val = '+' + val;
+    r = '+' + val;
   }
-  return val;
+  return r;
 }
 
-function numberType(val) {
+function numberType(val: number) {
   let type;
   if (val === 0) {
     type = 'zero';

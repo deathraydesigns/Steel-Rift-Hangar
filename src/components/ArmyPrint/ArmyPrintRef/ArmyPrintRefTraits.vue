@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store.js';
+import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
 import ArmyPrintRefTraitType from './ArmyPrintRefTraitType.vue';
-import {makeUniqueItemIdCollection} from '../../../store/helpers/helpers.js';
+import {makeUniqueItemIdCollection} from '../../../store/helpers/helpers';
 import {WEAPON_TRAITS, weaponTraitDisplayName} from '../../../data/weapon-traits.js';
-import {useMechStore} from '../../../store/mech-store.js';
+import {useMechStore} from '../../../store/mech-store';
 
 const unitStore = useSupportAssetUnitsStore();
 const mechStore = useMechStore();
