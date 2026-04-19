@@ -18,7 +18,7 @@ export interface UnitSize {
     display_name: string;
 }
 
-export interface MechSize extends UnitSize {
+export interface MechSizeDef extends UnitSize {
     armor: number;
     structure: number;
     max_slots: number;
@@ -205,7 +205,7 @@ export type TraitFormatter = (name: string, number: number | string | undefined,
 export interface MechInfo {
     display_name: string,
     placeholder_name: string,
-    size: MechSize,
+    size: MechSizeDef,
     structure_mod: MechBody,
     armor_mod: MechBody,
     max_tons: number,

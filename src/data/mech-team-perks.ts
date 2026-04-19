@@ -170,7 +170,7 @@ function makeTeamPerks(perks: Record<string, TeamPerkInput>): Readonly<Record<st
     let display_order = 0;
 
     Object.entries(perks).forEach(([perkId, perk]) => {
-        const mutablePerk = perk as BaseTeamPerk & { id?: string; display_order?: number };
+        const mutablePerk = perk as TeamPerkInput & { id?: string; display_order?: number };
         mutablePerk.id = perkId;
         if (mutablePerk.renderDisplayName) {
             mutablePerk.display_name = mutablePerk.renderDisplayName(mutablePerk.value!);

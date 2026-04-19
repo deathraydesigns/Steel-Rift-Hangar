@@ -13,7 +13,8 @@ import type {
     SupportAssetUnitVehicleDef,
     UnitAttachmentInfo,
     UnitVehicleInfo,
-    UnitWeaponInfo, VehicleAttachment,
+    UnitWeaponInfo,
+    VehicleAttachment,
 } from '../data/support-assets/_support-asset-types';
 import { INFANTRY_OUTPOST } from '../data/support-assets/infantry-outpost';
 import type { UpgradePodId } from '../data/support-assets/ultra-light-hev-squadron';
@@ -31,11 +32,7 @@ import {
 import { TYPE_INFANTRY, UNIT_TYPES } from '../data/unit-types';
 import { UNIT_WEAPONS, type UnitWeaponId } from '../data/unit-weapons';
 import { freshWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT, WEAPON_TRAITS, type WeaponTraitId } from '../data/weapon-traits';
-import type { WeaponInfo } from '../types';
-import {
-    type Trait,
-
-} from '../types';
+import { type Trait } from '../types';
 import { filterUniqueById, findById, findItemIndexById } from './helpers/collection-helper';
 import { makeGrantedOrderCollection, makeUniqueItemIdCollection } from './helpers/helpers';
 
@@ -153,13 +150,14 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
 
         function _getUnitInfo(unitId: SupportAssetUnitId): SupportAssetUnitInfo {
             const asset = SUPPORT_ASSET_UNITS[unitId];
-            return Object.assign({
+            return {
+                ...asset,
                 vehicles: Object.fromEntries(Object.entries(asset.vehicles)
                     .map(([key, val]) => [key, _getUnitVehicleInfo(unitId, key)])),
-                unit_type: UNIT_TYPES[asset.unit_type_id],
-                size: UNIT_SIZES[asset.size_id],
+                unit_type: UNIT_TYPES[asset.unit_type_id]!,
+                size: UNIT_SIZES[asset.size_id]!,
                 traits: (asset.traits ?? []).map(freshUnitTrait<UnitTraitId>),
-            }, asset);
+            };
         }
 
         function getUnitVehicleAttachmentRequiredWeaponsInfo(unitAttachmentId: number, vehicleAttachmentId: number): UnitWeaponInfo[] {
@@ -216,7 +214,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 const info = getUnitAttachmentInfo(asset.id);
                 if (!info) return;
                 info.vehicles.forEach((vehicle) => {
-                    vehicle.weapons.forEach((weapon) => {
+                    vehicle.weapons?.forEach((weapon) => {
                         traitCollection.addMultiple(weapon.traits);
                     });
                 });
@@ -314,19 +312,22 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             }
         }
 
-        function _getUnitTraitsInfo(traits: Trait<UnitTraitId>[]) {
+        function _getUnitTraitsInfo(traits: Trait<UnitTraitId>[] | undefined) {
             if (!traits) {
                 return [];
             }
             return traits.map(trait => freshUnitTrait(trait));
         }
 
-        function _getUnitVehicleInfo(unitId: SupportAssetUnitId, vehicleId: string): UnitVehicleInfo {
+        function _getUnitVehicleInfo(unitId: SupportAssetUnitId, vehicleId: string): Omit<UnitVehicleInfo, 'id'> {
             const asset = SUPPORT_ASSET_UNITS[unitId];
             let vehicle = asset.vehicles[vehicleId];
-            const vehicleInfo: UnitVehicleInfo = {
+            const vehicleInfo: Omit<UnitVehicleInfo, 'id'> = {
                 ...vehicle,
+                vehicle_id: vehicle.id,
+                support_asset_unit_id: unitId,
                 weapon_choices: [],
+                traits: [],
             };
 
             if (vehicle.weapon_ids) {
@@ -376,12 +377,14 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
         }
 
         function _getGarrisonUnitInfo(infantrySquadId: string) {
-            let squad = INFANTRY_SQUADS[infantrySquadId];
-            squad = Object.assign({}, squad);
-            squad.weapons = squad.weapon_ids.map((weaponId: string) => _getWeaponInfo(weaponId));
-            squad.traits = squad?.traits?.map((trait) => freshUnitTrait(trait)) || [];
+            const squad = INFANTRY_SQUADS[infantrySquadId];
+            const squadInfo = {
+                ...squad,
+                weapons: squad.weapon_ids.map((weaponId) => _getWeaponInfo(weaponId)),
+                traits: squad?.traits?.map((trait) => freshUnitTrait(trait)) || [],
+            };
 
-            return readonly(squad);
+            return readonly(squadInfo);
         }
 
         function getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId: number) {

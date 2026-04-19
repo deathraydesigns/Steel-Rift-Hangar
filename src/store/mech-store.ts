@@ -5,10 +5,10 @@ import { updateObject } from '../data/data-helpers';
 import type { FactionPerk } from '../data/faction-perks';
 import { DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS } from '../data/factions';
 import { MECH_ARMOR_UPGRADES, type MechArmorUpgradeId, NO_ARMOR_UPGRADE } from '../data/mech-armor-upgrades';
-import { MECH_BODY_MODS, MOD_STANDARD } from '../data/mech-body';
-import { MECH_MOBILITIES, MOBILITY_BI_PEDAL } from '../data/mech-mobility';
+import { MECH_BODY_MODS, type MechBodyModId, MOD_STANDARD } from '../data/mech-body';
+import { MECH_MOBILITIES, type MechMobilityId, MOBILITY_BI_PEDAL } from '../data/mech-mobility';
 import { TEAM_PERK } from '../data/mech-team-perks';
-import { TEAM_GENERAL, TEAM_SHELF } from '../data/mech-teams';
+import { type MechTeamId, TEAM_GENERAL, TEAM_SHELF } from '../data/mech-teams';
 import {
     DIRECTIONAL_THRUSTER,
     ELECTRONIC_COUNTERMEASURES,
@@ -29,7 +29,7 @@ import {
     MISSILES,
     ROCKET_PACK,
 } from '../data/mech-weapons';
-import { MECH_SIZES, SIZE_MEDIUM } from '../data/unit-sizes';
+import { MECH_SIZES, type MechSizeId, SIZE_MEDIUM } from '../data/unit-sizes';
 import { TYPE_HEV } from '../data/unit-types';
 import {
     TRAIT_COMPACT,
@@ -86,7 +86,15 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                              mobility_id,
                              preferred_team_id,
                              name,
-                         }) {
+                         }: {
+            size_id: MechSizeId,
+            structure_mod_id: MechBodyModId,
+            armor_mod_id: MechBodyModId,
+            armor_upgrade_id: MechArmorUpgradeId,
+            mobility_id: MechMobilityId,
+            preferred_team_id: MechTeamId,
+            name: string,
+        }) {
 
             size_id = size_id ?? SIZE_MEDIUM;
             structure_mod_id = structure_mod_id ?? MOD_STANDARD;
@@ -887,7 +895,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             }
 
             const perks = teamStore.getTeamPerksInfoByMech(mechId);
-            const team_perks: TEAM_PERK[] = [];
+            const team_perks: TeamPerkInfo[] = [];
 
             if (slots !== 0) {
                 const perk = find(perks, { id: TEAM_PERK._0_SLOT_ARMOR_UPGRADES });

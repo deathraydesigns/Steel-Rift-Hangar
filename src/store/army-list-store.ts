@@ -55,7 +55,7 @@ export const useArmyListStore = defineScopeableStore('army-list', ({ scope }: { 
 
         const includes_msoe = computed(() => {
             const hasLauncher = supportAssetUnitStore.support_asset_units.find((unit) => {
-                const unitInfo = supportAssetUnitStore.getUnitAttachmentInfo(unit.id);
+                const unitInfo = supportAssetUnitStore.getUnitAttachmentInfo(unit.id) as ;
                 if (!unitInfo) return false;
                 return unitInfo.vehicles.find((vehicle) => {
                     return vehicle.traits.find((trait) => trait.id === TRAIT_MSOE_LAUNCHER);
