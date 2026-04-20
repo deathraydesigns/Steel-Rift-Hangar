@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {useFactionStore} from '../../../store/faction-store';
+import { computed } from 'vue';
+import { useFactionStore } from '../../../store/faction-store';
 
 const factionStore = useFactionStore();
 

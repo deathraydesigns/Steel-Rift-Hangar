@@ -1,11 +1,11 @@
-import {TEAM_GUNSLINGER} from '../mech-teams';
-import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM} from '../unit-sizes';
-import {MOD_STANDARD} from '../mech-body';
-import {NO_ARMOR_UPGRADE} from '../mech-armor-upgrades';
-import {MOBILITY_BI_PEDAL} from '../mech-mobility';
-import {ARC_GUN, MAG_TETHER, MELEE_WEAPON, PLASMA_BLADE, ROTARY_CANNON, SHOT_CANNON} from '../mech-weapons';
-import {COOLANT_TANKS, HAPTIC_SUIT, JUMP_JETS} from '../mech-upgrades';
-import {TYPE_HEV} from '../unit-types';
+import { NO_ARMOR_UPGRADE } from '../mech-armor-upgrades';
+import { MOD_STANDARD } from '../mech-body';
+import { MOBILITY_BI_PEDAL } from '../mech-mobility';
+import { TEAM_GUNSLINGER } from '../mech-teams';
+import { COOLANT_TANKS, HAPTIC_SUIT, JUMP_JETS } from '../mech-upgrades';
+import { ARC_GUN, MAG_TETHER, MELEE_WEAPON, PLASMA_BLADE, ROTARY_CANNON, SHOT_CANNON } from '../mech-weapons';
+import { SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM } from '../unit-sizes';
+import { TYPE_HEV } from '../unit-types';
 
 export const pack4 = {
     name: 'Cerberus Gunslinger Team Box',

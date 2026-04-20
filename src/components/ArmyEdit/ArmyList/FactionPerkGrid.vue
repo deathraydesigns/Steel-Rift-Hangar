@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { BButton, BModal } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
 import type { FactionId } from '../../../data/factions';
-import {useFactionStore} from '../../../store/faction-store';
-import {storeToRefs} from 'pinia';
-import {BButton, BModal} from 'bootstrap-vue-next';
+import { useFactionStore } from '../../../store/faction-store';
 
 const model = defineModel<boolean>();
 const store = useFactionStore();
-const {clearInvalidPerks} = useFactionStore();
+const { clearInvalidPerks } = useFactionStore();
 
 const {
   faction_id,
@@ -15,7 +15,7 @@ const {
   perk_grid,
 } = storeToRefs(store);
 
-const {addPerk, removePerk, hasPerk, hasPerkInGroupId} = store;
+const { addPerk, removePerk, hasPerk, hasPerkInGroupId } = store;
 
 function setFactionId(factionId: FactionId) {
   faction_id.value = factionId;
@@ -24,12 +24,12 @@ function setFactionId(factionId: FactionId) {
 </script>
 <template>
   <BModal
-      v-model="model"
-      :autofocus="false"
-      no-trap
-      centered
-      ok-variant="secondary"
-      size="xl"
+    v-model="model"
+    :autofocus="false"
+    no-trap
+    centered
+    ok-variant="secondary"
+    size="xl"
   >
     <template #title>
       Faction Perks <span class="fw-light">(Pick 2)</span>
@@ -46,8 +46,8 @@ function setFactionId(factionId: FactionId) {
 
     <div v-for="faction in factions_info" v-show="faction.id === faction_id">
       <div
-          class="my-4"
-          v-for="group in perk_grid"
+        class="my-4"
+        v-for="group in perk_grid"
       >
         <h4 class="fw-bold ps-3">
           {{ group.display_name }}
@@ -56,8 +56,8 @@ function setFactionId(factionId: FactionId) {
         <div class="row row-cols-1 row-cols-lg-3">
 
           <div
-              class="col pb-3"
-              v-for="perk in group.perks"
+            class="col pb-3"
+            v-for="perk in group.perks"
           >
             <div :class="{'card card-faction-perk h-100': true, 'border border-primary': hasPerk(perk.id)}">
               <div class="card-header ps-3 fw-bold">
@@ -68,19 +68,19 @@ function setFactionId(factionId: FactionId) {
               </div>
               <div class="card-footer text-end">
                 <BButton
-                    class="btn"
-                    variant="secondary"
-                    :disabled="perks_full || hasPerkInGroupId(group.id)"
-                    v-if="!hasPerk(perk.id)"
-                    @click="addPerk(perk.id)"
+                  class="btn"
+                  variant="secondary"
+                  :disabled="perks_full || hasPerkInGroupId(group.id)"
+                  v-if="!hasPerk(perk.id)"
+                  @click="addPerk(perk.id)"
                 >
                   Add Perk
                 </BButton>
                 <BButton
-                    class="btn"
-                    variant="danger"
-                    v-if="hasPerk(perk.id)"
-                    @click="removePerk(perk.id)"
+                  class="btn"
+                  variant="danger"
+                  v-if="hasPerk(perk.id)"
+                  @click="removePerk(perk.id)"
                 >
                   Remove Perk
                 </BButton>

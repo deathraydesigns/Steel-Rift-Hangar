@@ -9,6 +9,7 @@ import {
     SA_STALKERS,
     SA_TITAN_KILLERS,
     SECONDARY_AGENDAS,
+    type SecondaryAgenda,
 } from '../data/secondary-agendas';
 import { SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA } from '../data/unit-sizes';
 import { useArmyListStore } from './army-list-store';
@@ -18,10 +19,10 @@ import { useTeamStore } from './team-store';
 
 export const useSecondaryAgendaStore = defineScopeableStore('secondary-agenda', ({ scope }: { scope: string }) => {
 
-    const factionStore = useFactionStore(scope) as any;
-    const teamStore = useTeamStore(scope) as any;
-    const armyListStore = useArmyListStore(scope) as any;
-    const mechStore = useMechStore(scope) as any;
+    const factionStore = useFactionStore(scope);
+    const teamStore = useTeamStore(scope);
+    const armyListStore = useArmyListStore(scope);
+    const mechStore = useMechStore(scope);
 
     function $reset() {
 
@@ -32,14 +33,14 @@ export const useSecondaryAgendaStore = defineScopeableStore('secondary-agenda', 
     });
 
     const secondary_agendas = computed(() => {
-        const result: any[] = [];
+        const result: SecondaryAgenda[] = [];
         const factionId = factionStore.faction_id;
         if (factionId) {
-            const faction = (FACTIONS as any)[factionId];
+            const faction = FACTIONS[factionId];
             const agendaId = faction.secondary_agenda_id;
             if (agendaId) {
                 result.push(Object.assign({},
-                    (SECONDARY_AGENDAS as any)[agendaId],
+                    SECONDARY_AGENDAS[agendaId],
                     {
                         type_display_name: 'Faction',
                         subtype_display_name: faction.display_name,
@@ -48,43 +49,43 @@ export const useSecondaryAgendaStore = defineScopeableStore('secondary-agenda', 
             }
         }
 
-        teamStore.teams.map((team: any) => {
+        teamStore.teams.map((team) => {
             if (teamStore.getTeamMechCount(team.id)) {
-                const agendaId = (MECH_TEAMS as any)[team.id].secondary_agenda_id;
+                const agendaId = MECH_TEAMS[team.id].secondary_agenda_id;
                 if (agendaId) {
                     result.push(Object.assign({},
-                        (SECONDARY_AGENDAS as any)[agendaId],
+                        SECONDARY_AGENDAS[agendaId],
                         {
-                            type_display_name: (MECH_TEAMS as any)[team.id].display_name,
+                            type_display_name: MECH_TEAMS[team.id].display_name,
                         },
                     ));
                 }
             }
         });
 
-        const sizesByCount = countBy(mechStore.mechs, (mech: any) => mech.size_id);
+        const sizesByCount = countBy(mechStore.mechs, (mech) => mech.size_id);
 
-        if ((sizesByCount as any)[SIZE_LIGHT] >= 2) {
-            result.push((SECONDARY_AGENDAS as any)[SA_STALKERS]);
+        if (sizesByCount[SIZE_LIGHT] >= 2) {
+            result.push(SECONDARY_AGENDAS[SA_STALKERS]);
         }
 
-        if ((sizesByCount as any)[SIZE_MEDIUM] >= 2) {
-            result.push((SECONDARY_AGENDAS as any)[SA_BRAWLERS]);
+        if (sizesByCount[SIZE_MEDIUM] >= 2) {
+            result.push(SECONDARY_AGENDAS[SA_BRAWLERS]);
         }
 
-        if ((sizesByCount as any)[SIZE_HEAVY] >= 2) {
-            result.push((SECONDARY_AGENDAS as any)[SA_ENFORCERS]);
+        if (sizesByCount[SIZE_HEAVY] >= 2) {
+            result.push(SECONDARY_AGENDAS[SA_ENFORCERS]);
         }
 
-        if ((sizesByCount as any)[SIZE_ULTRA] >= 2) {
-            result.push((SECONDARY_AGENDAS as any)[SA_TITAN_KILLERS]);
+        if (sizesByCount[SIZE_ULTRA] >= 2) {
+            result.push(SECONDARY_AGENDAS[SA_TITAN_KILLERS]);
         }
 
         return result;
     });
 
     const universal_secondary_agendas = computed(() => {
-        return Object.values(SECONDARY_AGENDAS).filter((item: any) => item.is_universal);
+        return Object.values(SECONDARY_AGENDAS).filter((item) => item.is_universal);
     });
 
     return {

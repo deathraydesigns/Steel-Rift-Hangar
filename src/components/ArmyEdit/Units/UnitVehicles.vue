@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import {computed, provide} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
+import { computed, provide } from 'vue';
+import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import UnitVehicleItem from './UnitVehicleItem.vue';
 
-const {supportAssetAttachmentId} = defineProps({
-  supportAssetAttachmentId: {
-    type: Number,
-    required: true,
-  },
-});
+const { supportAssetAttachmentId } = defineProps<{ supportAssetAttachmentId: number }>();
 
 const unitStore = useSupportAssetUnitsStore();
-const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachmentId));
+const unit = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachmentId)!);
 const has_armor = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.armor));
 const has_structure = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.structure));
 const has_jump = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.jump));
-const has_garrison = computed(() => !!unitStore.getUnitHasGarrisonableVehicles(unit.value.support_asset_unit_id));
+const has_garrison = computed(() => unitStore.getUnitHasGarrisonableVehicles(unit.value.support_asset_unit_id));
 
 provide('has_armor', has_armor);
 provide('has_jump', has_jump);
@@ -55,9 +50,9 @@ provide('has_garrison', has_garrison);
     </thead>
     <tbody>
     <UnitVehicleItem
-        v-for="item in unit.vehicles" :key="item.id"
-        :support-asset-attachment-id="supportAssetAttachmentId"
-        :support-asset-vehicle-attachment-id="item.id"
+      v-for="item in unit.vehicles" :key="item.id"
+      :support-asset-attachment-id="supportAssetAttachmentId"
+      :support-asset-vehicle-attachment-id="item.id"
     />
     </tbody>
   </table>

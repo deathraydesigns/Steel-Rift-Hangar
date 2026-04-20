@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { BFormFloatingLabel, BFormInput } from 'bootstrap-vue-next';
+import { BFormFloatingLabel, BFormInput, BFormSelect } from 'bootstrap-vue-next';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref, watch } from 'vue';
+import {
+  GAME_SIZE_BATTLE,
+  GAME_SIZE_RECON,
+  GAME_SIZE_STRIKE,
+  GAME_SIZE_WAR,
+  GAME_SIZES,
+} from '../../../data/game-sizes';
 import { useArmyListStore } from '../../../store/army-list-store';
 
 const store = useArmyListStore();
@@ -9,25 +16,30 @@ const store = useArmyListStore();
 const { max_tons } = storeToRefs(store);
 
 const disabled = ref(false);
-const armyTypeMaxTons = ref<number | 'custom'>(100);
-const options = [
-  {
-    text: 'Recon',
-    value: 100,
-  },
-  {
-    text: 'Strike',
-    value: 150,
-  },
-  {
-    text: 'Battle',
-    value: 200,
-  },
-  {
-    text: 'Custom',
-    value: 'custom',
-  },
-];
+const armyTypeMaxTons = ref<PointSize>(100);
+
+type PointSize = number | 'custom';
+type Option = {
+  text: string,
+  value: PointSize
+};
+
+const options: Option[] = [
+  GAME_SIZE_RECON,
+  GAME_SIZE_STRIKE,
+  GAME_SIZE_BATTLE,
+  GAME_SIZE_WAR,
+].map(id => {
+  return {
+    text: GAME_SIZES[id].display_name,
+    value: GAME_SIZES[id].min_tons,
+  };
+});
+
+options.push({
+  text: 'Custom',
+  value: 'custom',
+});
 
 watch(armyTypeMaxTons, () => {
 
@@ -42,7 +54,7 @@ function syncArmyType() {
   const result = options.find((option) => option.value === max_tons.value);
 
   if (result) {
-    armyTypeMaxTons.value = result.value as number | 'custom';
+    armyTypeMaxTons.value = result.value as PointSize;
   }
 }
 
@@ -78,5 +90,4 @@ onMounted(() => {
       </div>
     </div>
   </div>
-
 </template>

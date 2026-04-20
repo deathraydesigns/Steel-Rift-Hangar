@@ -1,37 +1,35 @@
 <script setup lang="ts">
-import {useMechStore} from '../../../../store/mech-store';
-import {computed} from 'vue';
-import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
-import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
-import TraitList from '../../../UI/TraitList.vue';
-import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
-import BtnToolTip from '../../../UI/BtnToolTip.vue';
-import {BDropdown} from 'bootstrap-vue-next';
+import { BDropdown } from 'bootstrap-vue-next';
+import { computed } from 'vue';
+import type { MechUpgradeId } from '../../../../data/mech-upgrades';
+import { useMechStore } from '../../../../store/mech-store';
 import FormatNumber from '../../../functional/format-number.vue';
+import BtnToolTip from '../../../UI/BtnToolTip.vue';
+import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
+import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
+import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
+import TraitList from '../../../UI/TraitList.vue';
 
-const {mechId} = defineProps({
-  mechId: {
-    type: Number,
-    required: true,
-  },
-});
+const { mechId } = defineProps<{
+  mechId: number
+}>();
 
 const mechStore = useMechStore();
 const options = computed(() => mechStore.getMechAvailableUpgradesInfo(mechId));
 
-function addUpgrade(upgradeId) {
+function addUpgrade(upgradeId: MechUpgradeId) {
   mechStore.addMechUpgradeAttachment(mechId, upgradeId);
 }
 </script>
 <template>
   <BDropdown
-      :id="'mech-input-upgrades-add-' + mechId"
-      class="dropdown-table"
-      text="Add"
-      size="sm"
-      variant="secondary"
-      lazy
+    :id="'mech-input-upgrades-add-' + mechId"
+    class="dropdown-table"
+    text="Add"
+    size="sm"
+    variant="secondary"
+    lazy
   >
     <div class="position-relative">
       <table class="table table-hover table-borderless table-striped">
@@ -56,12 +54,12 @@ function addUpgrade(upgradeId) {
         </thead>
         <tbody>
         <tr
-            :class="{
+          :class="{
               'dropdown-row': true,
               'disabled': !item?.valid
             }"
-            v-for="item in options" :key="item?.upgrade_id"
-            @click="addUpgrade(item?.upgrade_id)"
+          v-for="item in options" :key="item?.upgrade_id"
+          @click="addUpgrade(item?.upgrade_id)"
         >
           <td>
             <BtnToolTip>
@@ -76,36 +74,36 @@ function addUpgrade(upgradeId) {
             </BtnToolTip>
           </td>
           <td class="text-end">
-            <format-number :val="item.slots" :invert-color="true"/>
+            <format-number :val="item.slots" :invert-color="true" />
           </td>
           <td class="text-end">
-            <format-number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true" />
           </td>
           <td class="notes">
-            <TraitList :traits="item.traits"/>
+            <TraitList :traits="item.traits" />
           </td>
           <td class="notes">
             <IconRequiredByGroup
-                :required="item.required_by_group"
-                btn-class="ms-1"
+              :required="item.required_by_group"
+              btn-class="ms-1"
             />
           </td>
           <td class="notes">
             <IconNotAvailable
-                :valid="!!item?.valid"
-                :validation-message="item?.validation_message ?? ''"
+              :valid="!!item?.valid"
+              :validation-message="item?.validation_message ?? ''"
             />
           </td>
           <td class="notes">
             <IconTeamGroupPerks
-                btn-class="ms-1"
-                :perks="item?.team_perks ?? []"
+              btn-class="ms-1"
+              :perks="item?.team_perks ?? []"
             />
           </td>
           <td class="notes">
             <IconFactionPerks
-                btn-class="ms-1"
-                :perks="item?.faction_perks ?? []"
+              btn-class="ms-1"
+              :perks="item?.faction_perks ?? []"
             />
           </td>
         </tr>

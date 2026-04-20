@@ -1,43 +1,36 @@
 <script setup lang="ts">
-
-import {useMechStore} from '../../../store/mech-store';
-import {computed} from 'vue';
-import HEVCardWeapons from './HEVCard/HEVCardWeapons.vue';
-import HEVCardUpgrades from './HEVCard/HEVCardUpgrades.vue';
-import HEVCardStats from './HEVCard/HEVCardStats.vue';
-import HEVCardHp from './HEVCard/HEVCardHp.vue';
-import CardHeader from './CardParts/CardHeader.vue';
+import { setComponentScope } from 'pinia-scope';
+import { computed } from 'vue';
+import { useMechStore } from '../../../store/mech-store';
 import CardFooter from './CardParts/CardFooter.vue';
-import {setComponentScope} from 'pinia-scope';
+import CardHeader from './CardParts/CardHeader.vue';
+import HEVCardHp from './HEVCard/HEVCardHp.vue';
+import HEVCardStats from './HEVCard/HEVCardStats.vue';
+import HEVCardUpgrades from './HEVCard/HEVCardUpgrades.vue';
+import HEVCardWeapons from './HEVCard/HEVCardWeapons.vue';
 
-const {mechId, storeScope} = defineProps({
-  mechId: {
-    type: Number,
-    required: true,
-  },
-  storeScope: {
-    type: String,
-    default: '',
-  },
-});
+const { mechId, storeScope = '' } = defineProps<{
+  mechId: number,
+  storeScope?: string
+}>();
 
 setComponentScope(storeScope);
 const mechStore = useMechStore(storeScope);
 
-const info = computed(() => mechStore.getMechInfo(mechId));
+const info = computed(() => mechStore.getMechInfo(mechId)!);
 
 </script>
 <template>
   <div class="game-card">
     <div class="card-content-container">
 
-      <CardHeader :title="info.display_name"/>
-      <HEVCardStats :mech-id="mechId"/>
-      <HEVCardHp :mech-id="mechId"/>
-      <HEVCardWeapons :mech-id="mechId"/>
-      <HEVCardUpgrades :mech-id="mechId"/>
+      <CardHeader :title="info.display_name" />
+      <HEVCardStats :mech-id="mechId" />
+      <HEVCardHp :mech-id="mechId" />
+      <HEVCardWeapons :mech-id="mechId" />
+      <HEVCardUpgrades :mech-id="mechId" />
 
-      <CardFooter/>
+      <CardFooter />
     </div>
   </div>
 </template>

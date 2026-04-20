@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {TRAIT_LIMITED} from '../../../data/weapon-traits.js';
-import CardHeader from './CardParts/CardHeader.vue';
-import CardFooter from './CardParts/CardFooter.vue';
-import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store';
-import {find} from 'es-toolkit/compat';
-import {traitDisplayNames} from '../../../data/data-helpers';
+import { find } from 'es-toolkit/compat';
+import { computed } from 'vue';
+import { traitDisplayNames } from '../../../data/data-helpers';
+import type { SupportAssetWeaponId } from '../../../data/support-asset-weapons';
+import { TRAIT_LIMITED } from '../../../data/weapon-traits.js';
+import { useSupportAssetWeaponsStore } from '../../../store/support-asset-weapons-store';
+import SvgIcon from '../../UI/Icon.vue';
 import SupportAssetWeaponDamageFormatter from '../../UI/SupportAssetWeaponDamageFormatter.vue';
+import CardFooter from './CardParts/CardFooter.vue';
+import CardHeader from './CardParts/CardHeader.vue';
 
 const supportAssetStore = useSupportAssetWeaponsStore();
 
-const {supportAssetId} = defineProps({
-  supportAssetId: {
-    type: String,
-    required: true,
-  },
-});
+const { supportAssetId } = defineProps<{
+  supportAssetId: SupportAssetWeaponId,
+}>();
 
 const info = computed(() => supportAssetStore.getSupportAssetInfo(supportAssetId));
 
@@ -27,7 +26,7 @@ const traits = computed(() => {
 });
 
 const max_uses = computed(() => {
-  const limitedTrait = find(weapon.value.traits, {id: TRAIT_LIMITED});
+  const limitedTrait = find(weapon.value.traits, { id: TRAIT_LIMITED });
   if (limitedTrait) {
     return limitedTrait.number;
   }
@@ -37,8 +36,8 @@ const max_uses = computed(() => {
   <div class="game-card card-support-asset-size-1">
     <div class="card-content-container">
       <CardHeader
-          :title="info.display_name"
-          :sub-title="`(Support Asset ${info.cost} Tons)`"
+        :title="info.display_name"
+        :sub-title="`(Support Asset ${info.cost} Tons)`"
       />
 
       <div class="section-heading">Support Asset</div>
@@ -67,8 +66,8 @@ const max_uses = computed(() => {
           </td>
           <td v-if="weapon.damage">
             <SupportAssetWeaponDamageFormatter
-                :damage="weapon.damage"
-                :damage-modifiers="weapon.damage_modifiers"
+              :damage="weapon.damage"
+              :damage-modifiers="weapon.damage_modifiers ?? []"
             />
           </td>
           <td class="text-start">
@@ -84,13 +83,13 @@ const max_uses = computed(() => {
         <div class="card-description">
           <div v-for="note in info.notes">
             {{ note.display_name }}
-            <Icon v-if="note.is_team_perk" name="team-perk" size="14px"/>
+            <SvgIcon v-if="note.is_team_perk" name="team-perk" size="14px" />
             <span class="material-symbols-outlined" v-if="note.is_faction_perk" style="font-size: 12px">flag</span>
           </div>
         </div>
       </template>
 
-      <CardFooter/>
+      <CardFooter />
     </div>
   </div>
 </template>

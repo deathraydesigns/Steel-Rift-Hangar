@@ -1,4 +1,4 @@
-import { makeFrozenStaticListIds, makeKeyedFrozenStaticListIds } from './data-helpers';
+import { makeFrozenStaticListIds } from './data-helpers';
 import { type MobilityOrderId, ORDER_HUNKER_DOWN, ORDER_PLOW_THROUGH } from './orders/mobility-orders';
 
 export const MOBILITY_BI_PEDAL = 'MOBILITY_BI_PEDAL' as const;
@@ -17,10 +17,10 @@ export interface MechMobility {
     granted_order_ids: MobilityOrderId[],
 }
 
-export const MECH_MOBILITIES = makeKeyedFrozenStaticListIds<MechMobilityId, MechMobility>({
+export const MECH_MOBILITIES = makeFrozenStaticListIds<MechMobility>({
     [MOBILITY_BI_PEDAL]: {
         display_name: 'Bi-Pedal',
-        slots: 0,
+        slots: 1,
         granted_order_ids: [],
     },
     [MOBILITY_TRACKED]: {

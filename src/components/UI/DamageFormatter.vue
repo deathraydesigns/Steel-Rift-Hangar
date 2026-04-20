@@ -1,22 +1,18 @@
 <script setup lang="ts">
 
-const {} = defineProps({
-  meleeBaseDamage: {
-    type: Number,
-  },
-  meleeModifierDamage: {
-    type: Number,
-  },
-  meleeTotalDamage: {
-    type: Number,
-  },
-  damage: {
-    required: true,
-  },
-  suffix: {
-    type: String,
-  },
-});
+const {
+  meleeTotalDamage,
+  meleeModifierDamage,
+  meleeBaseDamage,
+  damage,
+  suffix = '',
+} = defineProps<{
+  meleeBaseDamage?: number | null,
+  meleeModifierDamage?: number,
+  meleeTotalDamage?: number,
+  damage: number | null,
+  suffix?: string
+}>();
 </script>
 <template>
   <div v-if="meleeBaseDamage" class="text-end">
@@ -26,6 +22,6 @@ const {} = defineProps({
     {{ meleeTotalDamage }}
   </div>
   <template v-else>
-    {{ damage }}{{suffix}}
+    {{ damage }}{{ suffix }}
   </template>
 </template>

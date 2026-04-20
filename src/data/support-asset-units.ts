@@ -1,4 +1,4 @@
-import { makeKeyedFrozenStaticListIds } from './data-helpers';
+import { makeFrozenStaticListIds } from './data-helpers';
 import type { SupportAssetUnitDef } from './support-assets/_support-asset-types';
 import { ASSAULT_VEHICLE_SQUADRON, ASSAULT_VEHICLE_SQUADRON_DATA } from './support-assets/assault-vehicle-squadron';
 import { HEAVY_TANK_SQUADRON, HEAVY_TANK_SQUADRON_DATA } from './support-assets/heavy-tank-squadron';
@@ -12,7 +12,7 @@ import { LIGHT_VEHICLE_SQUADRON, LIGHT_VEHICLE_SQUADRON_DATA } from './support-a
 import { SUPPORT_VEHICLE_SQUADRON, SUPPORT_VEHICLE_SQUADRON_DATA } from './support-assets/support-vehicle-squadron';
 import { ULTRA_LIGHT_HEV_SQUADRON, ULTRA_LIGHT_HEV_SQUADRON_DATA } from './support-assets/ultra-light-hev-squadron';
 
-export const SUPPORT_ASSET_UNITS = makeKeyedFrozenStaticListIds<SupportAssetUnitId, SupportAssetUnitDef>({
+export const SUPPORT_ASSET_UNITS = makeFrozenStaticListIds<SupportAssetUnitDef>({
     ...ASSAULT_VEHICLE_SQUADRON_DATA,
     ...SUPPORT_VEHICLE_SQUADRON_DATA,
     ...LAS_WING_ATTACK_SQUADRON_DATA,

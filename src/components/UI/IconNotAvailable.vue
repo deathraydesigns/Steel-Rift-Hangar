@@ -1,15 +1,15 @@
 <script setup lang="ts">
 
-import {BPopover} from 'bootstrap-vue-next';
+import { BPopover } from 'bootstrap-vue-next';
 
 const {
   valid,
   validationMessage,
-  size  = 'sm',
+  size = 'sm',
   btnClass = '',
 } = defineProps<{
   valid: boolean,
-  validationMessage: string,
+  validationMessage: string | null,
   size?: 'sm' | 'md' | 'lg',
   btnClass?: string,
 }>();
@@ -18,8 +18,8 @@ const {
   <BPopover>
     <template #target>
       <button
-          :class="`btn btn-${size} btn-danger btn-danger-light ${btnClass}`"
-          v-show="!valid"
+        :class="`btn btn-${size} btn-danger btn-danger-light ${btnClass}`"
+        v-show="!valid"
       >
         <span class="material-symbols-outlined">block</span>
       </button>

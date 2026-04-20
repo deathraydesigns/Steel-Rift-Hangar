@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import {useTeamStore} from '../../../store/team-store';
-import {computed} from 'vue';
-import {MECH_TEAMS} from '../../../data/mech-teams.js';
+import { computed } from 'vue';
+import { MECH_TEAMS } from '../../../data/mech-teams.js';
+import { useTeamStore } from '../../../store/team-store';
 
 const teamStore = useTeamStore();
 const teamPerks = computed(() => {
   return teamStore.teams
-      .filter((team) => teamStore.isSpecialTeam(team.id) && teamStore.getTeamMechCount(team.id))
-      .map((team) => {
-        return {
-          ...MECH_TEAMS[team.id],
-          perks: teamStore.getUsedTeamAbilityPerksInfo(team.id),
-        };
-      });
+    .filter((team) => teamStore.isSpecialTeam(team.id) && teamStore.getTeamMechCount(team.id))
+    .map((team) => {
+      return {
+        ...MECH_TEAMS[team.id],
+        perks: teamStore.getUsedTeamAbilityPerksInfo(team.id),
+      };
+    });
 });
 </script>
 <template>
@@ -20,7 +20,9 @@ const teamPerks = computed(() => {
     <div v-if="team.perks.length">
       <div class="divider"></div>
 
-      <div class="ref-heading">{{ team.display_name }}  <Icon :name="team.icon"/></div>
+      <div class="ref-heading">{{ team.display_name }}
+        <SvgIcon :name="team.icon" />
+      </div>
       <div v-for="perk in team.perks">
         <p class="p-gap">
           <span class="fw-bold">

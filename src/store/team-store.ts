@@ -14,19 +14,20 @@ import {
     TEAM_RECON,
     TEAM_SHELF,
 } from '../data/mech-teams';
-import { MECH_WEAPONS, weaponHasTrait } from '../data/mech-weapons';
+import type { MechUpgradeId } from '../data/mech-upgrades';
+import { MECH_WEAPONS, type MechWeaponId, weaponHasTrait } from '../data/mech-weapons';
 import { MECH_SIZES, type MechSizeId, SIZE_HEAVY, SIZE_MEDIUM } from '../data/unit-sizes';
-import { WEAPON_TRAITS } from '../data/weapon-traits';
-import type { Mech, MechGroupInstance, MechTeamInstance, MechWeaponAttachment } from '../types';
+import { WEAPON_TRAITS, type WeaponTraitId } from '../data/weapon-traits';
+import type { Mech, MechGroupInstance, MechTeamInstance, MechWeaponAttachment, Trait } from '../types';
 import { useArmyListStore } from './army-list-store';
 import { findItemIndexById, move, setDisplayOrders } from './helpers/collection-helper';
 import { ifEmptyString, makeUniqueItemIdCollection } from './helpers/helpers';
-import { useMechStore } from './mech-store';
+import { type AddMechOptions, useMechStore } from './mech-store';
 
 export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: string }) => {
 
-        const mechStore = useMechStore(scope) as any;
-        const armyListStore = useArmyListStore(scope) as any;
+        const mechStore = useMechStore(scope);
+        const armyListStore = useArmyListStore(scope);
 
         const teams = ref<MechTeamInstance[]>([makeGeneralTeam(), makeShelfTeam()]);
 
@@ -171,7 +172,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 }).length;
 
                 if (otherInstances === 0) {
-                    const atLeastOneWeapons = requiredAtLeastOne.map((weaponId) => (MECH_WEAPONS as any)[weaponId].display_name);
+                    const atLeastOneWeapons = requiredAtLeastOne.map((weaponId) => MECH_WEAPONS[weaponId].display_name);
 
                     return {
                         required: true,
@@ -193,7 +194,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 }).length;
 
                 if (otherInstances === 0) {
-                    const traitDisplayName = (WEAPON_TRAITS as any)[requiredAtLeastOneWithTraitId].display_name;
+                    const traitDisplayName = WEAPON_TRAITS[requiredAtLeastOneWithTraitId].display_name;
 
                     return {
                         required: true,
@@ -208,7 +209,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             };
         }
 
-        function getWeaponTraitIsProhibited(mechId: number, weaponId: string, traits: any[]) {
+        function getWeaponTraitIsProhibited(mechId: number, weaponId: string, traits: Trait<WeaponTraitId>[]) {
             const { teamId, groupId } = getMechTeamAndGroupIds(mechId);
             const groupDef = getTeamGroupDef(teamId, groupId);
 
@@ -216,7 +217,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 const prohibited = traits.find((trait) => groupDef.prohibited_weapons_with_trait_ids.includes(trait.id));
                 if (prohibited) {
                     const teamGroupDisplayName = getFullTeamGroupDisplayName(teamId, groupId);
-                    const prohibitedTraits = groupDef.prohibited_weapons_with_trait_ids.map(traitId => (WEAPON_TRAITS as any)[traitId].display_name);
+                    const prohibitedTraits = groupDef.prohibited_weapons_with_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
                     return {
                         valid: false,
                         validation_message: `${teamGroupDisplayName}: cannot use weapons with the following traits: ${prohibitedTraits.join(', ')}`,
@@ -228,7 +229,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 const matched = traits.find((trait) => groupDef.limited_weapons_with_at_least_one_of_trait_ids.includes(trait.id));
                 if (!matched) {
                     const teamGroupDisplayName = getFullTeamGroupDisplayName(teamId, groupId);
-                    const requiredTraits = groupDef.limited_weapons_with_at_least_one_of_trait_ids.map(traitId => (WEAPON_TRAITS as any)[traitId].display_name);
+                    const requiredTraits = groupDef.limited_weapons_with_at_least_one_of_trait_ids.map(traitId => WEAPON_TRAITS[traitId].display_name);
                     return {
                         valid: false,
                         validation_message: `${teamGroupDisplayName}: can only use weapons with one of the following traits: ${requiredTraits.join(', ')}`,
@@ -242,12 +243,12 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             };
         }
 
-        function getMechWeaponIsRequiredInfo(mechId: number, weaponId: string) {
+        function getMechWeaponIsRequiredInfo(mechId: number, weaponId: MechWeaponId) {
             const groupDef = getMechTeamGroupDef(mechId);
             const teamDisplayName = getMechFullTeamGroupDisplayName(mechId);
 
             if (groupDef.required_weapon_ids.includes(weaponId)) {
-                const weapons = groupDef.required_weapon_ids.map(weaponId => (MECH_WEAPONS as any)[weaponId].display_name);
+                const weapons = groupDef.required_weapon_ids.map(weaponId => MECH_WEAPONS[weaponId].display_name);
                 return {
                     required: true,
                     reason: `${teamDisplayName}: requires each of the following weapon(s): ${weapons.join(', ')}`,
@@ -255,7 +256,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             }
 
             if (groupDef.required_at_least_one_of_weapon_ids.includes(weaponId)) {
-                const weapons = groupDef.required_at_least_one_of_weapon_ids.map(weaponId => (MECH_WEAPONS as any)[weaponId].display_name);
+                const weapons = groupDef.required_at_least_one_of_weapon_ids.map(weaponId => MECH_WEAPONS[weaponId].display_name);
 
                 return {
                     required: true,
@@ -265,7 +266,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
 
             const requiredAtLeastOneWithTraitId = groupDef.required_at_least_one_weapon_with_trait_id;
             if (requiredAtLeastOneWithTraitId && weaponHasTrait(weaponId, requiredAtLeastOneWithTraitId)) {
-                const traitDisplayName = (WEAPON_TRAITS as any)[requiredAtLeastOneWithTraitId].display_name;
+                const traitDisplayName = WEAPON_TRAITS[requiredAtLeastOneWithTraitId].display_name;
 
                 return {
                     required: true,
@@ -279,7 +280,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             };
         }
 
-        function getMechUpgradeIsRequired(mechId: number, upgradeId: string) {
+        function getMechUpgradeIsRequired(mechId: number, upgradeId: MechUpgradeId) {
             const groupDef = getMechTeamGroupDef(mechId);
             return groupDef.required_upgrade_ids.includes(upgradeId);
         }
@@ -319,7 +320,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             const { teamId, groupId } = getMechTeamAndGroupIds(mechId);
             const groupDef = getTeamGroupDef(teamId, groupId);
 
-            return (Object.values(MECH_SIZES) as any[]).map(size => {
+            return Object.values(MECH_SIZES).map(size => {
                 return {
                     valid: groupDef.size_ids.includes(size.id),
                     ...size,
@@ -350,7 +351,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                     requiredId,
                     modId,
                 )) {
-                    const requiredDisplayName = (MECH_BODY_MODS as any)[requiredId].display_name;
+                    const requiredDisplayName = MECH_BODY_MODS[requiredId].display_name;
                     return {
                         valid: false,
                         validation_message: `${teamDisplayName} requires ${groupDef.display_name} structure or armor to be ${requiredDisplayName}`,
@@ -513,7 +514,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 const perkIds = getTeamPerkIdsByMechSize(teamId, sizeId);
                 return {
                     size_id: sizeId,
-                    display_name: (MECH_SIZES as any)[sizeId].display_name,
+                    display_name: MECH_SIZES[sizeId].display_name,
                     perks: perkIdsToInfo(perkIds),
                 };
             });
@@ -526,7 +527,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             ) {
                 const medium = find(result, { size_id: SIZE_MEDIUM });
                 if (medium) {
-                    medium.display_name = (MECH_SIZES as any)[SIZE_MEDIUM].display_name + ' & ' + (MECH_SIZES as any)[SIZE_HEAVY].display_name;
+                    medium.display_name = MECH_SIZES[SIZE_MEDIUM].display_name + ' & ' + MECH_SIZES[SIZE_HEAVY].display_name;
                 }
                 result = result.filter(item => item.size_id !== SIZE_HEAVY);
             }
@@ -543,7 +544,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 if (!mech) return;
                 const sizeId = mech.size_id;
                 const perkIds = getTeamPerkIdsByMechSize(teamId, sizeId);
-                perkIds.forEach(perkId => (perkIdsMap as any)[perkId] = true);
+                perkIds.forEach(perkId => perkIdsMap[perkId] = true);
             });
 
             return Object.keys(perkIdsMap);
@@ -563,8 +564,8 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
 
             const perkIds = getUsedTeamAbilityPerkIds(teamId);
 
-            return perkIds.filter(perkId => (MECH_TEAM_PERKS as any)[perkId].visible_on_card)
-                .map((perkId) => (MECH_TEAM_PERKS as any)[perkId]);
+            return perkIds.filter(perkId => MECH_TEAM_PERKS[perkId].visible_on_card)
+                .map((perkId) => MECH_TEAM_PERKS[perkId]);
         }
 
         // internal
@@ -620,9 +621,9 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
         function addMechToTeam(
             teamId: MechTeamId,
             groupId: string,
-            mechOptions: any = {},
-            weaponIds: string[] = [],
-            upgradeIds: string[] = [],
+            mechOptions: AddMechOptions = {},
+            weaponIds: MechWeaponId[] = [],
+            upgradeIds: MechUpgradeId[] = [],
         ) {
             initTeam(teamId);
 
@@ -631,7 +632,8 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             }
 
             const group = findGroup(teamId, groupId);
-            if (!group) return;
+
+            if (!group) throw new Error(`invalid group: teamId: ${teamId}, groupId: ${groupId}`);
             const mechId = mechStore.addMech(mechOptions);
 
             group.mechs.push({
@@ -647,14 +649,18 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             return mechId;
         }
 
-        function normalizePreferredTeamId(teamId: MechTeamId) {
+        function normalizePreferredTeamId(teamId: MechTeamId): MechTeamId {
             if (teamId === TEAM_SHELF) {
                 return TEAM_GENERAL;
             }
             return teamId;
         }
 
-        function addMechToTeamFromLoadedFile(mechData: any, teamId: MechTeamId) {
+        function addMechToTeamFromLoadedFile(mechData: Omit<AddMechOptions, 'size_id'> & {
+            size_id: MechSizeId,
+            weapons: { weapon_id: MechWeaponId }[],
+            upgrades: { upgrade_id: MechUpgradeId }[]
+        }, teamId: MechTeamId) {
             initTeam(teamId);
 
             const {
@@ -680,8 +686,8 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 name,
             };
 
-            const weaponIds = weapons.map((weapon: any) => weapon.weapon_id);
-            const upgradeIds = upgrades.map((upgrade: any) => upgrade.upgrade_id);
+            const weaponIds = weapons.map((weapon) => weapon.weapon_id);
+            const upgradeIds = upgrades.map((upgrade) => upgrade.upgrade_id);
             const groupId = findGroupIdForSizeId(teamId, size_id);
 
             return addMechToTeam(
@@ -697,7 +703,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
 
             const groupDef = getTeamGroupDef(teamId, groupId);
 
-            const mechOptions: any = {
+            const mechOptions: AddMechOptions = {
                 preferred_team_id: normalizePreferredTeamId(teamId),
             };
 
@@ -882,7 +888,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
     }, (scope: string) => {
         return {
             persist: ifEmptyString(scope, {
-                afterHydrate: (ctx: any) => {
+                afterHydrate: (ctx) => {
                     ctx.store.afterHydrate();
                 },
             }),

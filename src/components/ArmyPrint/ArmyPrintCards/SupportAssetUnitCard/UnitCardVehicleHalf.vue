@@ -1,49 +1,39 @@
 <script setup lang="ts">
-import UnitCardWeapons from "./UnitCardWeapons.vue";
-import UnitCardVehicles from "./UnitCardVehicles.vue";
-import UnitCardTraits from "./UnitCardTraits.vue";
-import {useSupportAssetUnitsStore} from "../../../../store/support-asset-units-store"
-import {computed} from "vue"
+import { computed } from 'vue';
+import type { UnitWeaponInfo } from '../../../../data/support-assets/_support-asset-types';
+import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
+import type { Order, Trait } from '../../../../types';
+import UnitCardTraits from './UnitCardTraits.vue';
+import UnitCardVehicles from './UnitCardVehicles.vue';
+import UnitCardWeapons from './UnitCardWeapons.vue';
 
-const unitStore = useSupportAssetUnitsStore()
+const unitStore = useSupportAssetUnitsStore();
 
-const {unitAttachmentId} = defineProps({
-  unitAttachmentId: {
-    type: Number,
-    required: true,
-  },
-  weapons: {
-    type: Array,
-    required: true,
-  },
-  traits: {
-    type: Array,
-    required: true,
-  },
-  orders: {
-    type: Array,
-    required: true,
-  },
-});
+const { unitAttachmentId } = defineProps<{
+  unitAttachmentId: number,
+  weapons: UnitWeaponInfo[],
+  traits: Trait[],
+  orders: Order[]
+}>();
 
 const damageSuffix = computed(() => {
-  if(unitStore.isSquadron(unitAttachmentId)){
-    return ` x (X)`
+  if (unitStore.isSquadron(unitAttachmentId)) {
+    return ` x (X)`;
   }
-})
+});
 
 
 </script>
 <template>
-  <UnitCardVehicles :unit-attachment-id="unitAttachmentId"/>
+  <UnitCardVehicles :unit-attachment-id="unitAttachmentId" />
   <div class="row g-1">
     <div class="col-6 mt-0">
-      <UnitCardWeapons :weapons="weapons" :damage-suffix="damageSuffix"/>
+      <UnitCardWeapons :weapons="weapons" :damage-suffix="damageSuffix" />
     </div>
     <div class="col-6 mt-0">
       <UnitCardTraits
-          :traits="traits"
-          :orders="orders"
+        :traits="traits"
+        :orders="orders"
       />
     </div>
   </div>

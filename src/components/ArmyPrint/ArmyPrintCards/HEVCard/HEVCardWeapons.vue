@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {useMechStore} from '../../../../store/mech-store';
-import {TRAIT_LIMITED, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
-import {MINEFIELD_DRONE_CARRIER_SYSTEM} from '../../../../data/mech-upgrades.js';
-import {TRAIT_UPGRADE_LIMITED} from '../../../../data/upgrade-traits.js';
-import {find} from 'es-toolkit/compat';
+import { find } from 'es-toolkit/compat';
+import { computed } from 'vue';
+import { MINEFIELD_DRONE_CARRIER_SYSTEM } from '../../../../data/mech-upgrades.js';
+import { TRAIT_UPGRADE_LIMITED } from '../../../../data/upgrade-traits.js';
+import { TRAIT_LIMITED, TRAIT_SHORT } from '../../../../data/weapon-traits.js';
+import { useMechStore } from '../../../../store/mech-store';
+import type { MechWeaponAttachmentInfo, Trait } from '../../../../types';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
 import RangeFormatter from '../../../UI/RangeFormatter.vue';
+
 const mechStore = useMechStore();
-const {mechId} = defineProps({
-  mechId: {
-    type: Number,
-  },
-});
+const { mechId } = defineProps<{
+  mechId: number,
+}>();
 const weapons = computed(() => {
-  let results = mechStore.getMechWeaponsAttachmentInfo(mechId);
-  let mineDroneUpgrade = find(mechStore.getMechUpgradesAttachmentInfo(mechId), {upgrade_id: MINEFIELD_DRONE_CARRIER_SYSTEM});
+  let results: MechWeaponAttachmentInfo[] = mechStore.getMechWeaponsAttachmentInfo(mechId);
+  let mineDroneUpgrade = find(mechStore.getMechUpgradesAttachmentInfo(mechId), { upgrade_id: MINEFIELD_DRONE_CARRIER_SYSTEM });
 
   if (mineDroneUpgrade) {
     mineDroneUpgrade.display_name = 'Mine Drones';
     mineDroneUpgrade.traits = mineDroneUpgrade.traits.filter(trait => trait.id !== TRAIT_UPGRADE_LIMITED);
-    results.push(mineDroneUpgrade);
+    results.push(mineDroneUpgrade as unknown as MechWeaponAttachmentInfo);
   }
 
   return results;
@@ -28,7 +28,7 @@ const weapons = computed(() => {
 
 const hasUses = computed(() => weapons.value.find(weapon => !!weapon.max_uses));
 
-function filterTraits(traits) {
+function filterTraits(traits: Trait[]) {
   return traits.filter((trait) => trait.id !== TRAIT_LIMITED && trait.id !== TRAIT_SHORT);
 }
 </script>
@@ -57,17 +57,17 @@ function filterTraits(traits) {
       </td>
       <td class="text-nowrap">
         <DamageFormatter
-            :damage="weapon.damage"
-            :melee-base-damage="weapon.melee_base_damage"
-            :melee-modifier-damage="weapon.melee_trait_damage"
-            :melee-total-damage="weapon.melee_total_damage"
+          :damage="weapon.damage"
+          :melee-base-damage="weapon.melee_base_damage"
+          :melee-modifier-damage="weapon.melee_trait_damage"
+          :melee-total-damage="weapon.melee_total_damage"
         />
       </td>
       <td class="text-nowrap">
         <RangeFormatter
-            :range="weapon.range"
-            :modifier="weapon.range_modifier"
-            :total="weapon.range_total"
+          :range="weapon.range"
+          :modifier="weapon.range_modifier"
+          :total="weapon.range_total"
         />
       </td>
       <td class="text-start">

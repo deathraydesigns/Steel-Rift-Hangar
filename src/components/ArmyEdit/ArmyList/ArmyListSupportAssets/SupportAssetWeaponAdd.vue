@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapons-store';
+import { BDropdown } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { traitDisplayNames } from '../../../../data/data-helpers';
+import { useSupportAssetWeaponsStore } from '../../../../store/support-asset-weapons-store';
 import FormatNumber from '../../../functional/format-number.vue';
-import {BDropdown} from 'bootstrap-vue-next';
-import {traitDisplayNames} from '../../../../data/data-helpers';
-import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
 import SupportAssetNoteList from '../../../UI/SupportAssetNoteList.vue';
+import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
 
 const store = useSupportAssetWeaponsStore();
 
@@ -17,11 +17,11 @@ const {
 </script>
 <template>
   <BDropdown
-      class="dropdown-table d-inline-block"
-      text="Add"
-      size="sm"
-      variant="secondary"
-      placement="bottom-end"
+    class="dropdown-table d-inline-block"
+    text="Add"
+    size="sm"
+    variant="secondary"
+    placement="bottom-end"
   >
     <div class="position-relative">
       <table class="table table-hover table-borderless table-striped">
@@ -44,11 +44,11 @@ const {
         </thead>
         <tbody>
         <tr
-            :class="{
+          :class="{
               'dropdown-row': true,
             }"
-            v-for="item in available_support_asset_weapons_info" :key="item.id"
-            @click="store.addSupportAsset(item.id)"
+          v-for="item in available_support_asset_weapons_info" :key="item.id"
+          @click="store.addSupportAsset(item.id)"
         >
           <td>
             {{ item.display_name }}
@@ -56,18 +56,18 @@ const {
           <td class="text-end">
 
             <SupportAssetWeaponDamageFormatter
-                :damage="item.off_table_weapon.damage"
-                :damage-modifiers="item.off_table_weapon.damage_modifiers"
+              :damage="item.off_table_weapon.damage ?? 0"
+              :damage-modifiers="item.off_table_weapon.damage_modifiers ?? []"
             />
           </td>
           <td class="text-end">
-            <format-number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true" />
           </td>
           <td>
             {{ traitDisplayNames(item.off_table_weapon.traits) }}
           </td>
           <td>
-            <SupportAssetNoteList :notes="item.notes"/>
+            <SupportAssetNoteList :notes="item.notes" />
           </td>
         </tr>
         </tbody>

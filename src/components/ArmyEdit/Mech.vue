@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import {useMechStore} from '../../store/mech-store';
-import Fraction from '../functional/fraction.vue';
-import {computed} from 'vue';
-import {BButton, BCollapse} from 'bootstrap-vue-next';
-import {useValidationStore} from '../../store/validation-store';
-import MechStats from './Mech/MechStats.vue';
+import { BButton, BCollapse } from 'bootstrap-vue-next';
+import { computed } from 'vue';
+import { TEAM_SHELF } from '../../data/mech-teams.js';
+import { useMechStore } from '../../store/mech-store';
+import { useTeamStore } from '../../store/team-store';
+import { useValidationStore } from '../../store/validation-store';
 import HEVCard from '../ArmyPrint/ArmyPrintCards/HEVCard.vue';
-import BtnMoveMechToTeam from './Mech/BtnMoveMechToTeam.vue';
-import IconValidationError from '../UI/IconValidationError.vue';
-import {useTeamStore} from '../../store/team-store';
-import MechPreferredTeamDropDown from './Mech/MechStats/MechPreferredTeamDropDown.vue';
+import Fraction from '../functional/fraction.vue';
 import IconPreferredTeam from '../UI/IconPreferredTeam.vue';
-import {TEAM_SHELF} from '../../data/mech-teams.js';
+import IconValidationError from '../UI/IconValidationError.vue';
+import BtnMoveMechToTeam from './Mech/BtnMoveMechToTeam.vue';
+import MechStats from './Mech/MechStats.vue';
+import MechPreferredTeamDropDown from './Mech/MechStats/MechPreferredTeamDropDown.vue';
 
 const mechStore = useMechStore();
 const validationStore = useValidationStore();
@@ -19,12 +19,9 @@ const teamStore = useTeamStore();
 
 const {
   mechId,
-} = defineProps({
-  mechId: {
-    type: Number,
-    required: true,
-  },
-});
+} = defineProps<{
+  mechId: number
+}>();
 
 const visible = computed({
   get() {
@@ -34,14 +31,14 @@ const visible = computed({
     mechStore.setMechVisible(mechId, val);
   },
 });
-const info = computed(() => mechStore.getMechInfo(mechId));
+const info = computed(() => mechStore.getMechInfo(mechId)!);
 
 const invalidMechMessages = computed(() => validationStore.mechMessages(mechId));
 const invalidTeamGroupMessages = computed(() => validationStore.mechTeamGroupMessages(mechId));
 const valid = computed(() => !invalidMechMessages.value.length && !invalidTeamGroupMessages.value.length);
 
 const teamId = computed(() => {
-  const {teamId} = teamStore.getMechTeamAndGroupIds(mechId);
+  const { teamId } = teamStore.getMechTeamAndGroupIds(mechId);
   return teamId;
 });
 const teamIcon = computed(() => teamStore.getTeamDef(teamId.value).icon);
@@ -50,7 +47,7 @@ const showPreferredTeam = computed(() => teamId.value === TEAM_SHELF);
 </script>
 <template>
   <div
-      :class="{
+    :class="{
         'draggable-item': true,
         'card card-mech': true,
         'border-danger': !valid
@@ -66,24 +63,24 @@ const showPreferredTeam = computed(() => teamId.value === TEAM_SHELF);
         </div>
         <div class="col-auto col-md-auto col-lg-4">
           <IconPreferredTeam
-              btn-class="me-2"
-              :team-id="info.preferred_team_id"
-              :show="showPreferredTeam"
+            btn-class="me-2"
+            :team-id="info.preferred_team_id"
+            :show="showPreferredTeam"
           />
           <div class="d-inline-block py-1">
             <strong class="pe-1">{{ info.display_name }}</strong>
           </div>
           <IconValidationError
-              btn-class="ms-1"
-              title="HE-V Validation Errors"
-              icon="hev"
-              :message-array="invalidMechMessages"
+            btn-class="ms-1"
+            title="HE-V Validation Errors"
+            icon="hev"
+            :message-array="invalidMechMessages"
           />
           <IconValidationError
-              btn-class="ms-1"
-              title="Team Group Validation Errors"
-              :icon="teamIcon"
-              :message-array="invalidTeamGroupMessages"
+            btn-class="ms-1"
+            title="Team Group Validation Errors"
+            :icon="teamIcon"
+            :message-array="invalidTeamGroupMessages"
           />
         </div>
         <div class="col-sm-12 col-md-auto col-lg-6 d-flex">
@@ -98,54 +95,54 @@ const showPreferredTeam = computed(() => teamId.value === TEAM_SHELF);
             </span>
             <span class="px-2">
               <strong>Slots: </strong>
-              <fraction :a="info.used_slots" :b="info.max_slots"/>
+              <fraction :a="info.used_slots" :b="info.max_slots" />
             </span>
             <span class="px-2">
               <strong>Tons: </strong>
-              <fraction :a="info.used_tons" :b="info.max_tons"/>
+              <fraction :a="info.used_tons" :b="info.max_tons" />
             </span>
           </div>
-          <BtnMoveMechToTeam :mech-id="mechId"/>
+          <BtnMoveMechToTeam :mech-id="mechId" />
           <BButton
-              size="sm"
-              class="ms-1"
-              variant="secondary"
-              @click="mechStore.duplicateMech(mechId)"
+            size="sm"
+            class="ms-1"
+            variant="secondary"
+            @click="mechStore.duplicateMech(mechId)"
           >
             <span class="material-symbols-outlined">content_copy</span>
           </BButton>
 
           <BButton
-              size="sm"
-              class="ms-1"
-              variant="danger"
-              @click="mechStore.removeMech(mechId)"
+            size="sm"
+            class="ms-1"
+            variant="danger"
+            @click="mechStore.removeMech(mechId)"
           >
             <span class="material-symbols-outlined">delete</span>
           </BButton>
 
           <BButton
-              :class="'btn-collapse ms-1 ' + (visible ? null : 'collapsed')"
-              size="sm"
-              variant="transparent"
-              :aria-expanded="visible ? 'true' : 'false'"
-              :aria-controls="'collapse-' + mechId"
-              @click="visible = !visible"
+            :class="'btn-collapse ms-1 ' + (visible ? null : 'collapsed')"
+            size="sm"
+            variant="transparent"
+            :aria-expanded="visible ? 'true' : 'false'"
+            :aria-controls="'collapse-' + mechId"
+            @click="visible = !visible"
           />
         </div>
       </div>
       <BCollapse
-          :id="'collapse-' + mechId"
-          v-model="visible"
-          lazy
+        :id="'collapse-' + mechId"
+        v-model="visible"
+        lazy
       >
         <hr class="mt-2">
         <div class="d-lg-flex justify-content-lg-center">
-          <MechStats :mech-id="mechId"/>
+          <MechStats :mech-id="mechId" />
           <div class="output-container ms-3">
-            <div class="fw-bold mb-2 pt-2">Card Preview</div>
-            <HEVCard :mech-id="mechId" class="shadow"/>
-            <MechPreferredTeamDropDown :mech-id="mechId" v-if="teamId === TEAM_SHELF"/>
+            <div class="fw-bold mb-2 pt-2 text-light">Card Preview</div>
+            <HEVCard :mech-id="mechId" class="shadow" />
+            <MechPreferredTeamDropDown :mech-id="mechId" v-if="teamId === TEAM_SHELF" />
           </div>
         </div>
       </BCollapse>

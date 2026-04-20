@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
-import TraitList from '../../UI/TraitList.vue';
+import { computed } from 'vue';
+import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import FormatInches from '../../functional/format-inches.vue';
+import TraitList from '../../UI/TraitList.vue';
 
-const {supportAssetAttachmentId} = defineProps({
-  supportAssetAttachmentId: {
-    type: Number,
-    required: true,
-  },
-});
+const { supportAssetAttachmentId } = defineProps<{
+  supportAssetAttachmentId: number
+}>();
 
 const unitStore = useSupportAssetUnitsStore();
 const weapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttachmentId));
@@ -35,13 +32,13 @@ const weapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttac
     </thead>
     <tbody>
     <tr
-        v-for="item in weapons" :key="item.id"
+      v-for="item in weapons" :key="item.id"
     >
       <td class="text-nowrap">
         {{ item.display_name }}
       </td>
       <td class="text-end">
-        <format-inches :value="item.range"/>
+        <format-inches :value="item.range" />
       </td>
       <td class="text-end">
         <template v-if="item.damage">
@@ -49,7 +46,7 @@ const weapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttac
         </template>
       </td>
       <td>
-        <TraitList :traits="item.traits"/>
+        <TraitList :traits="item.traits" />
       </td>
     </tr>
     </tbody>

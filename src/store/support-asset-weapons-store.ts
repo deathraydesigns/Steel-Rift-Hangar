@@ -7,6 +7,7 @@ import { MECH_TEAM_PERKS, TEAM_PERK } from '../data/mech-team-perks';
 import {
     type OffTableWeaponInfo,
     SUPPORT_ASSET_WEAPONS,
+    type SupportAssetWeaponId,
     type SupportAssetWeaponInfo,
 } from '../data/support-asset-weapons';
 import { TRAIT_LIMITED, WEAPON_TRAITS, weaponTraitDisplayName } from '../data/weapon-traits';
@@ -19,8 +20,8 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
         const factionStore = useFactionStore(scope);
         const teamStore = useTeamStore(scope);
 
-        const outrageous_budget_perk_support_asset_id = ref<string | null>(null);
-        const support_asset_weapon_ids = ref<string[]>([]);
+        const outrageous_budget_perk_support_asset_id = ref<SupportAssetWeaponId | null>(null);
+        const support_asset_weapon_ids = ref<SupportAssetWeaponId[]>([]);
 
         function $reset() {
             support_asset_weapon_ids.value = [];
@@ -28,8 +29,8 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
         }
 
         const available_support_asset_weapon_ids = computed(() => {
-            return Object.keys(SUPPORT_ASSET_WEAPONS)
-                .filter(id => !support_asset_weapon_ids.value.includes(id));
+            return (Object.keys(SUPPORT_ASSET_WEAPONS) as SupportAssetWeaponId[])
+                .filter((id) => !support_asset_weapon_ids.value.includes(id));
         });
 
         const available_support_asset_weapons_info = computed(() => {
@@ -42,7 +43,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
                 .map(id => getSupportAssetInfo(id));
         });
 
-        function getSupportAssetInfo(supportAssetId: string): SupportAssetWeaponInfo {
+        function getSupportAssetInfo(supportAssetId: SupportAssetWeaponId): SupportAssetWeaponInfo {
             let asset = SUPPORT_ASSET_WEAPONS[supportAssetId];
             const assetInfo = Object.assign({}, asset) as SupportAssetWeaponInfo;
             assetInfo.notes = [];
@@ -61,7 +62,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
                 });
                 if (hasLimitedTrait) {
                     assetInfo.notes.push({
-                        ...(FACTION_PERKS)[OI_ORBITAL_STOCKPILES],
+                        ...FACTION_PERKS[OI_ORBITAL_STOCKPILES],
                         display_name: FACTION_PERKS[OI_ORBITAL_STOCKPILES].display_name + ' Limit(+1) applied',
                         is_faction_perk: true,
                     });
@@ -75,14 +76,14 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
                         weapon.damage_modifiers.push(-1);
                     }
 
-                    weapon.traits.forEach((trait: any) => {
-                        if (trait.number) {
+                    weapon.traits.forEach((trait) => {
+                        if (typeof trait.number === 'number') {
                             trait.number -= 1;
                         }
                     });
 
                     assetInfo.notes.push({
-                        ...(FACTION_PERKS as any)[DWC_OUTRAGEOUS_SUPPORT_BUDGET],
+                        ...FACTION_PERKS[DWC_OUTRAGEOUS_SUPPORT_BUDGET],
                         is_faction_perk: true,
                     });
                 }
@@ -94,7 +95,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
                     weapon.damage_modifiers.push(1);
 
                     assetInfo.notes.push({
-                        ...(MECH_TEAM_PERKS as any)[TEAM_PERK.SUPPORT_ASSET_DAMAGE],
+                        ...MECH_TEAM_PERKS[TEAM_PERK.SUPPORT_ASSET_DAMAGE],
                         is_team_perk: true,
                     });
                 }
@@ -102,14 +103,14 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
 
             if (perkIds.includes(TEAM_PERK.DIRECTIONAL_ASSETS)) {
                 assetInfo.notes.push({
-                    ...(MECH_TEAM_PERKS as any)[TEAM_PERK.DIRECTIONAL_ASSETS],
+                    ...MECH_TEAM_PERKS[TEAM_PERK.DIRECTIONAL_ASSETS],
                     is_team_perk: true,
                 });
             }
 
-            weapon.traits = weapon.traits.map((trait: any) => Object.assign({},
+            weapon.traits = weapon.traits.map((trait) => Object.assign({},
                 trait,
-                (WEAPON_TRAITS as any)[trait.id],
+                WEAPON_TRAITS[trait.id],
                 { display_name: weaponTraitDisplayName(trait) },
             ));
 
@@ -118,14 +119,14 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
             return readonly(assetInfo) as SupportAssetWeaponInfo;
         }
 
-        function hasSupportAssetId(supportAssetId: string) {
+        function hasSupportAssetId(supportAssetId: SupportAssetWeaponId) {
             return support_asset_weapon_ids.value.includes(supportAssetId);
         }
 
-        const used_tons = computed(() => sumBy(support_asset_weapons_info.value, 'cost' as any));
+        const used_tons = computed(() => sumBy(support_asset_weapons_info.value, 'cost'));
         const used_count = computed(() => support_asset_weapon_ids.value.length);
 
-        function removeSupportAssetId(id: string) {
+        function removeSupportAssetId(id: SupportAssetWeaponId) {
             let index = support_asset_weapon_ids.value.indexOf(id);
             if (index !== -1) {
                 support_asset_weapon_ids.value.splice(index, 1);
@@ -134,7 +135,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
             syncOutrageousSupportBudget();
         }
 
-        function addSupportAsset(id: string) {
+        function addSupportAsset(id: SupportAssetWeaponId) {
             support_asset_weapon_ids.value.push(id);
         }
 

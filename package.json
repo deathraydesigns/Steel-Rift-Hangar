@@ -6,7 +6,8 @@
   "packageManager": "pnpm@9.2.0",
   "scripts": {
     "dev": "vite --port 5373",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -29,10 +30,9 @@
     "pinia-scope": "^1.7.0",
     "sass": "^1.77.6",
     "sass-embedded": "^1.77.5",
-    "typescript": "^5.7.3",
-    "unplugin-vue-components": "^28.5.0",
+    "typescript": "^5.9.3",
     "vite": "^6.3.5",
-    "vite-plugin-svgs-icons": "^1.0.10",
+    "vite-plugin-svg-icons-ng": "^1.7.0",
     "vite-plugin-vue-devtools": "^7.7.6",
     "vue-tsc": "^2.2.0"
   }

@@ -1,30 +1,30 @@
 <script setup lang="ts">
+import { BDropdown, BDropdownItem } from 'bootstrap-vue-next';
 import fileSaver from 'file-saver';
-import {makeSaveFileData} from '../../store/helpers/store-save-load';
-import {useArmyListStore} from '../../store/army-list-store';
-import {storeToRefs} from 'pinia';
-import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
-import {makeArmyListDataUrl} from '../../composables/url-data-parser';
-import {toaster} from '../../toaster.js';
+import { storeToRefs } from 'pinia';
+import { makeArmyListDataUrl } from '../../composables/url-data-parser';
+import { useArmyListStore } from '../../store/army-list-store';
+import { makeSaveFileData } from '../../store/helpers/store-save-load';
+import { toaster } from '../../toaster.js';
 
-function saveFile(fileName, data) {
+function saveFile(fileName: string, data: any) {
   let payload = JSON.stringify(data);
-  let blob = new Blob([payload], {type: 'text/plain;charset=utf-8'});
+  let blob = new Blob([payload], { type: 'text/plain;charset=utf-8' });
   fileSaver.saveAs(blob, `${fileName}.json`);
 }
 
-const {name} = storeToRefs(useArmyListStore());
+const { name } = storeToRefs(useArmyListStore());
 
 function saveToFile() {
   saveFile(name.value || 'steel-rift-army-list', makeSaveFileData());
 }
 
 function saveToUrl() {
-  async function copyToClipboard(text) {
+  async function copyToClipboard(text: string) {
     try {
       await navigator.clipboard.writeText(text);
     } catch (err) {
-      toaster().error('Failed to copy text', err.message);
+      toaster().error('Failed to copy text', (err as any).message);
     }
   }
 
@@ -38,9 +38,9 @@ function saveToUrl() {
 </script>
 <template>
   <BDropdown
-      variant="secondary"
-      size="sm"
-      class="d-inline-block"
+    variant="secondary"
+    size="sm"
+    class="d-inline-block"
   >
     <template #button-content>
       Save

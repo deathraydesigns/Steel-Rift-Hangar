@@ -1,18 +1,18 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { urlDataStringToJson } from '../composables/url-data-parser';
+import { ROUTE_HOME } from '../router.js';
+import { loadSaveFileData } from '../store/helpers/store-save-load';
+import { useSupportAssetUnitsStore } from '../store/support-asset-units-store';
+import { toaster } from '../toaster.js';
 import ArmyList from './ArmyEdit/ArmyList.vue';
-import SecondaryAgendas from './ArmyEdit/SecondaryAgendas.vue';
 import MechTeamList from './ArmyEdit/Mech/MechTeamList.vue';
-import {storeToRefs} from 'pinia';
-import {useSupportAssetUnitsStore} from '../store/support-asset-units-store';
+import SecondaryAgendas from './ArmyEdit/SecondaryAgendas.vue';
 import UnitItem from './ArmyEdit/Units/UnitItem.vue';
-import {useRoute, useRouter} from 'vue-router';
-import {onMounted} from 'vue';
-import {urlDataStringToJson} from '../composables/url-data-parser';
-import {loadSaveFileData} from '../store/helpers/store-save-load';
-import {ROUTE_HOME} from '../router.js';
-import {toaster} from '../toaster.js';
 
-const {support_asset_units} = storeToRefs(useSupportAssetUnitsStore());
+const { support_asset_units } = storeToRefs(useSupportAssetUnitsStore());
 
 const router = useRouter();
 const route = useRoute();
@@ -27,26 +27,26 @@ onMounted(() => {
     const json = urlDataStringToJson(dataString);
     loadSaveFileData(json);
 
-    router.push({name: ROUTE_HOME})
-        .then(() => {
-          toaster().info('Army List loaded from Data Url');
-        });
+    router.push({ name: ROUTE_HOME })
+      .then(() => {
+        toaster().info('Army List loaded from Data Url');
+      });
 
   } catch (error: any) {
 
-    router.push({name: ROUTE_HOME})
-        .then(() => {
-          toaster().validationError('Invalid Army List Data URL', error.message);
-        });
+    router.push({ name: ROUTE_HOME })
+      .then(() => {
+        toaster().validationError('Invalid Army List Data URL', error.message);
+      });
   }
 });
 
 </script>
 <template>
   <div class="container-lg pb-2">
-    <ArmyList/>
-    <UnitItem v-for="unit in support_asset_units" :key="unit.id" :support-asset-attachment-id="unit.id"/>
-    <MechTeamList/>
-    <SecondaryAgendas/>
+    <ArmyList />
+    <UnitItem v-for="unit in support_asset_units" :key="unit.id" :support-asset-attachment-id="unit.id" />
+    <MechTeamList />
+    <SecondaryAgendas />
   </div>
 </template>

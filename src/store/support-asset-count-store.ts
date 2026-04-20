@@ -1,11 +1,13 @@
-import {computed, ref} from 'vue';
-import {useArmyListStore} from './army-list-store';
-import {GAME_SIZES} from '../data/game-sizes';
-import {useSupportAssetUnitsStore} from './support-asset-units-store';
-import {useSupportAssetWeaponsStore} from './support-asset-weapons-store';
-import {defineScopeableStore} from 'pinia-scope';
+import { defineScopeableStore } from 'pinia-scope';
+import { computed, ref } from 'vue';
+import { GAME_SIZES } from '../data/game-sizes';
+import { useArmyListStore } from './army-list-store';
+import { useSupportAssetUnitsStore } from './support-asset-units-store';
+import { useSupportAssetWeaponsStore } from './support-asset-weapons-store';
 
-export const useSupportAssetCountsStore = defineScopeableStore('support-asset-counts', ({scope}: { scope: string }) => {
+export const useSupportAssetCountsStore = defineScopeableStore('support-asset-counts', ({ scope }: {
+        scope: string
+    }) => {
 
         const armyList = useArmyListStore(scope);
 
@@ -44,5 +46,5 @@ export const useSupportAssetCountsStore = defineScopeableStore('support-asset-co
         return {
             persist: scope === '',
         };
-    }
+    },
 );

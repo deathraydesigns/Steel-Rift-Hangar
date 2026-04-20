@@ -3,11 +3,11 @@ import { computed } from 'vue';
 
 const {
   val,
-  invert = false,
-  invertColor = false,
-  positiveSigned = false,
+  invert,
+  invertColor,
+  positiveSigned,
 } = defineProps<{
-  val: number,
+  val: number | null,
   invert?: boolean,
   invertColor?: boolean,
   positiveSigned?: boolean,
@@ -16,9 +16,9 @@ const {
 function getValue() {
   let result = val;
   if (invert) {
-    result = val * -1;
+    result = (val ?? 0) * -1;
   }
-  return result;
+  return result ?? 0;
 }
 
 const attrClass = computed(() => {
@@ -32,12 +32,10 @@ const attrClass = computed(() => {
 
 const contents = computed(() => {
   const val = getValue();
-  let r = '';
   if (positiveSigned) {
-    r = displayNumber(val);
+    return displayNumber(val);
   }
-
-  return r;
+  return val + '';
 });
 
 function displayNumber(val: number): string {

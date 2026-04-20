@@ -1,8 +1,8 @@
 import { countBy } from 'es-toolkit';
-import { each, find, map, sortBy, sumBy } from 'es-toolkit/compat';
+import { find, map, sortBy, sumBy } from 'es-toolkit/compat';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, readonly, ref } from 'vue';
-import { getInfantrySquad, INFANTRY_SQUADS } from '../data/infantry-squads';
+import { getInfantrySquad, INFANTRY_SQUADS, type InfantrySquadId } from '../data/infantry-squads';
 import { INFANTRY_ORDERS_DATA, type InfantryOrderId } from '../data/orders/infantry-orders';
 import { SUPPORT_ASSET_UNITS, type SupportAssetUnitId } from '../data/support-asset-units';
 import type {
@@ -12,6 +12,8 @@ import type {
     SupportAssetUnitInfo,
     SupportAssetUnitVehicleDef,
     UnitAttachmentInfo,
+    UnitAttachmentVehicleInfo,
+    UnitVehicleId,
     UnitVehicleInfo,
     UnitWeaponInfo,
     VehicleAttachment,
@@ -32,7 +34,7 @@ import {
 import { TYPE_INFANTRY, UNIT_TYPES } from '../data/unit-types';
 import { UNIT_WEAPONS, type UnitWeaponId } from '../data/unit-weapons';
 import { freshWeaponTrait, TRAIT_LIMITED, TRAIT_SHORT, WEAPON_TRAITS, type WeaponTraitId } from '../data/weapon-traits';
-import { type Trait } from '../types';
+import { type GarrisonUnitInfo, type Trait } from '../types';
 import { filterUniqueById, findById, findItemIndexById } from './helpers/collection-helper';
 import { makeGrantedOrderCollection, makeUniqueItemIdCollection } from './helpers/helpers';
 
@@ -245,16 +247,14 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             const unitDef = getUnitAttachmentDef(unitAttachmentId);
             if (!unitDef) return [];
 
-            let garrisonUnitIds: string[] = [];
-            each(unitDef.vehicles, vehicleDef => {
+            let garrisonUnitIds: InfantrySquadId[] = [];
+            Object.values(unitDef.vehicles).forEach(vehicleDef => {
                 if (vehicleDef.garrison_choice_unit_ids) {
                     garrisonUnitIds = garrisonUnitIds.concat(vehicleDef.garrison_choice_unit_ids);
                 }
             });
 
-            return garrisonUnitIds.map(unitId => {
-                return _getGarrisonUnitInfo(unitId);
-            });
+            return garrisonUnitIds.map(_getGarrisonUnitInfo);
         }
 
         function getUnitVehicleAttachmentAvailableGarrisonChoicesInfo(unitAttachmentId: number, vehicleAttachmentId: number) {
@@ -319,15 +319,17 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             return traits.map(trait => freshUnitTrait(trait));
         }
 
-        function _getUnitVehicleInfo(unitId: SupportAssetUnitId, vehicleId: string): Omit<UnitVehicleInfo, 'id'> {
+        function _getUnitVehicleInfo(unitId: SupportAssetUnitId, vehicleId: string): UnitVehicleInfo {
             const asset = SUPPORT_ASSET_UNITS[unitId];
             let vehicle = asset.vehicles[vehicleId];
-            const vehicleInfo: Omit<UnitVehicleInfo, 'id'> = {
+            const vehicleInfo: UnitVehicleInfo = {
                 ...vehicle,
-                vehicle_id: vehicle.id,
                 support_asset_unit_id: unitId,
                 weapon_choices: [],
                 traits: [],
+                weapons: [],
+                valid: true,
+                validation_message: '',
             };
 
             if (vehicle.weapon_ids) {
@@ -347,14 +349,16 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             return readonly(vehicleInfo) as UnitVehicleInfo;
         }
 
-        function _getInfantryUnitInfo(infantrySquadId: string) {
-            let garrisonUnit = getInfantrySquad(infantrySquadId) as InfantrySquadInfo;
-            garrisonUnit.unit_type = UNIT_TYPES[garrisonUnit.unit_type_id];
-            garrisonUnit.size = UNIT_SIZES[garrisonUnit.size_id];
-            garrisonUnit.weapons = garrisonUnit.weapon_ids.map(weaponId => _getWeaponInfo(weaponId));
-            garrisonUnit.traits = garrisonUnit.traits.map(trait => freshUnitTrait(trait));
+        function _getInfantryUnitInfo(infantrySquadId: InfantrySquadId): InfantrySquadInfo {
 
-            return garrisonUnit;
+            let garrisonUnit = getInfantrySquad(infantrySquadId);
+            return {
+                ...garrisonUnit,
+                unit_type: UNIT_TYPES[garrisonUnit.unit_type_id],
+                size: UNIT_SIZES[garrisonUnit.size_id],
+                weapons: garrisonUnit.weapon_ids.map(weaponId => _getWeaponInfo(weaponId)),
+                traits: garrisonUnit.traits.map(trait => freshUnitTrait(trait)),
+            };
         }
 
         function _getWeaponInfo(weaponId: UnitWeaponId): UnitWeaponInfo {
@@ -376,34 +380,36 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             return readonly(weaponInfo) as UnitWeaponInfo;
         }
 
-        function _getGarrisonUnitInfo(infantrySquadId: string) {
+        function _getGarrisonUnitInfo(infantrySquadId: InfantrySquadId): InfantrySquadInfo {
             const squad = INFANTRY_SQUADS[infantrySquadId];
-            const squadInfo = {
+            const squadInfo: InfantrySquadInfo = {
                 ...squad,
+                unit_type: UNIT_TYPES[squad.unit_type_id],
+                size: UNIT_SIZES[squad.size_id],
                 weapons: squad.weapon_ids.map((weaponId) => _getWeaponInfo(weaponId)),
                 traits: squad?.traits?.map((trait) => freshUnitTrait(trait)) || [],
             };
 
-            return readonly(squadInfo);
+            return readonly(squadInfo) as InfantrySquadInfo;
         }
 
-        function getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId: number) {
+        function getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId: number): GarrisonUnitInfo[] {
             const info = getUnitAttachmentInfo(unitAttachmentId);
-            if (!info) return null;
+            if (!info) return [];
             const units = info.vehicles.flatMap((vehicle) => vehicle.garrison_units);
 
-            return readonly(units);
+            return readonly(units) as GarrisonUnitInfo[];
         }
 
-        function getUnitAttachmentGarrisonUnitTraitsCardInfo(unitAttachmentId: number) {
+        function getUnitAttachmentGarrisonUnitTraitsCardInfo(unitAttachmentId: number): Trait<UnitTraitId>[] {
             const info = getUnitAttachmentInfo(unitAttachmentId);
-            if (!info) return null;
+            if (!info) return [];
             let unitTraits = info.vehicles.flatMap((vehicle) => vehicle.garrison_unit_traits || []);
             unitTraits = filterUniqueById(unitTraits);
-            return readonly(unitTraits);
+            return readonly(unitTraits) as Trait<UnitTraitId>[];
         }
 
-        function getUnitAttachmentVehicleInfo(unitAttachmentId: number, vehicleAttachmentId: number): null | UnitVehicleInfo {
+        function getUnitAttachmentVehicleInfo(unitAttachmentId: number, vehicleAttachmentId: number): null | UnitAttachmentVehicleInfo {
             const unitAttachment = getUnitAttachment(unitAttachmentId);
             if (!unitAttachment) return null;
 
@@ -433,7 +439,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             let garrison_unit_traits: Trait[] = vehicleDef.garrison_unit_traits || [];
             let garrison_unit_trait_infos = garrison_unit_traits.map((trait) => freshUnitTrait(trait));
 
-            let traits: Trait[] = [...(vehicleDef.traits ?? [])];
+            let traits: Trait<UnitTraitId>[] = [...(vehicleDef.traits ?? [])];
 
             const {
                 id,
@@ -464,7 +470,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                     }
                 }
             }
-            const result: UnitVehicleInfo = {
+            const result: UnitAttachmentVehicleInfo = {
                 id,
                 vehicle_id: vehicleDef.id,
                 support_asset_unit_id: unitAttachment.support_asset_unit_id,
@@ -478,9 +484,11 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 garrison_units: garrison_unit_infos,
                 garrison_unit_traits: garrison_unit_trait_infos,
                 traits: _getUnitTraitsInfo(traits),
+                valid: true,
+                validation_message: '',
             };
 
-            return readonly(result) as UnitVehicleInfo;
+            return readonly(result) as UnitAttachmentVehicleInfo;
         }
 
         function getUnitAttachmentUsedPoints(unitAttachmentId: number) {
@@ -526,7 +534,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
         function getUnitAttachmentHasGarrisonUnits(unitAttachmentId: number): boolean {
             const info = getUnitAttachmentInfo(unitAttachmentId);
             if (!info) return false;
-            return !!info.vehicles.find((vehicle) => vehicle.garrison_units.length);
+            return !!info.vehicles.find((vehicle) => vehicle.garrison_units?.length);
         }
 
         function getUnitHasGarrisonableVehicles(supportAssetUnitId: SupportAssetUnitId): boolean {
@@ -542,20 +550,20 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             return findById(unitAttachment.vehicles, vehicleAttachmentId) ?? null;
         }
 
-        function getUnitAttachmentVehicleGarrisonWeaponsCardInfo(unitAttachmentId: number) {
+        function getUnitAttachmentVehicleGarrisonWeaponsCardInfo(unitAttachmentId: number): UnitWeaponInfo[] {
             const unit = getUnitAttachmentInfo(unitAttachmentId);
-            if (!unit) return null;
+            if (!unit) return [];
             const weapons = unit.vehicles.flatMap((vehicle) => {
                 return vehicle.garrison_units?.flatMap((squad) => squad.weapons) ?? [];
             });
-            return readonly(filterUniqueById(weapons));
+            return readonly(filterUniqueById(weapons)) as UnitWeaponInfo[];
         }
 
-        function getUnitAttachmentVehicleWeaponsCardInfo(unitAttachmentId: number) {
+        function getUnitAttachmentVehicleWeaponsCardInfo(unitAttachmentId: number): UnitWeaponInfo[] {
             const unit = getUnitAttachmentInfo(unitAttachmentId);
-            if (!unit) return null;
+            if (!unit) return [];
             const weapons = unit.vehicles.flatMap((vehicle) => vehicle.weapons);
-            return readonly(filterUniqueById(weapons));
+            return readonly(filterUniqueById(weapons)) as UnitWeaponInfo[];
         }
 
         function getUnitAttachmentDef(unitAttachmentId: number): null | SupportAssetUnitDef {
@@ -604,7 +612,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 });
             }
 
-            return Object.keys(weaponIdMap).map(weaponId => _getWeaponInfo(weaponId));
+            return weaponIdMap.values().map(weaponId => _getWeaponInfo(weaponId));
         }
 
         const validation_messages = computed(() => {
@@ -631,16 +639,16 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             return messages;
         });
 
-        function getAvailableVehiclesInfo(unitAttachmentId: number) {
+        function getAvailableVehiclesInfo(unitAttachmentId: number): UnitVehicleInfo[] {
             const unit = getUnitAttachment(unitAttachmentId);
-            if (!unit) return readonly([]);
+            if (!unit) return readonly([] as UnitVehicleInfo[]) as UnitVehicleInfo[];
             const unitInfo = _getUnitInfo(unit.support_asset_unit_id);
 
             const vehicles = Object.assign({}, unitInfo.vehicles);
             const selectedVehicleIds = unit.vehicles.map(vehicle => vehicle.vehicle_id);
             const vehicleIdsByCount = countBy(selectedVehicleIds, id => id);
 
-            const vehicleIds = Object.keys(vehicles);
+            const vehicleIds = Object.keys(vehicles) as unknown as UnitVehicleId[];
 
             vehicleIds.forEach(vehicleId => {
                 let valid = true;
@@ -668,7 +676,8 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 });
             });
 
-            return readonly(Object.values(vehicles));
+            const unitVehicleInfos = Object.values(vehicles);
+            return readonly(unitVehicleInfos) as UnitVehicleInfo[];
         }
 
         function getAllGrantedOrdersCollection() {
@@ -706,8 +715,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
         function getUnitAttachmentGarrisonGrantedOrdersCollection(unitAttachmentId: number) {
             const grantedOrders = makeGrantedOrderCollection();
             const garrisonUnits = getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId);
-            if (!garrisonUnits) return grantedOrders;
-            if (garrisonUnits.length && garrisonUnits[0].unit_type_id === TYPE_INFANTRY) {
+            if (garrisonUnits?.length && garrisonUnits[0]?.unit_type_id === TYPE_INFANTRY) {
                 const infantryOrderIds = Object.keys(INFANTRY_ORDERS_DATA) as InfantryOrderId[];
                 grantedOrders.addIds(infantryOrderIds);
             }
@@ -740,7 +748,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             support_asset_units.value.push(input);
         }
 
-        function addVehicle(unitAttachmentId: number, vehicleId: string) {
+        function addVehicle(unitAttachmentId: number, vehicleId: UnitVehicleId) {
             const supportAssetUnit = getUnitAttachment(unitAttachmentId);
             if (!supportAssetUnit) return;
             const supportAssetUnitId = supportAssetUnit.support_asset_unit_id;
@@ -750,28 +758,30 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             let addCount = 1;
 
             if (unitDef.all_vehicle_must_be_the_same) {
-                addCount = unitDef.max_vehicles - supportAssetUnit.vehicles.length;
+                addCount = unitDef.max_vehicles! - supportAssetUnit.vehicles.length;
             }
             Array(addCount).fill(0).forEach(() => {
 
                 const vehicleAttachment: VehicleAttachment = {
                     id: supportAssetUnit.vehicles_id_increment++,
                     vehicle_id: vehicleId,
+                    weapon_choices: {},
                 };
 
                 if (vehicleDef.weapon_choice_ids) {
-                    const weaponChoices: Record<string, string> = {};
+                    const weaponChoices: Record<string, UnitWeaponId> = {};
                     Object.keys(vehicleDef.weapon_choice_ids).forEach(key => {
-                        weaponChoices[key] = vehicleDef.weapon_choice_ids[key][0];
+                        weaponChoices[key] = vehicleDef.weapon_choice_ids![key][0]!;
                     });
                     vehicleAttachment.weapon_choices = weaponChoices;
                 }
+
                 if (vehicleDef.garrison_choice_unit_ids) {
                     const garrisonTrait = find(vehicleDef.traits || [], { id: TRAIT_GARRISON });
                     if (garrisonTrait) {
-                        const garrisonChoices: string[] = [];
+                        const garrisonChoices: InfantrySquadId[] = [];
                         Array(garrisonTrait.number).fill(0).forEach((_, index) => {
-                            garrisonChoices[index] = vehicleDef.garrison_choice_unit_ids[0];
+                            garrisonChoices[index] = vehicleDef.garrison_choice_unit_ids![0];
                         });
                         vehicleAttachment.garrison_units = garrisonChoices;
                     }
@@ -781,14 +791,14 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             });
         }
 
-        function setUnitVehicleWeaponChoice(unitAttachmentId: number, vehicleAttachmentId: number, choiceId: string, weaponId: string) {
+        function setUnitVehicleWeaponChoice(unitAttachmentId: number, vehicleAttachmentId: number, choiceId: string, weaponId: UnitWeaponId) {
             const vehicleAttachment = getUnitVehicleAttachment(unitAttachmentId, vehicleAttachmentId);
             if (vehicleAttachment && vehicleAttachment.weapon_choices) {
                 vehicleAttachment.weapon_choices[choiceId] = weaponId;
             }
         }
 
-        function setUnitVehicleGarrisonChoice(unitAttachmentId: number, vehicleAttachmentId: number, index: number, squadId: string) {
+        function setUnitVehicleGarrisonChoice(unitAttachmentId: number, vehicleAttachmentId: number, index: number, squadId: InfantrySquadId) {
             const vehicleAttachment = getUnitVehicleAttachment(unitAttachmentId, vehicleAttachmentId);
             if (vehicleAttachment && vehicleAttachment.garrison_units) {
                 vehicleAttachment.garrison_units[index] = squadId;

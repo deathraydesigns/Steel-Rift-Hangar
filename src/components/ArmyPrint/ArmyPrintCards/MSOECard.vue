@@ -4,7 +4,7 @@ import CardHeader from './CardParts/CardHeader.vue';
 <template>
   <div class="game-card shrink-text-90">
     <div class="card-content-container">
-      <CardHeader title="Multi-spectral Obscuration Emitter"/>
+      <CardHeader title="Multi-spectral Obscuration Emitter" />
 
       <div class="section-heading d-flex">
         <div class="flex-shrink-1">

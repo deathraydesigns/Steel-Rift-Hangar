@@ -7,6 +7,7 @@ import { MECH_SIZES, type MechSizeId } from '../../../data/unit-sizes.js';
 import { useTeamStore } from '../../../store/team-store';
 import { useValidationStore } from '../../../store/validation-store';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
+import SvgIcon from '../../UI/Icon.vue';
 import IconValidationError from '../../UI/IconValidationError.vue';
 import TeamGroupValidation from '../ArmyList/BtnArmyListValidation/TeamGroupValidation.vue';
 import MechTeamGroup from './MechTeamGroup.vue';
@@ -65,7 +66,7 @@ function collapseAll() {
     ">
       <div class="flex-grow-1">
         <span class="d-inline-block py-1 ps-2 pe-1 fw-bold">
-          <Icon :name="team.icon" color="#fff" />
+          <SvgIcon :name="team.icon" color="#fff" />
           <span class="ms-2">
             {{ team.display_name }}
           </span>
@@ -74,7 +75,7 @@ function collapseAll() {
           <template #target>
             <span class="btn btn-sm mx-1 btn-light-outline">
               {{ teamMechCount }}
-              <Icon name="hev" />
+              <SvgIcon name="hev" />
             </span>
           </template>
           <template #content>
@@ -101,7 +102,7 @@ function collapseAll() {
             @click="showTeamPerks = !showTeamPerks"
           >
             Show Team Perks
-            <Icon name="team-perk" />
+            <SvgIcon name="team-perk" />
           </BButton>
           <BButton
             size="sm"

@@ -1,19 +1,19 @@
 <script setup lang="ts">
 
-import {BButton, BModal} from 'bootstrap-vue-next';
-import {useValidationStore} from '../../../store/validation-store';
-import {storeToRefs} from 'pinia';
-import {computed, ref} from 'vue';
-import {TEAM_GENERAL} from '../../../data/mech-teams.js';
+import { BButton, BModal } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+import { TEAM_GENERAL } from '../../../data/mech-teams.js';
+import { useTeamStore } from '../../../store/team-store';
+import { useValidationStore } from '../../../store/validation-store';
 import TeamGroupValidation from './BtnArmyListValidation/TeamGroupValidation.vue';
-import {useTeamStore} from '../../../store/team-store';
 
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
 
 const modal = ref(false);
 
-const {list_is_valid, list_validation, team_validation} = storeToRefs(validationStore);
+const { list_is_valid, list_validation, team_validation } = storeToRefs(validationStore);
 
 const generalTeamGroupValidation = computed(() => {
   const team = team_validation.value.find(team => team.id === TEAM_GENERAL);
@@ -35,10 +35,10 @@ function click() {
 </script>
 <template>
   <BButton
-      @click="click"
-      size="sm"
-      :variant="list_is_valid ? 'transparent' : 'danger'"
-      :class="{
+    @click="click"
+    size="sm"
+    :variant="list_is_valid ? 'transparent' : 'danger'"
+    :class="{
                   'btn ms-2 position-relative': true,
                 }"
   >
@@ -53,9 +53,9 @@ function click() {
   </BButton>
 
   <BModal
-      v-model="modal"
-      size="lg"
-      ok-variant="secondary"
+    v-model="modal"
+    size="lg"
+    ok-variant="secondary"
   >
     <template #title>
       List Validation Errors
@@ -70,8 +70,8 @@ function click() {
         </li>
       </ul>
       <TeamGroupValidation
-          v-if="generalTeamGroupValidation"
-          :group="generalTeamGroupValidation"
+        v-if="generalTeamGroupValidation"
+        :group="generalTeamGroupValidation"
       />
       <template v-if="specialTeamValidation.length">
         <h5>Teams</h5>
@@ -79,7 +79,7 @@ function click() {
           <div class="fw-bold">{{ team.display_name }}</div>
           <ul>
             <li v-for="group in team.groups">
-              <TeamGroupValidation :group="group"/>
+              <TeamGroupValidation :group="group" />
             </li>
           </ul>
         </div>

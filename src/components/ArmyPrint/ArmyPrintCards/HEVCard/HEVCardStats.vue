@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {useTeamStore} from '../../../../store/team-store';
-import {useMechStore} from '../../../../store/mech-store';
+import { computed } from 'vue';
+import { useMechStore } from '../../../../store/mech-store';
+import { useTeamStore } from '../../../../store/team-store';
 import FormatInches from '../../../functional/format-inches.vue';
+import SvgIcon from '../../../UI/Icon.vue';
 
 const mechStore = useMechStore();
 const teamStore = useTeamStore();
 
-const {mechId} = defineProps({
-  mechId: {
-    type: Number,
-  },
-});
-const info = computed(() => mechStore.getMechInfo(mechId));
+const { mechId } = defineProps<{
+  mechId: number
+}>();
+const info = computed(() => mechStore.getMechInfo(mechId)!);
 
 const team = computed(() => {
-  const {teamId} = teamStore.getMechTeamAndGroupIds(mechId);
+  const { teamId } = teamStore.getMechTeamAndGroupIds(mechId);
   return teamStore.getTeamDef(teamId);
 });
 </script>
@@ -28,7 +27,7 @@ const team = computed(() => {
         </div>
         <div class="hev-team" v-if="teamStore.isSpecialTeam(team.id)">
           {{ team.display_name_short }}
-          <Icon :name="team.icon"/>
+          <SvgIcon :name="team.icon" />
         </div>
       </div>
     </div>
@@ -46,10 +45,10 @@ const team = computed(() => {
         <tr>
           <td>{{ info.tonnage_stat }}</td>
           <td>
-            <format-inches :value="info.move"/>
+            <format-inches :value="info.move" />
           </td>
           <td>
-            <format-inches :value="info.jump"/>
+            <format-inches :value="info.jump" />
           </td>
           <td>{{ info.defense }}+</td>
         </tr>

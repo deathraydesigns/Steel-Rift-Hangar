@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {ORDERS} from '../../data/orders';
+import { computed } from 'vue';
+import { type OrderId, ORDERS } from '../../data/orders';
 
-const {orderIds} = defineProps({
-  orderIds: {
-    type: Array,
-    required: true,
-  },
-});
+const { orderIds } = defineProps<{
+  orderIds: OrderId[];
+}>();
 
 const orders = computed(() => {
   const ids = orderIds || [];

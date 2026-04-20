@@ -1,11 +1,9 @@
 <script setup lang="ts">
 const {
   value,
-} = defineProps({
-  value: {
-    required: true,
-  },
-});
+} = defineProps<{
+  value: number | string | null | undefined,
+}>();
 </script>
 <template>
   <template v-if="value">{{ value }}"</template>

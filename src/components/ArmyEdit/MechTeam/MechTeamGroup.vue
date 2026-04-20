@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { BButton, BCollapse, BPopover } from 'bootstrap-vue-next';
 import { computed, ref } from 'vue';
-import { Container, Draggable } from 'vue-dndrop';
+import { Container, Draggable, type DropResult } from 'vue-dndrop';
 import { type MechTeamId, TEAM_SHELF } from '../../../data/mech-teams.js';
 import { useTeamStore } from '../../../store/team-store';
 import { useValidationStore } from '../../../store/validation-store';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
+import SvgIcon from '../../UI/Icon.vue';
 import IconValidationError from '../../UI/IconValidationError.vue';
 import TeamGroupValidation from '../ArmyList/BtnArmyListValidation/TeamGroupValidation.vue';
 import Mech from '../Mech.vue';
@@ -56,14 +57,11 @@ function getChildPayload(index: number) {
   };
 }
 
-function onDrop(toTeamId: MechTeamId, toGroupId: string, dropResult: {
-  addedIndex: number | null,
-  payload: {
-    teamId: MechTeamId,
-    groupId: string,
-    mechId: number,
-  }
-}) {
+function onDrop(toTeamId: MechTeamId, toGroupId: string, dropResult: DropResult<{
+  teamId: MechTeamId,
+  groupId: string,
+  mechId: number,
+}>) {
   if (dropResult.addedIndex !== null && dropResult.addedIndex !== undefined) {
     teamStore.moveMechToTeamGroup(
       toTeamId,
@@ -98,7 +96,7 @@ const placeholder = ref({
         <BtnToolTip>
           <template #target>
             <div class="btn btn-transparent-dark d-inline-block py-1 me-1 fw-bold">
-              <Icon v-if="team.icon" :name="team.icon" class="me-2" />
+              <SvgIcon v-if="team.icon" :name="team.icon" class="me-2" />
               {{ group.display_name }}
             </div>
           </template>
@@ -116,7 +114,7 @@ const placeholder = ref({
           <template #target>
             <span class="btn btn-sm btn-overlay mx-1">
               {{ groupCount }}
-              <Icon name="hev" />
+              <SvgIcon name="hev" />
             </span>
           </template>
           <template #content>
@@ -148,7 +146,7 @@ const placeholder = ref({
               class="btn btn-sm btn-overlay mx-1"
             >
               Group Perks
-              <Icon name="team-perk" />
+              <SvgIcon name="team-perk" />
             </span>
           </template>
           <template #content>
@@ -202,7 +200,7 @@ const placeholder = ref({
             @click="teamStore.addMechToTeamWithDefaults(teamId, groupId)"
           >
             Add
-            <Icon name="hev" />
+            <SvgIcon name="hev" />
           </button>
           <BButton
             size="sm"

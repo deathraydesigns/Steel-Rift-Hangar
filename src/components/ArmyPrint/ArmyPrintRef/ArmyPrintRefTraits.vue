@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
+import { computed } from 'vue';
+import { WEAPON_TRAITS, weaponTraitDisplayName } from '../../../data/weapon-traits.js';
+import { makeUniqueItemIdCollection } from '../../../store/helpers/helpers';
+import { useMechStore } from '../../../store/mech-store';
+import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import ArmyPrintRefTraitType from './ArmyPrintRefTraitType.vue';
-import {makeUniqueItemIdCollection} from '../../../store/helpers/helpers';
-import {WEAPON_TRAITS, weaponTraitDisplayName} from '../../../data/weapon-traits.js';
-import {useMechStore} from '../../../store/mech-store';
 
 const unitStore = useSupportAssetUnitsStore();
 const mechStore = useMechStore();
@@ -22,15 +22,15 @@ const weaponTraits = computed(() => {
   return traitCollection.all().map(trait => {
     return {
       ...trait,
-      display_name: weaponTraitDisplayName({id: trait.id, number: 'X'}),
+      display_name: weaponTraitDisplayName({ id: trait.id, number: 'X' }),
     };
   });
 });
 
 </script>
 <template>
-  <ArmyPrintRefTraitType title="Unit Traits" :traits="unitTraits"/>
-  <ArmyPrintRefTraitType title="Weapon Traits" :traits="weaponTraits"/>
-  <ArmyPrintRefTraitType title="Upgrade Traits" :traits="upgradeTraits"/>
+  <ArmyPrintRefTraitType title="Unit Traits" :traits="unitTraits" />
+  <ArmyPrintRefTraitType title="Weapon Traits" :traits="weaponTraits" />
+  <ArmyPrintRefTraitType title="Upgrade Traits" :traits="upgradeTraits" />
 </template>
 

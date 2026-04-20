@@ -1,4 +1,3 @@
-
 import { makeStaticListIds, trait } from '../data-helpers';
 import { SIZE_ULTRA_LIGHT } from '../unit-sizes';
 import {
@@ -107,7 +106,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                 ],
             },
             RIFLEMAN: {
-                move: 8,
+                move: 6,
                 jump: 0,
                 ...baseStats,
                 display_name: 'Rifleman',

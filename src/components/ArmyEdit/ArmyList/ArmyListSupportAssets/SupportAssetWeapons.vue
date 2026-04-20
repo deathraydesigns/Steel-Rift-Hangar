@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import SupportAssetWeaponAdd from './SupportAssetWeaponAdd.vue';
-import TraitList from '../../../UI/TraitList.vue';
-import BtnToolTip from '../../../UI/BtnToolTip.vue';
-import {useValidationStore} from '../../../../store/validation-store';
-import {useSupportAssetWeaponsStore} from '../../../../store/support-asset-weapons-store';
-import {BButton} from 'bootstrap-vue-next';
+import { BButton } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { useSupportAssetWeaponsStore } from '../../../../store/support-asset-weapons-store';
+import { useValidationStore } from '../../../../store/validation-store';
 import FormatNumber from '../../../functional/format-number.vue';
+import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import IconValidationError from '../../../UI/IconValidationError.vue';
-import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
 import SupportAssetNoteList from '../../../UI/SupportAssetNoteList.vue';
+import SupportAssetWeaponDamageFormatter from '../../../UI/SupportAssetWeaponDamageFormatter.vue';
+import TraitList from '../../../UI/TraitList.vue';
+import SupportAssetWeaponAdd from './SupportAssetWeaponAdd.vue';
 
 const store = useSupportAssetWeaponsStore();
 const validationStore = useValidationStore();
 
-const {invalid_number_of_support_assets} = storeToRefs(validationStore);
+const { invalid_number_of_support_assets } = storeToRefs(validationStore);
 const {
   support_asset_weapons_info,
 } = storeToRefs(store);
@@ -22,7 +22,7 @@ const {
 </script>
 <template>
   <div
-      :class="{
+    :class="{
         'card card-dark-border': true,
         'border-danger': invalid_number_of_support_assets
       }"
@@ -33,10 +33,11 @@ const {
           Off Table Support Assets
         </div>
         <div class="flex-grow-1">
-          <IconValidationError size="sm" v-if="invalid_number_of_support_assets" :message="invalid_number_of_support_assets"/>
+          <IconValidationError size="sm" v-if="invalid_number_of_support_assets"
+                               :message="invalid_number_of_support_assets" />
         </div>
         <div class="flex-shrink-1 text-end">
-          <SupportAssetWeaponAdd/>
+          <SupportAssetWeaponAdd />
         </div>
       </div>
     </div>
@@ -68,22 +69,22 @@ const {
           </td>
           <td class="text-end">
             <SupportAssetWeaponDamageFormatter
-                :damage="item.off_table_weapon?.damage ?? 0"
-                :damage-modifiers="item.off_table_weapon!.damage_modifiers"
+              :damage="item.off_table_weapon?.damage ?? 0"
+              :damage-modifiers="item.off_table_weapon!.damage_modifiers ?? []"
             />
           </td>
           <td class="text-end">
-            <format-number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true" />
           </td>
           <td>
-            <TraitList :traits="item.off_table_weapon!.traits"/>
+            <TraitList :traits="item.off_table_weapon!.traits" />
           </td>
           <td>
-            <SupportAssetNoteList :notes="item.notes"/>
+            <SupportAssetNoteList :notes="item.notes" />
           </td>
           <td class="table-btn-cell text-end">
             <BButton @click="store.removeSupportAssetId(item.id)" variant="danger" size="sm"><span
-                class="material-symbols-outlined">delete</span></BButton>
+              class="material-symbols-outlined">delete</span></BButton>
           </td>
         </tr>
         </tbody>

@@ -2,24 +2,14 @@
 
 const {
   label,
-  sizeDisplayName,
-  typeDisplayName,
-} = defineProps({
-  label: {
-    type: String,
-    required: true,
-  },
-  typeDisplayName: {
-    type: String,
-  },
-  sizeDisplayName: {
-    type: String,
-  },
-  defense: {
-    type: Number,
-    required: true,
-  },
-});
+  sizeDisplayName = '',
+  typeDisplayName = '',
+} = defineProps<{
+  label: string;
+  sizeDisplayName?: string;
+  typeDisplayName?: string;
+  defense: number;
+}>();
 </script>
 <template>
   <div class="card-description small m-0">

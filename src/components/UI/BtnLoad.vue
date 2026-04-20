@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {ref, useTemplateRef} from 'vue';
-import {BDropdown, BDropdownHeader, BDropdownItem} from 'bootstrap-vue-next';
-import ModalImportMechs from './Modal/ModalImportMechs.vue';
-import {loadSaveFileData} from '../../store/helpers/store-save-load';
-import {jsonFileParser} from '../../composables/file-upload';
+import { BDropdown, BDropdownHeader, BDropdownItem } from 'bootstrap-vue-next';
+import { disposeOfPiniaScope } from 'pinia-scope';
+import { ref, useTemplateRef } from 'vue';
+import { jsonFileParser } from '../../composables/file-upload';
+import { HEV_PACKS, type HevPack } from '../../data/hev-packs';
+import { loadSaveFileData } from '../../store/helpers/store-save-load';
+import { useMechStore } from '../../store/mech-store';
+import { useTeamStore } from '../../store/team-store';
 import ModalDataUrlImport from './Modal/ModalDataUrlImport.vue';
-import {HEV_PACKS} from '../../data/hev-packs';
-import {useMechStore} from '../../store/mech-store';
-import {useTeamStore} from '../../store/team-store';
-import {disposeOfPiniaScope} from 'pinia-scope';
+import ModalImportMechs from './Modal/ModalImportMechs.vue';
 
 const fileUpload = useTemplateRef<HTMLInputElement>('file-upload');
 const fileImport = useTemplateRef<HTMLInputElement>('file-import');
@@ -19,30 +19,35 @@ const dataUrlModalVisible = ref(false);
 
 const fileUploadChange = jsonFileParser((jsonData) => {
   loadSaveFileData(jsonData);
-  fileUpload.value.value = null;
+  if (!fileUpload.value) return;
+  fileUpload.value.value = '';
 });
 
 const fileImportChange = jsonFileParser((jsonData) => {
+  if (!modalImportMechs.value) return;
   modalImportMechs.value.importJsonData(jsonData);
-  fileImport.value.value = null;
+  if (!fileImport.value) return;
+
+  fileImport.value.value = '';
 });
 
 const onImportFromUrlData = (jsonData: {}) => {
+  if (!modalImportMechs.value) return;
   modalImportMechs.value.importJsonData(jsonData);
 };
 
-function importHevPack(quickBuild) {
+function importHevPack(quickBuild: HevPack) {
   const SCOPE = 'quick-build';
   const mechStore = useMechStore(SCOPE);
   loadSaveFileData(quickBuild.data, SCOPE);
 
   const appTeamStore = useTeamStore();
-  mechStore.mechs.forEach(({id}) => {
-    const mech = mechStore.getMech(id);
+  mechStore.mechs.forEach(({ id }) => {
+    const mech = mechStore.getMech(id)!;
     appTeamStore.addMechToTeamFromLoadedFile(mech, quickBuild.team_id);
   });
 
-  disposeOfPiniaScope(SCOPE)
+  disposeOfPiniaScope(SCOPE);
 }
 
 </script>
@@ -51,18 +56,18 @@ function importHevPack(quickBuild) {
   <input ref="file-import" type="file" @change="fileImportChange" accept="application/json" hidden>
 
   <BDropdown
-      variant="secondary"
-      size="sm"
-      class="d-inline-block ms-1"
+    variant="secondary"
+    size="sm"
+    class="d-inline-block ms-1"
   >
     <template #button-content>
       Load
     </template>
-    <BDropdownItem @click="() => fileUpload.click()">
+    <BDropdownItem @click="() => fileUpload!.click()">
       <span class="material-symbols-outlined">file_open</span>
       Load File
     </BDropdownItem>
-    <BDropdownItem @click="() => fileImport.click()">
+    <BDropdownItem @click="() => fileImport!.click()">
       <span class="material-symbols-outlined">place_item</span>
       Import HE-Vs from File
     </BDropdownItem>
@@ -79,11 +84,11 @@ function importHevPack(quickBuild) {
     </BDropdownItem>
   </BDropdown>
   <ModalDataUrlImport
-      v-model="dataUrlModalVisible"
-      @data-url-success="onImportFromUrlData"
+    v-model="dataUrlModalVisible"
+    @data-url-success="onImportFromUrlData"
   />
   <ModalImportMechs
-      ref="modal-import-mechs"
-      v-model="importModalVisible"
+    ref="modal-import-mechs"
+    v-model="importModalVisible"
   />
 </template>

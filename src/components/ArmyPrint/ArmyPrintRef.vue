@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import ArmyPrintRefTeams from './ArmyPrintRef/ArmyPrintRefTeams.vue';
-import ArmyPrintRefSecondaryAgendas from './ArmyPrintRef/ArmyPrintRefSecondaryAgendas.vue';
-import ArmyPrintRefUpgrades from './ArmyPrintRef/ArmyPrintRefUpgrades.vue';
-import ArmyPrintRefHeader from './ArmyPrintRef/ArmyPrintRefHeader.vue';
+import { onMounted, onUnmounted } from 'vue';
 import ArmyPrintRefFaction from './ArmyPrintRef/ArmyPrintRefFaction.vue';
+import ArmyPrintRefHeader from './ArmyPrintRef/ArmyPrintRefHeader.vue';
+import ArmyPrintRefSecondaryAgendas from './ArmyPrintRef/ArmyPrintRefSecondaryAgendas.vue';
 import ArmyPrintRefSpecialOrders from './ArmyPrintRef/ArmyPrintRefSpecialOrders.vue';
+import ArmyPrintRefTeams from './ArmyPrintRef/ArmyPrintRefTeams.vue';
 import ArmyPrintRefTraits from './ArmyPrintRef/ArmyPrintRefTraits.vue';
-import {onMounted, onUnmounted} from 'vue';
+import ArmyPrintRefUpgrades from './ArmyPrintRef/ArmyPrintRefUpgrades.vue';
 
-let style;
+let style: HTMLStyleElement;
 
 onMounted(() => {
   style = document.createElement('style');
@@ -50,13 +50,13 @@ onUnmounted(() => {
        style="background-color:white">
     <div class="page-army-reference">
 
-      <ArmyPrintRefHeader/>
-      <ArmyPrintRefFaction/>
-      <ArmyPrintRefTeams/>
-      <ArmyPrintRefSecondaryAgendas/>
-      <ArmyPrintRefUpgrades/>
-      <ArmyPrintRefSpecialOrders/>
-      <ArmyPrintRefTraits/>
+      <ArmyPrintRefHeader />
+      <ArmyPrintRefFaction />
+      <ArmyPrintRefTeams />
+      <ArmyPrintRefSecondaryAgendas />
+      <ArmyPrintRefUpgrades />
+      <ArmyPrintRefSpecialOrders />
+      <ArmyPrintRefTraits />
 
     </div>
   </div>

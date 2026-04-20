@@ -140,7 +140,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
             trait(TRAIT_LIGHT),
             trait(TRAIT_FLAK),
             trait(TRAIT_KINETIC),
-            trait(TRAIT_ANTI_AIR)
+            trait(TRAIT_ANTI_AIR),
         ],
     }),
     [DOZER_BLADE]: makeWeapon({
@@ -227,17 +227,18 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
     }),
     [TANK_MISSILES]: makeWeapon({
         display_name: 'Tank Missiles',
-        damage: 4,
+        damage: 3,
         traits: [
             trait(TRAIT_SMART),
-            trait(TRAIT_LIMITED, 2),
+            trait(TRAIT_LIMITED, 3),
         ],
     }),
     [TANK_HOWITZER]: makeWeapon({
         display_name: 'Tank Howitzer',
-        damage: 4,
+        damage: 2,
         traits: [
-            trait(TRAIT_BLAST, 2),
+            trait(TRAIT_SMART),
+            trait(TRAIT_BLAST, 3),
             trait(TRAIT_KINETIC),
         ],
     }),
@@ -256,7 +257,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
         traits: [
             trait(TRAIT_SMART),
             trait(TRAIT_BLAST, 3),
-            trait(TRAIT_LIMITED, 2),
+            trait(TRAIT_LIMITED, 3),
         ],
     }),
     [MISSILE_POD]: makeWeapon({
@@ -270,9 +271,8 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
     }),
     [CLUSTER_ROCKETS]: makeWeapon({
         display_name: 'Cluster Rockets',
-        damage: 3,
+        damage: 4,
         traits: [
-            trait(TRAIT_SMART),
             trait(TRAIT_BLAST, 3),
             trait(TRAIT_LIGHT),
             trait(TRAIT_LIMITED, 2),
@@ -315,10 +315,10 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
         ],
     }),
     [UL_ROCKET_PACK]: makeWeapon({
-        display_name: 'Rocket Pack',
-        damage: 2,
+        display_name: 'Cluster Rockets',
+        damage: 5,
         traits: [
-            trait(TRAIT_SMART),
+            trait(TRAIT_LIGHT),
             trait(TRAIT_LIMITED, 2),
             trait(TRAIT_BLAST, 3),
         ],
@@ -352,7 +352,6 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
         display_name: 'Heavy Missile Launcher',
         damage: 2,
         traits: [
-            trait(TRAIT_STAGGER),
             trait(TRAIT_SHORT, 12),
             trait(TRAIT_LIMITED, 2),
             trait(TRAIT_AP, 2),
@@ -373,7 +372,7 @@ function makeWeapon(
         display_name,
         damage,
         traits,
-    }: Omit<UnitWeaponInput, 'id'>
+    }: Omit<UnitWeaponInput, 'id'>,
 ) {
 
     let range = getRangeFromShortTrait(traits);

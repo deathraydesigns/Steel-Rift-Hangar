@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {BDropdown, BDropdownItem} from 'bootstrap-vue-next';
+import { BDropdown, BDropdownItem } from 'bootstrap-vue-next';
 import { computed, inject, type Ref } from 'vue';
 
 const mode = inject<Ref<keyof typeof modes>>('color_mode')!;
@@ -27,15 +27,15 @@ function setMode(value: keyof typeof modes) {
 </script>
 <template>
   <BDropdown
-      size="sm"
-      class="d-inline-block ms-1"
+    size="sm"
+    class="d-inline-block ms-1"
   >
     <template #button-content>
       <span class="material-symbols-outlined">{{ modeIcon }}</span>
     </template>
     <BDropdownItem
-        v-for="(name, key) in modes"
-        @click="setMode(key)"
+      v-for="(name, key) in modes"
+      @click="setMode(key)"
     >
       <span class="material-symbols-outlined">{{ modes[key].icon }}</span> {{ name.display_name }}
     </BDropdownItem>

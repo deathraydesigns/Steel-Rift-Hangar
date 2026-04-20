@@ -6,6 +6,7 @@ import {
     DWC_TOP_END_HARDWARE,
     FACTION_PERKS,
     type FactionPerkId,
+    type FactionPerkInfo,
     isMatchingPerkOrCopy,
     OI_MATERIEL_STOCKPILES,
     RD_ADVANCED_HARDPOINT_DESIGN,
@@ -34,7 +35,7 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
 
         const faction_display_name = computed(() => FACTIONS[faction_id.value].display_name);
 
-        function perkBelongsToFaction(perkId: string | null) {
+        function perkBelongsToFaction(perkId: FactionPerkId | null) {
             if (!perkId) return false;
             return !!find(FACTIONS[faction_id.value].faction_perk_groups, (perkGroup) => {
                 return perkGroup.perk_ids.includes(perkId);
@@ -89,15 +90,13 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
             }
         }
 
-        function getPerkInfo(perkId: string | null) {
+        function getPerkInfo(perkId: FactionPerkId | null): null | FactionPerkInfo {
             if (!perkId || !FACTION_PERKS[perkId]) {
-                return;
+                return null;
             }
-            const result = { ...FACTION_PERKS[perkId] };
-            if (result.optional_perks?.length) {
-                result.optional_perks = result.optional_perks.map((p: string) => FACTION_PERKS[p]);
-            }
-            return result;
+            const perk = FACTION_PERKS[perkId];
+            const optional_perks = perk.optional_perks?.map((p) => FACTION_PERKS[p]) ?? [];
+            return { ...perk, optional_perks };
         }
 
         const perk_1_info = computed(() => getPerkInfo(perk_1_id.value));
@@ -120,7 +119,7 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
             return false;
         }
 
-        function findPerkGroupId(perkId: string | null) {
+        function findPerkGroupId(perkId: FactionPerkId | null) {
             if (!perkId) return;
             const factions = Object.values(FACTIONS);
             for (let i = 0; i < factions.length; i++) {
@@ -145,7 +144,7 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
                 return {
                     id,
                     display_name,
-                    perks: perk_ids.map((perkId: string) => {
+                    perks: perk_ids.map((perkId) => {
                         const {
                             id,
                             display_name,

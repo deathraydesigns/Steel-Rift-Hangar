@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
+import type { MechArmorUpgradeId } from '../../../../data/mech-armor-upgrades';
 import { useMechStore } from '../../../../store/mech-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
@@ -17,23 +18,20 @@ const {
   mechId: number,
 }>();
 
-const model = defineModel();
+const model = defineModel<MechArmorUpgradeId>({ required: true });
 const options = computed(() => mechStore.getMechAvailableArmorUpgrades(mechId));
 
 const armorUpgrade = computed(() => {
-  const m = mechStore.getMech(mechId);
-  if (!m) return;
-  return mechStore.getMechArmorUpgradeInfo(mechId, m.armor_upgrade_id);
+  const m = mechStore.getMech(mechId)!;
+  return mechStore.getMechArmorUpgradeInfo(mechId, m.armor_upgrade_id)!;
 });
 
-const info = computed(() => mechStore.getMechArmorUpgradeAttachmentInfo(mechId));
+const info = computed(() => mechStore.getMechArmorUpgradeAttachmentInfo(mechId)!);
 
-function selectOption(value) {
+function selectOption(value: MechArmorUpgradeId) {
   model.value = value;
 }
-
 </script>
-
 <template>
   <tr>
     <td></td>
@@ -121,7 +119,7 @@ function selectOption(value) {
         btn-class="ms-1"
         :perks="armorUpgrade.team_perks"
       />
-      <BtnToolTip :enabled="armorUpgrade.description">
+      <BtnToolTip :enabled="!!armorUpgrade.description">
         <template #target>
           <span
             class="btn btn-md btn-default ms-1"

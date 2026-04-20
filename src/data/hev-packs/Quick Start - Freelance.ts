@@ -1,11 +1,11 @@
-import {SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM} from '../unit-sizes';
-import {MOD_REINFORCED, MOD_STANDARD} from '../mech-body';
-import {NO_ARMOR_UPGRADE} from '../mech-armor-upgrades';
-import {MOBILITY_BI_PEDAL} from '../mech-mobility';
-import {TEAM_GENERAL} from '../mech-teams';
-import {AUTO_CANNON, MELEE_WEAPON, RAIL_GUN, SUBMUNITIONS} from '../mech-weapons';
-import {JUMP_JETS, OPTIC_CAMO} from '../mech-upgrades';
-import {TYPE_HEV} from '../unit-types';
+import { NO_ARMOR_UPGRADE } from '../mech-armor-upgrades';
+import { MOD_REINFORCED, MOD_STANDARD } from '../mech-body';
+import { MOBILITY_BI_PEDAL } from '../mech-mobility';
+import { TEAM_GENERAL } from '../mech-teams';
+import { JUMP_JETS, OPTIC_CAMO } from '../mech-upgrades';
+import { AUTO_CANNON, MELEE_WEAPON, RAIL_GUN, SUBMUNITIONS } from '../mech-weapons';
+import { SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM } from '../unit-sizes';
+import { TYPE_HEV } from '../unit-types';
 
 export const pack2 = {
     name: 'Quick Start - Freelance',

@@ -1,4 +1,3 @@
-
 import { makeStaticListIds, trait } from '../data-helpers';
 import { SIZE_MEDIUM } from '../unit-sizes';
 import {
@@ -93,7 +92,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
             },
             SCRAMBLER_VEHICLE: {
                 ...baseStats,
-                display_name: 'Scrambler Projector Vehicle',
+                display_name: 'Obscuration Projection Vehicle',
                 weapon_ids: [
                     VEH_AUTO_CANNON,
                 ],

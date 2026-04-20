@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store';
-import {computed} from 'vue';
-import {unitTraitDisplayName} from '../../../../data/unit-traits.js';
-import {formatCardRef} from '../../../functional/formatters.js';
-import UnitCardHalfHeader from './UnitCardHalfHeader.vue';
+import { computed } from 'vue';
+import { unitTraitDisplayName } from '../../../../data/unit-traits.js';
+import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
 import FormatInches from '../../../functional/format-inches.vue';
+import { formatCardRef } from '../../../functional/formatters.js';
+import UnitCardHalfHeader from './UnitCardHalfHeader.vue';
 
-const {unitAttachmentId} = defineProps({
-  unitAttachmentId: {
-    type: Number,
-    required: true,
-  },
-});
+const { unitAttachmentId } = defineProps<{
+  unitAttachmentId: number
+}>();
 
 const unitStore = useSupportAssetUnitsStore();
 const units = computed(() => unitStore.getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId));
@@ -23,9 +20,9 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
 <template>
   <template v-if="units.length">
     <UnitCardHalfHeader
-        label="Garrisoned Units"
-        :type-display-name="units[0].unit_type.display_name"
-        :defense="3"
+      label="Garrisoned Units"
+      :type-display-name="units[0].unit_type.display_name"
+      :defense="3"
     />
     <table class="table-stats table-stats-small">
       <thead>
@@ -37,8 +34,8 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
           Mov
         </th>
         <th
-            v-if="hasArmor"
-            class="text-start"
+          v-if="hasArmor"
+          class="text-start"
         >
           Arm
         </th>
@@ -55,7 +52,7 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
       </thead>
       <tbody>
       <tr
-          v-for="item in units" :key="item.id"
+        v-for="item in units" :key="item.id"
       >
         <td v-if="hasCardRefIds" class="text-end font-monospace small">
           {{ formatCardRef(item.card_ref_id) }}
@@ -64,11 +61,11 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
           {{ item.display_name }}
         </td>
         <td class="text-end">
-          <format-inches :value="item.move"/>
+          <format-inches :value="item.move" />
         </td>
         <td
-            v-if="hasArmor"
-            class="text-start"
+          v-if="hasArmor"
+          class="text-start"
         >
           <div class="text-nowrap" v-if="item.armor"><span class="use use-armor"
                                                            v-for="i in Array(item.armor)">&nbsp;</span>
@@ -81,12 +78,12 @@ const hasArmor = computed(() => !!units.value.find((unit) => unit.armor));
         </td>
         <td class="text-start small">
           <span
-              class=" text-nowrap"
-              v-for="(weapon, index) in item.weapons"
+            class=" text-nowrap"
+            v-for="(weapon, index) in item.weapons"
           >
             {{ weapon.display_name }}<span class="text-nowrap" v-if="weapon.max_uses">&nbsp;<span
-              class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span></span><span
-              v-if="index !== item.weapons.length - 1">, </span>
+            class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span></span><span
+            v-if="index !== item.weapons.length - 1">, </span>
           </span>
         </td>
         <td class="text-start small">

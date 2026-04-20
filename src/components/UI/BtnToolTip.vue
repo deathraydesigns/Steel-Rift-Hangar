@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import {BPopover} from 'bootstrap-vue-next';
+import { BPopover } from 'bootstrap-vue-next';
 
-const {enabled} = defineProps({
-  enabled: {
-    default: true,
-  },
-});
+const { enabled = true } = defineProps<{
+  enabled?: boolean,
+}>();
 
 </script>
 <template>
   <BPopover
-      lazy
-      :manual="!enabled"
+    lazy
+    :manual="!enabled"
+    teleport-to="body"
   >
     <template #title>
       <slot name="title"></slot>
     </template>
     <template #target>
-      <slot name="target"/>
+      <slot name="target" />
     </template>
     <template #default>
       <slot name="content"></slot>

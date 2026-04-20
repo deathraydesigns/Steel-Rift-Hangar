@@ -3,8 +3,8 @@ import { type OrderId, ORDERS } from '../../data/orders';
 export type GrantedOrderCollection = ReturnType<typeof makeGrantedOrderCollection>
 
 export interface GrantedOrderIdObj {
-    granted_order_ids?: OrderId[];
-};
+    granted_order_ids?: OrderId[],
+}
 
 export function makeGrantedOrderCollection() {
     const orderIdMap = new Map<OrderId, boolean>();
@@ -97,7 +97,7 @@ export function makeUniqueItemIdCollection<T>(DATA_STORE: Record<string, T>) {
     };
 }
 
-export function ifEmptyString(val: any, result: any): any {
+export function ifEmptyString<T>(val: any, result: T): T | false {
     if (val === '') {
         return result;
     }

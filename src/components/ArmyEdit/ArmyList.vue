@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import Faction from './ArmyList/Faction.vue';
 import ArmyListSize from './ArmyList/ArmyListSize.vue';
 import ArmyListSupportAssetCount from './ArmyList/ArmyListSupportAssetCount.vue';
+import SupportAssetUnits from './ArmyList/ArmyListSupportAssets/SupportAssetUnits.vue';
 import SupportAssetWeapons from './ArmyList/ArmyListSupportAssets/SupportAssetWeapons.vue';
 import ArmyListTeams from './ArmyList/ArmyListTeams.vue';
-import SupportAssetUnits from './ArmyList/ArmyListSupportAssets/SupportAssetUnits.vue';
+import Faction from './ArmyList/Faction.vue';
 </script>
 <template>
   <div class="card body-bg card-army-list">
     <div class="card-body">
       <div class="row">
         <div class="col-md-3">
-          <ArmyListSize/>
+          <ArmyListSize />
           <div class="row g-1">
             <div class="col">
-              <ArmyListSupportAssetCount/>
+              <ArmyListSupportAssetCount />
             </div>
             <div class="col">
-              <ArmyListTeams/>
+              <ArmyListTeams />
             </div>
           </div>
         </div>
         <div class="col-md-6">
-          <SupportAssetWeapons/>
-          <SupportAssetUnits/>
+          <SupportAssetWeapons />
+          <SupportAssetUnits />
         </div>
         <div class="col-md-3">
-          <Faction/>
+          <Faction />
         </div>
       </div>
     </div>

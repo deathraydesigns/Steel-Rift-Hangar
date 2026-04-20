@@ -21,8 +21,7 @@ const model = defineModel();
 const options = computed(() => MECH_MOBILITIES);
 
 const mobility = computed(() => {
-  const m = mechStore.getMech(mechId);
-  if (!m) return;
+  const m = mechStore.getMech(mechId)!;
   return MECH_MOBILITIES[m.mobility_id];
 });
 

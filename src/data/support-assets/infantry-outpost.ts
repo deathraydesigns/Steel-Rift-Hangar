@@ -1,4 +1,3 @@
-
 import { makeStaticListIds, trait } from '../data-helpers';
 import {
     INFANTRY_ANTI_TANK_SQUAD,
@@ -63,6 +62,5 @@ export const INFANTRY_OUTPOST_DATA: Record<string, Omit<SupportAssetUnitDef, 'id
                 ],
             },
         }),
-        // infantry_squads: makeStaticListIds({}),
     },
 };

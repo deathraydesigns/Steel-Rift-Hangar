@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {useSecondaryAgendaStore} from '../../../store/secondary-agenda-store';
+import { storeToRefs } from 'pinia';
+import { useSecondaryAgendaStore } from '../../../store/secondary-agenda-store';
 import SecondaryAgendaDefinition from '../../ArmyEdit/SecondaryAgendas/SecondaryAgendaDefinition.vue';
 
-const {secondary_agendas, max_secondary_agendas} = storeToRefs(useSecondaryAgendaStore());
+const { secondary_agendas, max_secondary_agendas } = storeToRefs(useSecondaryAgendaStore());
 </script>
 <template>
 
@@ -19,11 +19,11 @@ const {secondary_agendas, max_secondary_agendas} = storeToRefs(useSecondaryAgend
       </small>
     </div>
     <SecondaryAgendaDefinition
-        v-for="item in secondary_agendas"
-        :type-display-name="item.type_display_name"
-        :subtype-display-name="item.subtype_display_name"
-        :display-name="item.display_name"
-        :description="item.description"
+      v-for="item in secondary_agendas"
+      :type-display-name="item.type_display_name"
+      :subtype-display-name="item.subtype_display_name"
+      :display-name="item.display_name"
+      :description="item.description"
     />
   </div>
 </template>

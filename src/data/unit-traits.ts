@@ -78,7 +78,7 @@ export type UnitTraitId =
     | typeof TRAIT_UNIT_SIZE_AND_TYPE
 
 export interface UnitTraitDef extends TraitDef {
-    description: string | null;
+    description: string;
     formatter?: TraitFormatter;
     dependent_trait_ids?: string[];
     type?: string;
@@ -91,7 +91,7 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
     },
     [TRAIT_CLOSE_SUPPORT]: {
         display_name: 'Close Support',
-        description: 'If a friendly unit with this trait is within 6” of an enemy target of an Engage or Smash Order, add one to the Damage Rating of each weapon used in that Engage or Smash Order. This bonus is only applied once, regardless of the number of units with this Trait in range.',
+        description: 'If a friendly Unit with this trait is within 6” of an enemy target of an ENGAGE or SMASH Order, add one to the Damage Rating of each weapon used in that ENGAGE or SMASH Order. This bonus is only applied once, regardless of the number of Units with this Trait in range.',
     },
     [TRAIT_GARRISON]: {
         display_name: 'Garrison',
@@ -99,33 +99,33 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
         description: 'A model with this Trait contains assigned Units, Models and/or Tokens as listed in its (X). For example, a model with the trait Garrison (2 Air Infantry models, 2 Mine Drone tokens) may contain 2 models from the Air Infantry table and 2 Mine Drone tokens. Note what specific models are selected when this model is recruited during the Recruit Forces step. The selected Units, Models and/or Tokens are known as its Garrisoned Units, Garrisoned Models and/or Garrisoned Tokens, respectively. The Garrisoned Units/Models/Tokens will not be Deployed during the Deploy Forces step, and will instead be placed on the table during the game. If a model with the Garrison trait is destroyed, and its Garrisoned Units/Models/Tokens have not yet Mustered, those Units/Models/Tokens are considered destroyed as well.',
     },
     [TRAIT_GROUP_COMMAND]: {
-        display_name: 'Group Command',
-        description: 'All Units in this Asset are issued Orders during the same activation. Select one Unit from this Asset, perform its Orders as normal until it has finished. Then select another Unit from this Asset, perform its Orders until it has finished, and so on until all Units from this Asset have activated. The opponent Commander then becomes the Active Player as normal. If this Unit is no longer in play, any other Units from its Asset will still activate with Group Command.',
+        display_name: 'Asset Command',
+        description: 'All Units in this Asset are issued Orders during the same Activation. When Activating one of these Units, select one Unit from this Asset, resolve its Activation as normal. Then, immediately select another Unit from this Asset, perform its Orders until it has finished, and so on until all Units from this Asset have Activated. The opponent Commander then becomes the Active Commander as normal. If a Unit from this Asset is no longer in play, any other Units from its Asset will still activate with Asset Command.',
     },
     [TRAIT_MAGNETIC_GRAPPLES]: {
         display_name: 'Magnetic Grapples',
-        description: 'When an enemy Unit attempts to Move or Jump out of contact with one or more Units with this Trait, before moving, that model rolls 1D6, adding +1 for each additional model with this Trait in contact after the first. On a 1-2 result, reduce the Speed distance that the Unit may move by 50%. On a 3-4 result, reduce the distance by 75%. On a 5-6 result, the Active Unit may only move 1” regardless of how far it would normally be allowed to go during that Order.',
+        description: 'When this Unit MOVEs or JUMPs into base contact with an Enemy Unit, that Enemy Unit receives a Tether Marker and the Active Unit receives a corresponding Anchor Marker.',
     },
     [TRAIT_MINE_SWEEPER]: {
         display_name: 'Mine Sweeper',
-        description: '',
+        description: 'A Unit with this Trait may not be Targeted by a Mine Drone Token.This Unit may ENGAGE Mine Drone Tokens as if it had the Mine Drone Tracking Munitions Upgrade.',
         granted_order_ids: [ORDER_CLEAR_MINEFIELD],
     },
     [TRAIT_SHIELD_PROJECTOR]: {
         display_name: 'Shield Projector',
-        description: 'When a friendly or enemy unit within 6” is damaged by an Attack, and it has more than 0 Armor remaining, roll 1D6 for each point of Damage it would receive. On a 5+, that point of Damage is ignored. Damage negated by this rule is treated as not having happened for the purposes of other weapon Trait effects, such as AP. This effect is not cumulative with the effect of a Combat Shield.',
+        description: 'When a friendly Unit within 6” of the model with this trait makes a Defense Roll, it counts as carrying a Combat Shield Upgrade. This is not cumulative with an existing Combat Shield Upgrade on that Unit.',
     },
     [TRAIT_TARGET_DESIGNATOR]: {
         display_name: 'Target Designator',
-        description: MECH_UPGRADES[TARGET_DESIGNATOR]?.description || '',
+        description: MECH_UPGRADES[TARGET_DESIGNATOR].description,
     },
     [TRAIT_OUTRIDER]: {
         display_name: 'Outrider',
-        description: 'If these models are part of a Squadron, they may be deployed and end moves within 12” of the Squadron Leader (instead of 3”). However, all models with this Trait in a Squadron must deploy and end moves within 3” of all other models with this Trait in the Squadron.',
+        description: 'If these Models are part of a Squadron, they may be deployed and end moves within 12” of the Squadron Trait in a Squadron must deploy and end moves within 3” of all other Models with this Trait in the Squadron. ',
     },
     [TRAIT_SUPPORT_ORDERS]: {
         display_name: 'Support Orders',
-        description: 'Units with this trait possess unusual equipment that is intended to support other units, but must be actively operated to take effect. These traits will be prefixed with the term “Support:”. Units with these traits may perform the Support Order. Support: The unit may activate the effect of any or all “Support:” traits. See each trait entry for the effects of the “Support:” trait. Note that if a model (or models) in a Squadron have a “Support:” trait, the entire Squadron must perform the Support Order. However, each model with a “Support:” will activate that trait during the Order, in any order its Commander wishes.',
+        description: 'Units with this trait possess unusual equipment that is intended to support other units, but must be actively operated to take effect. These traits will be prefixed with the term “SUPPORT:”. Units with these traits may perform the SUPPORT Order. SUPPORT: The Unit may activate the effect of any or all “SUPPORT:” traits. See each trait entry for the effects of the “SUPPORT:” trait. Note that if a model (or models) in a Squadron have a “SUPPORT:” trait, the entire Squadron must perform the SUPPORT Order. However, each model with a “SUPPORT:” will activate that trait during the Order, in any order its Commander wishes.',
         granted_order_ids: [ORDER_SUPPORT],
     },
     [TRAIT_SUPPORT_ORDER_CNC]: {
@@ -155,8 +155,9 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
         granted_order_ids: [ORDER_SUPPORT_MSOE],
     },
     [TRAIT_MSOE_LAUNCHER]: {
-        display_name: 'MSOE Launcher',
-        description: 'Immediately before or after this model performs a Move Order, you may place an Obscuration Emitter Marker within 6” of this model.',
+        display_name: 'MSOE Launcher (X)',
+        description: 'At the beginning or end of the Order listed in (X), you may place an Obscuration Emitter Token within 6” of this model.' +
+            'Obscuration Emitter Token: An Obscuration Emitter is a 25mm circle. Any Unit, regardless of Commander, within 3” of this Token counts as being within Covering Terrain. (i.e., any LOS line drawn to this model will be considered to be drawn through Covering Terrain). Additionally, these Units count as being equipped with Anti‑Missile System and Electronic Countermeasures Upgrades, if they are not already. Remove the Token when the Unit that placed this Token is Activated again.',
     },
     [TRAIT_MSOE_DEPLOYER]: {
         display_name: 'Support: MSOE Deployer',
@@ -165,23 +166,23 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
     },
     [TRAIT_SCRAMBLERS]: {
         display_name: 'Scramblers',
-        description: 'No Unit within 6” of a model equipped with a Scrambler may be targeted by an Off-Table Support Asset, nor may they have Line of Sight drawn to them by a Target Designator. They may not be the target of Lock Orders.',
+        description: 'All Units within 6” of a model equipped with Scramblers, including its own Unit, count as being equipped with Anti‑Missile Systems and Electronic Countermeasures.',
     },
     [TRAIT_INFERNO_GEAR]: {
         display_name: 'Inferno Gear',
-        description: 'If 50% or more of the Units in a Squadron have this Trait, the Squadron ignores the effects of the Disruptive Trait.',
+        description: 'If a Model or Models in the Unit have this Trait, the Unit ignores the effects of the Disruptive Trait.',
     },
     [TRAIT_SUPPRESSIVE_FIRE]: {
         display_name: 'Suppressive Fire',
-        description: 'If an enemy Unit within 6” of a friendly model with this Trait performs an Engage Order, the target of that Order receives +1 to their Defense Rolls.',
+        description: 'If an enemy Unit within 6” of a friendly model with this Trait performs an ENGAGE Order, the target of that Order receives +1 to their Defense Rolls.',
     },
     [TRAIT_UL_HEV_LAUNCH_GEAR]: {
         display_name: 'Launch Gear',
-        description: 'This Unit may perform the Jump Order at distance of +2” to their Speed value.',
+        description: 'This Upgrade allows the entire Unit to perform the JUMP Order at distance of +2” to their Speed value.',
     },
     [TRAIT_FORTIFICATION]: {
         display_name: 'Fortification',
-        description: 'A Unit with this Trait will only ever perform the following Orders (if eligible): Engage, Lock On, Return Fire. Units with this Trait only ever pass Defense rolls on an unmodifiable roll of 6. Units with this Trait count as Light in Class for the purposes of the Kinetic Trait. Units with this Trait are always targeted as if from the Front Arc. If a Mission uses table quadrants then Units with this Trait must be deployed completely inside of one quadrant and cannot extend into others. For the purposes of calculating Tonnage destroyed or in a Zone, each Fortification contributes 5 Tons for the respective Commander.',
+        description: 'Once placed in Deployment, this Unit may not be moved or placed by any Order or effect, voluntarily or involuntarily.',
     },
     [TRAIT_COMMAND]: {
         display_name: 'Command',
@@ -219,7 +220,7 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
     // temporary until unit types and sizes are separate stats
     [TRAIT_UNIT_SIZE_AND_TYPE]: {
         display_name: 'Unit Type: ',
-        description: null,
+        description: '',
         formatter: (name, _number, type) => `${name} ${type}`,
     },
 });

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {useValidationStore} from '../../../../store/validation-store';
-import SupportAssetUnitAdd from './SupportAssetUnitAdd.vue';
-import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store';
-import {BButton} from 'bootstrap-vue-next';
+import { BButton } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
+import { useValidationStore } from '../../../../store/validation-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import IconValidationError from '../../../UI/IconValidationError.vue';
+import SupportAssetUnitAdd from './SupportAssetUnitAdd.vue';
 
 const store = useSupportAssetUnitsStore();
 const validationStore = useValidationStore();
 
-const {invalid_number_of_support_assets} = storeToRefs(validationStore);
+const { invalid_number_of_support_assets } = storeToRefs(validationStore);
 const {
   support_asset_units_info,
 } = storeToRefs(store);
@@ -18,7 +18,7 @@ const {
 </script>
 <template>
   <div
-      :class="{
+    :class="{
         'card card-dark-border': true,
         'border-danger': invalid_number_of_support_assets
       }"
@@ -29,10 +29,11 @@ const {
           On Table Support Assets
         </div>
         <div class="flex-grow-1">
-          <IconValidationError size="sm" v-if="invalid_number_of_support_assets" :message="invalid_number_of_support_assets"/>
+          <IconValidationError size="sm" v-if="invalid_number_of_support_assets"
+                               :message="invalid_number_of_support_assets" />
         </div>
         <div class="flex-shrink-1 text-end">
-          <SupportAssetUnitAdd/>
+          <SupportAssetUnitAdd />
         </div>
       </div>
     </div>
@@ -51,11 +52,11 @@ const {
             {{ item.display_name }}
           </td>
           <td class="text-end">
-            <format-number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true" />
           </td>
           <td class="table-btn-cell text-end">
             <BButton @click="store.removeSupportAssetId(item.id)" variant="danger" size="sm"><span
-                class="material-symbols-outlined">delete</span></BButton>
+              class="material-symbols-outlined">delete</span></BButton>
           </td>
         </tr>
         </tbody>

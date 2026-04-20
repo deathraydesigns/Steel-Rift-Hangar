@@ -14,7 +14,7 @@ const { disabled } = defineProps<{
 
 const emit = defineEmits(['selected']);
 
-function select(id: string, valid: boolean) {
+function select(id: number, valid: boolean) {
   if (!valid) {
     return;
   }

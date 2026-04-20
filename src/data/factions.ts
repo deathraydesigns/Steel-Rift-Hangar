@@ -1,5 +1,4 @@
-import {makeFrozenStaticListIds} from './data-helpers';
-import {SA_ASSET_PROTECTION, SA_TERRITORIAL, SA_WILDCARDS, type SecondaryAgendaId} from './secondary-agendas';
+import { makeFrozenStaticListIds } from './data-helpers';
 import {
     BLO_DISGRACED_TRILLIONAIRE_OUTRAGEOUS_SUPPORT_BUDGET,
     BLO_DISGRACED_TRILLIONAIRE_PURCHASED_OUTCOMES,
@@ -14,7 +13,7 @@ import {
     E_EMBEDDED_INFORMANTS,
     E_EXHAUSTIVE_INTEL_GATHERING,
     E_PAID_SABOTEURS,
-   type FactionPerkId,
+    type FactionPerkId,
     MT_COORDINATED_ASSAULTS,
     MT_COVERED_ADVANCES,
     MT_ELITE_PILOT_PROGRAM,
@@ -36,6 +35,7 @@ import {
     UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN,
     UA_TECH_PIRATES_ADVANCED_STRUCTURAL_COMPONENTS,
 } from './faction-perks';
+import { SA_ASSET_PROTECTION, SA_TERRITORIAL, SA_WILDCARDS, type SecondaryAgendaId } from './secondary-agendas';
 
 export const NO_FACTION = 'NO_FACTION' as const;
 export const AUTHORITIES = 'AUTHORITIES' as const;

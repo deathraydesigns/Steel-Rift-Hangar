@@ -94,7 +94,7 @@ function makeUpgrade(item: MakeUpgradeInput): Omit<MechUpgrade, 'id'> {
 export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeFrozenStaticListIds<MechUpgrade>({
     [ANTI_MISSILE_SYSTEM]: makeUpgrade({
         display_name: 'Anti-Missile System',
-        description: 'This unit may not be targeted by a Weapon System using the Smart trait to Engage them from outside of Line of Sight of the Active Model.',
+        description: 'This Unit may not be Targeted by a Weapon using the Smart trait if that Weapon is using the LoS of another Model.',
         cost_by_size: {
             [SIZE_LIGHT]: 1,
             [SIZE_MEDIUM]: 1,
@@ -104,7 +104,7 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [ELECTRONIC_COUNTERMEASURES]: makeUpgrade({
         display_name: 'Electronic Countermeasures',
-        description: 'The Lock On order may not be taken against this model.',
+        description: 'This Unit may not be targeted by LOCK ON orders.',
         cost_by_size: {
             [SIZE_LIGHT]: 2,
             [SIZE_MEDIUM]: 2,
@@ -114,7 +114,7 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [HEAVY_REACTOR]: makeUpgrade({
         display_name: 'Heavy Reactor',
-        description: 'Roll 1D6 when this model would take Structure damage from Redlining, on a 4+ this damage is ignored.',
+        description: 'When this Unit would take Structure damage from Overdrive or receiving a Redline Marker, roll a D6. On a 4+ this Damage is ignored.',
         cost_by_size: {
             [SIZE_LIGHT]: 1,
             [SIZE_MEDIUM]: 1,
@@ -124,7 +124,7 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [JUMP_JETS]: makeUpgrade({
         display_name: 'Jump Jets',
-        description: 'This model may take the Jump Jet action.',
+        description: 'This Unit may perform the JUMP Order.',
         cost_by_size: {
             [SIZE_LIGHT]: 3,
             [SIZE_MEDIUM]: 3,
@@ -134,23 +134,24 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [MINEFIELD_DRONE_CARRIER_SYSTEM]: makeUpgrade({
         display_name: 'Minefield Drone Carrier System',
-        description: 'ORDER: Place a Mine Drone token (as per the Support Asset) within 3” of the Active model and not within 6” of another Mine Drone token.',
+        description: 'This Unit has the Minelayer (MOVE) trait. Limited (1/2/3/3)',
         cost_by_size: {
-            [SIZE_LIGHT]: null,
+            [SIZE_LIGHT]: 2,
             [SIZE_MEDIUM]: 3,
             [SIZE_HEAVY]: 6,
             [SIZE_ULTRA]: 6,
         },
         traits_by_size: {
-            [SIZE_MEDIUM]: [trait(TRAIT_UPGRADE_LIMITED, 1)],
-            [SIZE_HEAVY]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
-            [SIZE_ULTRA]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
+            [SIZE_LIGHT]: [trait(TRAIT_UPGRADE_LIMITED, 1)],
+            [SIZE_MEDIUM]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
+            [SIZE_HEAVY]: [trait(TRAIT_UPGRADE_LIMITED, 3)],
+            [SIZE_ULTRA]: [trait(TRAIT_UPGRADE_LIMITED, 3)],
         },
         limited_size_ids: [SIZE_MEDIUM, SIZE_HEAVY, SIZE_ULTRA],
     }),
     [MINEFIELD_DRONE_TRACKING_SYSTEM]: makeUpgrade({
         display_name: 'Minefield Drone Tracking Submunitions',
-        description: 'ORDER: This model makes an immediate Engage order against a Mine Field token in range. The Commander of the target Minefield makes a Defense Roll on a 3+. If at least one point of Damage would be inflicted, remove the Token.',
+        description: 'When making an ENGAGE Order, this Unit may target a Mine Drone Token. The Commander of the Target Mine Drone Token makes Defense Rolls on a 3+. If at least one point of Damage would be inflicted, remove the Token.',
         cost_by_size: {
             [SIZE_LIGHT]: 1,
             [SIZE_MEDIUM]: 1,
@@ -161,7 +162,7 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [OPTIC_CAMO]: makeUpgrade({
         display_name: 'Optic Camouflage',
-        description: 'Add +1 to Defense Rolls for this unit when the attacker is outside of 10”',
+        description: 'Add +1 to Defense Rolls for this Unit when the Active Unit is outside of 10”.',
         cost_by_size: {
             [SIZE_LIGHT]: 5,
             [SIZE_MEDIUM]: 4,
@@ -171,13 +172,20 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [TARGET_DESIGNATOR]: makeUpgrade({
         display_name: 'Target Designator',
-        description: 'Once per turn, friendly models in the same force may use this vehicle to draw Line of Sight for Weapon Systems using the Smart trait. Use this model for determining the AttackPool and Line of Sight. This Upgrade may also be required for certain Support Assets. Its use can be canceled by Electronic Counter measures.',
-        cost: 1,
+        description: 'Once this Unit has completed an Activation, place a Target Designator Marker on it. This Marker may not be placed if this Unit performed a JUMP Order during its Activation. Remove this Marker at the start of the Unit’s next Activation.',
+        cost_by_size: {
+            [SIZE_LIGHT]: 2,
+            [SIZE_MEDIUM]: 1,
+            [SIZE_HEAVY]: 1,
+            [SIZE_ULTRA]: 1,
+        },
     }),
     [COOLANT_TANKS]: makeUpgrade({
         display_name: 'Coolant Tanks',
-        description: 'Twice per game, before issuing an Order you may remove a Redline Marker from this HE-V.',
-        traits: [trait(TRAIT_UPGRADE_LIMITED, 2)],
+        description: 'At any point during a turn, this Unit may remove one Redline Marker it currently has.',
+        traits: [
+            trait(TRAIT_UPGRADE_LIMITED, 2),
+        ],
         cost_by_size: {
             [SIZE_LIGHT]: 1,
             [SIZE_MEDIUM]: 1,
@@ -187,30 +195,34 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [DIRECTIONAL_THRUSTER]: makeUpgrade({
         display_name: 'Directional Thruster',
-        description: 'This unit gains the Dash Order',
+        description: 'Dash (2)',
         cost_by_size: {
             [SIZE_LIGHT]: 1,
             [SIZE_MEDIUM]: 2,
             [SIZE_HEAVY]: 3,
             [SIZE_ULTRA]: 4,
         },
-        traits: [trait(TRAIT_DASH, 2)],
+        traits: [
+            trait(TRAIT_DASH, 2),
+        ],
     }),
     [HAPTIC_SUIT]: makeUpgrade({
         display_name: 'Haptic Suit',
-        description: 'When performing Return Fire, you may reroll all failed Defense Rolls.',
+        description: 'When performing a Return Fire, you may re‑roll any dice in the Defense Roll (not just natural 1s).',
         cost_by_size: {
             [SIZE_LIGHT]: 2,
             [SIZE_MEDIUM]: 2,
             [SIZE_HEAVY]: 1,
             [SIZE_ULTRA]: 1,
         },
-        traits: [trait(TRAIT_COMPACT)],
+        traits: [
+            trait(TRAIT_COMPACT),
+        ],
         slots: 0,
     }),
     [HIGH_SPEED_SERVOS]: makeUpgrade({
         display_name: 'High Speed Servos',
-        description: 'After performing a Smash Order, this Unit may perform a second Smash Order for free.',
+        description: 'After performing a SMASH Order, this Unit may perform a second SMASH Order. This does not count against the 2 Order Limit. Note: The second SMASH Order is now preceded by a SMASH Order and not a MOVE or JUMP Order and thus gets no bonuses for those conditions.',
         cost_by_size: {
             [SIZE_LIGHT]: 2,
             [SIZE_MEDIUM]: 3,
@@ -220,20 +232,24 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [NEURAL_INPUT]: makeUpgrade({
         display_name: 'Neural Input',
-        description: 'Reduce the Damage Rating of Smash Orders targeting this Unit by 1.',
+        description: 'Reduce the Damage Rating of SMASH Orders targeting this Unit by 1.',
         cost_by_size: {
             [SIZE_LIGHT]: 2,
             [SIZE_MEDIUM]: 2,
             [SIZE_HEAVY]: 1,
             [SIZE_ULTRA]: 1,
         },
-        traits: [trait(TRAIT_COMPACT)],
+        traits: [
+            trait(TRAIT_COMPACT),
+        ],
         slots: 0,
     }),
     [NITRO_BOOST]: makeUpgrade({
         display_name: 'Nitro Boost',
-        description: 'Once per game, at the beginning of a Move Order, you may move an additional 4”',
-        traits: [trait(TRAIT_UPGRADE_LIMITED, 1)],
+        description: 'At the beginning of a MOVE Order, you may move an additional 4”.',
+        traits: [
+            trait(TRAIT_UPGRADE_LIMITED, 1),
+        ],
         cost_by_size: {
             [SIZE_LIGHT]: 1,
             [SIZE_MEDIUM]: 1,
@@ -243,7 +259,7 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
     }),
     [COMBAT_SHIELD]: makeUpgrade({
         display_name: 'Combat Shield',
-        description: 'When this HE-V is damaged by an Attack originating from its front or side arcs, and it has more than 0 Armor remaining, roll 1D6 for each point of Damage it would receive. On a 5+, that point of Damage is ignored. Damage negated by this rule is treated as not having happened for the purposes of other weapon Trait effects, such as AP. If this HE-V performs an Engage Order, all of its Weapon Systems receive a -1 to their Damage Rating.',
+        description: 'When this HE‑V is damaged by an ENGAGE or SMASH Order from its Front or Side Arcs, or makes a Defense Roll against a Blast effect, and it has more than 0 Armor remaining, roll 1D6 for each point of Damage it would receive. On a 5+, that point of Damage is ignored. Damage negated by this rule is treated as not having happened for the purposes of other weapon Trait effects, such as AP. When this HE‑V performs an ENGAGE Order, all of its Weapons receive a ‑1 to their Damage Rating.',
         cost_by_size: {
             [SIZE_LIGHT]: 0, // only available in medium with TEAM_PERK_COMBAT_BUCKLER
             [SIZE_MEDIUM]: 3,

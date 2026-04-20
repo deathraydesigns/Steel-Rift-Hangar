@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import ArmyEdit from './components/ArmyEdit.vue';
 import ArmyPrint from './components/ArmyPrint.vue';
 

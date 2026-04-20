@@ -1,5 +1,5 @@
-import {TEAM_SIZE_LARGE, TEAM_SIZE_MEDIUM, TEAM_SIZE_SMALL} from './mech-teams';
-import {makeFrozenStaticListIds} from './data-helpers';
+import { makeFrozenStaticListIds } from './data-helpers';
+import { TEAM_SIZE_LARGE, TEAM_SIZE_MEDIUM, TEAM_SIZE_SMALL } from './mech-teams';
 
 export const GAME_SIZE_DUEL = 'GAME_SIZE_DUEL' as const;
 export const GAME_SIZE_RECON = 'GAME_SIZE_RECON' as const;
@@ -15,7 +15,8 @@ export type GameSizeId =
     | typeof GAME_SIZE_WAR;
 
 export interface GameSize {
-    id: string;
+    id: GameSizeId;
+    display_name: string,
     min_tons: number;
     max_support_assets: number;
     max_teams: number;
@@ -29,6 +30,7 @@ export interface GameSize {
 
 export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
     [GAME_SIZE_DUEL]: {
+        display_name: 'Duel',
         min_tons: 0,
         max_support_assets: 0,
         max_teams: 0,
@@ -40,6 +42,7 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
         },
     },
     [GAME_SIZE_RECON]: {
+        display_name: 'Recon',
         min_tons: 100,
         max_support_assets: 1,
         max_teams: 1,
@@ -51,6 +54,7 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
         },
     },
     [GAME_SIZE_STRIKE]: {
+        display_name: 'Strike',
         min_tons: 150,
         max_support_assets: 2,
         max_teams: 2,
@@ -62,6 +66,7 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
         },
     },
     [GAME_SIZE_BATTLE]: {
+        display_name: 'Battle',
         min_tons: 200,
         max_support_assets: 3,
         max_teams: 3,
@@ -73,14 +78,15 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
         },
     },
     [GAME_SIZE_WAR]: {
+        display_name: 'All Out War',
         min_tons: 350,
         max_support_assets: 4,
-        max_teams: 3,
-        max_secondary_agendas: 3,
+        max_teams: 4,
+        max_secondary_agendas: 4,
         max_team_sizes: {
-            [TEAM_SIZE_SMALL]: 1,
+            [TEAM_SIZE_SMALL]: 0,
             [TEAM_SIZE_MEDIUM]: 2,
-            [TEAM_SIZE_LARGE]: 1,
+            [TEAM_SIZE_LARGE]: 2,
         },
     },
 });

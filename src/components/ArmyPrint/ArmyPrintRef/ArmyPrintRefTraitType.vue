@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {ORDERS} from '../../../data/orders';
-import {sortBy} from 'es-toolkit';
+import { sortBy } from 'es-toolkit';
+import { computed } from 'vue';
+import type { TraitDef } from '../../../data/data-helpers';
+import { ORDERS } from '../../../data/orders';
 
-const {title, traits} = defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  traits: {
-    type: Array,
-    required: true,
-  },
-});
+const { title, traits } = defineProps<{
+  title: string,
+  traits: TraitDef[],
+}>();
 const traitsWithOrders = computed(() => {
   const results = traits.map(trait => {
     return {

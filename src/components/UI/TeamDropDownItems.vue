@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import {BDropdownDivider, BDropdownHeader, BDropdownItem} from 'bootstrap-vue-next';
-import {computed} from 'vue';
-import {sortBy} from 'es-toolkit';
-import {groupBy} from 'es-toolkit/compat';
-import {useTeamStore} from '../../store/team-store';
-import {MECH_TEAM_ARRAY, MECH_TEAMS, TEAM_SHELF, TEAM_GENERAL} from '../../data/mech-teams.js';
+import { BDropdownDivider, BDropdownHeader, BDropdownItem } from 'bootstrap-vue-next';
+import { sortBy } from 'es-toolkit';
+import { groupBy } from 'es-toolkit/compat';
+import { computed } from 'vue';
+import { MECH_TEAM_ARRAY, MECH_TEAMS, type MechTeamId, TEAM_GENERAL, TEAM_SHELF } from '../../data/mech-teams.js';
+import { useTeamStore } from '../../store/team-store';
+import type { MechTeam } from '../../types';
+import SvgIcon from './Icon.vue';
 
 const teamStore = useTeamStore();
 const selectedTeamId = defineModel();
@@ -13,7 +15,7 @@ const specialTeamTypes = computed(() => {
   const specialTeams = MECH_TEAM_ARRAY.filter(team => teamStore.isSpecialTeam(team.id));
 
   const grouped = groupBy(specialTeams, (team) => {
-    return !!teamStore.findTeam(team.id) ? 'existing' : 'notExisting'
+    return !!teamStore.findTeam(team.id) ? 'existing' : 'notExisting';
   });
 
   return {
@@ -22,7 +24,7 @@ const specialTeamTypes = computed(() => {
     ...grouped,
   };
 });
-const sortTeamsByOriginalIndex = (team) => MECH_TEAM_ARRAY.indexOf(t => t.id === team.id);
+const sortTeamsByOriginalIndex = (team: MechTeam) => MECH_TEAM_ARRAY.findIndex((t) => t.id === team.id);
 
 const existingTeams = computed(() => {
   return [
@@ -33,7 +35,7 @@ const existingTeams = computed(() => {
 });
 const notExistingTeams = computed(() => sortBy(specialTeamTypes.value.notExisting, [sortTeamsByOriginalIndex]));
 
-function selectTeam(teamId) {
+function selectTeam(teamId: MechTeamId) {
   selectedTeamId.value = teamId;
 }
 </script>
@@ -44,28 +46,28 @@ function selectTeam(teamId) {
   </BDropdownHeader>
 
   <BDropdownItem
-      v-for="item in existingTeams"
-      :link-class="{'active': selectedTeamId === item.id}"
-      @click="selectTeam(item.id)"
+    v-for="item in existingTeams"
+    :link-class="{'active': selectedTeamId === item.id}"
+    @click="selectTeam(item.id)"
   >
-    <Icon :name="item.icon"/>
+    <SvgIcon :name="item.icon" />
     {{ item.display_name }}
   </BDropdownItem>
 
   <template v-if="notExistingTeams.length">
 
-    <BDropdownDivider/>
+    <BDropdownDivider />
 
     <BDropdownHeader>
       Move To New
     </BDropdownHeader>
 
     <BDropdownItem
-        v-for="item in notExistingTeams"
-        :link-class="{'active': selectedTeamId === item.id}"
-        @click="selectTeam(item.id)"
+      v-for="item in notExistingTeams"
+      :link-class="{'active': selectedTeamId === item.id}"
+      @click="selectTeam(item.id)"
     >
-      <Icon :name="item.icon"/>
+      <SvgIcon :name="item.icon" />
       {{ item.display_name }}
     </BDropdownItem>
 

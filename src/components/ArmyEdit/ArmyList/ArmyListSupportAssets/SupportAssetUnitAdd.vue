@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store';
+import { BDropdown } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
 import FormatNumber from '../../../functional/format-number.vue';
-import {BDropdown} from 'bootstrap-vue-next';
 
 const store = useSupportAssetUnitsStore();
 
@@ -13,11 +13,11 @@ const {
 </script>
 <template>
   <BDropdown
-      class="dropdown-table d-inline-block"
-      text="Add"
-      size="sm"
-      variant="secondary"
-      placement="bottom-end"
+    class="dropdown-table d-inline-block"
+    text="Add"
+    size="sm"
+    variant="secondary"
+    placement="bottom-end"
   >
     <div class="position-relative">
       <table class="table table-hover table-borderless table-striped">
@@ -33,18 +33,18 @@ const {
         </thead>
         <tbody>
         <tr
-            :class="{
+          :class="{
               'dropdown-row': true,
             }"
-            v-for="item in available_support_asset_units_info" :key="item.id"
-            @click="store.addSupportAsset(item.id)"
+          v-for="item in available_support_asset_units_info" :key="item.id"
+          @click="store.addSupportAsset(item.id)"
         >
           <td class="text-nowrap">
             {{ item.display_name }}
           </td>
 
           <td class="text-end">
-            <format-number :val="item.cost" :invert-color="true"/>
+            <format-number :val="item.cost" :invert-color="true" />
           </td>
         </tr>
         </tbody>

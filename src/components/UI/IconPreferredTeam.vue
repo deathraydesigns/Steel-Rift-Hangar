@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import {BPopover} from 'bootstrap-vue-next';
-import {computed} from 'vue';
-import {MECH_TEAMS} from '../../data/mech-teams.js';
+import { BPopover } from 'bootstrap-vue-next';
+import { computed } from 'vue';
+import { MECH_TEAMS, type MechTeamId } from '../../data/mech-teams.js';
+import SvgIcon from './Icon.vue';
 
 const {
   teamId,
-  show,
-  btnClass,
-} = defineProps({
-  show: Boolean,
-  teamId: String,
-  btnClass: String,
-});
+  show = false,
+  btnClass = '',
+} = defineProps<{
+  show: boolean,
+  teamId: MechTeamId,
+  btnClass: string,
+}>();
 
 const visible = computed(() => show);
 const team = computed(() => MECH_TEAMS[teamId] || {});
@@ -20,10 +21,10 @@ const team = computed(() => MECH_TEAMS[teamId] || {});
   <BPopover>
     <template #target>
       <span
-          :class="`btn btn-transparent ${btnClass}`"
-          v-show="visible"
+        :class="`btn btn-transparent ${btnClass}`"
+        v-show="visible"
       >
-        <Icon :name="team.icon" v-if="team.icon"/>
+        <SvgIcon :name="team.icon" v-if="team.icon" />
       </span>
     </template>
     <div class="text-center">

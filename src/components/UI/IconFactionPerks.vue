@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { BPopover } from 'bootstrap-vue-next';
 import type { FactionPerk } from '../../data/faction-perks';
 

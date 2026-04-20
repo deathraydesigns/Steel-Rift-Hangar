@@ -2,6 +2,7 @@
 
 import { BPopover } from 'bootstrap-vue-next';
 import type { TeamPerkInfo } from '../../store/team-store';
+import SvgIcon from './Icon.vue';
 
 const {
   btnClass = '',
@@ -22,12 +23,12 @@ const {
       v-show="perks && perks.length"
       :class="`btn btn-${size} btn-default ${btnClass}`">
 
-      <Icon name="team-perk" />
+      <SvgIcon name="team-perk" />
     </span></template>
 
     <template #title>
       Group Perks
-      <Icon name="team-perk" />
+      <SvgIcon name="team-perk" />
     </template>
 
     <template v-for="perk in perks">

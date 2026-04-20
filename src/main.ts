@@ -1,25 +1,24 @@
-import {createApp} from 'vue';
-import {createPinia} from 'pinia';
+import { createBootstrap } from 'bootstrap-vue-next';
+import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import {attachPiniaScope} from 'pinia-scope';
-
-import {createBootstrap} from 'bootstrap-vue-next';
+import { attachPiniaScope } from 'pinia-scope';
+import { createApp } from 'vue';
 import App from './App.vue';
 import './styles/main.scss';
-import {router} from './router';
+import { router } from './router';
 
 const app = createApp(App);
 const pinia = createPinia();
 const bootstrap = createBootstrap({
     components: {
         BPopover: {
-            delay: {show: 100, hide: 0},
+            delay: { show: 100, hide: 0 },
         },
     },
 });
 
 pinia.use(piniaPluginPersistedstate);
-attachPiniaScope(pinia)
+attachPiniaScope(pinia);
 
 app.config.performance = true;
 app.use(router);

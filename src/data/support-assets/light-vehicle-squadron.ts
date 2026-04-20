@@ -1,4 +1,3 @@
-
 import { makeStaticListIds, trait } from '../data-helpers';
 import { SIZE_ULTRA_LIGHT } from '../unit-sizes';
 import {
@@ -33,8 +32,8 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDe
         vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
             RECON: {
                 move: 12,
-                armor: 1,
-                structure: 0,
+                armor: 0,
+                structure: 1,
                 display_name: 'Recon',
                 weapon_ids: [
                     VEH_SUBMUNITIONS,
@@ -46,8 +45,8 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDe
             },
             FIRE_SUPPORT: {
                 move: 8,
-                armor: 2,
-                structure: 0,
+                armor: 1,
+                structure: 1,
                 display_name: 'Fire Support',
                 weapon_ids: [
                     VEH_AUTO_CANNON,
@@ -62,8 +61,8 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDe
             },
             TACTICAL: {
                 move: 10,
-                armor: 2,
-                structure: 0,
+                armor: 1,
+                structure: 1,
                 display_name: 'Tactical',
                 weapon_ids: [
                     VEH_AUTO_CANNON,
@@ -74,8 +73,8 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDe
             },
             ENGINEERING: {
                 move: 8,
-                armor: 3,
-                structure: 0,
+                armor: 2,
+                structure: 1,
                 display_name: 'Engineering',
                 weapon_ids: [
                     VEH_SUBMUNITIONS,

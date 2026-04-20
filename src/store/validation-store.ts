@@ -3,7 +3,7 @@ import { difference, find, max, min } from 'es-toolkit/compat';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed } from 'vue';
 import { GAME_SIZE_BATTLE, GAME_SIZE_DUEL, GAME_SIZE_RECON, GAME_SIZE_STRIKE } from '../data/game-sizes';
-import { MECH_ARMOR_UPGRADES } from '../data/mech-armor-upgrades';
+import { MECH_ARMOR_UPGRADES, type MechArmorUpgradeId } from '../data/mech-armor-upgrades';
 import { MECH_BODY_MODS } from '../data/mech-body';
 import { TEAM_PERK } from '../data/mech-team-perks';
 import { MECH_TEAMS, type MechTeamId, TEAM_SHELF } from '../data/mech-teams';
@@ -35,7 +35,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     });
 
     const list_validation = computed(() => {
-        let messages: any[] = [
+        let messages: (string | false)[] = [
             invalid_army_list_tons.value,
             invalid_number_of_teams.value,
             invalid_number_of_support_assets.value,
@@ -98,7 +98,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         if (gameSizeId === GAME_SIZE_DUEL) {
             return messageValid;
         }
-        const teamCounts = teamStore.special_teams.map((team: any) => teamStore.getTeamMechCount(team.id));
+        const teamCounts = teamStore.special_teams.map((team) => teamStore.getTeamMechCount(team.id));
         const smallestTeamCount = (min(teamCounts) ?? 0) as number;
         const largestTeamCount = (max(teamCounts) ?? 0) as number;
 
@@ -123,7 +123,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
                 return messageMax(4);
             }
             const instancesOfCount = countBy(teamCounts, (i: number) => i);
-            if ((instancesOfCount as any)[4] > 1) {
+            if (instancesOfCount[4] > 1) {
                 return {
                     valid: false,
                     validation_message: `There may only be one team with a count of 4 HE-Vs`,
@@ -142,7 +142,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
             teamGroupMechArmorInvalid(mechId),
             ...mechTeamGroupWeaponMessages(mechId),
             ...mechTeamGroupUpgradeMessages(mechId),
-        ].filter(i => i);
+        ].filter(i => i) as string[];
     }
 
     function mechTeamGroupWeaponMessages(mechId: number) {
@@ -151,13 +151,13 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
             teamGroupRequiredWeaponsInvalid(mechId),
             teamGroupRequiredOneOfWeaponsInvalid(mechId),
             teamGroupAtLeastOneWeaponWithTraitInvalid(mechId),
-        ].filter(i => i);
+        ].filter(i => !!i) as string[];
     }
 
     function mechTeamGroupUpgradeMessages(mechId: number) {
         return [
             teamGroupRequiredUpgradesInvalid(mechId),
-        ].filter(i => i);
+        ].filter(i => i) as string[];
     }
 
     function mechMessages(mechId: number) {
@@ -167,43 +167,43 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
             mechArmorUpgradeInvalid(mechId),
             ...getInvalidMechWeaponMessages(mechId),
             ...getInvalidMechUpgradeMessages(mechId),
-        ].filter(i => i);
+        ].filter(i => i) as string[];
     }
 
     function mechAllWeaponMessages(mechId: number) {
         return [
             ...getInvalidMechWeaponMessages(mechId),
             ...mechTeamGroupWeaponMessages(mechId),
-        ].filter(i => i);
+        ].filter(i => i) as string[];
     }
 
     function mechAllUpgradesMessages(mechId: number) {
         return [
             ...getInvalidMechUpgradeMessages(mechId),
             ...mechTeamGroupUpgradeMessages(mechId),
-        ].filter(i => i);
+        ].filter(i => i) as string[];
     }
 
     function getInvalidMechWeaponMessages(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return [];
-        return mech.weapons.map((weapon: any) => {
+        return mech.weapons.map((weapon) => {
             const {
                 valid,
                 validSizeDisplayNames,
             } = getMechWeaponSizeValidation(mechId, weapon.weapon_id);
             if (!valid) {
-                const displayName = (MECH_WEAPONS as any)[weapon.weapon_id].display_name;
+                const displayName = MECH_WEAPONS[weapon.weapon_id].display_name;
                 return `${displayName} is only available for ${validSizeDisplayNames.join('/')} HE-Vs`;
             }
-            return null;
-        }).filter(Boolean);
+            return '';
+        }).filter(i => i);
     }
 
     function getInvalidMechUpgradeMessages(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return [];
-        return mech.upgrades.map((upgrade: any) => {
+        return mech.upgrades.map((upgrade) => {
             const {
                 valid,
                 validSizeDisplayNames,
@@ -274,13 +274,13 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         const mech = mechStore.getMech(mechId);
         if (!mech) return { valid: true, validSizeDisplayNames: [] };
         const size_id = mech.size_id;
-        const weapon = (MECH_WEAPONS as any)[weaponId];
+        const weapon = MECH_WEAPONS[weaponId];
         const limited_size_ids = weapon.limited_size_ids;
 
         if (limited_size_ids.length) {
             return {
                 valid: limited_size_ids.includes(size_id),
-                validSizeDisplayNames: limited_size_ids.map((sizeId: string) => (MECH_SIZES as any)[sizeId].display_name),
+                validSizeDisplayNames: limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name),
             };
         }
         return {
@@ -292,7 +292,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     function getMechUpgradeSizeValidation(mechId: number, upgradeId: MechUpgradeId) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return { valid: true, upgradeDisplayName: '', validSizeDisplayNames: [], sizeTeamPerk: null };
-        let limited_size_ids = (MECH_UPGRADES as any)[upgradeId].limited_size_ids || [];
+        let limited_size_ids = MECH_UPGRADES[upgradeId].limited_size_ids || [];
         let sizeTeamPerk = null;
         let valid = true;
 
@@ -315,24 +315,24 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         return {
             valid,
             upgradeDisplayName: MECH_UPGRADES[upgradeId].display_name,
-            validSizeDisplayNames: limited_size_ids.map((sizeId: string) => MECH_SIZES[sizeId].display_name),
+            validSizeDisplayNames: limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name),
             sizeTeamPerk,
         };
     }
 
-    function getMechArmorUpgradeSizeValidation(mechId: number, armorUpgradeId: string) {
+    function getMechArmorUpgradeSizeValidation(mechId: number, armorUpgradeId: MechArmorUpgradeId) {
         let mech = mechStore.getMech(mechId);
         if (!mech) return { valid: true, armorUpgradeDisplayName: null, validSizeDisplayNames: [] };
         let {
             size_id,
         } = mech;
 
-        const { limited_size_ids, display_name } = (MECH_ARMOR_UPGRADES as any)[armorUpgradeId];
-        if (limited_size_ids.length && !limited_size_ids.includes(size_id)) {
+        const { limited_size_ids, display_name } = MECH_ARMOR_UPGRADES[armorUpgradeId];
+        if (limited_size_ids?.length && !limited_size_ids.includes(size_id)) {
             return {
                 valid: false,
                 armorUpgradeDisplayName: display_name,
-                validSizeDisplayNames: limited_size_ids.map((sizeId: string) => (MECH_SIZES as any)[sizeId].display_name),
+                validSizeDisplayNames: limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name),
             };
         }
 
@@ -344,20 +344,20 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     }
 
     function getTeamGroupSizeValidation(teamId: MechTeamId, groupId: string) {
-        const { min_count, max_count } = (MECH_TEAMS as any)[teamId].groups[groupId];
+        const { min_count, max_count } = MECH_TEAMS[teamId].groups[groupId];
         const group = teamStore.findGroup(teamId, groupId);
         const mechCount = group ? group.mechs.length : 0;
 
         let size_valid = true;
         let size_validation_message = 'Valid Group Size';
-        if (min_count !== false) {
+        if (typeof min_count === 'number') {
             if (min_count > mechCount) {
                 size_valid = false;
                 size_validation_message = 'Group has less than the minimum number of HE-V: ' + min_count;
             }
         }
 
-        if (max_count !== false) {
+        if (typeof max_count === 'number') {
             if (max_count < mechCount) {
                 size_valid = false;
                 size_validation_message = 'Group has more than the maximum number of HE-V: ' + max_count;
@@ -379,12 +379,12 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
         const requiredAtLeastOneWithTraitId = groupDef.required_at_least_one_weapon_with_trait_id;
         if (requiredAtLeastOneWithTraitId) {
-            const result = mech.weapons.find((weapon: any) => {
-                const traits = (MECH_WEAPONS as any)[weapon.weapon_id].traits_by_size[mech.size_id];
-                return traits.find((trait: any) => trait.id === requiredAtLeastOneWithTraitId);
+            const result = mech.weapons.find((weapon) => {
+                const traits = MECH_WEAPONS[weapon.weapon_id].traits_by_size[mech.size_id];
+                return traits.find((trait) => trait.id === requiredAtLeastOneWithTraitId);
             });
             if (!result) {
-                const traitDisplayName = (WEAPON_TRAITS as any)[requiredAtLeastOneWithTraitId].display_name;
+                const traitDisplayName = WEAPON_TRAITS[requiredAtLeastOneWithTraitId].display_name;
 
                 return `Team group requires at least one weapon with the ${traitDisplayName} trait.`;
             }
@@ -396,13 +396,13 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     function teamGroupRequiredWeaponsInvalid(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return false;
-        const weaponIds = mech.weapons.map((weapon: any) => weapon.weapon_id);
+        const weaponIds = mech.weapons.map((weapon) => weapon.weapon_id);
         const groupDef = teamStore.getMechTeamGroupDef(mechId);
 
         const missingWeaponIds = difference(groupDef.required_weapon_ids, weaponIds);
 
         if (missingWeaponIds.length) {
-            const weapons = missingWeaponIds.map(weaponId => (MECH_WEAPONS as any)[weaponId].display_name);
+            const weapons = missingWeaponIds.map(weaponId => MECH_WEAPONS[weaponId].display_name);
             return `Team Group requires weapon(s): ${weapons.join(', ')}`;
         }
 
@@ -433,7 +433,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     function teamGroupRequiredOneOfWeaponsInvalid(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return false;
-        const weaponIds = mech.weapons.map((weapon: any) => weapon.weapon_id);
+        const weaponIds = mech.weapons.map((weapon) => weapon.weapon_id);
         const groupDef = teamStore.getMechTeamGroupDef(mechId);
 
         if (!groupDef.required_at_least_one_of_weapon_ids?.length) {
@@ -444,7 +444,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         });
 
         if (!match) {
-            const weapons = groupDef.required_at_least_one_of_weapon_ids.map(weaponId => (MECH_WEAPONS as any)[weaponId].display_name);
+            const weapons = groupDef.required_at_least_one_of_weapon_ids.map(weaponId => MECH_WEAPONS[weaponId].display_name);
             return `Team Group requires at least one of the following weapon(s): ${weapons.join(', ')}`;
         }
 
@@ -454,12 +454,12 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     function teamGroupRequiredUpgradesInvalid(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return false;
-        const upgradeIds = mech.upgrades.map((upgrade: any) => upgrade.upgrade_id);
+        const upgradeIds = mech.upgrades.map((upgrade) => upgrade.upgrade_id);
         const groupDef = teamStore.getMechTeamGroupDef(mechId);
         const missingUpgradeIds = difference(groupDef.required_upgrade_ids, upgradeIds);
 
         if (missingUpgradeIds.length) {
-            const upgrades = missingUpgradeIds.map(id => (MECH_UPGRADES as any)[id].display_name);
+            const upgrades = missingUpgradeIds.map(id => MECH_UPGRADES[id].display_name);
             return `Team Group requires upgrade(s): ${upgrades.join(', ')}`;
         }
 
@@ -483,7 +483,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         return false;
     }
 
-    function getMechTeamGroupArmorUpgradeValidation(mechId: number, armorUpgradeId: string) {
+    function getMechTeamGroupArmorUpgradeValidation(mechId: number, armorUpgradeId: MechArmorUpgradeId) {
         const { teamId, groupId } = teamStore.getMechTeamAndGroupIds(mechId);
         const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
         const validIds = groupDef.limited_armor_upgrade_ids;
@@ -492,8 +492,8 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
             if (!validIds.includes(armorUpgradeId)) {
                 return {
                     valid: false,
-                    armorUpgradeDisplayName: (MECH_ARMOR_UPGRADES as any)[armorUpgradeId].display_name,
-                    validArmorUpgradeDisplayNames: validIds.map(id => (MECH_ARMOR_UPGRADES as any)[id].display_name),
+                    armorUpgradeDisplayName: MECH_ARMOR_UPGRADES[armorUpgradeId].display_name,
+                    validArmorUpgradeDisplayNames: validIds.map(id => MECH_ARMOR_UPGRADES[id].display_name),
                     teamDisplayName: teamStore.getTeamDisplayName(teamId),
                     groupDisplayName: groupDef.display_name,
                 };
@@ -533,8 +533,8 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
         if (groupDef.limited_structure_mod_ids?.length) {
             if (!groupDef.limited_structure_mod_ids.includes(mech.structure_mod_id)) {
-                const currentDisplayName = (MECH_BODY_MODS as any)[mech.structure_mod_id].display_name;
-                const validMods = groupDef.limited_structure_mod_ids.map(id => (MECH_BODY_MODS as any)[id].display_name);
+                const currentDisplayName = MECH_BODY_MODS[mech.structure_mod_id].display_name;
+                const validMods = groupDef.limited_structure_mod_ids.map(id => MECH_BODY_MODS[id].display_name);
                 return `Invalid Structure Type: ${currentDisplayName}. Valid values: ${validMods.join(', ')}`;
             }
         }
@@ -549,9 +549,9 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
         if (groupDef.limited_armor_mod_ids?.length) {
             if (!groupDef.limited_armor_mod_ids.includes(mech.armor_mod_id)) {
-                const currentDisplayName = (MECH_BODY_MODS as any)[mech.armor_mod_id].display_name;
+                const currentDisplayName = MECH_BODY_MODS[mech.armor_mod_id].display_name;
 
-                const validMods = groupDef.limited_armor_mod_ids.map(id => (MECH_BODY_MODS as any)[id].display_name);
+                const validMods = groupDef.limited_armor_mod_ids.map(id => MECH_BODY_MODS[id].display_name);
                 return `Invalid Armor Type: ${currentDisplayName}. Valid values: ${validMods.join(', ')}`;
             }
         }
@@ -568,8 +568,8 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         if (!groupDef.size_ids.includes(sizeId)) {
             return {
                 valid: false,
-                sizeDisplayName: (MECH_SIZES as any)[sizeId].display_name,
-                validSizeDisplayNames: groupDef.size_ids.map(id => (MECH_SIZES as any)[id].display_name),
+                sizeDisplayName: MECH_SIZES[sizeId].display_name,
+                validSizeDisplayNames: groupDef.size_ids.map(id => MECH_SIZES[id].display_name),
             };
         }
         return {
@@ -689,7 +689,7 @@ export interface TeamGroupValidation {
 }
 
 export interface MechSizeValidation {
-    valid: true,
+    valid: boolean,
     validSizeDisplayNames: string[],
 }
 

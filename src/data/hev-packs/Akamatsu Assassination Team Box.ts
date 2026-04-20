@@ -1,11 +1,11 @@
-import {TEAM_ASSASSIN} from '../mech-teams';
-import {SIZE_LIGHT, SIZE_MEDIUM} from '../unit-sizes';
-import {MOD_REINFORCED, MOD_STANDARD} from '../mech-body';
-import {EXTRA_PLATING_ARMOR_UPGRADE, NO_ARMOR_UPGRADE} from '../mech-armor-upgrades';
-import {MOBILITY_BI_PEDAL} from '../mech-mobility';
-import {COMBAT_BLADE, PLASMA_BLADE} from '../mech-weapons';
-import {DIRECTIONAL_THRUSTER, HIGH_SPEED_SERVOS, JUMP_JETS} from '../mech-upgrades';
-import {TYPE_HEV} from '../unit-types';
+import { EXTRA_PLATING_ARMOR_UPGRADE, NO_ARMOR_UPGRADE } from '../mech-armor-upgrades';
+import { MOD_REINFORCED, MOD_STANDARD } from '../mech-body';
+import { MOBILITY_BI_PEDAL } from '../mech-mobility';
+import { TEAM_ASSASSIN } from '../mech-teams';
+import { DIRECTIONAL_THRUSTER, HIGH_SPEED_SERVOS, JUMP_JETS } from '../mech-upgrades';
+import { COMBAT_BLADE, PLASMA_BLADE } from '../mech-weapons';
+import { SIZE_LIGHT, SIZE_MEDIUM } from '../unit-sizes';
+import { TYPE_HEV } from '../unit-types';
 
 export const pack3 = {
     name: 'Akamatsu Assassination Team Box',

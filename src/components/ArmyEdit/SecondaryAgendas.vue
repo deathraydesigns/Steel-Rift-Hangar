@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {useSecondaryAgendaStore} from '../../store/secondary-agenda-store';
-import {BModal} from 'bootstrap-vue-next';
-import {ref} from 'vue';
+import { BModal } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useSecondaryAgendaStore } from '../../store/secondary-agenda-store';
 import SecondaryAgendaDefinition from './SecondaryAgendas/SecondaryAgendaDefinition.vue';
 
 const {
@@ -30,27 +30,27 @@ const secondaryAgendaModal = ref(false);
     </div>
     <div class="card-body">
       <SecondaryAgendaDefinition
-          v-for="item in secondary_agendas"
-          :type-display-name="item.type_display_name"
-          :subtype-display-name="item.subtype_display_name"
-          :display-name="item.display_name"
-          :description="item.description"
-      />
-    </div>
-  </div>
-  <BModal
-      v-model="secondaryAgendaModal"
-      centered
-      title="Universal Secondary Agendas"
-      size="lg"
-  >
-    <template #cancel>&nbsp;</template>
-    <SecondaryAgendaDefinition
-        v-for="item in universal_secondary_agendas"
+        v-for="item in secondary_agendas"
         :type-display-name="item.type_display_name"
         :subtype-display-name="item.subtype_display_name"
         :display-name="item.display_name"
         :description="item.description"
+      />
+    </div>
+  </div>
+  <BModal
+    v-model="secondaryAgendaModal"
+    centered
+    title="Universal Secondary Agendas"
+    size="lg"
+  >
+    <template #cancel>&nbsp;</template>
+    <SecondaryAgendaDefinition
+      v-for="item in universal_secondary_agendas"
+      :type-display-name="item.type_display_name"
+      :subtype-display-name="item.subtype_display_name"
+      :display-name="item.display_name"
+      :description="item.description"
     />
 
   </BModal>

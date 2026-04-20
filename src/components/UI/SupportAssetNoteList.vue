@@ -1,17 +1,13 @@
 <script setup lang="ts">
+import type { SupportAssetWeaponInfoNote } from '../../data/support-asset-weapons';
 import BtnToolTip from './BtnToolTip.vue';
-type Note = {
-  is_team_perk: boolean,
-  is_faction_perk: boolean,
-  display_name: string,
-  description?: string,
-}
+import SvgIcon from './Icon.vue';
 
 const { notes } = defineProps<{
-  notes: Note[]
+  notes: SupportAssetWeaponInfoNote[]
 }>();
 
-function title(note: Note) {
+function title(note: SupportAssetWeaponInfoNote) {
   if (note.is_team_perk) {
     return 'Team Perk';
   }
@@ -31,7 +27,7 @@ function title(note: Note) {
             }"
         >
           {{ note.display_name }}
-          <Icon v-if="note.is_team_perk" name="team-perk" size="18px" />
+          <SvgIcon v-if="note.is_team_perk" name="team-perk" size="18px" />
           <span class="material-symbols-outlined" v-if="note.is_faction_perk">flag</span>
           <template v-if="index !== notes.length-1">,</template>
         </div>

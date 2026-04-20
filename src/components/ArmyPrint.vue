@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import ArmyPrintSettings from './ArmyPrint/ArmyPrintSettings.vue';
-import {PRINT_MODE_CARDS, PRINT_MODE_REF, PRINT_MODES, usePrintSettingsStore} from '../store/print-settings-store';
-import {storeToRefs} from 'pinia';
-import {useFactionStore} from '../store/faction-store';
-import {useArmyListStore} from '../store/army-list-store';
-import {BFormCheckbox} from 'bootstrap-vue-next';
+import { BFormCheckbox } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { useArmyListStore } from '../store/army-list-store';
+import { useFactionStore } from '../store/faction-store';
+import { PRINT_MODE_CARDS, PRINT_MODE_REF, PRINT_MODES, usePrintSettingsStore } from '../store/print-settings-store';
 import ArmyPrintCards from './ArmyPrint/ArmyPrintCards.vue';
 import ArmyPrintRef from './ArmyPrint/ArmyPrintRef.vue';
+import ArmyPrintSettings from './ArmyPrint/ArmyPrintSettings.vue';
 
 const printSettingsStore = usePrintSettingsStore();
 const factionStore = useFactionStore();
@@ -28,7 +28,7 @@ const {
   separate_reference_cards_page,
 } = storeToRefs(printSettingsStore);
 
-const {includes_mine_drones, includes_msoe} = storeToRefs(useArmyListStore());
+const { includes_mine_drones, includes_msoe } = storeToRefs(useArmyListStore());
 
 function print() {
   window.print();
@@ -40,11 +40,11 @@ function print() {
       <template #nav>
         <template v-for="(item, key) in PRINT_MODES">
           <button
-              :class="{
+            :class="{
                         'btn btn-sm btn-default': true,
                         'active': print_mode === key
                       }"
-              @click="print_mode = key"
+            @click="print_mode = key"
           >
             {{ item.display_name }}
           </button>
@@ -59,8 +59,8 @@ function print() {
           </div>
 
           <BFormCheckbox
-              v-model="include_army_name_on_cards"
-              id="include_army_name_on_cards"
+            v-model="include_army_name_on_cards"
+            id="include_army_name_on_cards"
           >
             Include army name on cards
           </BFormCheckbox>
@@ -71,8 +71,8 @@ function print() {
             HE-V Teams
           </div>
           <BFormCheckbox
-              v-model="one_team_per_page"
-              id="one_team_per_page"
+            v-model="one_team_per_page"
+            id="one_team_per_page"
           >
             Print one team per page
           </BFormCheckbox>
@@ -84,42 +84,42 @@ function print() {
           </div>
 
           <BFormCheckbox
-              v-model="include_mine_drone_card"
-              id="include_mine_drone_card"
-              :disabled="!includes_mine_drones"
+            v-model="include_mine_drone_card"
+            id="include_mine_drone_card"
+            :disabled="!includes_mine_drones"
           >
             Include Mine Drone Card
           </BFormCheckbox>
 
           <BFormCheckbox
-              v-model="include_msoe_card"
-              id="include_msoe_card"
-              :disabled="!includes_msoe"
+            v-model="include_msoe_card"
+            id="include_msoe_card"
+            :disabled="!includes_msoe"
           >
             Include Multi-spectral Obscuration Emitter (msoe) Card
           </BFormCheckbox>
 
           <BFormCheckbox
-              v-model="include_faction_perk_1_card"
-              id="include_faction_perk_1_card"
-              :disabled="!perk_1_info"
+            v-model="include_faction_perk_1_card"
+            id="include_faction_perk_1_card"
+            :disabled="!perk_1_info"
           >
             Include Faction Perk 1 Card
             <strong v-if="perk_1_info">({{ perk_1_info.display_name }})</strong>
           </BFormCheckbox>
 
           <BFormCheckbox
-              v-model="include_faction_perk_2_card"
-              id="include_faction_perk_2_card"
-              :disabled="!perk_2_info"
+            v-model="include_faction_perk_2_card"
+            id="include_faction_perk_2_card"
+            :disabled="!perk_2_info"
           >
             Include Faction Perk 2 Card
             <strong v-if="perk_2_info">({{ perk_2_info.display_name }})</strong>
           </BFormCheckbox>
 
           <BFormCheckbox
-              v-model="separate_reference_cards_page"
-              id="separate_reference_cards_page"
+            v-model="separate_reference_cards_page"
+            id="separate_reference_cards_page"
           >
             Print on separate page
           </BFormCheckbox>
@@ -136,8 +136,8 @@ function print() {
 
     <div class="page-previews-container" data-bs-theme="light">
       <div class="output-container">
-        <ArmyPrintCards v-if="print_mode === PRINT_MODE_CARDS"/>
-        <ArmyPrintRef v-if="print_mode === PRINT_MODE_REF"/>
+        <ArmyPrintCards v-if="print_mode === PRINT_MODE_CARDS" />
+        <ArmyPrintRef v-if="print_mode === PRINT_MODE_REF" />
       </div>
     </div>
   </div>

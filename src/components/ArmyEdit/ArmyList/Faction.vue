@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {useFactionStore} from '../../../store/faction-store';
-import {storeToRefs} from 'pinia';
-import {computed, ref} from 'vue';
-import FactionPerkGrid from './FactionPerkGrid.vue';
+import { BFormSelect } from 'bootstrap-vue-next';
+import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+import { useFactionStore } from '../../../store/faction-store';
+import { useSupportAssetWeaponsStore } from '../../../store/support-asset-weapons-store';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
-import {useSupportAssetWeaponsStore} from '../../../store/support-asset-weapons-store';
+import FactionPerkGrid from './FactionPerkGrid.vue';
 
 const factionStore = useFactionStore();
 const supportAssetWeaponsStore = useSupportAssetWeaponsStore();
@@ -26,9 +27,9 @@ const modal = ref(false);
 </script>
 <template>
   <button
-      role="button"
-      class="btn btn-primary text-start mb-1 w-100"
-      @click="modal = !modal"
+    role="button"
+    class="btn btn-primary text-start mb-1 w-100"
+    @click="modal = !modal"
   >
     <span class="small text-muted-custom d-block">Faction</span>
     <span>{{ faction_display_name }}</span>
@@ -37,8 +38,8 @@ const modal = ref(false);
   <BtnToolTip>
     <template #target>
       <button
-          v-show="perk_1_info?.display_name"
-          class="btn btn-default text-start mb-1 w-100"
+        v-show="perk_1_info?.display_name"
+        class="btn btn-default text-start mb-1 w-100"
       >
         <span class="small text-muted-custom d-block">Perk 1</span>
         <span>{{ perk_1_info?.display_name }}</span>
@@ -53,8 +54,8 @@ const modal = ref(false);
   <BtnToolTip>
     <template #target>
       <button
-          v-show="perk_2_info?.display_name"
-          class="btn btn-default text-start mb-1 w-100"
+        v-show="perk_2_info?.display_name"
+        class="btn btn-default text-start mb-1 w-100"
       >
         <span class="small text-muted d-block">Perk 2</span>
         <span>{{ perk_2_info?.display_name }}</span>
@@ -67,18 +68,18 @@ const modal = ref(false);
   </BtnToolTip>
 
   <div
-      v-if="hasOutrageousSupportBudget"
-      class="form-floating mb-1"
+    v-if="hasOutrageousSupportBudget"
+    class="form-floating mb-1"
   >
     <BFormSelect
-        :options="support_asset_weapons_info"
-        text-field="display_name"
-        value-field="id"
-        id="outrageous_budget_perk_support_asset_id"
-        v-model="outrageous_budget_perk_support_asset_id"
+      :options="support_asset_weapons_info"
+      text-field="display_name"
+      value-field="id"
+      id="outrageous_budget_perk_support_asset_id"
+      v-model="outrageous_budget_perk_support_asset_id"
     />
     <label for="outrageous_budget_perk_support_asset_id">Apply Outrageous Support Budget</label>
   </div>
 
-  <FactionPerkGrid v-model="modal"/>
+  <FactionPerkGrid v-model="modal" />
 </template>

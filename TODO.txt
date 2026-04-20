@@ -1,0 +1,6 @@
+implement logic for:
+allow_duplicate_weapons
+requires_at_least_one_companion_drone
+TEAM_PERK.MULTI_DRONE
+TEAM_PERK.DRONE_NETWORK
+TEAM_PERK.TARGETING_NETWORK

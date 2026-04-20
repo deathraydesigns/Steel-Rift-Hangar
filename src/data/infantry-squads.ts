@@ -12,13 +12,22 @@ import {
     type UnitWeaponId,
 } from './unit-weapons';
 
-export const INFANTRY_RIFLE_SQUAD = 'INFANTRY_RIFLE_SQUAD';
-export const INFANTRY_ANTI_TANK_SQUAD = 'INFANTRY_ANTI_TANK_SQUAD';
-export const INFANTRY_RECON_SQUAD = 'INFANTRY_RECON_SQUAD';
-export const INFANTRY_ENGINEER_SQUAD = 'INFANTRY_ENGINEER_SQUAD';
-export const INFANTRY_ARC_SUIT_SQUAD = 'INFANTRY_ARC_SUIT_SQUAD';
-export const INFANTRY_REAPER_SUIT_SQUAD = 'INFANTRY_REAPER_SUIT_SQUAD';
-export const INFANTRY_VIPER_SUIT_SQUAD = 'INFANTRY_VIPER_SUIT_SQUAD';
+export const INFANTRY_RIFLE_SQUAD = 'INFANTRY_RIFLE_SQUAD' as const;
+export const INFANTRY_ANTI_TANK_SQUAD = 'INFANTRY_ANTI_TANK_SQUAD' as const;
+export const INFANTRY_RECON_SQUAD = 'INFANTRY_RECON_SQUAD' as const;
+export const INFANTRY_ENGINEER_SQUAD = 'INFANTRY_ENGINEER_SQUAD' as const;
+export const INFANTRY_ARC_SUIT_SQUAD = 'INFANTRY_ARC_SUIT_SQUAD' as const;
+export const INFANTRY_REAPER_SUIT_SQUAD = 'INFANTRY_REAPER_SUIT_SQUAD' as const;
+export const INFANTRY_VIPER_SUIT_SQUAD = 'INFANTRY_VIPER_SUIT_SQUAD' as const;
+
+export type InfantrySquadId =
+    | typeof INFANTRY_RIFLE_SQUAD
+    | typeof INFANTRY_ANTI_TANK_SQUAD
+    | typeof INFANTRY_RECON_SQUAD
+    | typeof INFANTRY_ENGINEER_SQUAD
+    | typeof INFANTRY_ARC_SUIT_SQUAD
+    | typeof INFANTRY_REAPER_SUIT_SQUAD
+    | typeof INFANTRY_VIPER_SUIT_SQUAD
 
 const baseInfantryStats = {
     unit_type_id: TYPE_INFANTRY,
@@ -34,7 +43,7 @@ const baseSuitStats = {
 };
 
 export interface InfantrySquad {
-    id: string,
+    id: InfantrySquadId,
     unit_type_id: typeof TYPE_INFANTRY,
     size_id: UnitSizeId,
     move: number,
@@ -88,8 +97,8 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
     [INFANTRY_ARC_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 4,
-        armor: 0,
-        structure: 4,
+        armor: 2,
+        structure: 2,
         display_name: 'Arc Suits',
         weapon_ids: [
             INFANTRY_RIFLES,
@@ -102,8 +111,8 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
     [INFANTRY_REAPER_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 4,
-        armor: 0,
-        structure: 4,
+        armor: 2,
+        structure: 2,
         display_name: 'Reaper Suits',
         weapon_ids: [
             INFANTRY_RIFLES,
@@ -114,8 +123,8 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
     [INFANTRY_VIPER_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 5,
-        armor: 0,
-        structure: 4,
+        armor: 2,
+        structure: 2,
         display_name: 'Viper Suits',
         weapon_ids: [
             INFANTRY_HEAVY_RIFLES,

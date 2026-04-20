@@ -8,6 +8,7 @@ import { loadSaveFileData } from '../../../store/helpers/store-save-load';
 import { useMechStore } from '../../../store/mech-store';
 import { useTeamStore } from '../../../store/team-store';
 import HEVCard from '../../ArmyPrint/ArmyPrintCards/HEVCard.vue';
+import SvgIcon from '../Icon.vue';
 import TeamDropDownItems from '../TeamDropDownItems.vue';
 
 const SCOPE = 'import';
@@ -85,7 +86,7 @@ function importSelectedMechs() {
   const mechs = [...mechImports.values()].filter(item => item.import);
 
   toRaw(mechs).forEach(({ mechId, teamId }) => {
-    const mech = mechStore.getMech(mechId);
+    const mech = mechStore.getMech(mechId)!;
     appTeamStore.addMechToTeamFromLoadedFile(mech, teamId);
   });
 
@@ -140,7 +141,7 @@ function importSelectedMechs() {
                 <strong>Current Team:</strong>
               </template>
               {{ item.preferredTeam.display_name }}
-              <Icon :name="item.preferredTeam.icon" />
+              <SvgIcon :name="item.preferredTeam.icon" />
               <template v-if="item.shelved">
                 (shelved)
               </template>
@@ -169,7 +170,7 @@ function importSelectedMechs() {
                 class="d-inline-block"
               >
                 <template #button-content>
-                  <Icon :name="item.targetTeam.icon" />
+                  <SvgIcon :name="item.targetTeam.icon" />
                   {{ item.targetTeam.display_name }}
                 </template>
                 <TeamDropDownItems

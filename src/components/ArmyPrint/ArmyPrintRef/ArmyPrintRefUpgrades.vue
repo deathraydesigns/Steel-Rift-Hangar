@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {useMechStore} from '../../../store/mech-store';
+import { computed } from 'vue';
+import { useMechStore } from '../../../store/mech-store';
 
 const mechStore = useMechStore();
 
 const upgrades = computed(() => {
   return mechStore.getUsedUpgradesInfo;
-
 });
 </script>
 <template>

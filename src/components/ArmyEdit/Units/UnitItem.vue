@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { BButton, BCollapse, BFormFloatingLabel, BFormSelect } from 'bootstrap-vue-next';
 import { computed, provide, ref } from 'vue';
+import type { UnitVehicleId } from '../../../data/support-assets/_support-asset-types';
 import { ULTRA_LIGHT_HEV_SQUADRON, type UpgradePodId } from '../../../data/support-assets/ultra-light-hev-squadron';
 import { TRAIT_UNIT_SIZE_AND_TYPE } from '../../../data/unit-traits.js';
 import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
+import SvgIcon from '../../UI/Icon.vue';
 import TraitList from '../../UI/TraitList.vue';
 import UnitGarrisonUnits from './UnitGarrisonUnits.vue';
 import UnitVehicleAdd from './UnitVehicleAdd.vue';
@@ -31,7 +33,7 @@ const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarriso
 
 provide('add_disabled', add_disabled);
 
-function addVehicle(id: string) {
+function addVehicle(id: UnitVehicleId) {
   if (!visible.value) {
     visible.value = true;
   }
@@ -46,7 +48,7 @@ const unitTypeTrait = computed(() => {
   return info.value?.traits.find((trait) => trait.id === TRAIT_UNIT_SIZE_AND_TYPE);
 });
 const traits = computed(() => {
-  return info.value?.traits.filter((trait) => trait.id !== TRAIT_UNIT_SIZE_AND_TYPE);
+  return info.value?.traits.filter((trait) => trait.id !== TRAIT_UNIT_SIZE_AND_TYPE) ?? [];
 });
 </script>
 <template>
@@ -87,7 +89,7 @@ const traits = computed(() => {
         >
           <template v-if="info.support_asset_unit_id === ULTRA_LIGHT_HEV_SQUADRON">
             Add
-            <Icon name="hev" />
+            <SvgIcon name="hev" />
           </template>
           <template v-else>
             Add {{ info.unit_type.display_name }}
@@ -121,7 +123,7 @@ const traits = computed(() => {
       <div class="card-body">
         <div class="d-flex">
           <div class="ms-2 flex-grow-1">
-            <span class="fw-bold">Unit Type:</span> {{ unitTypeTrait.type }}
+            <span class="fw-bold">Unit Type:</span> {{ unitTypeTrait?.type }}
             <div>
               <span class="fw-bold">Unit Traits: </span>
               <TraitList :traits="traits" />

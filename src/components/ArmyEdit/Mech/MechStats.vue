@@ -38,8 +38,8 @@ const {
 
 } = storeToRefs(factionStore);
 
-const structureModOptions = computed(() => teamStore.getMechStructureModOptions(mechId));
-const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId));
+const structureModOptions = computed(() => teamStore.getMechStructureModOptions(mechId)!);
+const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId)!);
 const structureModValid = computed(() => !validationStore.teamGroupMechStructureInvalid(mechId));
 const armorModValid = computed(() => !validationStore.teamGroupMechArmorInvalid(mechId));
 const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeamGroupMessage(mechId));

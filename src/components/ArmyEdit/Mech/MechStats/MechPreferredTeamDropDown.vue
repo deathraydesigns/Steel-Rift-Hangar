@@ -3,6 +3,7 @@ import { BDropdown, BDropdownItem, BPopover } from 'bootstrap-vue-next';
 import { computed } from 'vue';
 import { MECH_TEAM_ARRAY, MECH_TEAMS, type MechTeamId, TEAM_SHELF } from '../../../../data/mech-teams.js';
 import { useMechStore } from '../../../../store/mech-store';
+import SvgIcon from '../../../UI/Icon.vue';
 
 const mechStore = useMechStore();
 
@@ -61,7 +62,7 @@ const preferredTeamOptions = computed(() => MECH_TEAM_ARRAY.filter(t => t.id !==
   >
     <template #button-content>
       <template v-if="preferredTeam">
-        <Icon :name="preferredTeam.icon" />
+        <SvgIcon :name="preferredTeam.icon" />
         {{ preferredTeam.display_name }}
       </template>
     </template>
@@ -70,7 +71,7 @@ const preferredTeamOptions = computed(() => MECH_TEAM_ARRAY.filter(t => t.id !==
       @click="setPreferredTeamId(item.id)"
       :link-class="{'active': item.id === preferredTeamId}"
     >
-      <Icon :name="item.icon" />
+      <SvgIcon :name="item.icon" />
       {{ item.display_name }}
     </BDropdownItem>
   </BDropdown>

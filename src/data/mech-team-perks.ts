@@ -19,10 +19,11 @@ interface TeamPerkInput {
 }
 
 export enum TEAM_PERK {
-    EXTRA_MISSILE_AMMO = 'EXTRA_MISSILE_AMMO',
+    GUIDED_ROCKETS = 'GUIDED_ROCKETS',
     _0_SLOT_TARGET_DESIGNATORS = '_0_SLOT_TARGET_DESIGNATORS',
     _0_TON_TARGET_DESIGNATORS = '_0_TON_TARGET_DESIGNATORS',
-    SMART_HOWITZERS = 'SMART_HOWITZERS',
+    HOMING = 'HOMING',
+    EXTRA_CLUSTER_ROCKET_AMMO = 'EXTRA_CLUSTER_ROCKET_AMMO',
     _0_SLOT_ECM = '_0_SLOT_ECM',
     _0_TON_ECM = '_0_TON_ECM',
     RECON_INITIATIVE = 'RECON_INITIATIVE',
@@ -41,6 +42,19 @@ export enum TEAM_PERK {
     EXTRA_NITRO = 'EXTRA_NITRO',
     QUICKDRAW = 'QUICKDRAW',
     BARREL_EXTENSIONS = 'BARREL_EXTENSIONS',
+
+    LIGHT_STABILIZER = 'LIGHT_STABILIZER',
+    DRAIN_RESISTANT = 'DRAIN_RESISTANT',
+    AIR_BURST = 'AIR_BURST',
+    IMPACT_ROUNDS = 'IMPACT_ROUNDS',
+    MELEE_SPECIALIST = 'MELEE_SPECIALIST',
+
+    DRONE_RACK = 'DRONE_RACK',
+    DRONE_SHARING = 'DRONE_SHARING',
+    TARGETING_LINK = 'TARGETING_LINK',
+
+    AUX_DEFENSE_CONFIG = 'AUX_DEFENSE_CONFIG',
+    GRANTED_SUPPRESSIVE_FIRE = 'GRANTED_SUPPRESSIVE_FIRE',
 }
 
 export const MECH_TEAM_PERKS = makeTeamPerks({
@@ -51,9 +65,9 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [TEAM_PERK._0_SLOT_ARMOR_UPGRADES]: makeMini('Armor Upgrades'),
     [TEAM_PERK._0_TON_ARMOR_UPGRADES]: makeLightWeight('Armor Upgrades'),
     [TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS]: makeMini(upgradeDisplayName(DIRECTIONAL_THRUSTER)),
-    [TEAM_PERK.SMART_HOWITZERS]: {
-        display_name: 'Smart Howitzers',
-        description: 'Howitzers gain the Smart Trait.',
+    [TEAM_PERK.EXTRA_CLUSTER_ROCKET_AMMO]: {
+        display_name: 'Extra Cluster Rocket Ammo',
+        description: 'Cluster Rockets gain +1 to their Limited Trait.',
     },
     [TEAM_PERK.RECON_INITIATIVE]: {
         display_name: 'Recon Initiative',
@@ -108,14 +122,14 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     },
     [TEAM_PERK.QUICKDRAW]: {
         display_name: 'Quickdraw',
-        description: 'Returning Fire generates a Redline Marker instead of an Activation Marker.',
+        description: 'This Unit may choose to Return Fire when it has an Activation Marker.After completing a Return Fire, the Unit is marked with a Redline Marker instead of an Activation Marker.',
         visible_on_card: true,
     },
-    [TEAM_PERK.EXTRA_MISSILE_AMMO]: {
-        renderDisplayName: makeRenderDisplayName('Extra Guided Ammo'),
+    [TEAM_PERK.GUIDED_ROCKETS]: {
+        renderDisplayName: makeRenderDisplayName('Guided Rockets'),
         renderDesc(baseValue, repeatCount = 1) {
             let repeatStr = renderDescriptionRepeat(baseValue, repeatCount);
-            return `All Rocket Packs and Missiles gain +${baseValue}${repeatStr} to their Limited Trait`;
+            return `All Rocket Packs gain the Smart and Short (16") traits`;
         },
         value: 1,
         stackable: true,
@@ -129,6 +143,50 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
         card_note: '+2 applied',
         value: 2,
         visible_on_card: true,
+    },
+    [TEAM_PERK.LIGHT_STABILIZER]: {
+        display_name: 'Premium Light Weapons',
+        description: `Light Weapons cause 1 Damage for every 2 damage not evaded, rounding up (instead of down).`,
+    },
+    [TEAM_PERK.DRAIN_RESISTANT]: {
+        display_name: 'Drain Resistant',
+        description: `When marking this Unit with a Redline Marker due to Draining, roll 1D6. On a 4+, do not mark this Unit.`,
+    },
+    [TEAM_PERK.AIR_BURST]: {
+        display_name: 'Air Burst',
+        description: `Blast Weapons add +1 to their Blast (X) value.`,
+    },
+    [TEAM_PERK.IMPACT_ROUNDS]: {
+        display_name: 'Mass Driver',
+        description: `Kinetic Weapons add +1 to the D6 to determine if the Target is rotated.`,
+    },
+    [TEAM_PERK.MELEE_SPECIALIST]: {
+        display_name: 'Melee Specialist',
+        description: `Melee (X) weapons add +1 to their X value.`,
+    },
+    [TEAM_PERK.DRONE_RACK]: {
+        display_name: 'Drone Rack',
+        // drones loose the compact trait but still cost 0 slots
+        description: 'All Companion Drones may be taken more than once on each member HE-V (ignore the restriction on the number of Compact upgrades). No Weapon or Upgrade on an HE-V may be assigned more than one Companion Drone.',
+    },
+    [TEAM_PERK.DRONE_SHARING]: {
+        display_name: 'Drone Share',
+        // equipment drones are attached to, benefit all team members with the same equipment
+        description: 'If a Weapon or Upgrade on this HE-V is assigned to a Companion Drone, and any other member of this team has the same Weapon or Upgrade assigned to a Companion Drone, this Weapon or Upgrade receives the benefit of all Companion Drones assigned to the same Weapon or Upgrade in this team.',
+    },
+    [TEAM_PERK.TARGETING_LINK]: {
+        display_name: 'Targeting Link',
+        description: 'When a member of this team performs an ENGAGE Order, if another member of this team has LoS to the Target, and is within 12” of the Active Unit, the Active Unit may be counted as in either member’s position for the purposes of determining Side or Rear modifiers for that ENGAGE Order.',
+        visible_on_card: true,
+    },
+    [TEAM_PERK.AUX_DEFENSE_CONFIG]: {
+        display_name: 'Aux. Defense Config',
+        description: 'This HE-V may equip an additional Defensive Configuration. This uses an Upgrade slot.',
+    },
+    [TEAM_PERK.GRANTED_SUPPRESSIVE_FIRE]: {},
+    [TEAM_PERK.HOMING]: {
+        display_name: 'Homing',
+        description: 'Any Weapon with the SMART trait may select a Target that is not in LoS of the Active Unit. This Weapon has the Short (6”) trait when doing so. Attack Pools are not modified for Side or Rear Arc.',
     },
 });
 

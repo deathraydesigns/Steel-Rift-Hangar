@@ -1,43 +1,39 @@
 <script setup lang="ts">
-import {computed, inject} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
-import {BButton, BFormSelect} from 'bootstrap-vue-next';
-import TraitList from '../../UI/TraitList.vue';
-import {ULTRA_LIGHT_HEV_SQUADRON} from '../../../data/support-assets/ultra-light-hev-squadron';
-import {SUPPORT_ASSET_UNITS} from '../../../data/support-asset-units';
-import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
+import { BButton, BFormSelect } from 'bootstrap-vue-next';
+import { computed, inject } from 'vue';
+import type { InfantrySquadId } from '../../../data/infantry-squads';
+import { SUPPORT_ASSET_UNITS } from '../../../data/support-asset-units';
+import { ULTRA_LIGHT_HEV_SQUADRON } from '../../../data/support-assets/ultra-light-hev-squadron';
+import type { UnitWeaponId } from '../../../data/unit-weapons';
+import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import FormatInches from '../../functional/format-inches.vue';
+import TraitList from '../../UI/TraitList.vue';
+import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
 
-const {supportAssetAttachmentId, supportAssetVehicleAttachmentId} = defineProps({
-  supportAssetAttachmentId: {
-    type: Number,
-    required: true,
-  },
-  supportAssetVehicleAttachmentId: {
-    type: Number,
-    required: true,
-  },
-});
+const { supportAssetAttachmentId, supportAssetVehicleAttachmentId } = defineProps<{
+  supportAssetAttachmentId: number,
+  supportAssetVehicleAttachmentId: number,
+}>();
 
 const unitStore = useSupportAssetUnitsStore();
-const vehicleAttachment = computed(() => unitStore.getUnitVehicleAttachment(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
-const unitInfo = computed(() => unitStore.getUnitAttachmentVehicleInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
+const vehicleAttachment = computed(() => unitStore.getUnitVehicleAttachment(supportAssetAttachmentId, supportAssetVehicleAttachmentId)!);
+const unitInfo = computed(() => unitStore.getUnitAttachmentVehicleInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId)!);
 const weaponChoices = computed(() => unitStore.getUnitVehicleAttachmentAvailableWeaponChoicesInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 const requiredWeapons = computed(() => unitStore.getUnitVehicleAttachmentRequiredWeaponsInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 const garrisonUnitChoices = computed(() => unitStore.getUnitVehicleAttachmentAvailableGarrisonChoicesInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 const garrisonUnitsMax = computed(() => unitStore.getUnitVehicleAttachmentGarrisonMax(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 
-const add_disabled = inject('add_disabled');
-const has_armor = inject('has_armor');
+const add_disabled = inject<boolean>('add_disabled');
+const has_armor = inject<boolean>('has_armor');
 const has_structure = inject('has_structure');
 const has_jump = inject('has_jump');
 const has_garrison = inject('has_garrison');
 
-function setWeaponChoice(choiceId, weaponId) {
+function setWeaponChoice(choiceId: string, weaponId: UnitWeaponId) {
   unitStore.setUnitVehicleWeaponChoice(supportAssetAttachmentId, supportAssetVehicleAttachmentId, choiceId, weaponId);
 }
 
-function setGarrisonChoice(index, squadId) {
+function setGarrisonChoice(index: number, squadId: InfantrySquadId) {
   unitStore.setUnitVehicleGarrisonChoice(supportAssetAttachmentId, supportAssetVehicleAttachmentId, index, squadId);
 }
 
@@ -51,10 +47,10 @@ function addUlHev() {
       {{ unitInfo.display_name }}
     </td>
     <td class="text-end">
-      <format-inches :value="unitInfo.move"/>
+      <format-inches :value="unitInfo.move" />
     </td>
     <td class="text-end" v-if="has_jump">
-      <format-inches :value="unitInfo.jump"/>
+      <format-inches :value="unitInfo.jump" />
     </td>
     <td class="text-end" v-if="has_armor">
       {{ unitInfo.armor }}
@@ -66,20 +62,20 @@ function addUlHev() {
       <template v-if="requiredWeapons.length">
 
         <template v-for="(weapon, index) in requiredWeapons" :key="weapon.id">
-          <VehicleWeaponToolTip :weapon="weapon"/>
+          <VehicleWeaponToolTip :weapon="weapon" />
           <span v-if="index !== requiredWeapons.length - 1">, </span>
         </template>
       </template>
       <template v-if="weaponChoices.length">
         <span v-for="(item) in weaponChoices">
           <BFormSelect
-              :options="item.weapons"
-              value-field="id"
-              text-field="display_name"
-              :model-value="vehicleAttachment.weapon_choices[item.id]"
-              @update:model-value="setWeaponChoice(item.id, $event)"
-              size="sm"
-              class="d-inline-block w-auto ms-1"
+            :options="item.weapons"
+            value-field="id"
+            text-field="display_name"
+            :model-value="vehicleAttachment.weapon_choices![item.id]"
+            @update:model-value="setWeaponChoice(item.id, $event)"
+            size="sm"
+            class="d-inline-block w-auto ms-1"
           />
         </span>
       </template>
@@ -88,8 +84,8 @@ function addUlHev() {
       <template v-if="unitInfo.garrison_ul_hev">
         <template v-if="!unitStore.hasUnitId(ULTRA_LIGHT_HEV_SQUADRON)">
           <BButton
-              size="sm"
-              @click="addUlHev"
+            size="sm"
+            @click="addUlHev"
           >
             Add
             {{ SUPPORT_ASSET_UNITS[ULTRA_LIGHT_HEV_SQUADRON].display_name }}
@@ -105,35 +101,35 @@ function addUlHev() {
       <template v-if="garrisonUnitChoices.length">
         <template v-for="(x, index) in Array(garrisonUnitsMax)">
           <BFormSelect
-              :options="garrisonUnitChoices"
-              value-field="id"
-              text-field="display_name"
-              :model-value="vehicleAttachment.garrison_units[index]"
-              @update:model-value="setGarrisonChoice(index, $event)"
-              size="sm"
-              class="d-inline-block w-auto ms-1"
+            :options="garrisonUnitChoices"
+            value-field="id"
+            text-field="display_name"
+            :model-value="vehicleAttachment.garrison_units![index]"
+            @update:model-value="setGarrisonChoice(index, $event)"
+            size="sm"
+            class="d-inline-block w-auto ms-1"
           />
         </template>
       </template>
     </td>
     <td>
-      <TraitList :traits="unitInfo.traits"/>
+      <TraitList :traits="unitInfo.traits" />
     </td>
     <td class="table-btn-cell text-nowrap">
       <BButton
-          size="sm"
-          class="ms-1"
-          variant="secondary"
-          :disabled="add_disabled"
-          @click="unitStore.addVehicle(supportAssetAttachmentId, unitInfo.vehicle_id)"
+        size="sm"
+        class="ms-1"
+        variant="secondary"
+        :disabled="add_disabled"
+        @click="unitStore.addVehicle(supportAssetAttachmentId, unitInfo.vehicle_id)"
       >
         <span class="material-symbols-outlined">content_copy</span>
       </BButton>
       <BButton
-          size="sm"
-          class="ms-1"
-          variant="danger"
-          @click="unitStore.removeVehicle(supportAssetAttachmentId, unitInfo.id)"
+        size="sm"
+        class="ms-1"
+        variant="danger"
+        @click="unitStore.removeVehicle(supportAssetAttachmentId, unitInfo.id)"
       >
         <span class="material-symbols-outlined">delete</span>
       </BButton>

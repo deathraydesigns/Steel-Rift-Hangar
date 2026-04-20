@@ -30,7 +30,7 @@ function tryOrInvalid<T>(cb: () => T, errorMessage: string): T {
   }
 
   return result;
-};
+}
 
 function submit() {
   const baseUrl = import.meta.env.BASE_URL;

@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {SIZE_LIGHT, SIZE_ULTRA} from '../../../../data/unit-sizes.js';
-import {useMechStore} from '../../../../store/mech-store';
-import {chunk} from 'es-toolkit/compat';
-import {useFactionStore} from '../../../../store/faction-store';
-import {RD_ADVANCED_STRUCTURAL_COMPONENTS} from '../../../../data/faction-perks.js';
+import { chunk } from 'es-toolkit/compat';
+import { computed } from 'vue';
+import { RD_ADVANCED_STRUCTURAL_COMPONENTS } from '../../../../data/faction-perks.js';
 import {
   EXTRA_PLATING_ARMOR_UPGRADE,
   HEAVY_PLATING_ARMOR_UPGRADE,
   NO_ARMOR_UPGRADE,
 } from '../../../../data/mech-armor-upgrades';
+import { SIZE_LIGHT, SIZE_ULTRA } from '../../../../data/unit-sizes.js';
+import { useFactionStore } from '../../../../store/faction-store';
+import { useMechStore } from '../../../../store/mech-store';
 
 const mechStore = useMechStore();
 const factionStore = useFactionStore();
 
-const {mechId} = defineProps({
-  mechId: {
-    type: Number,
-  },
-});
-const info = computed(() => mechStore.getMechInfo(mechId));
+const { mechId } = defineProps<{
+  mechId: number,
+}>();
+
+const info = computed(() => mechStore.getMechInfo(mechId)!);
 
 const structureSystem = computed(() => {
   if (info.value.size.id === SIZE_LIGHT) {
@@ -52,10 +51,10 @@ const armorHp = computed(() => {
     baseArmor = armorStat - extraArmor;
   }
 
-  const points = [].concat(
-      new Array(baseArmor).fill('armor'),
-      new Array(extraArmor).fill('extra_armor'),
-  );
+  const points: string[] = [
+    ...new Array(baseArmor).fill('armor'),
+    ...new Array(extraArmor).fill('extra_armor'),
+  ];
 
   if (armor6PerRow.value) {
     return chunk(points, 6);
@@ -63,7 +62,7 @@ const armorHp = computed(() => {
   return chunk(points, 5);
 });
 
-function splitIntoChunkCounts(total) {
+function splitIntoChunkCounts(total: number) {
   const parts = 4;
   const base = Math.floor(total / parts);
   const remainder = total % parts;
@@ -82,7 +81,7 @@ const structureHp = computed(() => {
 
   const chunkCounts = splitIntoChunkCounts(structure);
 
-  let points = [];
+  let points: string[] = [];
   const map = [
     'M',
     'D',
@@ -110,13 +109,13 @@ const structureHp = computed(() => {
 const armorUpgrade = computed(() => {
   const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId);
 
-  const exclude = [
+  const exclude: string[] = [
     NO_ARMOR_UPGRADE,
     EXTRA_PLATING_ARMOR_UPGRADE,
     HEAVY_PLATING_ARMOR_UPGRADE,
   ];
 
-  if (armorUpgrade && !exclude.includes(armorUpgrade.id)) {
+  if (armorUpgrade && !exclude.includes(armorUpgrade?.id ?? '')) {
     return armorUpgrade;
   }
 });

@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {BLO_EX_MILITARY_VETERANS, FACTION_PERKS} from '../../../data/faction-perks.js';
-import {useFactionStore} from '../../../store/faction-store';
-import {storeToRefs} from 'pinia';
-import CardHeader from './CardParts/CardHeader.vue';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import { BLO_EX_MILITARY_VETERANS, FACTION_PERKS, type FactionPerkId } from '../../../data/faction-perks.js';
+import { AUTHORITIES, FACTIONS, MILITARY_TRAINING } from '../../../data/factions.js';
+import { useFactionStore } from '../../../store/faction-store';
 import CardFooter from './CardParts/CardFooter.vue';
-import {AUTHORITIES, FACTIONS, MILITARY_TRAINING} from '../../../data/factions.js';
+import CardHeader from './CardParts/CardHeader.vue';
 
-const {faction_display_name} = storeToRefs(useFactionStore());
+const { faction_display_name } = storeToRefs(useFactionStore());
 
-const {perkId} = defineProps({
-  perkId: {
-    type: String,
-    required: true,
-  },
-});
+const { perkId } = defineProps<{
+  perkId: FactionPerkId;
+}>();
 
 const info = computed(() => FACTION_PERKS[perkId]);
 
@@ -28,7 +25,7 @@ const militaryTrainingPerks = computed(() => {
 <template>
   <div class="game-card">
     <div class="card-content-container">
-      <CardHeader :title="'Faction Perk: ' + faction_display_name"/>
+      <CardHeader :title="'Faction Perk: ' + faction_display_name" />
 
       <div class="section-heading">{{ info.display_name }}</div>
       <div class="card-description">
@@ -58,7 +55,7 @@ const militaryTrainingPerks = computed(() => {
         </div>
       </template>
 
-      <CardFooter/>
+      <CardFooter />
     </div>
   </div>
 </template>

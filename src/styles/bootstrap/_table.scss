@@ -1,4 +1,5 @@
-@use "sass:map";
+@use 'sass:map';
+
 $table-btn-px: 0.75rem;
 $table-cell-px: 0.5rem;
 
@@ -63,7 +64,7 @@ $table-cell-sm-px: 0.25rem;
 }
 
 
-$table-danger-subtle: lighten(map.get($table-variants, "danger"), 6%);
+$table-danger-subtle: lighten(map.get($table-variants, 'danger'), 6%);
 @include table-variant('danger-subtle', $table-danger-subtle);
 
 

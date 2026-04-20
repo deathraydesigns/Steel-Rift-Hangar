@@ -1,4 +1,3 @@
-
 import { makeStaticListIds, trait } from '../data-helpers';
 import {
     INFANTRY_ANTI_TANK_SQUAD,

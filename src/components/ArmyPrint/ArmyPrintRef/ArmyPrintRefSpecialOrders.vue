@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {useSupportAssetUnitsStore} from '../../../store/support-asset-units-store';
-import {makeGrantedOrderCollection} from '../../../store/helpers/helpers';
-import {useMechStore} from '../../../store/mech-store';
+import { computed } from 'vue';
+import { makeGrantedOrderCollection } from '../../../store/helpers/helpers';
+import { useMechStore } from '../../../store/mech-store';
+import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 
 const mechStore = useMechStore();
 const unitStore = useSupportAssetUnitsStore();
@@ -12,6 +12,7 @@ const orders = computed(() => {
 
   mechStore.mechs.forEach((mech) => {
     const mechOrders = mechStore.getMechGrantedOrdersCollection(mech.id);
+    if (!mechOrders) return;
     grantedOrders.addIds(mechOrders.ids());
   });
 

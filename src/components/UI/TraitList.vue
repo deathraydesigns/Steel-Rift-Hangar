@@ -23,7 +23,7 @@ function show(trait: Trait) {
       </template>
       <template #content>
         {{ trait.description }}
-        <GrantedOrders :order-ids="trait.granted_order_ids" />
+        <GrantedOrders :order-ids="trait.granted_order_ids ?? []" />
       </template>
     </BtnToolTip>
   </template>

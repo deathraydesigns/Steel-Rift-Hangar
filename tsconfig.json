@@ -16,7 +16,8 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "noEmit": true,
-    "types": ["vite/client"]
+    "skipLibCheck": true,
+    "types": ["vite/client"],
   },
   "include": [
     "src/**/*.ts",

@@ -1,15 +1,15 @@
-import {useMechStore} from '../mech-store';
-import {useFactionStore} from '../faction-store';
-import {makeShelfTeam, useTeamStore} from '../team-store';
-import {useSupportAssetCountsStore} from '../support-asset-count-store';
-import {useArmyListStore} from '../army-list-store';
-import {usePrintSettingsStore} from '../print-settings-store';
-import {useSupportAssetWeaponsStore} from '../support-asset-weapons-store';
-import {useSupportAssetUnitsStore} from '../support-asset-units-store';
-import {MOBILITY_BI_PEDAL} from '../../data/mech-mobility';
-import {ULTRA_LIGHT_HEV_SQUADRON} from '../../data/support-assets/ultra-light-hev-squadron';
-import {TEAM_SHELF} from '../../data/mech-teams';
-import {getStoreUnscopedId} from 'pinia-scope';
+import { getStoreUnscopedId } from 'pinia-scope';
+import { MOBILITY_BI_PEDAL } from '../../data/mech-mobility';
+import { TEAM_MULTIROLE, TEAM_SHELF } from '../../data/mech-teams';
+import { ULTRA_LIGHT_HEV_SQUADRON } from '../../data/support-assets/ultra-light-hev-squadron';
+import { useArmyListStore } from '../army-list-store';
+import { useFactionStore } from '../faction-store';
+import { useMechStore } from '../mech-store';
+import { usePrintSettingsStore } from '../print-settings-store';
+import { useSupportAssetCountsStore } from '../support-asset-count-store';
+import { useSupportAssetUnitsStore } from '../support-asset-units-store';
+import { useSupportAssetWeaponsStore } from '../support-asset-weapons-store';
+import { makeShelfTeam, useTeamStore } from '../team-store';
 
 function getStores(scope = '') {
     return [
@@ -59,7 +59,7 @@ export function loadSaveFileData(data: any, scope = '') {
     data = migrateLoadData(data);
 
     getStores(scope).forEach((store: any) => {
-        const storeId = getStoreUnscopedId(store)
+        const storeId = getStoreUnscopedId(store);
         store.$reset();
         store.$patch(data[storeId]);
         if (store.afterHydrate) {
@@ -95,11 +95,18 @@ export function migrateLoadData(data: any) {
         });
     }
 
+    if (data.save_schema_version < 4) {
+        const tacticalTeam = data?.team?.teams?.find((team: any) => team.id === 'TEAM_TACTICAL');
+        if (tacticalTeam) {
+            tacticalTeam.id = TEAM_MULTIROLE;
+        }
+    }
+
     const shelfTeam = data?.team?.teams?.find((team: any) => team.id === TEAM_SHELF);
 
     if (!shelfTeam) {
         if (!data.team) {
-            data.team = {teams: []};
+            data.team = { teams: [] };
         }
         data.team.teams.push(makeShelfTeam());
     }

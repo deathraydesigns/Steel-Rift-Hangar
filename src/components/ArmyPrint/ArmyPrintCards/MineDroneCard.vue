@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import CardHeader from './CardParts/CardHeader.vue';
 import CardFooter from './CardParts/CardFooter.vue';
+import CardHeader from './CardParts/CardHeader.vue';
 </script>
 <template>
   <div class="game-card shrink-text-90">
     <div class="card-content-container">
-      <CardHeader title="Mine Drone"/>
+      <CardHeader title="Mine Drone" />
 
       <div class="section-heading d-flex">
         <div class="flex-shrink-1">
@@ -65,7 +65,7 @@ import CardFooter from './CardParts/CardFooter.vue';
         </tbody>
       </table>
 
-      <CardFooter/>
+      <CardFooter />
     </div>
   </div>
 </template>

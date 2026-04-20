@@ -1,27 +1,31 @@
 <script setup lang="ts">
-import {useMechStore} from '../../../store/mech-store';
-import MechUpgradeItem from './MechUpgrades/MechUpgradeItem.vue';
-import MechUpgradeAdd from './MechUpgrades/MechUpgradeAdd.vue';
-import {computed} from 'vue';
+import { computed } from 'vue';
 import draggable from 'vuedraggable';
-import {useValidationStore} from '../../../store/validation-store';
+import { useMechStore } from '../../../store/mech-store';
+import { useValidationStore } from '../../../store/validation-store';
+import type { MechUpgradeAttachment } from '../../../types';
 import IconValidationError from '../../UI/IconValidationError.vue';
+import MechUpgradeAdd from './MechUpgrades/MechUpgradeAdd.vue';
+import MechUpgradeItem from './MechUpgrades/MechUpgradeItem.vue';
 
 const mechStore = useMechStore();
 const validationStore = useValidationStore();
 
-const {mechId} = defineProps({
-  mechId: {
-    type: Number,
-  },
-});
+const { mechId } = defineProps<{
+  mechId: number
+}>();
 
-const mech = computed(() => mechStore.getMech(mechId));
+const mech = computed(() => mechStore.getMech(mechId)!);
 
 const validationMessages = computed(() => validationStore.mechAllUpgradesMessages(mechId));
 const valid = computed(() => !validationMessages.value.length);
 
-function onSortableChange(event) {
+function onSortableChange(event: {
+  moved?: {
+    element: MechUpgradeAttachment,
+    newIndex: number,
+  }
+}) {
   let moved = event.moved;
   if (!moved) {
     return;
@@ -40,8 +44,8 @@ function onSortableChange(event) {
   <tr>
     <th class="table-btn-cell">
       <IconValidationError
-          size="sm"
-          :message-array="validationMessages"
+        size="sm"
+        :message-array="validationMessages"
       />
     </th>
     <th>
@@ -51,7 +55,7 @@ function onSortableChange(event) {
       Traits
     </th>
     <td class="table-btn-cell">
-      <MechUpgradeAdd :mech-id="mechId"/>
+      <MechUpgradeAdd :mech-id="mechId" />
     </td>
     <th>
     </th>
@@ -66,22 +70,22 @@ function onSortableChange(event) {
   </thead>
 
   <draggable
-      :list="mech.upgrades"
-      draggable=".list-item-sortable"
-      tag="tbody"
-      item-key="id"
-      :group="'mech-' + mechId +'-upgrades'"
-      handle=".btn-grab-upgrade"
-      ghost-class="ghost"
-      @change="onSortableChange"
-      :animation="200"
-      :preventOnFilter="false"
+    :list="mech.upgrades"
+    draggable=".list-item-sortable"
+    tag="tbody"
+    item-key="id"
+    :group="'mech-' + mechId +'-upgrades'"
+    handle=".btn-grab-upgrade"
+    ghost-class="ghost"
+    @change="onSortableChange"
+    :animation="200"
+    :preventOnFilter="false"
   >
     <template #item="{ element, index }">
       <MechUpgradeItem
-          :mech-id="mechId"
-          :mech-upgrade-attachment-id="element.id"
-          :index="index"
+        :mech-id="mechId"
+        :mech-upgrade-attachment-id="element.id"
+        :index="index"
       />
     </template>
   </draggable>

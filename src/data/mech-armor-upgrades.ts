@@ -10,6 +10,7 @@ export const CERAMIC_ARMOR_UPGRADE = 'CERAMIC_ARMOR_UPGRADE' as const;
 export const CLAYMORE_ARMOR_UPGRADE = 'CLAYMORE_ARMOR_UPGRADE' as const;
 export const EXTRA_PLATING_ARMOR_UPGRADE = 'EXTRA_PLATING_ARMOR_UPGRADE' as const;
 export const HEAVY_PLATING_ARMOR_UPGRADE = 'HEAVY_PLATING_ARMOR_UPGRADE' as const;
+export const REDUNDANT_INTERNALS = 'REDUNDANT_INTERNALS' as const;
 
 export type MechArmorUpgradeId =
     | typeof NO_ARMOR_UPGRADE
@@ -29,7 +30,7 @@ export interface MechArmorUpgrade {
     description: string,
     cost_by_size: NumberBySize,
     limited_size_ids?: MechSizeId[],
-    armor_mod?: number,
+    armor_mod: number | null,
 }
 
 interface MakeArmorUpgradeInput extends Omit<Optional<MechArmorUpgrade, 'cost' | 'cost_by_size' | 'limited_size_ids' | 'armor_mod'>, 'id'> {
@@ -51,7 +52,7 @@ function makeArmorUpgrade(item: MakeArmorUpgradeInput): Omit<MechArmorUpgrade, '
         description: item.description,
         cost_by_size,
         limited_size_ids: item.limited_size_ids ?? [],
-        armor_mod: item.armor_mod,
+        armor_mod: item.armor_mod ?? null,
     };
 }
 
@@ -71,15 +72,15 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MechArmorUpgradeId, MechArmorU
             [SIZE_HEAVY]: 2,
             [SIZE_ULTRA]: 2,
         },
-        slots: 1,
-        description: 'Reduce the Attack Pool for attacks using the Blast trait by 1, to a minimum of 1.',
+        slots: 0,
+        description: 'This Unit may re‑roll any failed Defense Rolls caused by the Blast effect.',
     }),
     [REACTIVE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Reactive',
         card_upgrade_display_name: 'Reactive Armor',
         cost: 1,
-        slots: 1,
-        description: 'Reduce the Attack Pool for Missile and Rocket Pack attacks by 1, to a minimum of 1.',
+        slots: 0,
+        description: 'Reduce the Attack Pool of Weapons with “Missile” or "Rocket” in the name Targeting this Unit by 1, to a minimum of 1.',
     }),
     [CERAMIC_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Ceramic',
@@ -90,30 +91,30 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MechArmorUpgradeId, MechArmorU
             [SIZE_HEAVY]: 1,
             [SIZE_ULTRA]: 1,
         },
-        slots: 1,
-        description: 'Each time this unit would take damage from the AP trait of a Laser Weapon System roll 1D6 - on a 5+ that damage is negated.',
+        slots: 0,
+        description: 'Each time this Unit would take Damage from the AP trait, roll a D6. On a 4+, ignore that Damage.',
     }),
     [CLAYMORE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Claymore',
         card_upgrade_display_name: 'Claymore Armor',
-        description: 'Reduce the Attack Pool of incoming Smash Orders by 1 to a minimum of 1. If a Unit equipped with Claymore Armor takes structure damage from a Smash Order, the attacking Unit is immediately targeted by an Engage Order with a damage value of (2/2/3/3) and the Frag trait.',
+        description: 'Reduce the Attack Pool of incoming SMASH Orders by 1 to a minimum of 1.If a Unit equipped with Claymore Armor takes Structure Damage from a SMASH Order, the Active Unit is immediately targeted by an ENGAGE Order with a damage value of (2/2/3/3) and the Frag trait.',
         cost: 1,
-        slots: 1,
+        slots: 0,
     }),
     [EXTRA_PLATING_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Extra Plating',
         card_upgrade_display_name: 'Extra Plating (+2 applied)',
-        description: 'This HE-V gains 2 additional Armor ',
+        description: 'This Unit gains 2 additional Armor.',
         cost: 1,
-        slots: 1,
+        slots: 0,
         armor_mod: 2,
     }),
     [HEAVY_PLATING_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Heavy Plating',
         card_upgrade_display_name: 'Heavy Plating (+4 applied)',
-        description: 'This HE-V gains 4 additional Armor ',
-        cost: 1,
-        slots: 1,
+        description: 'This Unit gains 4 additional Armor.',
+        cost: 2,
+        slots: 0,
         armor_mod: 4,
         limited_size_ids: [SIZE_ULTRA],
     }),

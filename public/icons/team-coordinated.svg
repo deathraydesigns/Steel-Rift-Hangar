@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg1"
+   version="1.1"
+   viewBox="0 0 960 960"
+   width="20px"
+   height="20px"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g3"
+     transform="matrix(181.41732,0,0,181.41732,-43311.483,-70213.82)">
+    <path
+       id="path11"
+       style="font-variation-settings:normal;vector-effect:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+       d="m 240.50761,387.40251 -1.39488,1.39491 0.66587,0.66587 h 1.39488 l 2e-5,-1.39487 z m 1.7555,0 -0.66588,0.66591 -3e-5,1.39484 1.3949,3e-5 0.66587,-0.66587 z m -4e-5,0.42113 0.97381,0.9738 -0.36813,0.36814 h -0.9738 v -0.97381 z m -2.48447,2.06337 -0.66587,0.66588 1.39488,1.39488 0.66589,-0.66589 v -1.39487 z m 1.81863,0 -3e-5,1.39487 0.66591,0.66589 1.39486,-1.39488 -0.66587,-0.66588 z m -1.69519,0.29767 h 0.97381 v 0.97391 l -0.36824,0.36811 -0.97381,-0.97381 z" />
+  </g>
+</svg>

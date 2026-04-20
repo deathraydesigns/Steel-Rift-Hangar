@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const {
   displayName,
-  typeDisplayName,
-  subtypeDisplayName,
+  typeDisplayName = '',
+  subtypeDisplayName = '',
   description,
 } = defineProps<{
   displayName: string
-  typeDisplayName: string
-  subtypeDisplayName: string
+  typeDisplayName?: string
+  subtypeDisplayName?: string
   description: string
 }>();
 </script>

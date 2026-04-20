@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import {computed} from 'vue';
-import {BPopover} from 'bootstrap-vue-next';
+import { BPopover } from 'bootstrap-vue-next';
+import { computed } from 'vue';
 import SvgIcon from './Icon.vue';
 
 const {
@@ -34,9 +34,9 @@ const isVisible = computed(() => {
   <BPopover>
     <template #target>
       <button
-          v-show="isVisible"
-          :class="`btn btn-${size} btn-danger ${btnClass}`">
-        <SvgIcon :name="icon" v-if="icon"/>
+        v-show="isVisible"
+        :class="`btn btn-${size} btn-danger ${btnClass}`">
+        <SvgIcon :name="icon" v-if="icon" />
         <span class="material-symbols-outlined">
           warning
         </span>

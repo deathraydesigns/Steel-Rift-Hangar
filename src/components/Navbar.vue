@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import logoSvg from '/steel-rift-logo.svg';
-import {BCollapse, BNavbarToggle} from 'bootstrap-vue-next';
+import { BCollapse, BNavbarToggle } from 'bootstrap-vue-next';
 import BtnColorMode from './UI/BtnColorMode.vue';
 </script>
 <template>
@@ -11,11 +11,11 @@ import BtnColorMode from './UI/BtnColorMode.vue';
 
         <div class="col-xl-3 flex-lg-shrink-1">
           <a class="navbar-brand" href="#">
-            <img :src="logoSvg" height="25" class="logo" alt="Steel Rift: Hangar logo"/>
+            <img :src="logoSvg" height="25" class="logo" alt="Steel Rift: Hangar logo" />
           </a>
           <div class="float-end">
-            <BNavbarToggle target="nav-collapse" size="sm"/>
-            <BtnColorMode class="d-lg-none"/>
+            <BNavbarToggle target="nav-collapse" size="sm" />
+            <BtnColorMode class="d-lg-none" />
           </div>
         </div>
 
@@ -41,7 +41,7 @@ import BtnColorMode from './UI/BtnColorMode.vue';
                 Now</a>
             </div>
             <div class="d-flex">
-              <BtnColorMode class="d-none d-lg-inline-block"/>
+              <BtnColorMode class="d-none d-lg-inline-block" />
             </div>
           </BCollapse>
         </div>

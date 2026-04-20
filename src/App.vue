@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {h, onErrorCaptured, onMounted, provide} from 'vue';
+import { BModalOrchestrator, BToastOrchestrator, useColorMode, useModalController } from 'bootstrap-vue-next';
+import { h, onErrorCaptured, onMounted, provide } from 'vue';
 import AppHeader from './components/AppHeader.vue';
-import {BModalOrchestrator, BToastOrchestrator, useColorMode, useModalController} from 'bootstrap-vue-next';
 
-const {create} = useModalController();
+const { create } = useModalController();
 onErrorCaptured((error) => {
   create({
     title: 'Error',
@@ -12,7 +12,7 @@ onErrorCaptured((error) => {
     contentClass: 'border-danger',
     slots: {
       cancel: () => false,
-      default: (scope) => h('div', {class: 'ws-pre-wrap'}, {default: () => error.stack}),
+      default: () => h('div', { class: 'ws-pre-wrap' }, { default: () => error.stack }),
     },
   });
 });
@@ -24,18 +24,18 @@ onMounted(() => {
 const mode = useColorMode({
   emitAuto: true,
   persist: true,
-});
+} as any);
 provide('color_mode', mode);
 
 </script>
 <template>
   <div class="d-flex flex-column vh-100">
 
-    <BToastOrchestrator/>
-    <BModalOrchestrator/>
+    <BToastOrchestrator />
+    <BModalOrchestrator />
 
-    <AppHeader/>
-    <RouterView/>
+    <AppHeader />
+    <RouterView />
 
     <div class="no-print text-bg-dark py-4 mt-auto">
       <div class="container text-center">

@@ -22,7 +22,7 @@ const {
   armor: number | null,
   structure: number | null,
   options: {
-    value: string,
+    value: MechBodyModId,
     text: string,
     modifier: number,
     max_tons: number,
@@ -33,7 +33,7 @@ const {
   validationMessage: string,
 }>();
 
-const model = defineModel<MechBodyModId>();
+const model = defineModel<MechBodyModId>({ required: true });
 const selectedValueLabel = computed(() => MECH_BODY_MODS[model.value].display_name);
 
 function selectOption(value: MechBodyModId) {

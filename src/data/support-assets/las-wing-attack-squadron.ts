@@ -1,4 +1,3 @@
-
 import { makeStaticListIds, trait } from '../data-helpers';
 import { SIZE_LIGHT } from '../unit-sizes';
 import {

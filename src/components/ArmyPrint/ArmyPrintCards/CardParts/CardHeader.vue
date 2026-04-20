@@ -1,20 +1,15 @@
 <script setup lang="ts">
-import {useArmyListStore} from '../../../../store/army-list-store';
-import {usePrintSettingsStore} from '../../../../store/print-settings-store';
-import {storeToRefs} from 'pinia';
+import { storeToRefs } from 'pinia';
+import { useArmyListStore } from '../../../../store/army-list-store';
+import { usePrintSettingsStore } from '../../../../store/print-settings-store';
 
 const armyStore = useArmyListStore();
-const {include_army_name_on_cards} = storeToRefs(usePrintSettingsStore());
+const { include_army_name_on_cards } = storeToRefs(usePrintSettingsStore());
 
-const {title, subTitle} = defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  subTitle: {
-    type: String,
-  },
-});
+const { title, subTitle = '' } = defineProps<{
+  title: string,
+  subTitle?: string,
+}>();
 </script>
 <template>
   <div class="card-name d-flex">

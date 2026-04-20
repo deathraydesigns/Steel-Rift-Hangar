@@ -1,37 +1,35 @@
 <script setup lang="ts">
-import {useSupportAssetUnitsStore} from '../../../../store/support-asset-units-store';
-import {computed} from 'vue';
-import {TRAIT_GARRISON, unitTraitDisplayName} from '../../../../data/unit-traits.js';
-import {chunk} from 'es-toolkit/compat';
-import {formatCardRef} from '../../../functional/formatters.js';
-import UnitCardHalfHeader from './UnitCardHalfHeader.vue';
+import { chunk } from 'es-toolkit/compat';
+import { computed } from 'vue';
+import { TRAIT_GARRISON, unitTraitDisplayName } from '../../../../data/unit-traits.js';
+import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
+import type { Trait } from '../../../../types';
 import FormatInches from '../../../functional/format-inches.vue';
+import { formatCardRef } from '../../../functional/formatters.js';
+import UnitCardHalfHeader from './UnitCardHalfHeader.vue';
 
-const {unitAttachmentId} = defineProps({
-  unitAttachmentId: {
-    type: Number,
-    required: true,
-  },
-});
+const { unitAttachmentId } = defineProps<{
+  unitAttachmentId: number
+}>();
 
 const unitStore = useSupportAssetUnitsStore();
-const unit = computed(() => unitStore.getUnitAttachmentInfo(unitAttachmentId));
+const unit = computed(() => unitStore.getUnitAttachmentInfo(unitAttachmentId)!);
 
 const hasMove = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.move));
 const hasJump = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.jump));
 const hasArmor = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.armor));
-const hasGarrison = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.garrison_units.length));
+const hasGarrison = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.garrison_units?.length));
 const hasTraits = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.traits.find(t => t.id !== TRAIT_GARRISON)));
 
 const hasGarrisonWithRefIds = computed(() => {
-  return unit.value.vehicles.find((vehicle) => vehicle.garrison_units.find(g => g.card_ref_id));
+  return unit.value.vehicles.find((vehicle) => vehicle.garrison_units?.find(g => g.card_ref_id));
 });
 
-const statArray = (stat) => {
+const statArray = (stat: number) => {
   return chunk(Array(stat).fill(0), 4);
 };
 
-function filterTraits(traits) {
+function filterTraits(traits: Trait[]) {
   return traits.filter(t => t.id !== TRAIT_GARRISON);
 }
 
@@ -39,9 +37,9 @@ function filterTraits(traits) {
 <template>
   <template v-if="unit.vehicles.length">
     <UnitCardHalfHeader
-        label="Unit Models"
-        :type-display-name="unit.unit_type.display_name"
-        :defense="unit.defense"
+      label="Unit Models"
+      :type-display-name="unit.unit_type.display_name"
+      :defense="unit.defense"
     />
 
     <table class="table-stats">
@@ -75,16 +73,16 @@ function filterTraits(traits) {
       </thead>
       <tbody>
       <tr
-          v-for="(item, index) in unit.vehicles" :key="item.id"
+        v-for="item in unit.vehicles" :key="item.id"
       >
         <td class="small text-start">
           {{ item.display_name }}
         </td>
         <td class="text-end" v-if="hasMove">
-          <format-inches :value="item.move"/>
+          <format-inches :value="item.move" />
         </td>
         <td class="text-end" v-if="hasJump">
-          <format-inches :value="item.jump"/>
+          <format-inches :value="item.jump" />
         </td>
         <td class="text-start" v-if="hasArmor">
           <div class="text-nowrap" v-for="chunk in statArray(item.armor)"><span class="use use-armor"
@@ -99,14 +97,14 @@ function filterTraits(traits) {
         <td class="text-start small">
           <div v-for="(weapon, index) in item.weapons">
             {{ weapon.display_name }}<span class="text-nowrap" v-if="weapon.max_uses">&nbsp;<span
-              class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span></span><span
-              v-if="index !== item.weapons.length - 1">, </span>
+            class="use use-weapon" v-for="i in Array(weapon.max_uses)">&nbsp;</span></span><span
+            v-if="index !== item.weapons.length - 1">, </span>
           </div>
         </td>
         <td v-if="hasGarrisonWithRefIds" class="text-end small">
           <div
-              v-for="squad in item.garrison_units"
-              class="text-nowrap font-monospace"
+            v-for="squad in item.garrison_units"
+            class="text-nowrap font-monospace"
           >
             {{ formatCardRef(squad.card_ref_id) }}
             <div v-if="!squad.card_ref_id">
@@ -116,8 +114,8 @@ function filterTraits(traits) {
         </td>
         <td v-if="hasGarrison" class="text-start small">
           <div
-              v-for="squadDisplayName in item.garrison_units.map(i => i.display_name)"
-              class="text-nowrap"
+            v-for="squadDisplayName in item.garrison_units!.map(i => i.display_name)"
+            class="text-nowrap"
           >
             {{ squadDisplayName }}
           </div>

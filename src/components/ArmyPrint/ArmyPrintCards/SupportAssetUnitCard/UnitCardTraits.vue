@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import {unitTraitDisplayName} from '../../../../data/unit-traits.js';
+import { unitTraitDisplayName } from '../../../../data/unit-traits.js';
+import type { Order, Trait } from '../../../../types';
 
-const {traits} = defineProps({
-  traits: {
-    type: Array,
-    required: true,
-  },
-  orders: {
-    type: Array,
-    required: true,
-  },
-});
+const { traits, orders } = defineProps<{
+  traits: Trait[],
+  orders: Order[],
+}>();
 </script>
 
 <template>

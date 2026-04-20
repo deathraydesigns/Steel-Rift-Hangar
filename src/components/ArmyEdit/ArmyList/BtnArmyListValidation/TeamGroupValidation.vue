@@ -1,15 +1,11 @@
 <script setup lang="ts">
 
-const {group} = defineProps({
-  showTitle: {
-    type: Boolean,
-    default: true,
-  },
-  group: {
-    type: Object,
-    required: true,
-  },
-});
+import type { TeamGroupValidation } from '../../../../store/validation-store';
+
+const { group, showTitle = true } = defineProps<{
+  showTitle?: boolean,
+  group: TeamGroupValidation
+}>();
 </script>
 
 <template>

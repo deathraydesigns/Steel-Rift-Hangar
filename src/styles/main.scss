@@ -1,4 +1,4 @@
-@import "../../node_modules/bootstrap/scss/functions";
+@import '../../node_modules/bootstrap/scss/functions';
 
 $dropdown-border-width: 1px;
 $border-color-translucent: rgba(#000, 0.25);
@@ -58,22 +58,22 @@ $dropdown-link-active-color: #000;
 // #f8f9fa = $light
 $dropdown-link-active-bg: darken(#f8f9fa, 7%);
 
-@import "../../node_modules/bootstrap/scss/bootstrap";
+@import '../../node_modules/bootstrap/scss/bootstrap';
 @import '../../node_modules/bootstrap-vue-next/src/styles/styles';
 
-@import "bootstrap/bootstrap-vue-component-styles";
-@import "bootstrap/dropdown";
-@import "bootstrap/collapse";
-@import "bootstrap/buttons";
-@import "bootstrap/cards";
-@import "bootstrap/table";
+@import 'bootstrap/bootstrap-vue-component-styles';
+@import 'bootstrap/dropdown';
+@import 'bootstrap/collapse';
+@import 'bootstrap/buttons';
+@import 'bootstrap/cards';
+@import 'bootstrap/table';
 
-@import "fonts/text";
-@import "fonts/icons";
+@import 'fonts/text';
+@import 'fonts/icons';
 
-@import "print-page";
-@import "page-cards-print";
-@import "page-reference-print";
+@import 'print-page';
+@import 'page-cards-print';
+@import 'page-reference-print';
 
 
 :root {
@@ -101,7 +101,7 @@ body {
   background-color: $body-bg-color;
 }
 
-body[data-bs-theme="dark"] {
+body[data-bs-theme='dark'] {
   background-color: $body-bg-color-dark;
 }
 

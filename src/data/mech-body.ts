@@ -1,4 +1,4 @@
-import {listToDropDown, makeFrozenStaticListIds} from './data-helpers';
+import { listToDropDown, makeFrozenStaticListIds } from './data-helpers';
 
 export const MOD_STRIPPED = 'MOD_STRIPPED' as const;
 export const MOD_STANDARD = 'MOD_STANDARD' as const;
@@ -10,10 +10,10 @@ export type MechBodyModId =
     | typeof MOD_REINFORCED;
 
 export interface MechBody {
-    id: MechBodyModId
-    display_name: string
-    modifier: number
-    max_tons: number
+    id: MechBodyModId;
+    display_name: string;
+    modifier: number;
+    max_tons: number;
 }
 
 export const MECH_BODY_MODS: Readonly<Record<MechBodyModId, MechBody>> = makeFrozenStaticListIds<MechBody>({

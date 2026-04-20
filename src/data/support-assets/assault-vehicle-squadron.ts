@@ -28,7 +28,7 @@ import {
     VEH_HOWITZER,
     VEH_SUBMUNITIONS,
 } from '../unit-weapons';
-import type { SupportAssetUnitDef } from './_support-asset-types';
+import type { SupportAssetUnitDef, SupportAssetUnitVehicleDef } from './_support-asset-types';
 
 export const ASSAULT_VEHICLE_SQUADRON = 'ASSAULT_VEHICLE_SQUADRON' as const;
 
@@ -51,7 +51,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
             trait(TRAIT_SQUADRON),
             trait(TRAIT_ALL_TERRAIN),
         ],
-        vehicles: makeStaticListIds({
+        vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
             NETTER_VEHICLE: {
                 ...baseStats,
                 display_name: 'Netter Vehicle',

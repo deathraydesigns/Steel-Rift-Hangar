@@ -7,14 +7,15 @@ export interface DisplayNameItem {
     id?: string;
 }
 
-export function listToDropDown<T extends DisplayNameItem>(list: Record<string, T>) {
-    return Object.keys(list)
-        .map((key) => {
-            return Object.assign({}, list[key], {
-                value: key,
-                text: list[key].display_name,
-            });
+export function listToDropDown<K extends string, T extends DisplayNameItem>(
+    list: Record<K, T>,
+): (T & { value: K; text: string })[] {
+    return (Object.keys(list) as K[]).map((key) => {
+        return Object.assign({}, list[key], {
+            value: key,
+            text: list[key].display_name,
         });
+    });
 }
 
 export function updateObject<T extends Record<string, any>>(
@@ -33,9 +34,9 @@ export function updateObject<T extends Record<string, any>>(
 /**
  * Ensures each item in the object has an 'id' property matching its key.
  */
-export function makeStaticListIds<T extends { id: string }>(
+export function makeStaticListIds<T extends { id: any }>(
     obj: Record<string, Omit<T, 'id'>>,
-): Record<string, T> {
+): Record<T['id'], T> {
     const result = {} as Record<string, T>;
     for (const [id, item] of Object.entries(obj)) {
         result[id] = {
@@ -46,17 +47,10 @@ export function makeStaticListIds<T extends { id: string }>(
     return result;
 }
 
-export function makeFrozenStaticListIds<T extends { id: string }>(
+export function makeFrozenStaticListIds<T extends { id: any }>(
     obj: Record<string, Omit<T, 'id'>>,
-): Readonly<Record<string, T>> {
+): Readonly<Record<T['id'], T>> {
     return deepFreeze(makeStaticListIds(obj));
-}
-
-
-export function makeKeyedFrozenStaticListIds<K extends string, T extends { id: K }>(
-    obj: Record<string, Omit<T, 'id'>>,
-): Readonly<Record<K, T>> {
-    return deepFreeze(makeStaticListIds(obj))
 }
 
 export function deepFreeze<T extends object>(object: T, depth = 0): Readonly<T> {
@@ -79,6 +73,7 @@ export function deepFreeze<T extends object>(object: T, depth = 0): Readonly<T> 
 export interface TraitDef {
     id: string;
     display_name: string;
+    description: string;
     granted_order_ids: string[];
 }
 

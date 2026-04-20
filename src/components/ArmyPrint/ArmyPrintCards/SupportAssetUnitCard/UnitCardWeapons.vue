@@ -1,26 +1,31 @@
 <script setup lang="ts">
-import {TRAIT_LIMITED, TRAIT_SHORT} from '../../../../data/weapon-traits.js';
-import {sortBy} from 'es-toolkit';
-import {computed} from 'vue';
+import { sortBy } from 'es-toolkit';
+import { computed } from 'vue';
+import { TRAIT_LIMITED, TRAIT_SHORT, type WeaponTraitId } from '../../../../data/weapon-traits.js';
+import type { Trait } from '../../../../types';
 import FormatInches from '../../../functional/format-inches.vue';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
 
-const {weapons, damageSuffix} = defineProps({
-  weapons: {
-    type: Array,
-    require: true,
-  },
-  damageSuffix: {
-    type: String,
-    default: '',
-  },
-});
+type BasicWeaponInfo = {
+  display_name: string,
+  damage: number | null,
+  range: number | null,
+  melee_base_damage?: number | null,
+  melee_trait_damage?: number,
+  melee_total_damage?: number,
+  traits: Trait<WeaponTraitId>[],
+}
 
-function filterTraits(traits) {
+const { weapons, damageSuffix = '' } = defineProps<{
+  weapons: BasicWeaponInfo[],
+  damageSuffix?: string,
+}>();
+
+function filterTraits(traits: Trait[]) {
   return traits.filter((trait) => trait.id !== TRAIT_LIMITED && trait.id !== TRAIT_SHORT);
 }
 
-const sortedWeapons = computed(() => sortBy(weapons, 'display_name').reverse());
+const sortedWeapons = computed(() => sortBy<BasicWeaponInfo>(weapons, ['display_name']).reverse());
 
 </script>
 <template>
@@ -40,15 +45,15 @@ const sortedWeapons = computed(() => sortBy(weapons, 'display_name').reverse());
       </td>
       <td class="text-end text-nowrap">
         <DamageFormatter
-            :damage="weapon.damage"
-            :melee-base-damage="weapon.melee_base_damage"
-            :melee-modifier-damage="weapon.melee_trait_damage"
-            :melee-total-damage="weapon.melee_total_damage"
-            :suffix="damageSuffix"
+          :damage="weapon.damage"
+          :melee-base-damage="weapon.melee_base_damage"
+          :melee-modifier-damage="weapon.melee_trait_damage"
+          :melee-total-damage="weapon.melee_total_damage"
+          :suffix="damageSuffix"
         />
       </td>
       <td class="text-end">
-        <format-inches :value="weapon.range"/>
+        <format-inches :value="weapon.range" />
       </td>
       <td class="text-start small">
         <div v-for="(trait, index) in filterTraits(weapon.traits)">
