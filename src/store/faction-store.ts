@@ -1,4 +1,3 @@
-import { find } from 'es-toolkit/compat';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, readonly, ref } from 'vue';
 import {
@@ -37,7 +36,7 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
 
         function perkBelongsToFaction(perkId: FactionPerkId | null) {
             if (!perkId) return false;
-            return !!find(FACTIONS[faction_id.value].faction_perk_groups, (perkGroup) => {
+            return !!Object.values(FACTIONS[faction_id.value].faction_perk_groups).find((perkGroup) => {
                 return perkGroup.perk_ids.includes(perkId);
             });
         }

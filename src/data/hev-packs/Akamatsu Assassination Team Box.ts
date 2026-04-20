@@ -1,10 +1,10 @@
 import { EXTRA_PLATING_ARMOR_UPGRADE, NO_ARMOR_UPGRADE } from '../mech-armor-upgrades';
-import { MOD_REINFORCED, MOD_STANDARD } from '../mech-body';
-import { MOBILITY_BI_PEDAL } from '../mech-mobility';
+import { MECH_BODY_MOD } from '../mech-body';
+import { MECH_MOBILITY } from '../mech-mobility';
 import { TEAM_ASSASSIN } from '../mech-teams';
 import { DIRECTIONAL_THRUSTER, HIGH_SPEED_SERVOS, JUMP_JETS } from '../mech-upgrades';
 import { COMBAT_BLADE, PLASMA_BLADE } from '../mech-weapons';
-import { SIZE_LIGHT, SIZE_MEDIUM } from '../unit-sizes';
+import { SIZE } from '../unit-sizes';
 import { TYPE_HEV } from '../unit-types';
 
 export const pack3 = {
@@ -14,11 +14,11 @@ export const pack3 = {
         {
             id: 1,
             name: 'Haro Light HE-V 1',
-            size_id: SIZE_LIGHT,
-            structure_mod_id: MOD_REINFORCED,
-            armor_mod_id: MOD_STANDARD,
+            size_id: SIZE.LIGHT,
+            structure_mod_id: MECH_BODY_MOD.REINFORCED,
+            armor_mod_id: MECH_BODY_MOD.STANDARD,
             armor_upgrade_id: NO_ARMOR_UPGRADE,
-            mobility_id: MOBILITY_BI_PEDAL,
+            mobility_id: MECH_MOBILITY.BI_PEDAL,
             preferred_team_id: TEAM_ASSASSIN,
             weapons: [
                 {
@@ -53,11 +53,11 @@ export const pack3 = {
         {
             id: 2,
             name: 'Kenshiro Medium HE-V 1',
-            size_id: SIZE_MEDIUM,
-            structure_mod_id: MOD_REINFORCED,
-            armor_mod_id: MOD_STANDARD,
+            size_id: SIZE.MEDIUM,
+            structure_mod_id: MECH_BODY_MOD.REINFORCED,
+            armor_mod_id: MECH_BODY_MOD.STANDARD,
             armor_upgrade_id: EXTRA_PLATING_ARMOR_UPGRADE,
-            mobility_id: MOBILITY_BI_PEDAL,
+            mobility_id: MECH_MOBILITY.BI_PEDAL,
             preferred_team_id: TEAM_ASSASSIN,
             weapons: [
                 {
@@ -92,11 +92,11 @@ export const pack3 = {
         {
             id: 3,
             name: 'Haro Light HE-V 2',
-            size_id: SIZE_LIGHT,
-            structure_mod_id: MOD_REINFORCED,
-            armor_mod_id: MOD_STANDARD,
+            size_id: SIZE.LIGHT,
+            structure_mod_id: MECH_BODY_MOD.REINFORCED,
+            armor_mod_id: MECH_BODY_MOD.STANDARD,
             armor_upgrade_id: NO_ARMOR_UPGRADE,
-            mobility_id: MOBILITY_BI_PEDAL,
+            mobility_id: MECH_MOBILITY.BI_PEDAL,
             preferred_team_id: TEAM_ASSASSIN,
             weapons: [
                 {
@@ -131,11 +131,11 @@ export const pack3 = {
         {
             id: 4,
             name: 'Kenshiro Medium HE-V 2',
-            size_id: SIZE_MEDIUM,
-            structure_mod_id: MOD_REINFORCED,
-            armor_mod_id: MOD_STANDARD,
+            size_id: SIZE.MEDIUM,
+            structure_mod_id: MECH_BODY_MOD.REINFORCED,
+            armor_mod_id: MECH_BODY_MOD.STANDARD,
             armor_upgrade_id: EXTRA_PLATING_ARMOR_UPGRADE,
-            mobility_id: MOBILITY_BI_PEDAL,
+            mobility_id: MECH_MOBILITY.BI_PEDAL,
             preferred_team_id: TEAM_ASSASSIN,
             weapons: [
                 {

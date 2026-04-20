@@ -1,21 +1,16 @@
 import { makeFrozenStaticListIds } from './data-helpers';
 import { TEAM_SIZE_LARGE, TEAM_SIZE_MEDIUM, TEAM_SIZE_SMALL } from './mech-teams';
 
-export const GAME_SIZE_DUEL = 'GAME_SIZE_DUEL' as const;
-export const GAME_SIZE_RECON = 'GAME_SIZE_RECON' as const;
-export const GAME_SIZE_STRIKE = 'GAME_SIZE_STRIKE' as const;
-export const GAME_SIZE_BATTLE = 'GAME_SIZE_BATTLE' as const;
-export const GAME_SIZE_WAR = 'GAME_SIZE_WAR' as const;
-
-export type GameSizeId =
-    | typeof GAME_SIZE_DUEL
-    | typeof GAME_SIZE_RECON
-    | typeof GAME_SIZE_STRIKE
-    | typeof GAME_SIZE_BATTLE
-    | typeof GAME_SIZE_WAR;
+export enum GAME_SIZE {
+    DUEL = 'GAME_SIZE_DUEL',
+    RECON = 'GAME_SIZE_RECON',
+    STRIKE = 'GAME_SIZE_STRIKE',
+    BATTLE = 'GAME_SIZE_BATTLE',
+    WAR = 'GAME_SIZE_WAR',
+}
 
 export interface GameSize {
-    id: GameSizeId;
+    id: GAME_SIZE;
     display_name: string,
     min_tons: number;
     max_support_assets: number;
@@ -29,7 +24,7 @@ export interface GameSize {
 }
 
 export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
-    [GAME_SIZE_DUEL]: {
+    [GAME_SIZE.DUEL]: {
         display_name: 'Duel',
         min_tons: 0,
         max_support_assets: 0,
@@ -41,7 +36,7 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
             [TEAM_SIZE_LARGE]: 0,
         },
     },
-    [GAME_SIZE_RECON]: {
+    [GAME_SIZE.RECON]: {
         display_name: 'Recon',
         min_tons: 100,
         max_support_assets: 1,
@@ -53,7 +48,7 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
             [TEAM_SIZE_LARGE]: 0,
         },
     },
-    [GAME_SIZE_STRIKE]: {
+    [GAME_SIZE.STRIKE]: {
         display_name: 'Strike',
         min_tons: 150,
         max_support_assets: 2,
@@ -65,7 +60,7 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
             [TEAM_SIZE_LARGE]: 0,
         },
     },
-    [GAME_SIZE_BATTLE]: {
+    [GAME_SIZE.BATTLE]: {
         display_name: 'Battle',
         min_tons: 200,
         max_support_assets: 3,
@@ -77,7 +72,7 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
             [TEAM_SIZE_LARGE]: 1,
         },
     },
-    [GAME_SIZE_WAR]: {
+    [GAME_SIZE.WAR]: {
         display_name: 'All Out War',
         min_tons: 350,
         max_support_assets: 4,
@@ -91,13 +86,13 @@ export const GAME_SIZES = makeFrozenStaticListIds<GameSize>({
     },
 });
 
-export function getGameSizeId(maxTons: number): GameSizeId | undefined {
+export function getGameSizeId(maxTons: number): GAME_SIZE | undefined {
     const sizes = [
-        GAME_SIZE_WAR,
-        GAME_SIZE_BATTLE,
-        GAME_SIZE_STRIKE,
-        GAME_SIZE_RECON,
-        GAME_SIZE_DUEL,
+        GAME_SIZE.WAR,
+        GAME_SIZE.BATTLE,
+        GAME_SIZE.STRIKE,
+        GAME_SIZE.RECON,
+        GAME_SIZE.DUEL,
     ];
 
     return sizes.find((sizeId) => {

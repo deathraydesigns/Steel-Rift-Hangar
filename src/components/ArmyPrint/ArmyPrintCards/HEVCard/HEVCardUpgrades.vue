@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
 import { computed } from 'vue';
 import { NO_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
-import { MECH_MOBILITIES, MOBILITY_BI_PEDAL } from '../../../../data/mech-mobility';
+import { MECH_MOBILITIES, MECH_MOBILITY } from '../../../../data/mech-mobility';
 import { MINEFIELD_DRONE_CARRIER_SYSTEM } from '../../../../data/mech-upgrades.js';
 import { TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED } from '../../../../data/upgrade-traits.js';
 import { useMechStore } from '../../../../store/mech-store';
@@ -52,7 +51,7 @@ const upgrades = computed((): UpgradeItem[] => {
 
   const mobility = [];
   const mech = mechStore.getMech(mechId)!;
-  if (mech.mobility_id !== MOBILITY_BI_PEDAL) {
+  if (mech.mobility_id !== MECH_MOBILITY.BI_PEDAL) {
     mobility.push({
       display_name: MECH_MOBILITIES[mech.mobility_id].display_name,
     });

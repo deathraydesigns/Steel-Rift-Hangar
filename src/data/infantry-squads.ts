@@ -1,7 +1,7 @@
 import { type Trait } from '../types';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
-import { SIZE_ULTRA_LIGHT, type UnitSizeId } from './unit-sizes';
-import { TRAIT_MINE_SWEEPER, TRAIT_SUPPRESSIVE_FIRE, TRAIT_TARGET_DESIGNATOR } from './unit-traits';
+import { SIZE } from './unit-sizes';
+import { UNIT_TRAIT } from './unit-traits';
 import { TYPE_INFANTRY } from './unit-types';
 import {
     INFANTRY_ELECTRO_ARC_PULSERS,
@@ -31,7 +31,7 @@ export type InfantrySquadId =
 
 const baseInfantryStats = {
     unit_type_id: TYPE_INFANTRY,
-    size_id: SIZE_ULTRA_LIGHT,
+    size_id: SIZE.ULTRA_LIGHT,
     move: 3,
     armor: 0,
     structure: 3,
@@ -39,13 +39,13 @@ const baseInfantryStats = {
 
 const baseSuitStats = {
     unit_type_id: TYPE_INFANTRY,
-    size_id: SIZE_ULTRA_LIGHT,
+    size_id: SIZE.ULTRA_LIGHT,
 };
 
 export interface InfantrySquad {
     id: InfantrySquadId,
     unit_type_id: typeof TYPE_INFANTRY,
-    size_id: UnitSizeId,
+    size_id: SIZE,
     move: number,
     armor: number,
     structure: number,
@@ -62,7 +62,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
             INFANTRY_RIFLES,
         ],
         traits: [
-            trait(TRAIT_SUPPRESSIVE_FIRE),
+            trait(UNIT_TRAIT.SUPPRESSIVE_FIRE),
         ],
     },
     [INFANTRY_ANTI_TANK_SQUAD]: {
@@ -81,7 +81,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
             INFANTRY_RIFLES,
         ],
         traits: [
-            trait(TRAIT_TARGET_DESIGNATOR),
+            trait(UNIT_TRAIT.TARGET_DESIGNATOR),
         ],
     },
     [INFANTRY_ENGINEER_SQUAD]: {
@@ -91,7 +91,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
             INFANTRY_RIFLES,
         ],
         traits: [
-            trait(TRAIT_MINE_SWEEPER),
+            trait(UNIT_TRAIT.MINE_SWEEPER),
         ],
     },
     [INFANTRY_ARC_SUIT_SQUAD]: {
@@ -105,7 +105,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
             INFANTRY_ELECTRO_ARC_PULSERS,
         ],
         traits: [
-            trait(TRAIT_SUPPRESSIVE_FIRE),
+            trait(UNIT_TRAIT.SUPPRESSIVE_FIRE),
         ],
     },
     [INFANTRY_REAPER_SUIT_SQUAD]: {
@@ -130,7 +130,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
             INFANTRY_HEAVY_RIFLES,
         ],
         traits: [
-            trait(TRAIT_TARGET_DESIGNATOR),
+            trait(UNIT_TRAIT.TARGET_DESIGNATOR),
         ],
     },
 });

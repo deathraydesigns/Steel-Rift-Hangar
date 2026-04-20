@@ -5,19 +5,8 @@ import {
     INFANTRY_RECON_SQUAD,
     INFANTRY_RIFLE_SQUAD,
 } from '../infantry-squads';
-import { SIZE_MEDIUM } from '../unit-sizes';
-import {
-    TRAIT_ALL_TERRAIN,
-    TRAIT_CLOSE_SUPPORT,
-    TRAIT_GARRISON,
-    TRAIT_GROUP_COMMAND,
-    TRAIT_INFERNO_GEAR,
-    TRAIT_MAGNETIC_GRAPPLES,
-    TRAIT_MINE_SWEEPER,
-    TRAIT_SHIELD_PROJECTOR,
-    TRAIT_SQUADRON,
-    TRAIT_UNIT_SIZE_AND_TYPE,
-} from '../unit-traits';
+import { SIZE } from '../unit-sizes';
+import { UNIT_TRAIT } from '../unit-traits';
 import { TYPE_VEHICLE } from '../unit-types';
 import {
     AA_ARRAY,
@@ -41,15 +30,15 @@ const baseStats = {
 export const ASSAULT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDef, 'id'>> = {
     [ASSAULT_VEHICLE_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
-        size_id: SIZE_MEDIUM,
+        size_id: SIZE.MEDIUM,
         display_name: 'Assault Vehicle Squadron',
         cost: 20,
         max_vehicles: 4,
         defense: 4,
         traits: [
-            trait(TRAIT_UNIT_SIZE_AND_TYPE, undefined, 'Medium Vehicle'),
-            trait(TRAIT_SQUADRON),
-            trait(TRAIT_ALL_TERRAIN),
+            trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Medium Vehicle'),
+            trait(UNIT_TRAIT.SQUADRON),
+            trait(UNIT_TRAIT.ALL_TERRAIN),
         ],
         vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
             NETTER_VEHICLE: {
@@ -60,8 +49,8 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_MAGNETIC_GRAPPLES),
-                    trait(TRAIT_CLOSE_SUPPORT),
+                    trait(UNIT_TRAIT.MAGNETIC_GRAPPLES),
+                    trait(UNIT_TRAIT.CLOSE_SUPPORT),
                 ],
             },
             DEMOLITION_VEHICLE: {
@@ -73,7 +62,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_INFERNO_GEAR),
+                    trait(UNIT_TRAIT.INFERNO_GEAR),
                 ],
             },
             INFANTRY_FIGHTING_VEHICLE: {
@@ -84,8 +73,8 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_GROUP_COMMAND),
-                    trait(TRAIT_GARRISON, 3, 'Infantry Squads'),
+                    trait(UNIT_TRAIT.GROUP_COMMAND),
+                    trait(UNIT_TRAIT.GARRISON, 3, 'Infantry Squads'),
                 ],
                 garrison_choice_unit_ids: [
                     INFANTRY_RIFLE_SQUAD,
@@ -94,8 +83,8 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     INFANTRY_ENGINEER_SQUAD,
                 ],
                 garrison_unit_traits: [
-                    trait(TRAIT_SQUADRON),
-                    trait(TRAIT_ALL_TERRAIN),
+                    trait(UNIT_TRAIT.SQUADRON),
+                    trait(UNIT_TRAIT.ALL_TERRAIN),
                 ],
             },
             COMBAT_ENGINEERING_VEHICLE: {
@@ -106,7 +95,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_MINE_SWEEPER),
+                    trait(UNIT_TRAIT.MINE_SWEEPER),
                 ],
             },
             SHIELD_PROJECTOR_VEHICLE: {
@@ -116,7 +105,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_SHIELD_PROJECTOR),
+                    trait(UNIT_TRAIT.SHIELD_PROJECTOR),
                 ],
             },
             FIRE_SUPPORT_VEHICLE: {

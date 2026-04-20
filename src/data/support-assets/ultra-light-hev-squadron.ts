@@ -1,17 +1,6 @@
 import { makeStaticListIds, trait } from '../data-helpers';
-import { SIZE_ULTRA_LIGHT } from '../unit-sizes';
-import {
-    TRAIT_ALL_TERRAIN,
-    TRAIT_CLOSE_SUPPORT,
-    TRAIT_INFERNO_GEAR,
-    TRAIT_MAGNETIC_GRAPPLES,
-    TRAIT_SCRAMBLERS,
-    TRAIT_SQUADRON,
-    TRAIT_SUPPRESSIVE_FIRE,
-    TRAIT_TARGET_DESIGNATOR,
-    TRAIT_UL_HEV_LAUNCH_GEAR,
-    TRAIT_UNIT_SIZE_AND_TYPE,
-} from '../unit-traits';
+import { SIZE } from '../unit-sizes';
+import { UNIT_TRAIT } from '../unit-traits';
 import { TYPE_HEV } from '../unit-types';
 import {
     SHORT_RANGE_MISSILE_PACK,
@@ -43,16 +32,16 @@ export type UpgradePodId =
 export const ULTRA_LIGHT_HEV_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDef, 'id'>> = {
     [ULTRA_LIGHT_HEV_SQUADRON]: {
         unit_type_id: TYPE_HEV,
-        size_id: SIZE_ULTRA_LIGHT,
+        size_id: SIZE.ULTRA_LIGHT,
         display_name: 'Ultra-Light HE-V Squadron',
         cost: 10,
         max_vehicles: 3,
         defense: 2,
         traits: [
-            trait(TRAIT_UNIT_SIZE_AND_TYPE, undefined, 'UL HE-V'),
-            trait(TRAIT_SQUADRON),
-            trait(TRAIT_CLOSE_SUPPORT),
-            trait(TRAIT_ALL_TERRAIN),
+            trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'UL HE-V'),
+            trait(UNIT_TRAIT.SQUADRON),
+            trait(UNIT_TRAIT.CLOSE_SUPPORT),
+            trait(UNIT_TRAIT.ALL_TERRAIN),
         ],
         upgrade_pods: makeStaticListIds<UpgradePod>({
             [POD_MISSILE_PACK]: {
@@ -62,7 +51,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                 weapon_id: UL_ROCKET_PACK,
             },
             [POD_LAUNCH_GEAR]: {
-                trait: trait(TRAIT_UL_HEV_LAUNCH_GEAR),
+                trait: trait(UNIT_TRAIT.UL_HEV_LAUNCH_GEAR),
             },
         }),
         vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
@@ -76,7 +65,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     UL_MELEE_WEAPON,
                 ],
                 traits: [
-                    trait(TRAIT_MAGNETIC_GRAPPLES),
+                    trait(UNIT_TRAIT.MAGNETIC_GRAPPLES),
                 ],
             },
             PYRO: {
@@ -89,7 +78,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_INFERNO_GEAR),
+                    trait(UNIT_TRAIT.INFERNO_GEAR),
                 ],
             },
             COMMANDO: {
@@ -101,8 +90,8 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_SCRAMBLERS),
-                    trait(TRAIT_TARGET_DESIGNATOR),
+                    trait(UNIT_TRAIT.SCRAMBLERS),
+                    trait(UNIT_TRAIT.TARGET_DESIGNATOR),
                 ],
             },
             RIFLEMAN: {
@@ -115,7 +104,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     UL_GRENADES,
                 ],
                 traits: [
-                    trait(TRAIT_SUPPRESSIVE_FIRE),
+                    trait(UNIT_TRAIT.SUPPRESSIVE_FIRE),
                 ],
             },
         }),

@@ -1,11 +1,10 @@
-import { find } from 'es-toolkit/compat';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, ref } from 'vue';
 import { GAME_SIZES, getGameSizeId } from '../data/game-sizes';
 import { MINEFIELD_DRONE_CARRIER_SYSTEM } from '../data/mech-upgrades';
 import { ORDER_SUPPORT_MSOE } from '../data/orders/support-orders';
 import { MINE_DRONE_BARRAGE } from '../data/support-asset-weapons';
-import { TRAIT_MSOE_LAUNCHER } from '../data/unit-traits';
+import { UNIT_TRAIT } from '../data/unit-traits';
 import { useMechStore } from './mech-store';
 import { useSupportAssetCountsStore } from './support-asset-count-store';
 import { useSupportAssetUnitsStore } from './support-asset-units-store';
@@ -39,8 +38,8 @@ export const useArmyListStore = defineScopeableStore('army-list', ({ scope }: { 
 
         const includes_mine_drones = computed(() => {
 
-            const match = find(mechStore.mechs, (mech) => {
-                return find(mech.upgrades, { upgrade_id: MINEFIELD_DRONE_CARRIER_SYSTEM });
+            const match = mechStore.mechs.find((mech) => {
+                return mech.upgrades.find(t => t.upgrade_id === MINEFIELD_DRONE_CARRIER_SYSTEM);
             });
 
             if (match) {
@@ -58,7 +57,7 @@ export const useArmyListStore = defineScopeableStore('army-list', ({ scope }: { 
                 const unitInfo = supportAssetUnitStore.getUnitAttachmentInfo(unit.id);
                 if (!unitInfo) return false;
                 return unitInfo.vehicles.find((vehicle) => {
-                    return vehicle.traits.find((trait) => trait.id === TRAIT_MSOE_LAUNCHER);
+                    return vehicle.traits.find((trait) => trait.id === UNIT_TRAIT.MSOE_LAUNCHER);
                 });
             });
 

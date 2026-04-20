@@ -5,15 +5,8 @@ import {
     INFANTRY_RECON_SQUAD,
     INFANTRY_RIFLE_SQUAD,
 } from '../infantry-squads';
-import { SIZE_ULTRA } from '../unit-sizes';
-import {
-    TRAIT_ALL_TERRAIN,
-    TRAIT_BUNKER_MINE_DRONES,
-    TRAIT_GARRISON,
-    TRAIT_GROUP_COMMAND,
-    TRAIT_SQUADRON,
-    TRAIT_UNIT_SIZE_AND_TYPE,
-} from '../unit-traits';
+import { SIZE } from '../unit-sizes';
+import { UNIT_TRAIT } from '../unit-traits';
 import { TYPE_FORTIFICATION } from '../unit-types';
 import { BUNKER_AUTO_CANNON, BUNKER_MISSILE_PACK, BUNKER_ROCKET_PACK } from '../unit-weapons';
 import type { SupportAssetUnitDef, SupportAssetUnitVehicleDef } from './_support-asset-types';
@@ -23,15 +16,15 @@ export const INFANTRY_OUTPOST = 'INFANTRY_OUTPOST' as const;
 export const INFANTRY_OUTPOST_DATA: Record<string, Omit<SupportAssetUnitDef, 'id'>> = {
     [INFANTRY_OUTPOST]: {
         unit_type_id: TYPE_FORTIFICATION,
-        size_id: SIZE_ULTRA,
+        size_id: SIZE.ULTRA,
         display_name: 'Infantry Outpost',
         cost: 10,
         max_vehicles: 2,
         all_vehicle_must_be_the_same: true,
         defense: 6,
         traits: [
-            trait(TRAIT_UNIT_SIZE_AND_TYPE, undefined, 'Fortification'),
-            trait(TRAIT_GROUP_COMMAND),
+            trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Fortification'),
+            trait(UNIT_TRAIT.GROUP_COMMAND),
         ],
         vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
             BUNKER: {
@@ -47,8 +40,8 @@ export const INFANTRY_OUTPOST_DATA: Record<string, Omit<SupportAssetUnitDef, 'id
                     ],
                 },
                 traits: [
-                    trait(TRAIT_GARRISON, 6, 'Infantry Squads'),
-                    trait(TRAIT_BUNKER_MINE_DRONES, 2),
+                    trait(UNIT_TRAIT.GARRISON, 6, 'Infantry Squads'),
+                    trait(UNIT_TRAIT.BUNKER_MINE_DRONES, 2),
                 ],
                 garrison_choice_unit_ids: [
                     INFANTRY_RIFLE_SQUAD,
@@ -57,8 +50,8 @@ export const INFANTRY_OUTPOST_DATA: Record<string, Omit<SupportAssetUnitDef, 'id
                     INFANTRY_ENGINEER_SQUAD,
                 ],
                 garrison_unit_traits: [
-                    trait(TRAIT_SQUADRON),
-                    trait(TRAIT_ALL_TERRAIN),
+                    trait(UNIT_TRAIT.SQUADRON),
+                    trait(UNIT_TRAIT.ALL_TERRAIN),
                 ],
             },
         }),

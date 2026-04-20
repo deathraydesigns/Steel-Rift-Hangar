@@ -1,7 +1,7 @@
 import { type NumberBySize, type Trait, type TraitsBySize } from '../types';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
 import { SUBMUNITIONS } from './mech-weapons';
-import { type MechSizeId, SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA } from './unit-sizes';
+import { type MechSizeId, SIZE } from './unit-sizes';
 import {
     TRAIT_COMPACT,
     TRAIT_DASH,
@@ -70,10 +70,10 @@ interface MakeUpgradeInput {
 
 function makeUpgrade(item: MakeUpgradeInput): Omit<MechUpgrade, 'id'> {
     const cost_by_size: NumberBySize = {
-        [SIZE_LIGHT]: item.cost_by_size?.[SIZE_LIGHT] ?? item.cost ?? null,
-        [SIZE_MEDIUM]: item.cost_by_size?.[SIZE_MEDIUM] ?? item.cost ?? null,
-        [SIZE_HEAVY]: item.cost_by_size?.[SIZE_HEAVY] ?? item.cost ?? null,
-        [SIZE_ULTRA]: item.cost_by_size?.[SIZE_ULTRA] ?? item.cost ?? null,
+        [SIZE.LIGHT]: item.cost_by_size?.[SIZE.LIGHT] ?? item.cost ?? null,
+        [SIZE.MEDIUM]: item.cost_by_size?.[SIZE.MEDIUM] ?? item.cost ?? null,
+        [SIZE.HEAVY]: item.cost_by_size?.[SIZE.HEAVY] ?? item.cost ?? null,
+        [SIZE.ULTRA]: item.cost_by_size?.[SIZE.ULTRA] ?? item.cost ?? null,
     };
 
     const slots = item.slots !== undefined ? item.slots : 1;
@@ -96,67 +96,67 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
         display_name: 'Anti-Missile System',
         description: 'This Unit may not be Targeted by a Weapon using the Smart trait if that Weapon is using the LoS of another Model.',
         cost_by_size: {
-            [SIZE_LIGHT]: 1,
-            [SIZE_MEDIUM]: 1,
-            [SIZE_HEAVY]: 2,
-            [SIZE_ULTRA]: 2,
+            [SIZE.LIGHT]: 1,
+            [SIZE.MEDIUM]: 1,
+            [SIZE.HEAVY]: 2,
+            [SIZE.ULTRA]: 2,
         },
     }),
     [ELECTRONIC_COUNTERMEASURES]: makeUpgrade({
         display_name: 'Electronic Countermeasures',
         description: 'This Unit may not be targeted by LOCK ON orders.',
         cost_by_size: {
-            [SIZE_LIGHT]: 2,
-            [SIZE_MEDIUM]: 2,
-            [SIZE_HEAVY]: 1,
-            [SIZE_ULTRA]: 1,
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 2,
+            [SIZE.HEAVY]: 1,
+            [SIZE.ULTRA]: 1,
         },
     }),
     [HEAVY_REACTOR]: makeUpgrade({
         display_name: 'Heavy Reactor',
         description: 'When this Unit would take Structure damage from Overdrive or receiving a Redline Marker, roll a D6. On a 4+ this Damage is ignored.',
         cost_by_size: {
-            [SIZE_LIGHT]: 1,
-            [SIZE_MEDIUM]: 1,
-            [SIZE_HEAVY]: 2,
-            [SIZE_ULTRA]: 2,
+            [SIZE.LIGHT]: 1,
+            [SIZE.MEDIUM]: 1,
+            [SIZE.HEAVY]: 2,
+            [SIZE.ULTRA]: 2,
         },
     }),
     [JUMP_JETS]: makeUpgrade({
         display_name: 'Jump Jets',
         description: 'This Unit may perform the JUMP Order.',
         cost_by_size: {
-            [SIZE_LIGHT]: 3,
-            [SIZE_MEDIUM]: 3,
-            [SIZE_HEAVY]: 2,
-            [SIZE_ULTRA]: 2,
+            [SIZE.LIGHT]: 3,
+            [SIZE.MEDIUM]: 3,
+            [SIZE.HEAVY]: 2,
+            [SIZE.ULTRA]: 2,
         },
     }),
     [MINEFIELD_DRONE_CARRIER_SYSTEM]: makeUpgrade({
         display_name: 'Minefield Drone Carrier System',
         description: 'This Unit has the Minelayer (MOVE) trait. Limited (1/2/3/3)',
         cost_by_size: {
-            [SIZE_LIGHT]: 2,
-            [SIZE_MEDIUM]: 3,
-            [SIZE_HEAVY]: 6,
-            [SIZE_ULTRA]: 6,
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 3,
+            [SIZE.HEAVY]: 6,
+            [SIZE.ULTRA]: 6,
         },
         traits_by_size: {
-            [SIZE_LIGHT]: [trait(TRAIT_UPGRADE_LIMITED, 1)],
-            [SIZE_MEDIUM]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
-            [SIZE_HEAVY]: [trait(TRAIT_UPGRADE_LIMITED, 3)],
-            [SIZE_ULTRA]: [trait(TRAIT_UPGRADE_LIMITED, 3)],
+            [SIZE.LIGHT]: [trait(TRAIT_UPGRADE_LIMITED, 1)],
+            [SIZE.MEDIUM]: [trait(TRAIT_UPGRADE_LIMITED, 2)],
+            [SIZE.HEAVY]: [trait(TRAIT_UPGRADE_LIMITED, 3)],
+            [SIZE.ULTRA]: [trait(TRAIT_UPGRADE_LIMITED, 3)],
         },
-        limited_size_ids: [SIZE_MEDIUM, SIZE_HEAVY, SIZE_ULTRA],
+        limited_size_ids: [SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
     }),
     [MINEFIELD_DRONE_TRACKING_SYSTEM]: makeUpgrade({
         display_name: 'Minefield Drone Tracking Submunitions',
         description: 'When making an ENGAGE Order, this Unit may target a Mine Drone Token. The Commander of the Target Mine Drone Token makes Defense Rolls on a 3+. If at least one point of Damage would be inflicted, remove the Token.',
         cost_by_size: {
-            [SIZE_LIGHT]: 1,
-            [SIZE_MEDIUM]: 1,
-            [SIZE_HEAVY]: 2,
-            [SIZE_ULTRA]: 2,
+            [SIZE.LIGHT]: 1,
+            [SIZE.MEDIUM]: 1,
+            [SIZE.HEAVY]: 2,
+            [SIZE.ULTRA]: 2,
         },
         upgrade_required: [SUBMUNITIONS],
     }),
@@ -164,20 +164,20 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
         display_name: 'Optic Camouflage',
         description: 'Add +1 to Defense Rolls for this Unit when the Active Unit is outside of 10”.',
         cost_by_size: {
-            [SIZE_LIGHT]: 5,
-            [SIZE_MEDIUM]: 4,
-            [SIZE_HEAVY]: 3,
-            [SIZE_ULTRA]: 2,
+            [SIZE.LIGHT]: 5,
+            [SIZE.MEDIUM]: 4,
+            [SIZE.HEAVY]: 3,
+            [SIZE.ULTRA]: 2,
         },
     }),
     [TARGET_DESIGNATOR]: makeUpgrade({
         display_name: 'Target Designator',
         description: 'Once this Unit has completed an Activation, place a Target Designator Marker on it. This Marker may not be placed if this Unit performed a JUMP Order during its Activation. Remove this Marker at the start of the Unit’s next Activation.',
         cost_by_size: {
-            [SIZE_LIGHT]: 2,
-            [SIZE_MEDIUM]: 1,
-            [SIZE_HEAVY]: 1,
-            [SIZE_ULTRA]: 1,
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 1,
+            [SIZE.HEAVY]: 1,
+            [SIZE.ULTRA]: 1,
         },
     }),
     [COOLANT_TANKS]: makeUpgrade({
@@ -187,20 +187,20 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
             trait(TRAIT_UPGRADE_LIMITED, 2),
         ],
         cost_by_size: {
-            [SIZE_LIGHT]: 1,
-            [SIZE_MEDIUM]: 1,
-            [SIZE_HEAVY]: 2,
-            [SIZE_ULTRA]: 2,
+            [SIZE.LIGHT]: 1,
+            [SIZE.MEDIUM]: 1,
+            [SIZE.HEAVY]: 2,
+            [SIZE.ULTRA]: 2,
         },
     }),
     [DIRECTIONAL_THRUSTER]: makeUpgrade({
         display_name: 'Directional Thruster',
         description: 'Dash (2)',
         cost_by_size: {
-            [SIZE_LIGHT]: 1,
-            [SIZE_MEDIUM]: 2,
-            [SIZE_HEAVY]: 3,
-            [SIZE_ULTRA]: 4,
+            [SIZE.LIGHT]: 1,
+            [SIZE.MEDIUM]: 2,
+            [SIZE.HEAVY]: 3,
+            [SIZE.ULTRA]: 4,
         },
         traits: [
             trait(TRAIT_DASH, 2),
@@ -210,10 +210,10 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
         display_name: 'Haptic Suit',
         description: 'When performing a Return Fire, you may re‑roll any dice in the Defense Roll (not just natural 1s).',
         cost_by_size: {
-            [SIZE_LIGHT]: 2,
-            [SIZE_MEDIUM]: 2,
-            [SIZE_HEAVY]: 1,
-            [SIZE_ULTRA]: 1,
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 2,
+            [SIZE.HEAVY]: 1,
+            [SIZE.ULTRA]: 1,
         },
         traits: [
             trait(TRAIT_COMPACT),
@@ -224,20 +224,20 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
         display_name: 'High Speed Servos',
         description: 'After performing a SMASH Order, this Unit may perform a second SMASH Order. This does not count against the 2 Order Limit. Note: The second SMASH Order is now preceded by a SMASH Order and not a MOVE or JUMP Order and thus gets no bonuses for those conditions.',
         cost_by_size: {
-            [SIZE_LIGHT]: 2,
-            [SIZE_MEDIUM]: 3,
-            [SIZE_HEAVY]: 4,
-            [SIZE_ULTRA]: 5,
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 3,
+            [SIZE.HEAVY]: 4,
+            [SIZE.ULTRA]: 5,
         },
     }),
     [NEURAL_INPUT]: makeUpgrade({
         display_name: 'Neural Input',
         description: 'Reduce the Damage Rating of SMASH Orders targeting this Unit by 1.',
         cost_by_size: {
-            [SIZE_LIGHT]: 2,
-            [SIZE_MEDIUM]: 2,
-            [SIZE_HEAVY]: 1,
-            [SIZE_ULTRA]: 1,
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 2,
+            [SIZE.HEAVY]: 1,
+            [SIZE.ULTRA]: 1,
         },
         traits: [
             trait(TRAIT_COMPACT),
@@ -251,28 +251,26 @@ export const MECH_UPGRADES: Readonly<Record<MechUpgradeId, MechUpgrade>> = makeF
             trait(TRAIT_UPGRADE_LIMITED, 1),
         ],
         cost_by_size: {
-            [SIZE_LIGHT]: 1,
-            [SIZE_MEDIUM]: 1,
-            [SIZE_HEAVY]: 2,
-            [SIZE_ULTRA]: 2,
+            [SIZE.LIGHT]: 1,
+            [SIZE.MEDIUM]: 1,
+            [SIZE.HEAVY]: 2,
+            [SIZE.ULTRA]: 2,
         },
     }),
     [COMBAT_SHIELD]: makeUpgrade({
         display_name: 'Combat Shield',
         description: 'When this HE‑V is damaged by an ENGAGE or SMASH Order from its Front or Side Arcs, or makes a Defense Roll against a Blast effect, and it has more than 0 Armor remaining, roll 1D6 for each point of Damage it would receive. On a 5+, that point of Damage is ignored. Damage negated by this rule is treated as not having happened for the purposes of other weapon Trait effects, such as AP. When this HE‑V performs an ENGAGE Order, all of its Weapons receive a ‑1 to their Damage Rating.',
         cost_by_size: {
-            [SIZE_LIGHT]: 0, // only available in medium with TEAM_PERK_COMBAT_BUCKLER
-            [SIZE_MEDIUM]: 3,
-            [SIZE_HEAVY]: 4,
-            [SIZE_ULTRA]: 5,
+            [SIZE.LIGHT]: 0, // only available in medium with TEAM_PERK_COMBAT_BUCKLER
+            [SIZE.MEDIUM]: 3,
+            [SIZE.HEAVY]: 4,
+            [SIZE.ULTRA]: 5,
         },
-        limited_size_ids: [SIZE_HEAVY, SIZE_ULTRA],
+        limited_size_ids: [SIZE.HEAVY, SIZE.ULTRA],
     }),
 });
 
-export function upgradeDisplayName(id: MechUpgradeId): string {
-    return MECH_UPGRADES[id].display_name;
-}
+export const upgradeDisplayName = (id: MechUpgradeId): string => MECH_UPGRADES[id].display_name;
 
 export function getUpgradeTraits(
     upgradeId: MechUpgradeId,

@@ -1,4 +1,4 @@
-import { difference, each, find, groupBy, map, sortBy, sumBy } from 'es-toolkit/compat';
+import { difference, groupBy, sortBy, sumBy } from 'es-toolkit';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, ref } from 'vue';
 import { GAME_SIZES } from '../data/game-sizes';
@@ -16,11 +16,11 @@ import {
 } from '../data/mech-teams';
 import type { MechUpgradeId } from '../data/mech-upgrades';
 import { MECH_WEAPONS, type MechWeaponId, weaponHasTrait } from '../data/mech-weapons';
-import { MECH_SIZES, type MechSizeId, SIZE_HEAVY, SIZE_MEDIUM } from '../data/unit-sizes';
+import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
 import { WEAPON_TRAITS, type WeaponTraitId } from '../data/weapon-traits';
 import type { Mech, MechGroupInstance, MechTeamInstance, MechWeaponAttachment, Trait } from '../types';
 import { useArmyListStore } from './army-list-store';
-import { findItemIndexById, move, setDisplayOrders } from './helpers/collection-helper';
+import { findBy, findById, findItemIndexById, move, setDisplayOrders } from './helpers/collection-helper';
 import { ifEmptyString, makeUniqueItemIdCollection } from './helpers/helpers';
 import { type AddMechOptions, useMechStore } from './mech-store';
 
@@ -56,7 +56,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
         const special_teams = computed(() => teams.value.filter(item => isSpecialTeam(item.id)));
 
         const addable_teams = computed(() => {
-            const currentTeamIds = map(teams.value, 'id');
+            const currentTeamIds = teams.value.map(v => v.id);
             const teamIds = (Object.keys(MECH_TEAMS) as MechTeamId[]).filter(isSpecialTeam);
             const availableTeamIds = difference(teamIds, currentTeamIds);
             return availableTeamIds.map((teamId) => {
@@ -416,7 +416,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
         }
 
         function getTeamMechCount(teamId: MechTeamId) {
-            const team = find(teams.value, { id: teamId });
+            const team = findById(teams.value, teamId);
             return team ? sumBy(team.groups, (group) => group.mechs.length) : 0;
         }
 
@@ -426,23 +426,23 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
         }
 
         function getTeamMechIds(teamId: MechTeamId) {
-            const team = find(teams.value, { id: teamId });
+            const team = findById(teams.value, teamId);
             if (!team) return [];
 
             let mechIds: number[] = [];
             team.groups.forEach((group) => {
-                mechIds = mechIds.concat(map(group.mechs, 'mech_id'));
+                mechIds = mechIds.concat(Object.values(group.mechs).map(v => v.mech_id));
             });
             return mechIds;
         }
 
         function getTeamGroupMechIds(teamId: MechTeamId, groupId: string) {
             const group = findGroup(teamId, groupId);
-            return group ? map(group.mechs, 'mech_id') : [];
+            return group ? Object.values(group.mechs).map(v => v.mech_id) : [];
         }
 
         function findTeam(teamId: MechTeamId) {
-            return find(teams.value, { id: teamId });
+            return findById(teams.value, teamId);
         }
 
         function initTeam(teamId: MechTeamId) {
@@ -452,8 +452,8 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
         }
 
         function findGroup(teamId: MechTeamId, groupId: string): MechGroupInstance | undefined {
-            const team = find(teams.value, { id: teamId });
-            return team ? find(team.groups, { id: groupId }) : undefined;
+            const team = findById(teams.value, teamId);
+            return team ? findById(team.groups, groupId) : undefined;
         }
 
         function findGroupIdForSizeId(teamId: MechTeamId, sizeId: MechSizeId) {
@@ -525,11 +525,11 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                     teamId === TEAM_FIRE_SUPPORT) &&
                 groupId === 'B'
             ) {
-                const medium = find(result, { size_id: SIZE_MEDIUM });
+                const medium = findBy(result, 'size_id', SIZE.MEDIUM);
                 if (medium) {
-                    medium.display_name = MECH_SIZES[SIZE_MEDIUM].display_name + ' & ' + MECH_SIZES[SIZE_HEAVY].display_name;
+                    medium.display_name = MECH_SIZES[SIZE.MEDIUM].display_name + ' & ' + MECH_SIZES[SIZE.HEAVY].display_name;
                 }
-                result = result.filter(item => item.size_id !== SIZE_HEAVY);
+                result = result.filter(item => item.size_id !== SIZE.HEAVY);
             }
 
             return result;
@@ -594,7 +594,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             indexes.forEach(index => {
                 const rows = MECH_TEAMS[teamId].team_size_perk_rows;
                 if (rows) {
-                    each(rows, (row, count) => {
+                    Object.entries(rows).forEach(([count, row]) => {
                         if (Number(count) <= teamSize) {
                             perkIds = perkIds.concat(row[index]);
                         }
@@ -897,7 +897,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
 );
 
 export interface TeamPerkInfo {
-    id: string,
+    id: TEAM_PERK,
     display_name: string,
     display_name_short: string,
     description: string,
@@ -911,7 +911,7 @@ export interface TeamPerkInfo {
 function perkIdsToInfo(perkIds: TEAM_PERK[]): TeamPerkInfo[] {
     const grouped = groupBy(perkIds, (perkId) => perkId);
 
-    let result = map(grouped, (perkIds, perkId) => {
+    let result = Object.entries(grouped).map(([perkId, perkIds]) => {
         const repeatCount = perkIds.length;
         const perkInfo = MECH_TEAM_PERKS[perkId];
         let {
@@ -958,7 +958,7 @@ function perkIdsToInfo(perkIds: TEAM_PERK[]): TeamPerkInfo[] {
         } as TeamPerkInfo;
     });
 
-    return sortBy(result, (t) => t.display_order);
+    return sortBy(result, ['display_order']);
 }
 
 function makeGeneralTeam(): MechTeamInstance {

@@ -1,17 +1,6 @@
 import { makeStaticListIds, trait } from '../data-helpers';
-import { SIZE_MEDIUM } from '../unit-sizes';
-import {
-    TRAIT_MSOE_DEPLOYER,
-    TRAIT_OUTRIDER,
-    TRAIT_SQUADRON,
-    TRAIT_SUPPORT_GUIDANCE_SUITE,
-    TRAIT_SUPPORT_MINE_DRONE_LAYER,
-    TRAIT_SUPPORT_ORDER_CNC,
-    TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES,
-    TRAIT_SUPPORT_ORDERS,
-    TRAIT_TARGET_DESIGNATOR,
-    TRAIT_UNIT_SIZE_AND_TYPE,
-} from '../unit-traits';
+import { SIZE } from '../unit-sizes';
+import { UNIT_TRAIT } from '../unit-traits';
 import { TYPE_VEHICLE } from '../unit-types';
 import { VEH_AUTO_CANNON } from '../unit-weapons';
 import type { SupportAssetUnitDef, SupportAssetUnitVehicleDef } from './_support-asset-types';
@@ -27,16 +16,16 @@ const baseStats = {
 export const SUPPORT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDef, 'id'>> = {
     [SUPPORT_VEHICLE_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
-        size_id: SIZE_MEDIUM,
+        size_id: SIZE.MEDIUM,
         display_name: 'Support Vehicle Squadron',
         cost: 20,
         max_duplicate_vehicles: 2,
         max_vehicles: 4,
         defense: 4,
         traits: [
-            trait(TRAIT_UNIT_SIZE_AND_TYPE, undefined, 'Medium Vehicle'),
-            trait(TRAIT_SQUADRON),
-            trait(TRAIT_SUPPORT_ORDERS),
+            trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Medium Vehicle'),
+            trait(UNIT_TRAIT.SQUADRON),
+            trait(UNIT_TRAIT.SUPPORT_ORDERS),
         ],
         vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
             RECON_VEHICLE: {
@@ -46,8 +35,8 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_AUTO_CANNON,
                 ],
                 traits: [
-                    trait(TRAIT_TARGET_DESIGNATOR),
-                    trait(TRAIT_OUTRIDER),
+                    trait(UNIT_TRAIT.TARGET_DESIGNATOR),
+                    trait(UNIT_TRAIT.OUTRIDER),
                 ],
             },
             COMMAND_VEHICLE: {
@@ -57,7 +46,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_AUTO_CANNON,
                 ],
                 traits: [
-                    trait(TRAIT_SUPPORT_ORDER_CNC),
+                    trait(UNIT_TRAIT.SUPPORT_ORDER_CNC),
                 ],
             },
             RESUPPLY_VEHICLE: {
@@ -67,7 +56,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_AUTO_CANNON,
                 ],
                 traits: [
-                    trait(TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES),
+                    trait(UNIT_TRAIT.SUPPORT_ORDER_COMBAT_SUPPLIES),
                 ],
             },
             TARGETING_VEHICLE: {
@@ -77,7 +66,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_AUTO_CANNON,
                 ],
                 traits: [
-                    trait(TRAIT_SUPPORT_GUIDANCE_SUITE),
+                    trait(UNIT_TRAIT.SUPPORT_GUIDANCE_SUITE),
                 ],
             },
             MINELAYER_VEHICLE: {
@@ -87,7 +76,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_AUTO_CANNON,
                 ],
                 traits: [
-                    trait(TRAIT_SUPPORT_MINE_DRONE_LAYER, 4),
+                    trait(UNIT_TRAIT.SUPPORT_MINE_DRONE_LAYER, 4),
                 ],
             },
             SCRAMBLER_VEHICLE: {
@@ -97,7 +86,7 @@ export const SUPPORT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     VEH_AUTO_CANNON,
                 ],
                 traits: [
-                    trait(TRAIT_MSOE_DEPLOYER),
+                    trait(UNIT_TRAIT.MSOE_DEPLOYER),
                 ],
             },
         }),

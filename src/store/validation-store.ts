@@ -1,18 +1,18 @@
-import { countBy } from 'es-toolkit';
-import { difference, find, max, min } from 'es-toolkit/compat';
+import { countBy, difference } from 'es-toolkit';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed } from 'vue';
-import { GAME_SIZE_BATTLE, GAME_SIZE_DUEL, GAME_SIZE_RECON, GAME_SIZE_STRIKE } from '../data/game-sizes';
+import { GAME_SIZE } from '../data/game-sizes';
 import { MECH_ARMOR_UPGRADES, type MechArmorUpgradeId } from '../data/mech-armor-upgrades';
 import { MECH_BODY_MODS } from '../data/mech-body';
 import { TEAM_PERK } from '../data/mech-team-perks';
 import { MECH_TEAMS, type MechTeamId, TEAM_SHELF } from '../data/mech-teams';
 import { COMBAT_SHIELD, MECH_UPGRADES, type MechUpgradeId } from '../data/mech-upgrades';
 import { MECH_WEAPONS } from '../data/mech-weapons';
-import { MECH_SIZES, type MechSizeId, SIZE_MEDIUM } from '../data/unit-sizes';
+import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
 import { WEAPON_TRAITS } from '../data/weapon-traits';
 import type { MechInfo } from '../types';
 import { useArmyListStore } from './army-list-store';
+import { findById } from './helpers/collection-helper';
 import { useMechStore } from './mech-store';
 import { useSupportAssetCountsStore } from './support-asset-count-store';
 import { useSupportAssetUnitsStore } from './support-asset-units-store';
@@ -95,30 +95,30 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
         const gameSizeId = armyListStore.game_size_id;
 
-        if (gameSizeId === GAME_SIZE_DUEL) {
+        if (gameSizeId === GAME_SIZE.DUEL) {
             return messageValid;
         }
         const teamCounts = teamStore.special_teams.map((team) => teamStore.getTeamMechCount(team.id));
-        const smallestTeamCount = (min(teamCounts) ?? 0) as number;
-        const largestTeamCount = (max(teamCounts) ?? 0) as number;
+        const smallestTeamCount = (Math.min(...teamCounts) ?? 0) as number;
+        const largestTeamCount = (Math.max(...teamCounts) ?? 0) as number;
 
         if (smallestTeamCount < 2) {
             return messageMin(2);
         }
 
-        if (gameSizeId === GAME_SIZE_RECON) {
+        if (gameSizeId === GAME_SIZE.RECON) {
             if (largestTeamCount > 2) {
                 return messageMax(2);
             }
         }
 
-        if (gameSizeId === GAME_SIZE_STRIKE) {
+        if (gameSizeId === GAME_SIZE.STRIKE) {
             if (largestTeamCount > 3) {
                 return messageMax(3);
             }
         }
 
-        if (gameSizeId === GAME_SIZE_BATTLE) {
+        if (gameSizeId === GAME_SIZE.BATTLE) {
             if (largestTeamCount > 4) {
                 return messageMax(4);
             }
@@ -298,11 +298,11 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
         if (upgradeId === COMBAT_SHIELD) {
             const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
-            let combatBuckler = find(teamPerks, { id: TEAM_PERK.COMBAT_BUCKLER });
+            let combatBuckler = findById(teamPerks, TEAM_PERK.COMBAT_BUCKLER);
             if (combatBuckler) {
-                limited_size_ids = [...limited_size_ids, SIZE_MEDIUM];
+                limited_size_ids = [...limited_size_ids, SIZE.MEDIUM];
 
-                if (mech.size_id === SIZE_MEDIUM) {
+                if (mech.size_id === SIZE.MEDIUM) {
                     sizeTeamPerk = combatBuckler;
                 }
             }

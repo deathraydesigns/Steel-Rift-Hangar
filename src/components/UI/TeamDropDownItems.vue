@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { BDropdownDivider, BDropdownHeader, BDropdownItem } from 'bootstrap-vue-next';
-import { sortBy } from 'es-toolkit';
-import { groupBy } from 'es-toolkit/compat';
+import { groupBy, sortBy } from 'es-toolkit';
 import { computed } from 'vue';
 import { MECH_TEAM_ARRAY, MECH_TEAMS, type MechTeamId, TEAM_GENERAL, TEAM_SHELF } from '../../data/mech-teams.js';
 import { useTeamStore } from '../../store/team-store';
@@ -13,16 +12,9 @@ const selectedTeamId = defineModel();
 
 const specialTeamTypes = computed(() => {
   const specialTeams = MECH_TEAM_ARRAY.filter(team => teamStore.isSpecialTeam(team.id));
-
-  const grouped = groupBy(specialTeams, (team) => {
+  return groupBy(specialTeams, (team) => {
     return !!teamStore.findTeam(team.id) ? 'existing' : 'notExisting';
   });
-
-  return {
-    existing: [],
-    notExisting: [],
-    ...grouped,
-  };
 });
 const sortTeamsByOriginalIndex = (team: MechTeam) => MECH_TEAM_ARRAY.findIndex((t) => t.id === team.id);
 

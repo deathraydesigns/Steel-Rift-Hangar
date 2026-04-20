@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { find } from 'es-toolkit/compat';
 import { computed } from 'vue';
 import { traitDisplayNames } from '../../../data/data-helpers';
 import type { SupportAssetWeaponId } from '../../../data/support-asset-weapons';
 import { TRAIT_LIMITED } from '../../../data/weapon-traits.js';
+import { findById } from '../../../store/helpers/collection-helper';
 import { useSupportAssetWeaponsStore } from '../../../store/support-asset-weapons-store';
 import SvgIcon from '../../UI/Icon.vue';
 import SupportAssetWeaponDamageFormatter from '../../UI/SupportAssetWeaponDamageFormatter.vue';
@@ -26,7 +26,7 @@ const traits = computed(() => {
 });
 
 const max_uses = computed(() => {
-  const limitedTrait = find(weapon.value.traits, { id: TRAIT_LIMITED });
+  const limitedTrait = findById(weapon.value.traits, TRAIT_LIMITED);
   if (limitedTrait) {
     return limitedTrait.number;
   }

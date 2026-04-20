@@ -5,14 +5,8 @@ import {
     INFANTRY_RECON_SQUAD,
     INFANTRY_RIFLE_SQUAD,
 } from '../infantry-squads';
-import { SIZE_HEAVY } from '../unit-sizes';
-import {
-    TRAIT_ALL_TERRAIN,
-    TRAIT_GARRISON,
-    TRAIT_GROUP_COMMAND,
-    TRAIT_HEAVY_SUPPORT_ASSET,
-    TRAIT_UNIT_SIZE_AND_TYPE,
-} from '../unit-traits';
+import { SIZE } from '../unit-sizes';
+import { UNIT_TRAIT } from '../unit-traits';
 import { TYPE_VEHICLE } from '../unit-types';
 import {
     DOZER_BLADE,
@@ -37,16 +31,16 @@ const baseStats = {
 export const HEAVY_TANK_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDef, 'id'>> = {
     [HEAVY_TANK_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
-        size_id: SIZE_HEAVY,
+        size_id: SIZE.HEAVY,
         display_name: 'Heavy Tank Troop',
         cost: 20,
         max_vehicles: 2,
         defense: 5,
         traits: [
-            trait(TRAIT_UNIT_SIZE_AND_TYPE, undefined, 'Heavy Vehicle'),
-            trait(TRAIT_HEAVY_SUPPORT_ASSET),
-            trait(TRAIT_GROUP_COMMAND),
-            trait(TRAIT_ALL_TERRAIN),
+            trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Heavy Vehicle'),
+            trait(UNIT_TRAIT.HEAVY_SUPPORT_ASSET),
+            trait(UNIT_TRAIT.GROUP_COMMAND),
+            trait(UNIT_TRAIT.ALL_TERRAIN),
         ],
         vehicles: makeStaticListIds({
             DIRECT_FIRE_TANK: {
@@ -87,7 +81,7 @@ export const HEAVY_TANK_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDef, 
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_GARRISON, 4, 'Infantry Squads'),
+                    trait(UNIT_TRAIT.GARRISON, 4, 'Infantry Squads'),
                 ],
                 garrison_choice_unit_ids: [
                     INFANTRY_RIFLE_SQUAD,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import { MECH_MOBILITIES, type MechMobilityId } from '../../../../data/mech-mobility';
+import { MECH_MOBILITIES, type MECH_MOBILITY } from '../../../../data/mech-mobility';
 import { useMechStore } from '../../../../store/mech-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
@@ -25,7 +25,7 @@ const mobility = computed(() => {
   return MECH_MOBILITIES[m.mobility_id];
 });
 
-function selectOption(value: MechMobilityId) {
+function selectOption(value: MECH_MOBILITY) {
   model.value = value;
 }
 

@@ -1,4 +1,3 @@
-import { sumBy } from 'es-toolkit/compat';
 import { storeToRefs } from 'pinia';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, readonly, ref, watch } from 'vue';
@@ -12,6 +11,7 @@ import {
 } from '../data/support-asset-weapons';
 import { TRAIT_LIMITED, WEAPON_TRAITS, weaponTraitDisplayName } from '../data/weapon-traits';
 import { useFactionStore } from './faction-store';
+import { sumBy } from './helpers/collection-helper';
 import { useTeamStore } from './team-store';
 
 export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-asset', ({ scope }: {

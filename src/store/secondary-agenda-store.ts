@@ -11,7 +11,7 @@ import {
     SECONDARY_AGENDAS,
     type SecondaryAgenda,
 } from '../data/secondary-agendas';
-import { SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA } from '../data/unit-sizes';
+import { SIZE } from '../data/unit-sizes';
 import { useArmyListStore } from './army-list-store';
 import { useFactionStore } from './faction-store';
 import { useMechStore } from './mech-store';
@@ -65,19 +65,19 @@ export const useSecondaryAgendaStore = defineScopeableStore('secondary-agenda', 
 
         const sizesByCount = countBy(mechStore.mechs, (mech) => mech.size_id);
 
-        if (sizesByCount[SIZE_LIGHT] >= 2) {
+        if (sizesByCount[SIZE.LIGHT] >= 2) {
             result.push(SECONDARY_AGENDAS[SA_STALKERS]);
         }
 
-        if (sizesByCount[SIZE_MEDIUM] >= 2) {
+        if (sizesByCount[SIZE.MEDIUM] >= 2) {
             result.push(SECONDARY_AGENDAS[SA_BRAWLERS]);
         }
 
-        if (sizesByCount[SIZE_HEAVY] >= 2) {
+        if (sizesByCount[SIZE.HEAVY] >= 2) {
             result.push(SECONDARY_AGENDAS[SA_ENFORCERS]);
         }
 
-        if (sizesByCount[SIZE_ULTRA] >= 2) {
+        if (sizesByCount[SIZE.ULTRA] >= 2) {
             result.push(SECONDARY_AGENDAS[SA_TITAN_KILLERS]);
         }
 

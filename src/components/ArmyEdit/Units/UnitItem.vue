@@ -3,7 +3,7 @@ import { BButton, BCollapse, BFormFloatingLabel, BFormSelect } from 'bootstrap-v
 import { computed, provide, ref } from 'vue';
 import type { UnitVehicleId } from '../../../data/support-assets/_support-asset-types';
 import { ULTRA_LIGHT_HEV_SQUADRON, type UpgradePodId } from '../../../data/support-assets/ultra-light-hev-squadron';
-import { TRAIT_UNIT_SIZE_AND_TYPE } from '../../../data/unit-traits.js';
+import { UNIT_TRAIT } from '../../../data/unit-traits.js';
 import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import SvgIcon from '../../UI/Icon.vue';
@@ -45,10 +45,10 @@ function setUpgradePodChoice(upgradePodId: UpgradePodId) {
 }
 
 const unitTypeTrait = computed(() => {
-  return info.value?.traits.find((trait) => trait.id === TRAIT_UNIT_SIZE_AND_TYPE);
+  return info.value?.traits.find((trait) => trait.id === UNIT_TRAIT.UNIT_SIZE_AND_TYPE);
 });
 const traits = computed(() => {
-  return info.value?.traits.filter((trait) => trait.id !== TRAIT_UNIT_SIZE_AND_TYPE) ?? [];
+  return info.value?.traits.filter((trait) => trait.id !== UNIT_TRAIT.UNIT_SIZE_AND_TYPE) ?? [];
 });
 </script>
 <template>

@@ -1,6 +1,5 @@
 import type { Trait, TraitFormatter } from '../types';
 import { numberFormater } from './data-formatters';
-
 import { makeTraits, type TraitDef } from './data-helpers';
 import { MECH_UPGRADES, TARGET_DESIGNATOR } from './mech-upgrades';
 import { ORDER_INFANTRY_MUSTER } from './orders/infantry-orders';
@@ -14,68 +13,38 @@ import {
     ORDER_SUPPORT_MSOE,
 } from './orders/support-orders';
 
-export const TRAIT_ALL_TERRAIN = 'TRAIT_ALL_TERRAIN' as const;
-export const TRAIT_CLOSE_SUPPORT = 'TRAIT_CLOSE_SUPPORT' as const;
-export const TRAIT_GARRISON = 'TRAIT_GARRISON' as const;
-export const TRAIT_GROUP_COMMAND = 'TRAIT_GROUP_COMMAND' as const;
-export const TRAIT_MAGNETIC_GRAPPLES = 'TRAIT_MAGNETIC_GRAPPLES' as const;
-export const TRAIT_MINE_SWEEPER = 'TRAIT_MINE_SWEEPER' as const;
-export const TRAIT_SHIELD_PROJECTOR = 'TRAIT_SHIELD_PROJECTOR' as const;
-export const TRAIT_TARGET_DESIGNATOR = 'TRAIT_TARGET_DESIGNATOR' as const;
-export const TRAIT_OUTRIDER = 'TRAIT_OUTRIDER' as const;
-export const TRAIT_SUPPORT_ORDER_CNC = 'TRAIT_SUPPORT_ORDER_CNC' as const;
-export const TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES = 'TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES' as const;
-export const TRAIT_SUPPORT_GUIDANCE_SUITE = 'TRAIT_SUPPORT_GUIDANCE_SUITE' as const;
-export const TRAIT_SUPPORT_MINE_DRONE_LAYER = 'TRAIT_SUPPORT_MINE_DRONE_LAYER' as const;
-export const TRAIT_SUPPORT_MOED = 'TRAIT_SUPPORT_MOED' as const;
-export const TRAIT_MSOE_LAUNCHER = 'TRAIT_MSOE_LAUNCHER' as const;
-export const TRAIT_MSOE_DEPLOYER = 'TRAIT_MSOE_DEPLOYER' as const;
-export const TRAIT_SCRAMBLERS = 'TRAIT_SCRAMBLERS' as const;
-export const TRAIT_INFERNO_GEAR = 'TRAIT_INFERNO_GEAR' as const;
-export const TRAIT_SUPPRESSIVE_FIRE = 'TRAIT_SUPPRESSIVE_FIRE' as const;
-export const TRAIT_UL_HEV_LAUNCH_GEAR = 'TRAIT_UL_HEV_LAUNCH_GEAR' as const;
-export const TRAIT_FORTIFICATION = 'TRAIT_FORTIFICATION' as const;
-export const TRAIT_COMMAND = 'TRAIT_COMMAND' as const;
-export const TRAIT_BUNKER_MINE_DRONES = 'TRAIT_BUNKER_MINE_DRONES' as const;
-export const TRAIT_SQUADRON = 'TRAIT_SQUADRON' as const;
-export const TRAIT_FLYING = 'TRAIT_FLYING' as const;
-export const TRAIT_FLYING_SQUADRON = 'TRAIT_FLYING_SQUADRON' as const;
-export const TRAIT_SUPPORT_ORDERS = 'TRAIT_SUPPORT_ORDERS' as const;
-export const TRAIT_HEAVY_SUPPORT_ASSET = 'TRAIT_HEAVY_SUPPORT_ASSET' as const;
-export const TRAIT_HAULER = 'TRAIT_HAULER' as const;
-export const TRAIT_UNIT_SIZE_AND_TYPE = 'TRAIT_UNIT_SIZE_AND_TYPE' as const;
-
-export type UnitTraitId =
-    | typeof TRAIT_ALL_TERRAIN
-    | typeof TRAIT_CLOSE_SUPPORT
-    | typeof TRAIT_GARRISON
-    | typeof TRAIT_GROUP_COMMAND
-    | typeof TRAIT_MAGNETIC_GRAPPLES
-    | typeof TRAIT_MINE_SWEEPER
-    | typeof TRAIT_SHIELD_PROJECTOR
-    | typeof TRAIT_TARGET_DESIGNATOR
-    | typeof TRAIT_OUTRIDER
-    | typeof TRAIT_SUPPORT_ORDER_CNC
-    | typeof TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES
-    | typeof TRAIT_SUPPORT_GUIDANCE_SUITE
-    | typeof TRAIT_SUPPORT_MINE_DRONE_LAYER
-    | typeof TRAIT_SUPPORT_MOED
-    | typeof TRAIT_MSOE_LAUNCHER
-    | typeof TRAIT_MSOE_DEPLOYER
-    | typeof TRAIT_SCRAMBLERS
-    | typeof TRAIT_INFERNO_GEAR
-    | typeof TRAIT_SUPPRESSIVE_FIRE
-    | typeof TRAIT_UL_HEV_LAUNCH_GEAR
-    | typeof TRAIT_FORTIFICATION
-    | typeof TRAIT_COMMAND
-    | typeof TRAIT_BUNKER_MINE_DRONES
-    | typeof TRAIT_SQUADRON
-    | typeof TRAIT_FLYING
-    | typeof TRAIT_FLYING_SQUADRON
-    | typeof TRAIT_SUPPORT_ORDERS
-    | typeof TRAIT_HEAVY_SUPPORT_ASSET
-    | typeof TRAIT_HAULER
-    | typeof TRAIT_UNIT_SIZE_AND_TYPE
+export enum UNIT_TRAIT {
+    ALL_TERRAIN = 'TRAIT_ALL_TERRAIN',
+    CLOSE_SUPPORT = 'TRAIT_CLOSE_SUPPORT',
+    GARRISON = 'TRAIT_GARRISON',
+    GROUP_COMMAND = 'TRAIT_GROUP_COMMAND',
+    MAGNETIC_GRAPPLES = 'TRAIT_MAGNETIC_GRAPPLES',
+    MINE_SWEEPER = 'TRAIT_MINE_SWEEPER',
+    SHIELD_PROJECTOR = 'TRAIT_SHIELD_PROJECTOR',
+    TARGET_DESIGNATOR = 'TRAIT_TARGET_DESIGNATOR',
+    OUTRIDER = 'TRAIT_OUTRIDER',
+    SUPPORT_ORDER_CNC = 'TRAIT_SUPPORT_ORDER_CNC',
+    SUPPORT_ORDER_COMBAT_SUPPLIES = 'TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES',
+    SUPPORT_GUIDANCE_SUITE = 'TRAIT_SUPPORT_GUIDANCE_SUITE',
+    SUPPORT_MINE_DRONE_LAYER = 'TRAIT_SUPPORT_MINE_DRONE_LAYER',
+    SUPPORT_MOED = 'TRAIT_SUPPORT_MOED',
+    MSOE_LAUNCHER = 'TRAIT_MSOE_LAUNCHER',
+    MSOE_DEPLOYER = 'TRAIT_MSOE_DEPLOYER',
+    SCRAMBLERS = 'TRAIT_SCRAMBLERS',
+    INFERNO_GEAR = 'TRAIT_INFERNO_GEAR',
+    SUPPRESSIVE_FIRE = 'TRAIT_SUPPRESSIVE_FIRE',
+    UL_HEV_LAUNCH_GEAR = 'TRAIT_UL_HEV_LAUNCH_GEAR',
+    FORTIFICATION = 'TRAIT_FORTIFICATION',
+    COMMAND = 'TRAIT_COMMAND',
+    BUNKER_MINE_DRONES = 'TRAIT_BUNKER_MINE_DRONES',
+    SQUADRON = 'TRAIT_SQUADRON',
+    FLYING = 'TRAIT_FLYING',
+    FLYING_SQUADRON = 'TRAIT_FLYING_SQUADRON',
+    SUPPORT_ORDERS = 'TRAIT_SUPPORT_ORDERS',
+    HEAVY_SUPPORT_ASSET = 'TRAIT_HEAVY_SUPPORT_ASSET',
+    HAULER = 'TRAIT_HAULER',
+    UNIT_SIZE_AND_TYPE = 'TRAIT_UNIT_SIZE_AND_TYPE',
+}
 
 export interface UnitTraitDef extends TraitDef {
     description: string;
@@ -85,140 +54,140 @@ export interface UnitTraitDef extends TraitDef {
 }
 
 export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
-    [TRAIT_ALL_TERRAIN]: {
+    [UNIT_TRAIT.ALL_TERRAIN]: {
         display_name: 'All-Terrain',
         description: 'Units with this Trait ignore the movement penalty for Rough Terrain.',
     },
-    [TRAIT_CLOSE_SUPPORT]: {
+    [UNIT_TRAIT.CLOSE_SUPPORT]: {
         display_name: 'Close Support',
         description: 'If a friendly Unit with this trait is within 6” of an enemy target of an ENGAGE or SMASH Order, add one to the Damage Rating of each weapon used in that ENGAGE or SMASH Order. This bonus is only applied once, regardless of the number of Units with this Trait in range.',
     },
-    [TRAIT_GARRISON]: {
+    [UNIT_TRAIT.GARRISON]: {
         display_name: 'Garrison',
         formatter: (name, number, type = undefined) => `${name}(${number} ${type})`,
         description: 'A model with this Trait contains assigned Units, Models and/or Tokens as listed in its (X). For example, a model with the trait Garrison (2 Air Infantry models, 2 Mine Drone tokens) may contain 2 models from the Air Infantry table and 2 Mine Drone tokens. Note what specific models are selected when this model is recruited during the Recruit Forces step. The selected Units, Models and/or Tokens are known as its Garrisoned Units, Garrisoned Models and/or Garrisoned Tokens, respectively. The Garrisoned Units/Models/Tokens will not be Deployed during the Deploy Forces step, and will instead be placed on the table during the game. If a model with the Garrison trait is destroyed, and its Garrisoned Units/Models/Tokens have not yet Mustered, those Units/Models/Tokens are considered destroyed as well.',
     },
-    [TRAIT_GROUP_COMMAND]: {
+    [UNIT_TRAIT.GROUP_COMMAND]: {
         display_name: 'Asset Command',
         description: 'All Units in this Asset are issued Orders during the same Activation. When Activating one of these Units, select one Unit from this Asset, resolve its Activation as normal. Then, immediately select another Unit from this Asset, perform its Orders until it has finished, and so on until all Units from this Asset have Activated. The opponent Commander then becomes the Active Commander as normal. If a Unit from this Asset is no longer in play, any other Units from its Asset will still activate with Asset Command.',
     },
-    [TRAIT_MAGNETIC_GRAPPLES]: {
+    [UNIT_TRAIT.MAGNETIC_GRAPPLES]: {
         display_name: 'Magnetic Grapples',
         description: 'When this Unit MOVEs or JUMPs into base contact with an Enemy Unit, that Enemy Unit receives a Tether Marker and the Active Unit receives a corresponding Anchor Marker.',
     },
-    [TRAIT_MINE_SWEEPER]: {
+    [UNIT_TRAIT.MINE_SWEEPER]: {
         display_name: 'Mine Sweeper',
         description: 'A Unit with this Trait may not be Targeted by a Mine Drone Token.This Unit may ENGAGE Mine Drone Tokens as if it had the Mine Drone Tracking Munitions Upgrade.',
         granted_order_ids: [ORDER_CLEAR_MINEFIELD],
     },
-    [TRAIT_SHIELD_PROJECTOR]: {
+    [UNIT_TRAIT.SHIELD_PROJECTOR]: {
         display_name: 'Shield Projector',
         description: 'When a friendly Unit within 6” of the model with this trait makes a Defense Roll, it counts as carrying a Combat Shield Upgrade. This is not cumulative with an existing Combat Shield Upgrade on that Unit.',
     },
-    [TRAIT_TARGET_DESIGNATOR]: {
+    [UNIT_TRAIT.TARGET_DESIGNATOR]: {
         display_name: 'Target Designator',
         description: MECH_UPGRADES[TARGET_DESIGNATOR].description,
     },
-    [TRAIT_OUTRIDER]: {
+    [UNIT_TRAIT.OUTRIDER]: {
         display_name: 'Outrider',
         description: 'If these Models are part of a Squadron, they may be deployed and end moves within 12” of the Squadron Trait in a Squadron must deploy and end moves within 3” of all other Models with this Trait in the Squadron. ',
     },
-    [TRAIT_SUPPORT_ORDERS]: {
+    [UNIT_TRAIT.SUPPORT_ORDERS]: {
         display_name: 'Support Orders',
         description: 'Units with this trait possess unusual equipment that is intended to support other units, but must be actively operated to take effect. These traits will be prefixed with the term “SUPPORT:”. Units with these traits may perform the SUPPORT Order. SUPPORT: The Unit may activate the effect of any or all “SUPPORT:” traits. See each trait entry for the effects of the “SUPPORT:” trait. Note that if a model (or models) in a Squadron have a “SUPPORT:” trait, the entire Squadron must perform the SUPPORT Order. However, each model with a “SUPPORT:” will activate that trait during the Order, in any order its Commander wishes.',
         granted_order_ids: [ORDER_SUPPORT],
     },
-    [TRAIT_SUPPORT_ORDER_CNC]: {
+    [UNIT_TRAIT.SUPPORT_ORDER_CNC]: {
         display_name: 'Support: Command and Control Station',
         description: '',
         granted_order_ids: [ORDER_SUPPORT_CNC_STATION],
     },
-    [TRAIT_SUPPORT_ORDER_COMBAT_SUPPLIES]: {
+    [UNIT_TRAIT.SUPPORT_ORDER_COMBAT_SUPPLIES]: {
         display_name: 'Support: Combat Supplies',
         description: '',
         granted_order_ids: [ORDER_SUPPORT_COMBAT_SUPPLIES],
     },
-    [TRAIT_SUPPORT_GUIDANCE_SUITE]: {
+    [UNIT_TRAIT.SUPPORT_GUIDANCE_SUITE]: {
         display_name: 'Support: Guidance Suite',
         description: '',
         granted_order_ids: [ORDER_SUPPORT_GUIDANCE_SUITE],
     },
-    [TRAIT_SUPPORT_MINE_DRONE_LAYER]: {
+    [UNIT_TRAIT.SUPPORT_MINE_DRONE_LAYER]: {
         display_name: 'Support: Mine Drone Layer',
         formatter: numberFormater,
         description: '',
         granted_order_ids: [ORDER_SUPPORT_MINE_DRONE_LAYER],
     },
-    [TRAIT_SUPPORT_MOED]: {
+    [UNIT_TRAIT.SUPPORT_MOED]: {
         display_name: 'Support: Multi-spectral Obscuration Emitter Deployer',
         description: '',
         granted_order_ids: [ORDER_SUPPORT_MSOE],
     },
-    [TRAIT_MSOE_LAUNCHER]: {
+    [UNIT_TRAIT.MSOE_LAUNCHER]: {
         display_name: 'MSOE Launcher (X)',
         description: 'At the beginning or end of the Order listed in (X), you may place an Obscuration Emitter Token within 6” of this model.' +
             'Obscuration Emitter Token: An Obscuration Emitter is a 25mm circle. Any Unit, regardless of Commander, within 3” of this Token counts as being within Covering Terrain. (i.e., any LOS line drawn to this model will be considered to be drawn through Covering Terrain). Additionally, these Units count as being equipped with Anti‑Missile System and Electronic Countermeasures Upgrades, if they are not already. Remove the Token when the Unit that placed this Token is Activated again.',
     },
-    [TRAIT_MSOE_DEPLOYER]: {
+    [UNIT_TRAIT.MSOE_DEPLOYER]: {
         display_name: 'Support: MSOE Deployer',
         description: '',
         granted_order_ids: [ORDER_SUPPORT_MSOE],
     },
-    [TRAIT_SCRAMBLERS]: {
+    [UNIT_TRAIT.SCRAMBLERS]: {
         display_name: 'Scramblers',
         description: 'All Units within 6” of a model equipped with Scramblers, including its own Unit, count as being equipped with Anti‑Missile Systems and Electronic Countermeasures.',
     },
-    [TRAIT_INFERNO_GEAR]: {
+    [UNIT_TRAIT.INFERNO_GEAR]: {
         display_name: 'Inferno Gear',
         description: 'If a Model or Models in the Unit have this Trait, the Unit ignores the effects of the Disruptive Trait.',
     },
-    [TRAIT_SUPPRESSIVE_FIRE]: {
+    [UNIT_TRAIT.SUPPRESSIVE_FIRE]: {
         display_name: 'Suppressive Fire',
         description: 'If an enemy Unit within 6” of a friendly model with this Trait performs an ENGAGE Order, the target of that Order receives +1 to their Defense Rolls.',
     },
-    [TRAIT_UL_HEV_LAUNCH_GEAR]: {
+    [UNIT_TRAIT.UL_HEV_LAUNCH_GEAR]: {
         display_name: 'Launch Gear',
         description: 'This Upgrade allows the entire Unit to perform the JUMP Order at distance of +2” to their Speed value.',
     },
-    [TRAIT_FORTIFICATION]: {
+    [UNIT_TRAIT.FORTIFICATION]: {
         display_name: 'Fortification',
         description: 'Once placed in Deployment, this Unit may not be moved or placed by any Order or effect, voluntarily or involuntarily.',
     },
-    [TRAIT_COMMAND]: {
+    [UNIT_TRAIT.COMMAND]: {
         display_name: 'Command',
         formatter: numberFormater,
         description: 'Units with the Command Trait issue Orders to their Garrison. Once per Activation, when this Unit is issued an Order, instead of performing an Order itself, it will instead issue one of the following Orders to up to (X) Units within its Garrison, or currently deployed on the Battlefield.',
     },
-    [TRAIT_BUNKER_MINE_DRONES]: {
+    [UNIT_TRAIT.BUNKER_MINE_DRONES]: {
         display_name: 'Garrison',
         formatter: (name, number, type = undefined) => `${name}(${number} ${type})`,
         type: 'Mine Drones',
         description: '',
     },
-    [TRAIT_SQUADRON]: {
+    [UNIT_TRAIT.SQUADRON]: {
         display_name: 'Squadron',
         description: 'A Squadron is a Unit made up of multiple Models. These Models will Activate together and perform the same Orders together during that Activation.',
     },
-    [TRAIT_FLYING]: {
+    [UNIT_TRAIT.FLYING]: {
         display_name: 'Flying',
         description: 'When this unit performs a Move Order, it instead performs a Flying Move Order.',
     },
-    [TRAIT_FLYING_SQUADRON]: {
+    [UNIT_TRAIT.FLYING_SQUADRON]: {
         display_name: 'Flying Squadron',
         description: 'This unit has all rules from the Squadron trait, with the following exceptions: All other models in the Squadron must end their deployment or movement within 6” of the Leader Model. When targeted by an engage order, If enough damage is dealt by a Weapon to destroy the Target Model, do not apply any remaining damage to another Model of the squadron. Do not add 2 to the Attack Pool of a Blast Weapon during an Engage Order against a unit with this trait.',
-        dependent_trait_ids: [TRAIT_SQUADRON],
+        dependent_trait_ids: [UNIT_TRAIT.SQUADRON],
     },
-    [TRAIT_HEAVY_SUPPORT_ASSET]: {
+    [UNIT_TRAIT.HEAVY_SUPPORT_ASSET]: {
         display_name: 'Heavy Support Asset',
         description: 'When a Heavy Support Asset is deployed, all units of the Heavy Support Asset must deploy within 3” of another Model from the same Heavy Support Asset. They must deploy in the same area as HE-Vs, and may not use any extended range available to other Support Assets. Note: member models of a Heavy Support Asset are not necessarily a Squadron.',
     },
-    [TRAIT_HAULER]: {
+    [UNIT_TRAIT.HAULER]: {
         display_name: 'Hauler',
         description: `This unit Garrisons a Unit from a separate Asset, and is not in its Group Command. The Garrisoned Unit must be purchased as a separate Asset, following all rules for its selection. The Garrisoned Unit must still be Activated during the turn, but it may not perform any order other than the following until it has performed this order: Muster: This is the only order that a Garrisoned Unit may perform. The Garrisoned Unit is placed within 1” of its Garrison. If the Garrisoned Unit has the Squadron Trait, place one model within 1” of the Garrison, then place the other models within 3” of that initial model. This Unit is no longer considered Garrisoned, and is now “Mustered”.`,
         granted_order_ids: [ORDER_INFANTRY_MUSTER],
     },
     // temporary until unit types and sizes are separate stats
-    [TRAIT_UNIT_SIZE_AND_TYPE]: {
+    [UNIT_TRAIT.UNIT_SIZE_AND_TYPE]: {
         display_name: 'Unit Type: ',
         description: '',
         formatter: (name, _number, type) => `${name} ${type}`,
@@ -226,7 +195,6 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
 });
 
 export function unitTraitDisplayName({ id, number, type }: Trait): string {
-
     const trait = UNIT_TRAITS[id];
 
     if (!trait) {

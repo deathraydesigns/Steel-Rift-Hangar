@@ -1,13 +1,6 @@
 import { makeStaticListIds, trait } from '../data-helpers';
-import { SIZE_LIGHT } from '../unit-sizes';
-import {
-    TRAIT_FLYING,
-    TRAIT_FLYING_SQUADRON,
-    TRAIT_MINE_SWEEPER,
-    TRAIT_MSOE_LAUNCHER,
-    TRAIT_SCRAMBLERS,
-    TRAIT_UNIT_SIZE_AND_TYPE,
-} from '../unit-traits';
+import { SIZE } from '../unit-sizes';
+import { UNIT_TRAIT } from '../unit-traits';
 import { TYPE_VEHICLE } from '../unit-types';
 import { VEH_AGM_MISSILES, VEH_BARRAGE_ROCKETS, VEH_LAS_AUTO_CANNON, VEH_ROTARY_CANNON } from '../unit-weapons';
 import type { SupportAssetUnitDef, SupportAssetUnitVehicleDef } from './_support-asset-types';
@@ -23,15 +16,15 @@ const baseStats = {
 export const LAS_WING_ATTACK_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDef, 'id'>> = {
     [LAS_WING_ATTACK_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
-        size_id: SIZE_LIGHT,
+        size_id: SIZE.LIGHT,
         display_name: 'LAS-Wing Attack Squadron',
         cost: 10,
         max_vehicles: 4,
         defense: 3,
         traits: [
-            trait(TRAIT_UNIT_SIZE_AND_TYPE, undefined, 'Light Vehicle'),
-            trait(TRAIT_FLYING),
-            trait(TRAIT_FLYING_SQUADRON),
+            trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Light Vehicle'),
+            trait(UNIT_TRAIT.FLYING),
+            trait(UNIT_TRAIT.FLYING_SQUADRON),
         ],
         vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
             STRIKE_LAS_WING: {
@@ -59,9 +52,9 @@ export const LAS_WING_ATTACK_SQUADRON_DATA: Record<string, Omit<SupportAssetUnit
                     ],
                 },
                 traits: [
-                    trait(TRAIT_MINE_SWEEPER),
-                    trait(TRAIT_MSOE_LAUNCHER),
-                    trait(TRAIT_SCRAMBLERS),
+                    trait(UNIT_TRAIT.MINE_SWEEPER),
+                    trait(UNIT_TRAIT.MSOE_LAUNCHER),
+                    trait(UNIT_TRAIT.SCRAMBLERS),
                 ],
             },
         }),

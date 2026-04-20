@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { chunk } from 'es-toolkit/compat';
+import { chunk } from 'es-toolkit';
 import { computed } from 'vue';
-import { TRAIT_GARRISON, unitTraitDisplayName } from '../../../../data/unit-traits.js';
+import { UNIT_TRAIT, unitTraitDisplayName } from '../../../../data/unit-traits.js';
 import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
 import type { Trait } from '../../../../types';
 import FormatInches from '../../../functional/format-inches.vue';
@@ -19,7 +19,7 @@ const hasMove = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.m
 const hasJump = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.jump));
 const hasArmor = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.armor));
 const hasGarrison = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.garrison_units?.length));
-const hasTraits = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.traits.find(t => t.id !== TRAIT_GARRISON)));
+const hasTraits = computed(() => !!unit.value.vehicles.find((vehicle) => vehicle.traits.find(t => t.id !== UNIT_TRAIT.GARRISON)));
 
 const hasGarrisonWithRefIds = computed(() => {
   return unit.value.vehicles.find((vehicle) => vehicle.garrison_units?.find(g => g.card_ref_id));
@@ -30,7 +30,7 @@ const statArray = (stat: number) => {
 };
 
 function filterTraits(traits: Trait[]) {
-  return traits.filter(t => t.id !== TRAIT_GARRISON);
+  return traits.filter(t => t.id !== UNIT_TRAIT.GARRISON);
 }
 
 </script>

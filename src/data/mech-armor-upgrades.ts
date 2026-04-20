@@ -1,7 +1,7 @@
 import type { Optional } from '../_helpers';
 import type { NumberBySize } from '../types';
 import { makeFrozenStaticListIds } from './data-helpers';
-import { type MechSizeId, SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA } from './unit-sizes';
+import { type MechSizeId, SIZE } from './unit-sizes';
 
 export const NO_ARMOR_UPGRADE = 'NO_ARMOR_UPGRADE' as const;
 export const ABLATIVE_ARMOR_UPGRADE = 'ABLATIVE_ARMOR_UPGRADE' as const;
@@ -38,10 +38,10 @@ interface MakeArmorUpgradeInput extends Omit<Optional<MechArmorUpgrade, 'cost' |
 
 function makeArmorUpgrade(item: MakeArmorUpgradeInput): Omit<MechArmorUpgrade, 'id'> {
     const cost_by_size: NumberBySize = item.cost_by_size ?? {
-        [SIZE_LIGHT]: item.cost ?? 0,
-        [SIZE_MEDIUM]: item.cost ?? 0,
-        [SIZE_HEAVY]: item.cost ?? 0,
-        [SIZE_ULTRA]: item.cost ?? 0,
+        [SIZE.LIGHT]: item.cost ?? 0,
+        [SIZE.MEDIUM]: item.cost ?? 0,
+        [SIZE.HEAVY]: item.cost ?? 0,
+        [SIZE.ULTRA]: item.cost ?? 0,
     };
 
     return {
@@ -67,10 +67,10 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MechArmorUpgradeId, MechArmorU
         display_name: 'Ablative',
         card_upgrade_display_name: 'Ablative Armor',
         cost_by_size: {
-            [SIZE_LIGHT]: 1,
-            [SIZE_MEDIUM]: 1,
-            [SIZE_HEAVY]: 2,
-            [SIZE_ULTRA]: 2,
+            [SIZE.LIGHT]: 1,
+            [SIZE.MEDIUM]: 1,
+            [SIZE.HEAVY]: 2,
+            [SIZE.ULTRA]: 2,
         },
         slots: 0,
         description: 'This Unit may re‑roll any failed Defense Rolls caused by the Blast effect.',
@@ -86,10 +86,10 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MechArmorUpgradeId, MechArmorU
         display_name: 'Ceramic',
         card_upgrade_display_name: 'Ceramic Armor',
         cost_by_size: {
-            [SIZE_LIGHT]: 2,
-            [SIZE_MEDIUM]: 2,
-            [SIZE_HEAVY]: 1,
-            [SIZE_ULTRA]: 1,
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 2,
+            [SIZE.HEAVY]: 1,
+            [SIZE.ULTRA]: 1,
         },
         slots: 0,
         description: 'Each time this Unit would take Damage from the AP trait, roll a D6. On a 4+, ignore that Damage.',
@@ -116,6 +116,6 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MechArmorUpgradeId, MechArmorU
         cost: 2,
         slots: 0,
         armor_mod: 4,
-        limited_size_ids: [SIZE_ULTRA],
+        limited_size_ids: [SIZE.ULTRA],
     }),
 });

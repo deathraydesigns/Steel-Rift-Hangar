@@ -1,14 +1,6 @@
 import { makeStaticListIds, trait } from '../data-helpers';
-import { SIZE_ULTRA_LIGHT } from '../unit-sizes';
-import {
-    TRAIT_CLOSE_SUPPORT,
-    TRAIT_MINE_SWEEPER,
-    TRAIT_OUTRIDER,
-    TRAIT_SQUADRON,
-    TRAIT_SUPPRESSIVE_FIRE,
-    TRAIT_TARGET_DESIGNATOR,
-    TRAIT_UNIT_SIZE_AND_TYPE,
-} from '../unit-traits';
+import { SIZE } from '../unit-sizes';
+import { UNIT_TRAIT } from '../unit-traits';
 import { TYPE_VEHICLE } from '../unit-types';
 import { CLUSTER_ROCKETS, MISSILE_POD, VEH_AUTO_CANNON, VEH_SUBMUNITIONS } from '../unit-weapons';
 import type { SupportAssetUnitDef, SupportAssetUnitVehicleDef } from './_support-asset-types';
@@ -18,16 +10,16 @@ export const LIGHT_VEHICLE_SQUADRON = 'LIGHT_VEHICLE_SQUADRON' as const;
 export const LIGHT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDef, 'id'>> = {
     [LIGHT_VEHICLE_SQUADRON]: {
         unit_type_id: TYPE_VEHICLE,
-        size_id: SIZE_ULTRA_LIGHT,
+        size_id: SIZE.ULTRA_LIGHT,
         display_name: 'Light Unit Squadron',
         cost: 10,
         max_armor_tons: 10,
         defense: 3,
         unit_points_description: 'This Unit must have a total of 10 armor',
         traits: [
-            trait(TRAIT_UNIT_SIZE_AND_TYPE, undefined, 'Light Vehicle'),
-            trait(TRAIT_SQUADRON),
-            trait(TRAIT_CLOSE_SUPPORT),
+            trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Light Vehicle'),
+            trait(UNIT_TRAIT.SQUADRON),
+            trait(UNIT_TRAIT.CLOSE_SUPPORT),
         ],
         vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
             RECON: {
@@ -39,8 +31,8 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDe
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_TARGET_DESIGNATOR),
-                    trait(TRAIT_OUTRIDER),
+                    trait(UNIT_TRAIT.TARGET_DESIGNATOR),
+                    trait(UNIT_TRAIT.OUTRIDER),
                 ],
             },
             FIRE_SUPPORT: {
@@ -68,7 +60,7 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDe
                     VEH_AUTO_CANNON,
                 ],
                 traits: [
-                    trait(TRAIT_SUPPRESSIVE_FIRE),
+                    trait(UNIT_TRAIT.SUPPRESSIVE_FIRE),
                 ],
             },
             ENGINEERING: {
@@ -80,7 +72,7 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Record<string, Omit<SupportAssetUnitDe
                     VEH_SUBMUNITIONS,
                 ],
                 traits: [
-                    trait(TRAIT_MINE_SWEEPER),
+                    trait(UNIT_TRAIT.MINE_SWEEPER),
                 ],
             },
         }),

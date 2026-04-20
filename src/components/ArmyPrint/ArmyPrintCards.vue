@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { flatMap, sortBy } from 'es-toolkit';
-import { chunk } from 'es-toolkit/compat';
+import { chunk } from 'es-toolkit';
 import { computed } from 'vue';
 import type { FactionPerkId } from '../../data/faction-perks';
 import type { MechTeamId } from '../../data/mech-teams';

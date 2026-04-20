@@ -1,10 +1,10 @@
 import { NO_ARMOR_UPGRADE } from '../mech-armor-upgrades';
-import { MOD_STANDARD } from '../mech-body';
-import { MOBILITY_BI_PEDAL } from '../mech-mobility';
+import { MECH_BODY_MOD } from '../mech-body';
+import { MECH_MOBILITY } from '../mech-mobility';
 import { TEAM_GUNSLINGER } from '../mech-teams';
 import { COOLANT_TANKS, HAPTIC_SUIT, JUMP_JETS } from '../mech-upgrades';
 import { ARC_GUN, MAG_TETHER, MELEE_WEAPON, PLASMA_BLADE, ROTARY_CANNON, SHOT_CANNON } from '../mech-weapons';
-import { SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM } from '../unit-sizes';
+import { SIZE } from '../unit-sizes';
 import { TYPE_HEV } from '../unit-types';
 
 export const pack4 = {
@@ -14,11 +14,11 @@ export const pack4 = {
         {
             id: 1,
             name: 'Ermey Medium HE-V 1',
-            size_id: SIZE_MEDIUM,
-            structure_mod_id: MOD_STANDARD,
-            armor_mod_id: MOD_STANDARD,
+            size_id: SIZE.MEDIUM,
+            structure_mod_id: MECH_BODY_MOD.STANDARD,
+            armor_mod_id: MECH_BODY_MOD.STANDARD,
             armor_upgrade_id: NO_ARMOR_UPGRADE,
-            mobility_id: MOBILITY_BI_PEDAL,
+            mobility_id: MECH_MOBILITY.BI_PEDAL,
             preferred_team_id: TEAM_GUNSLINGER,
             weapons: [
                 {
@@ -58,11 +58,11 @@ export const pack4 = {
         {
             id: 2,
             name: 'Zuma Heavy HE-V 1',
-            size_id: SIZE_HEAVY,
-            structure_mod_id: MOD_STANDARD,
-            armor_mod_id: MOD_STANDARD,
+            size_id: SIZE.HEAVY,
+            structure_mod_id: MECH_BODY_MOD.STANDARD,
+            armor_mod_id: MECH_BODY_MOD.STANDARD,
             armor_upgrade_id: NO_ARMOR_UPGRADE,
-            mobility_id: MOBILITY_BI_PEDAL,
+            mobility_id: MECH_MOBILITY.BI_PEDAL,
             preferred_team_id: TEAM_GUNSLINGER,
             weapons: [
                 {
@@ -107,11 +107,11 @@ export const pack4 = {
         {
             id: 3,
             name: 'Chesty Light HE-V',
-            size_id: SIZE_LIGHT,
-            structure_mod_id: MOD_STANDARD,
-            armor_mod_id: MOD_STANDARD,
+            size_id: SIZE.LIGHT,
+            structure_mod_id: MECH_BODY_MOD.STANDARD,
+            armor_mod_id: MECH_BODY_MOD.STANDARD,
             armor_upgrade_id: NO_ARMOR_UPGRADE,
-            mobility_id: MOBILITY_BI_PEDAL,
+            mobility_id: MECH_MOBILITY.BI_PEDAL,
             preferred_team_id: TEAM_GUNSLINGER,
             weapons: [
                 {
@@ -151,11 +151,11 @@ export const pack4 = {
         {
             id: 4,
             name: 'Ermey Medium HE-V 2',
-            size_id: SIZE_MEDIUM,
-            structure_mod_id: MOD_STANDARD,
-            armor_mod_id: MOD_STANDARD,
+            size_id: SIZE.MEDIUM,
+            structure_mod_id: MECH_BODY_MOD.STANDARD,
+            armor_mod_id: MECH_BODY_MOD.STANDARD,
             armor_upgrade_id: NO_ARMOR_UPGRADE,
-            mobility_id: MOBILITY_BI_PEDAL,
+            mobility_id: MECH_MOBILITY.BI_PEDAL,
             preferred_team_id: TEAM_GUNSLINGER,
             weapons: [
                 {

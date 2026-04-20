@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { chunk } from 'es-toolkit/compat';
+import { chunk } from 'es-toolkit';
 import { computed } from 'vue';
 import { RD_ADVANCED_STRUCTURAL_COMPONENTS } from '../../../../data/faction-perks.js';
 import {
@@ -7,7 +7,7 @@ import {
   HEAVY_PLATING_ARMOR_UPGRADE,
   NO_ARMOR_UPGRADE,
 } from '../../../../data/mech-armor-upgrades';
-import { SIZE_LIGHT, SIZE_ULTRA } from '../../../../data/unit-sizes.js';
+import { SIZE } from '../../../../data/unit-sizes.js';
 import { useFactionStore } from '../../../../store/faction-store';
 import { useMechStore } from '../../../../store/mech-store';
 
@@ -21,10 +21,10 @@ const { mechId } = defineProps<{
 const info = computed(() => mechStore.getMechInfo(mechId)!);
 
 const structureSystem = computed(() => {
-  if (info.value.size.id === SIZE_LIGHT) {
+  if (info.value.size.id === SIZE.LIGHT) {
     return 'Fragile Internals';
   }
-  if (info.value.size.id === SIZE_ULTRA) {
+  if (info.value.size.id === SIZE.ULTRA) {
     return 'Backup Systems';
   }
 });

@@ -1,8 +1,8 @@
-import type { GarrisonUnitInfo, Trait, UnitSize } from '../../types';
+import type { GarrisonUnitInfo, Trait } from '../../types';
 import type { InfantrySquad, InfantrySquadId } from '../infantry-squads';
 import type { SupportAssetUnitId } from '../support-asset-units';
-import type { UnitSizeId } from '../unit-sizes';
-import type { UnitTraitId } from '../unit-traits';
+import type { SIZE, UnitSize } from '../unit-sizes';
+import type { UNIT_TRAIT } from '../unit-traits';
 import type { UnitType, UnitTypeId } from '../unit-types';
 import type { UnitWeapon, UnitWeaponId } from '../unit-weapons';
 import type { UpgradePodId } from './ultra-light-hev-squadron';
@@ -40,27 +40,27 @@ export interface SupportAssetUnitVehicleDef {
     garrison_choice_unit_ids?: InfantrySquadId[],
     // added to all garrison units
     garrison_unit_traits?: Trait[],
-    traits?: Trait<UnitTraitId>[],
+    traits?: Trait<UNIT_TRAIT>[],
 }
 
 export interface UpgradePod {
     id: UpgradePodId,
     weapon_id?: UnitWeaponId,
-    trait?: Trait<UnitTraitId>,
+    trait?: Trait<UNIT_TRAIT>,
 }
 
 export interface SupportAssetUnitDef {
     id: SupportAssetUnitId,
     display_name: string,
     unit_type_id: UnitTypeId,
-    size_id: UnitSizeId,
+    size_id: SIZE,
     cost: number,
     max_armor_tons?: number,
     max_vehicles?: number,
     max_duplicate_vehicles?: number,
     unit_points_description?: string,
     all_vehicle_must_be_the_same?: boolean,
-    traits?: Trait<UnitTraitId>[],
+    traits?: Trait<UNIT_TRAIT>[],
     defense: number,
     vehicles: Record<string, SupportAssetUnitVehicleDef>,
     upgrade_pods?: Record<UpgradePodId, UpgradePod>,
@@ -70,14 +70,14 @@ export interface SupportAssetUnitInfo {
     id: SupportAssetUnitId,
     display_name: string,
     unit_type_id: string,
-    size_id: UnitSizeId,
+    size_id: SIZE,
     cost: number,
     max_armor_tons?: number,
     max_vehicles?: number,
     max_duplicate_vehicles?: number,
     unit_points_description?: string,
     all_vehicle_must_be_the_same?: boolean,
-    traits: Trait<UnitTraitId>[],
+    traits: Trait<UNIT_TRAIT>[],
     defense: number,
     vehicles: Record<string, UnitVehicleInfo>,
     upgrade_pods?: Record<UpgradePodId, UpgradePod>,

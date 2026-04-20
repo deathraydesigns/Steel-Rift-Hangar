@@ -1,7 +1,7 @@
 import type { FactionPerk } from './data/faction-perks';
 import type { MechArmorUpgradeId } from './data/mech-armor-upgrades';
-import type { MechBody, MechBodyModId } from './data/mech-body';
-import type { MechMobility, MechMobilityId } from './data/mech-mobility';
+import type { MECH_BODY_MOD, MechBody } from './data/mech-body';
+import type { MECH_MOBILITY, MechMobility } from './data/mech-mobility';
 import { type TEAM_PERK } from './data/mech-team-perks';
 import type { MechTeamId } from './data/mech-teams';
 import type { MechUpgradeId } from './data/mech-upgrades';
@@ -9,28 +9,10 @@ import type { MechWeaponId, MechWeaponInfo } from './data/mech-weapons';
 import type { OrderId } from './data/orders';
 import type { SecondaryAgendaId } from './data/secondary-agendas';
 import type { InfantrySquadInfo } from './data/support-assets/_support-asset-types';
-import { type MechSizeId, SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA, type UnitSizeId } from './data/unit-sizes';
+import { type MechSize, type MechSizeId, SIZE } from './data/unit-sizes';
 import type { WeaponTraitId } from './data/weapon-traits';
 import type { HasDisplayOrder } from './store/helpers/collection-helper';
 import type { TeamPerkInfo } from './store/team-store';
-
-export interface UnitSize {
-    id: UnitSizeId;
-    display_name: string;
-}
-
-export interface MechSize {
-    id: MechSizeId,
-    display_name: string;
-    armor: number;
-    structure: number;
-    max_slots: number;
-    max_tons: number;
-    move: number;
-    jump: number;
-    defense: number;
-    smash_damage: number;
-}
 
 export interface MechTeamSize {
     id: string;
@@ -48,11 +30,11 @@ export interface MechTeamGroup {
     required_upgrade_ids: MechUpgradeId[],
     required_at_least_one_of_weapon_ids: MechWeaponId[],
     required_at_least_one_weapon_with_trait_id: WeaponTraitId | null,
-    required_armor_or_structure_mod_id_once: MechBodyModId | null,
+    required_armor_or_structure_mod_id_once: MECH_BODY_MOD | null,
     prohibited_weapons_with_trait_ids: WeaponTraitId[],
     limited_weapons_with_at_least_one_of_trait_ids: WeaponTraitId[],
-    limited_structure_mod_ids: MechBodyModId[],
-    limited_armor_mod_ids: MechBodyModId[],
+    limited_structure_mod_ids: MECH_BODY_MOD[],
+    limited_armor_mod_ids: MECH_BODY_MOD[],
     limited_armor_upgrade_ids: MechArmorUpgradeId[],
     allow_duplicate_weapons: boolean,
     requires_at_least_one_companion_drone: boolean
@@ -126,10 +108,10 @@ export interface Mech {
     id: number,
     name?: string,
     size_id: MechSizeId,
-    structure_mod_id: MechBodyModId,
-    armor_mod_id: MechBodyModId,
+    structure_mod_id: MECH_BODY_MOD,
+    armor_mod_id: MECH_BODY_MOD,
     armor_upgrade_id: MechArmorUpgradeId,
-    mobility_id: MechMobilityId,
+    mobility_id: MECH_MOBILITY,
     preferred_team_id: MechTeamId,
     weapons: MechWeaponAttachment[],
     weapons_id_increment: number,
@@ -159,17 +141,17 @@ export interface MechTeamInstance {
 }
 
 export interface NumberBySize {
-    [SIZE_LIGHT]: number | null,
-    [SIZE_MEDIUM]: number | null,
-    [SIZE_HEAVY]: number | null,
-    [SIZE_ULTRA]: number | null,
+    [SIZE.LIGHT]: number | null,
+    [SIZE.MEDIUM]: number | null,
+    [SIZE.HEAVY]: number | null,
+    [SIZE.ULTRA]: number | null,
 }
 
 export interface TraitsBySize<T extends string = string> {
-    [SIZE_LIGHT]: Trait<T>[],
-    [SIZE_MEDIUM]: Trait<T>[],
-    [SIZE_HEAVY]: Trait<T>[],
-    [SIZE_ULTRA]: Trait<T>[],
+    [SIZE.LIGHT]: Trait<T>[],
+    [SIZE.MEDIUM]: Trait<T>[],
+    [SIZE.HEAVY]: Trait<T>[],
+    [SIZE.ULTRA]: Trait<T>[],
 }
 
 export interface Trait<ID extends string = string> {

@@ -2,13 +2,7 @@
 import { BFormFloatingLabel, BFormInput, BFormSelect } from 'bootstrap-vue-next';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref, watch } from 'vue';
-import {
-  GAME_SIZE_BATTLE,
-  GAME_SIZE_RECON,
-  GAME_SIZE_STRIKE,
-  GAME_SIZE_WAR,
-  GAME_SIZES,
-} from '../../../data/game-sizes';
+import { GAME_SIZE, GAME_SIZES } from '../../../data/game-sizes';
 import { useArmyListStore } from '../../../store/army-list-store';
 
 const store = useArmyListStore();
@@ -25,10 +19,10 @@ type Option = {
 };
 
 const options: Option[] = [
-  GAME_SIZE_RECON,
-  GAME_SIZE_STRIKE,
-  GAME_SIZE_BATTLE,
-  GAME_SIZE_WAR,
+  GAME_SIZE.RECON,
+  GAME_SIZE.STRIKE,
+  GAME_SIZE.BATTLE,
+  GAME_SIZE.WAR,
 ].map(id => {
   return {
     text: GAME_SIZES[id].display_name,

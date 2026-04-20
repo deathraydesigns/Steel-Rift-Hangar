@@ -1,5 +1,5 @@
 import { getStoreUnscopedId } from 'pinia-scope';
-import { MOBILITY_BI_PEDAL } from '../../data/mech-mobility';
+import { MECH_MOBILITY } from '../../data/mech-mobility';
 import { TEAM_MULTIROLE, TEAM_SHELF } from '../../data/mech-teams';
 import { ULTRA_LIGHT_HEV_SQUADRON } from '../../data/support-assets/ultra-light-hev-squadron';
 import { useArmyListStore } from '../army-list-store';
@@ -72,7 +72,7 @@ export function migrateLoadData(data: any) {
     if (data.save_schema_version === 1) {
         data?.mech?.mechs?.forEach((mech: any) => {
             if (!mech.mobility_id) {
-                mech.mobility_id = MOBILITY_BI_PEDAL;
+                mech.mobility_id = MECH_MOBILITY.BI_PEDAL;
             }
         });
     }

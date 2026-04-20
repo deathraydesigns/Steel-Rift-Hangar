@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import { MECH_BODY_MODS, type MechBodyModId } from '../../../../data/mech-body';
+import { type MECH_BODY_MOD, MECH_BODY_MODS } from '../../../../data/mech-body';
 import FormatNumber from '../../../functional/format-number.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 
@@ -22,7 +22,7 @@ const {
   armor: number | null,
   structure: number | null,
   options: {
-    value: MechBodyModId,
+    value: MECH_BODY_MOD,
     text: string,
     modifier: number,
     max_tons: number,
@@ -33,10 +33,10 @@ const {
   validationMessage: string,
 }>();
 
-const model = defineModel<MechBodyModId>({ required: true });
+const model = defineModel<MECH_BODY_MOD>({ required: true });
 const selectedValueLabel = computed(() => MECH_BODY_MODS[model.value].display_name);
 
-function selectOption(value: MechBodyModId) {
+function selectOption(value: MECH_BODY_MOD) {
   model.value = value;
 }
 </script>
@@ -72,12 +72,12 @@ function selectOption(value: MechBodyModId) {
           </thead>
           <tbody>
           <tr
-            :class="{
-                'disabled': !item.valid,
-                'dropdown-row': true,
-                'table-selected':   (item.value == model)
-              }"
             v-for="item in options" :key="item.value"
+            :class="{
+              'disabled': !item.valid,
+              'dropdown-row': true,
+              'table-selected':   (item.value === model)
+            }"
             @click="selectOption(item.value)"
           >
             <td>

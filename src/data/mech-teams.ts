@@ -8,7 +8,7 @@ import {
     HEAVY_PLATING_ARMOR_UPGRADE,
     REACTIVE_ARMOR_UPGRADE,
 } from './mech-armor-upgrades';
-import { MOD_REINFORCED, MOD_STANDARD, MOD_STRIPPED } from './mech-body';
+import { MECH_BODY_MOD } from './mech-body';
 import { TEAM_PERK } from './mech-team-perks';
 import { DIRECTIONAL_THRUSTER, HAPTIC_SUIT, NITRO_BOOST, TARGET_DESIGNATOR } from './mech-upgrades';
 import { HOWITZER, MISSILES, ROCKET_PACK } from './mech-weapons';
@@ -22,7 +22,7 @@ import {
     SA_TARGET_ELIMINATED,
     SA_TROPHY_TAKERS,
 } from './secondary-agendas';
-import { MECH_SIZES, type MechSizeId, SIZE_HEAVY, SIZE_LIGHT, SIZE_MEDIUM, SIZE_ULTRA } from './unit-sizes';
+import { MECH_SIZES, type MechSizeId, SIZE } from './unit-sizes';
 
 import { TRAIT_MELEE, TRAIT_REACH, TRAIT_SHORT } from './weapon-traits';
 
@@ -81,10 +81,10 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 display_name: 'Shelved HE-Vs',
                 size_ids: [
-                    SIZE_LIGHT,
-                    SIZE_MEDIUM,
-                    SIZE_HEAVY,
-                    SIZE_ULTRA,
+                    SIZE.LIGHT,
+                    SIZE.MEDIUM,
+                    SIZE.HEAVY,
+                    SIZE.ULTRA,
                 ],
                 min_count: false,
                 max_count: false,
@@ -98,10 +98,10 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 display_name: 'HE-Vs',
                 size_ids: [
-                    SIZE_LIGHT,
-                    SIZE_MEDIUM,
-                    SIZE_HEAVY,
-                    SIZE_ULTRA,
+                    SIZE.LIGHT,
+                    SIZE.MEDIUM,
+                    SIZE.HEAVY,
+                    SIZE.ULTRA,
                 ],
                 min_count: false,
                 max_count: false,
@@ -117,13 +117,13 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_LIGHT],
+                size_ids: [SIZE.LIGHT],
                 required_upgrade_ids: [TARGET_DESIGNATOR],
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_MEDIUM, SIZE_HEAVY],
+                size_ids: [SIZE.MEDIUM, SIZE.HEAVY],
                 required_weapon_ids: [
                     ROCKET_PACK,
                     HOWITZER,
@@ -132,8 +132,8 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_LIGHT],
-            [SIZE_MEDIUM, SIZE_HEAVY],
+            [SIZE.LIGHT],
+            [SIZE.MEDIUM, SIZE.HEAVY],
         ],
         team_size_perk_rows: {
             2: [
@@ -159,21 +159,21 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 min_count: 1,
                 max_count: 4,
-                size_ids: [SIZE_LIGHT],
+                size_ids: [SIZE.LIGHT],
                 required_upgrade_ids: [TARGET_DESIGNATOR],
             }),
             'B': makeGroup({
                 min_count: 0,
                 max_count: 2,
-                size_ids: [SIZE_MEDIUM, SIZE_HEAVY],
+                size_ids: [SIZE.MEDIUM, SIZE.HEAVY],
                 required_upgrade_ids: [TARGET_DESIGNATOR],
-                limited_structure_mod_ids: [MOD_STRIPPED],
-                limited_armor_mod_ids: [MOD_STRIPPED],
+                limited_structure_mod_ids: [MECH_BODY_MOD.STRIPPED],
+                limited_armor_mod_ids: [MECH_BODY_MOD.STRIPPED],
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_LIGHT],
-            [SIZE_MEDIUM, SIZE_HEAVY],
+            [SIZE.LIGHT],
+            [SIZE.MEDIUM, SIZE.HEAVY],
         ],
         team_size_perk_rows: {
             2: [
@@ -199,7 +199,7 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 min_count: 1,
                 max_count: 4,
-                size_ids: [SIZE_MEDIUM],
+                size_ids: [SIZE.MEDIUM],
                 limited_armor_upgrade_ids: [
                     ABLATIVE_ARMOR_UPGRADE,
                     REACTIVE_ARMOR_UPGRADE,
@@ -208,14 +208,14 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
                     EXTRA_PLATING_ARMOR_UPGRADE,
                     HEAVY_PLATING_ARMOR_UPGRADE,
                 ],
-                required_armor_or_structure_mod_id_once: MOD_REINFORCED,
-                limited_structure_mod_ids: [MOD_STANDARD, MOD_REINFORCED],
-                limited_armor_mod_ids: [MOD_STANDARD, MOD_REINFORCED],
+                required_armor_or_structure_mod_id_once: MECH_BODY_MOD.REINFORCED,
+                limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
+                limited_armor_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_HEAVY],
+                size_ids: [SIZE.HEAVY],
                 limited_armor_upgrade_ids: [
                     ABLATIVE_ARMOR_UPGRADE,
                     REACTIVE_ARMOR_UPGRADE,
@@ -224,13 +224,13 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
                     EXTRA_PLATING_ARMOR_UPGRADE,
                     HEAVY_PLATING_ARMOR_UPGRADE,
                 ],
-                limited_structure_mod_ids: [MOD_STANDARD, MOD_REINFORCED],
-                limited_armor_mod_ids: [MOD_STANDARD, MOD_REINFORCED],
+                limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
+                limited_armor_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
             }),
             'C': makeGroup({
                 min_count: 0,
                 max_count: 2,
-                size_ids: [SIZE_ULTRA],
+                size_ids: [SIZE.ULTRA],
                 limited_armor_upgrade_ids: [
                     ABLATIVE_ARMOR_UPGRADE,
                     REACTIVE_ARMOR_UPGRADE,
@@ -239,14 +239,14 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
                     EXTRA_PLATING_ARMOR_UPGRADE,
                     HEAVY_PLATING_ARMOR_UPGRADE,
                 ],
-                limited_structure_mod_ids: [MOD_STANDARD, MOD_REINFORCED],
-                limited_armor_mod_ids: [MOD_STANDARD, MOD_REINFORCED],
+                limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
+                limited_armor_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_MEDIUM, SIZE_HEAVY, SIZE_ULTRA],
-            [SIZE_MEDIUM],
-            [SIZE_HEAVY, SIZE_ULTRA],
+            [SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
+            [SIZE.MEDIUM],
+            [SIZE.HEAVY, SIZE.ULTRA],
         ],
         team_size_perk_rows: {
             2: [
@@ -275,26 +275,26 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 min_count: 1,
                 max_count: 1,
-                size_ids: [SIZE_LIGHT],
+                size_ids: [SIZE.LIGHT],
                 allow_duplicate_weapons: false,
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_MEDIUM],
+                size_ids: [SIZE.MEDIUM],
                 allow_duplicate_weapons: false,
             }),
             'C': makeGroup({
                 min_count: 0,
                 max_count: 1,
-                size_ids: [SIZE_HEAVY],
+                size_ids: [SIZE.HEAVY],
                 allow_duplicate_weapons: false,
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_LIGHT],
-            [SIZE_MEDIUM],
-            [SIZE_HEAVY],
+            [SIZE.LIGHT],
+            [SIZE.MEDIUM],
+            [SIZE.HEAVY],
         ],
         team_size_perk_rows: {
             2: [
@@ -323,35 +323,35 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 min_count: 0,
                 max_count: 2,
-                size_ids: [SIZE_LIGHT],
+                size_ids: [SIZE.LIGHT],
                 required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 3,
-                size_ids: [SIZE_MEDIUM],
+                size_ids: [SIZE.MEDIUM],
                 required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
             }),
             'C': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_HEAVY],
+                size_ids: [SIZE.HEAVY],
                 required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
                 required_upgrade_ids: [NITRO_BOOST],
             }),
             'D': makeGroup({
                 min_count: 0,
                 max_count: 1,
-                size_ids: [SIZE_ULTRA],
+                size_ids: [SIZE.ULTRA],
                 limited_armor_upgrade_ids: [HEAVY_PLATING_ARMOR_UPGRADE],
                 required_upgrade_ids: [NITRO_BOOST],
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_LIGHT],
-            [SIZE_MEDIUM],
-            [SIZE_HEAVY],
-            [SIZE_ULTRA],
+            [SIZE.LIGHT],
+            [SIZE.MEDIUM],
+            [SIZE.HEAVY],
+            [SIZE.ULTRA],
         ],
         team_size_perk_rows: {
             2: [
@@ -383,29 +383,29 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 min_count: 0,
                 max_count: 2,
-                size_ids: [SIZE_LIGHT],
+                size_ids: [SIZE.LIGHT],
                 required_upgrade_ids: [HAPTIC_SUIT],
                 limited_weapons_with_at_least_one_of_trait_ids: [TRAIT_MELEE, TRAIT_SHORT],
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_MEDIUM],
+                size_ids: [SIZE.MEDIUM],
                 required_upgrade_ids: [HAPTIC_SUIT],
                 limited_weapons_with_at_least_one_of_trait_ids: [TRAIT_MELEE, TRAIT_SHORT],
             }),
             'C': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_HEAVY],
+                size_ids: [SIZE.HEAVY],
                 required_upgrade_ids: [HAPTIC_SUIT],
                 limited_weapons_with_at_least_one_of_trait_ids: [TRAIT_MELEE, TRAIT_SHORT],
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_LIGHT],
-            [SIZE_MEDIUM],
-            [SIZE_HEAVY],
+            [SIZE.LIGHT],
+            [SIZE.MEDIUM],
+            [SIZE.HEAVY],
         ],
         team_size_perk_rows: {
             2: [
@@ -434,7 +434,7 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 min_count: 1,
                 max_count: 3,
-                size_ids: [SIZE_LIGHT],
+                size_ids: [SIZE.LIGHT],
                 required_upgrade_ids: [DIRECTIONAL_THRUSTER],
                 required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
                 prohibited_weapons_with_trait_ids: [TRAIT_REACH],
@@ -442,16 +442,16 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'B': makeGroup({
                 min_count: 1,
                 max_count: 3,
-                size_ids: [SIZE_MEDIUM],
+                size_ids: [SIZE.MEDIUM],
                 required_upgrade_ids: [DIRECTIONAL_THRUSTER],
                 required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
                 prohibited_weapons_with_trait_ids: [TRAIT_REACH],
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_LIGHT, SIZE_MEDIUM],
-            [SIZE_LIGHT],
-            [SIZE_MEDIUM],
+            [SIZE.LIGHT, SIZE.MEDIUM],
+            [SIZE.LIGHT],
+            [SIZE.MEDIUM],
         ],
         team_size_perk_rows: {
             2: [
@@ -480,30 +480,30 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             'A': makeGroup({
                 min_count: 0,
                 max_count: 1,
-                size_ids: [SIZE_LIGHT],
+                size_ids: [SIZE.LIGHT],
                 requires_at_least_one_companion_drone: true,
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_MEDIUM],
+                size_ids: [SIZE.MEDIUM],
                 requires_at_least_one_companion_drone: true,
             }),
             'C': makeGroup({
                 min_count: 1,
                 max_count: 2,
-                size_ids: [SIZE_HEAVY],
+                size_ids: [SIZE.HEAVY],
                 requires_at_least_one_companion_drone: true,
             }),
             'D': makeGroup({
                 min_count: 0,
                 max_count: 1,
-                size_ids: [SIZE_ULTRA],
+                size_ids: [SIZE.ULTRA],
                 requires_at_least_one_companion_drone: true,
             }),
         }),
         team_size_perk_columns: [
-            [SIZE_LIGHT, SIZE_MEDIUM, SIZE_HEAVY, SIZE_ULTRA],
+            [SIZE.LIGHT, SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
         ],
         team_size_perk_rows: {
             2: [

@@ -13,7 +13,7 @@
   "dependencies": {
     "bootstrap": "^5.3.6",
     "bootstrap-vue-next": "^0.29.3",
-    "es-toolkit": "^1.38.0",
+    "es-toolkit": "^1.45.1",
     "file-saver": "^2.0.5",
     "pinia-plugin-persistedstate": "^4.3.0",
     "static-records": "^1.9.0",
