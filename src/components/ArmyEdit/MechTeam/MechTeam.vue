@@ -2,7 +2,7 @@
 import { BButton, BCollapse, BOffcanvas } from 'bootstrap-vue-next';
 import { computed, ref } from 'vue';
 import { MECH_TEAM_PERKS, TEAM_PERK } from '../../../data/mech-team-perks';
-import type { MechTeamId } from '../../../data/mech-teams';
+import type { MECH_TEAM } from '../../../data/mech-teams';
 import { MECH_SIZES, type MechSizeId } from '../../../data/unit-sizes.js';
 import { useTeamStore } from '../../../store/team-store';
 import { useValidationStore } from '../../../store/validation-store';
@@ -16,7 +16,7 @@ const teamStore = useTeamStore();
 const validationStore = useValidationStore();
 
 const { teamId } = defineProps<{
-  teamId: MechTeamId
+  teamId: MECH_TEAM
 }>();
 const visible = teamStore.getTeamVisibleComputed(teamId);
 const collapsing = ref(false);

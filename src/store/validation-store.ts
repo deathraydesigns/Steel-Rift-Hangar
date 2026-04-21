@@ -2,11 +2,11 @@ import { countBy, difference } from 'es-toolkit';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed } from 'vue';
 import { GAME_SIZE } from '../data/game-sizes';
-import { MECH_ARMOR_UPGRADES, type MechArmorUpgradeId } from '../data/mech-armor-upgrades';
+import { MECH_ARMOR_UPGRADES, type MECH_ARMOR_UPGRADE } from '../data/mech-armor-upgrades';
 import { MECH_BODY_MODS } from '../data/mech-body';
 import { TEAM_PERK } from '../data/mech-team-perks';
-import { MECH_TEAMS, type MechTeamId, TEAM_SHELF } from '../data/mech-teams';
-import { COMBAT_SHIELD, MECH_UPGRADES, type MechUpgradeId } from '../data/mech-upgrades';
+import { MECH_TEAMS, MECH_TEAM } from '../data/mech-teams';
+import { MECH_UPGRADES, MECH_UPGRADE } from '../data/mech-upgrades';
 import { MECH_WEAPONS } from '../data/mech-weapons';
 import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
 import { WEAPON_TRAITS } from '../data/weapon-traits';
@@ -289,14 +289,14 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         };
     }
 
-    function getMechUpgradeSizeValidation(mechId: number, upgradeId: MechUpgradeId) {
+    function getMechUpgradeSizeValidation(mechId: number, upgradeId: MECH_UPGRADE) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return { valid: true, upgradeDisplayName: '', validSizeDisplayNames: [], sizeTeamPerk: null };
         let limited_size_ids = MECH_UPGRADES[upgradeId].limited_size_ids || [];
         let sizeTeamPerk = null;
         let valid = true;
 
-        if (upgradeId === COMBAT_SHIELD) {
+        if (upgradeId === MECH_UPGRADE.COMBAT_SHIELD) {
             const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
             let combatBuckler = findById(teamPerks, TEAM_PERK.COMBAT_BUCKLER);
             if (combatBuckler) {
@@ -320,7 +320,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         };
     }
 
-    function getMechArmorUpgradeSizeValidation(mechId: number, armorUpgradeId: MechArmorUpgradeId) {
+    function getMechArmorUpgradeSizeValidation(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE) {
         let mech = mechStore.getMech(mechId);
         if (!mech) return { valid: true, armorUpgradeDisplayName: null, validSizeDisplayNames: [] };
         let {
@@ -343,7 +343,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         };
     }
 
-    function getTeamGroupSizeValidation(teamId: MechTeamId, groupId: string) {
+    function getTeamGroupSizeValidation(teamId: MECH_TEAM, groupId: string) {
         const { min_count, max_count } = MECH_TEAMS[teamId].groups[groupId];
         const group = teamStore.findGroup(teamId, groupId);
         const mechCount = group ? group.mechs.length : 0;
@@ -483,7 +483,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         return false;
     }
 
-    function getMechTeamGroupArmorUpgradeValidation(mechId: number, armorUpgradeId: MechArmorUpgradeId) {
+    function getMechTeamGroupArmorUpgradeValidation(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE) {
         const { teamId, groupId } = teamStore.getMechTeamAndGroupIds(mechId);
         const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
         const validIds = groupDef.limited_armor_upgrade_ids;
@@ -579,7 +579,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         };
     }
 
-    function getTeamValidation(teamId: MechTeamId) {
+    function getTeamValidation(teamId: MECH_TEAM) {
         const team = teamStore.findTeam(teamId);
         if (!team) return {
             id: teamId,
@@ -602,10 +602,10 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         };
     }
 
-    function getTeamGroupValidation(teamId: MechTeamId, groupId: string): TeamGroupValidation {
+    function getTeamGroupValidation(teamId: MECH_TEAM, groupId: string): TeamGroupValidation {
         const { display_name } = teamStore.getTeamGroupDef(teamId, groupId);
         const validation_messages: string[] = [];
-        if (teamId === TEAM_SHELF) {
+        if (teamId === MECH_TEAM.SHELF) {
             return {
                 id: groupId,
                 valid: true,

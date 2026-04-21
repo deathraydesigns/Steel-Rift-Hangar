@@ -1,10 +1,5 @@
 import type { TeamPerk } from '../types';
-import {
-    DIRECTIONAL_THRUSTER,
-    ELECTRONIC_COUNTERMEASURES,
-    TARGET_DESIGNATOR,
-    upgradeDisplayName,
-} from './mech-upgrades';
+import { MECH_UPGRADE, upgradeDisplayName } from './mech-upgrades';
 
 interface TeamPerkInput {
     display_name?: string;
@@ -58,13 +53,13 @@ export enum TEAM_PERK {
 }
 
 export const MECH_TEAM_PERKS = makeTeamPerks({
-    [TEAM_PERK._0_SLOT_TARGET_DESIGNATORS]: makeMini(upgradeDisplayName(TARGET_DESIGNATOR)),
-    [TEAM_PERK._0_TON_TARGET_DESIGNATORS]: makeLightWeight(upgradeDisplayName(TARGET_DESIGNATOR)),
-    [TEAM_PERK._0_SLOT_ECM]: makeMini(upgradeDisplayName(ELECTRONIC_COUNTERMEASURES)),
-    [TEAM_PERK._0_TON_ECM]: makeLightWeight(upgradeDisplayName(ELECTRONIC_COUNTERMEASURES)),
+    [TEAM_PERK._0_SLOT_TARGET_DESIGNATORS]: makeMini(upgradeDisplayName(MECH_UPGRADE.TARGET_DESIGNATOR)),
+    [TEAM_PERK._0_TON_TARGET_DESIGNATORS]: makeLightWeight(upgradeDisplayName(MECH_UPGRADE.TARGET_DESIGNATOR)),
+    [TEAM_PERK._0_SLOT_ECM]: makeMini(upgradeDisplayName(MECH_UPGRADE.ELECTRONIC_COUNTERMEASURES)),
+    [TEAM_PERK._0_TON_ECM]: makeLightWeight(upgradeDisplayName(MECH_UPGRADE.ELECTRONIC_COUNTERMEASURES)),
     [TEAM_PERK._0_SLOT_ARMOR_UPGRADES]: makeMini('Armor Upgrades'),
     [TEAM_PERK._0_TON_ARMOR_UPGRADES]: makeLightWeight('Armor Upgrades'),
-    [TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS]: makeMini(upgradeDisplayName(DIRECTIONAL_THRUSTER)),
+    [TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS]: makeMini(upgradeDisplayName(MECH_UPGRADE.DIRECTIONAL_THRUSTER)),
     [TEAM_PERK.EXTRA_CLUSTER_ROCKET_AMMO]: {
         display_name: 'Extra Cluster Rocket Ammo',
         description: 'Cluster Rockets gain +1 to their Limited Trait.',

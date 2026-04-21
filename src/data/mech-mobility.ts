@@ -1,5 +1,5 @@
 import { makeFrozenStaticListIds } from './data-helpers';
-import { type MobilityOrderId, ORDER_HUNKER_DOWN, ORDER_PLOW_THROUGH } from './orders/mobility-orders';
+import { type MobilityOrderId, ORDER } from './orders';
 
 export enum MECH_MOBILITY {
     BI_PEDAL = 'MOBILITY_BI_PEDAL',
@@ -23,11 +23,11 @@ export const MECH_MOBILITIES = makeFrozenStaticListIds<MechMobility>({
     [MECH_MOBILITY.TRACKED]: {
         display_name: 'Tracked',
         slots: 1,
-        granted_order_ids: [ORDER_PLOW_THROUGH],
+        granted_order_ids: [ORDER.PLOW_THROUGH],
     },
     [MECH_MOBILITY.MULTI_LIMB]: {
         display_name: 'Multi-Limb',
         slots: 1,
-        granted_order_ids: [ORDER_HUNKER_DOWN],
+        granted_order_ids: [ORDER.HUNKER_DOWN],
     },
 });

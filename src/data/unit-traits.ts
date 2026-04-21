@@ -1,17 +1,8 @@
 import type { Trait, TraitFormatter } from '../types';
 import { numberFormater } from './data-formatters';
 import { makeTraits, type TraitDef } from './data-helpers';
-import { MECH_UPGRADES, TARGET_DESIGNATOR } from './mech-upgrades';
-import { ORDER_INFANTRY_MUSTER } from './orders/infantry-orders';
-import { ORDER_CLEAR_MINEFIELD } from './orders/special-orders';
-import {
-    ORDER_SUPPORT,
-    ORDER_SUPPORT_CNC_STATION,
-    ORDER_SUPPORT_COMBAT_SUPPLIES,
-    ORDER_SUPPORT_GUIDANCE_SUITE,
-    ORDER_SUPPORT_MINE_DRONE_LAYER,
-    ORDER_SUPPORT_MSOE,
-} from './orders/support-orders';
+import { MECH_UPGRADE, MECH_UPGRADES } from './mech-upgrades';
+import { ORDER } from './orders';
 
 export enum UNIT_TRAIT {
     ALL_TERRAIN = 'TRAIT_ALL_TERRAIN',
@@ -78,7 +69,7 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
     [UNIT_TRAIT.MINE_SWEEPER]: {
         display_name: 'Mine Sweeper',
         description: 'A Unit with this Trait may not be Targeted by a Mine Drone Token.This Unit may ENGAGE Mine Drone Tokens as if it had the Mine Drone Tracking Munitions Upgrade.',
-        granted_order_ids: [ORDER_CLEAR_MINEFIELD],
+        granted_order_ids: [ORDER.CLEAR_MINEFIELD],
     },
     [UNIT_TRAIT.SHIELD_PROJECTOR]: {
         display_name: 'Shield Projector',
@@ -86,7 +77,7 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
     },
     [UNIT_TRAIT.TARGET_DESIGNATOR]: {
         display_name: 'Target Designator',
-        description: MECH_UPGRADES[TARGET_DESIGNATOR].description,
+        description: MECH_UPGRADES[MECH_UPGRADE.TARGET_DESIGNATOR].description,
     },
     [UNIT_TRAIT.OUTRIDER]: {
         display_name: 'Outrider',
@@ -95,33 +86,33 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
     [UNIT_TRAIT.SUPPORT_ORDERS]: {
         display_name: 'Support Orders',
         description: 'Units with this trait possess unusual equipment that is intended to support other units, but must be actively operated to take effect. These traits will be prefixed with the term “SUPPORT:”. Units with these traits may perform the SUPPORT Order. SUPPORT: The Unit may activate the effect of any or all “SUPPORT:” traits. See each trait entry for the effects of the “SUPPORT:” trait. Note that if a model (or models) in a Squadron have a “SUPPORT:” trait, the entire Squadron must perform the SUPPORT Order. However, each model with a “SUPPORT:” will activate that trait during the Order, in any order its Commander wishes.',
-        granted_order_ids: [ORDER_SUPPORT],
+        granted_order_ids: [ORDER.SUPPORT],
     },
     [UNIT_TRAIT.SUPPORT_ORDER_CNC]: {
         display_name: 'Support: Command and Control Station',
         description: '',
-        granted_order_ids: [ORDER_SUPPORT_CNC_STATION],
+        granted_order_ids: [ORDER.SUPPORT_CNC_STATION],
     },
     [UNIT_TRAIT.SUPPORT_ORDER_COMBAT_SUPPLIES]: {
         display_name: 'Support: Combat Supplies',
         description: '',
-        granted_order_ids: [ORDER_SUPPORT_COMBAT_SUPPLIES],
+        granted_order_ids: [ORDER.SUPPORT_COMBAT_SUPPLIES],
     },
     [UNIT_TRAIT.SUPPORT_GUIDANCE_SUITE]: {
         display_name: 'Support: Guidance Suite',
         description: '',
-        granted_order_ids: [ORDER_SUPPORT_GUIDANCE_SUITE],
+        granted_order_ids: [ORDER.SUPPORT_GUIDANCE_SUITE],
     },
     [UNIT_TRAIT.SUPPORT_MINE_DRONE_LAYER]: {
         display_name: 'Support: Mine Drone Layer',
         formatter: numberFormater,
         description: '',
-        granted_order_ids: [ORDER_SUPPORT_MINE_DRONE_LAYER],
+        granted_order_ids: [ORDER.SUPPORT_MINE_DRONE_LAYER],
     },
     [UNIT_TRAIT.SUPPORT_MOED]: {
         display_name: 'Support: Multi-spectral Obscuration Emitter Deployer',
         description: '',
-        granted_order_ids: [ORDER_SUPPORT_MSOE],
+        granted_order_ids: [ORDER.SUPPORT_MSOE],
     },
     [UNIT_TRAIT.MSOE_LAUNCHER]: {
         display_name: 'MSOE Launcher (X)',
@@ -131,7 +122,7 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
     [UNIT_TRAIT.MSOE_DEPLOYER]: {
         display_name: 'Support: MSOE Deployer',
         description: '',
-        granted_order_ids: [ORDER_SUPPORT_MSOE],
+        granted_order_ids: [ORDER.SUPPORT_MSOE],
     },
     [UNIT_TRAIT.SCRAMBLERS]: {
         display_name: 'Scramblers',
@@ -184,7 +175,7 @@ export const UNIT_TRAITS = makeTraits<UnitTraitDef>({
     [UNIT_TRAIT.HAULER]: {
         display_name: 'Hauler',
         description: `This unit Garrisons a Unit from a separate Asset, and is not in its Group Command. The Garrisoned Unit must be purchased as a separate Asset, following all rules for its selection. The Garrisoned Unit must still be Activated during the turn, but it may not perform any order other than the following until it has performed this order: Muster: This is the only order that a Garrisoned Unit may perform. The Garrisoned Unit is placed within 1” of its Garrison. If the Garrisoned Unit has the Squadron Trait, place one model within 1” of the Garrison, then place the other models within 3” of that initial model. This Unit is no longer considered Garrisoned, and is now “Mustered”.`,
-        granted_order_ids: [ORDER_INFANTRY_MUSTER],
+        granted_order_ids: [ORDER.INFANTRY_MUSTER],
     },
     // temporary until unit types and sizes are separate stats
     [UNIT_TRAIT.UNIT_SIZE_AND_TYPE]: {

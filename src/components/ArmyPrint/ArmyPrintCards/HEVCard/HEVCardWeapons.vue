@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { MINEFIELD_DRONE_CARRIER_SYSTEM } from '../../../../data/mech-upgrades.js';
-import { TRAIT_UPGRADE_LIMITED } from '../../../../data/upgrade-traits.js';
-import { TRAIT_LIMITED, TRAIT_SHORT } from '../../../../data/weapon-traits.js';
+import { MECH_UPGRADE } from '../../../../data/mech-upgrades.js';
+import { UPGRADE_TRAIT } from '../../../../data/upgrade-traits.js';
+import { WEAPON_TRAIT } from '../../../../data/weapon-traits.js';
 import { findBy } from '../../../../store/helpers/collection-helper';
 import { useMechStore } from '../../../../store/mech-store';
 import type { MechWeaponAttachmentInfo, Trait } from '../../../../types';
@@ -15,11 +15,11 @@ const { mechId } = defineProps<{
 }>();
 const weapons = computed(() => {
   let results: MechWeaponAttachmentInfo[] = mechStore.getMechWeaponsAttachmentInfo(mechId);
-  let mineDroneUpgrade = findBy(mechStore.getMechUpgradesAttachmentInfo(mechId), 'upgrade_id', MINEFIELD_DRONE_CARRIER_SYSTEM);
+  let mineDroneUpgrade = findBy(mechStore.getMechUpgradesAttachmentInfo(mechId), 'upgrade_id', MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM);
 
   if (mineDroneUpgrade) {
     mineDroneUpgrade.display_name = 'Mine Drones';
-    mineDroneUpgrade.traits = mineDroneUpgrade.traits.filter(trait => trait.id !== TRAIT_UPGRADE_LIMITED);
+    mineDroneUpgrade.traits = mineDroneUpgrade.traits.filter(trait => trait.id !== UPGRADE_TRAIT.LIMITED);
     results.push(mineDroneUpgrade as unknown as MechWeaponAttachmentInfo);
   }
 
@@ -29,7 +29,7 @@ const weapons = computed(() => {
 const hasUses = computed(() => weapons.value.find(weapon => !!weapon.max_uses));
 
 function filterTraits(traits: Trait[]) {
-  return traits.filter((trait) => trait.id !== TRAIT_LIMITED && trait.id !== TRAIT_SHORT);
+  return traits.filter((trait) => trait.id !== WEAPON_TRAIT.LIMITED && trait.id !== WEAPON_TRAIT.SHORT);
 }
 </script>
 <template>

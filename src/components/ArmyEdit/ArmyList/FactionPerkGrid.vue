@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BButton, BModal } from 'bootstrap-vue-next';
 import { storeToRefs } from 'pinia';
-import type { FactionId } from '../../../data/factions';
+import type { FACTION } from '../../../data/factions';
 import { useFactionStore } from '../../../store/faction-store';
 
 const model = defineModel<boolean>();
@@ -17,7 +17,7 @@ const {
 
 const { addPerk, removePerk, hasPerk, hasPerkInGroupId } = store;
 
-function setFactionId(factionId: FactionId) {
+function setFactionId(factionId: FACTION) {
   faction_id.value = factionId;
   clearInvalidPerks();
 }

@@ -2,132 +2,118 @@ import { type Trait } from '../types';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
 import { SIZE } from './unit-sizes';
 import { UNIT_TRAIT } from './unit-traits';
-import { TYPE_INFANTRY } from './unit-types';
-import {
-    INFANTRY_ELECTRO_ARC_PULSERS,
-    INFANTRY_HEAVY_MISSILE_LAUNCHER,
-    INFANTRY_HEAVY_RIFLES,
-    INFANTRY_MISSILE_LAUNCHER,
-    INFANTRY_RIFLES,
-    type UnitWeaponId,
-} from './unit-weapons';
+import { UNIT_TYPE } from './unit-types';
+import { UNIT_WEAPON } from './unit-weapons';
 
-export const INFANTRY_RIFLE_SQUAD = 'INFANTRY_RIFLE_SQUAD' as const;
-export const INFANTRY_ANTI_TANK_SQUAD = 'INFANTRY_ANTI_TANK_SQUAD' as const;
-export const INFANTRY_RECON_SQUAD = 'INFANTRY_RECON_SQUAD' as const;
-export const INFANTRY_ENGINEER_SQUAD = 'INFANTRY_ENGINEER_SQUAD' as const;
-export const INFANTRY_ARC_SUIT_SQUAD = 'INFANTRY_ARC_SUIT_SQUAD' as const;
-export const INFANTRY_REAPER_SUIT_SQUAD = 'INFANTRY_REAPER_SUIT_SQUAD' as const;
-export const INFANTRY_VIPER_SUIT_SQUAD = 'INFANTRY_VIPER_SUIT_SQUAD' as const;
-
-export type InfantrySquadId =
-    | typeof INFANTRY_RIFLE_SQUAD
-    | typeof INFANTRY_ANTI_TANK_SQUAD
-    | typeof INFANTRY_RECON_SQUAD
-    | typeof INFANTRY_ENGINEER_SQUAD
-    | typeof INFANTRY_ARC_SUIT_SQUAD
-    | typeof INFANTRY_REAPER_SUIT_SQUAD
-    | typeof INFANTRY_VIPER_SUIT_SQUAD
+export enum INFANTRY {
+    RIFLE_SQUAD = 'INFANTRY_RIFLE_SQUAD',
+    ANTI_TANK_SQUAD = 'INFANTRY_ANTI_TANK_SQUAD',
+    RECON_SQUAD = 'INFANTRY_RECON_SQUAD',
+    ENGINEER_SQUAD = 'INFANTRY_ENGINEER_SQUAD',
+    ARC_SUIT_SQUAD = 'INFANTRY_ARC_SUIT_SQUAD',
+    REAPER_SUIT_SQUAD = 'INFANTRY_REAPER_SUIT_SQUAD',
+    VIPER_SUIT_SQUAD = 'INFANTRY_VIPER_SUIT_SQUAD',
+}
 
 const baseInfantryStats = {
-    unit_type_id: TYPE_INFANTRY,
+    unit_type_id: UNIT_TYPE.INFANTRY,
     size_id: SIZE.ULTRA_LIGHT,
     move: 3,
     armor: 0,
     structure: 3,
-};
+} as const;
 
 const baseSuitStats = {
-    unit_type_id: TYPE_INFANTRY,
+    unit_type_id: UNIT_TYPE.INFANTRY,
     size_id: SIZE.ULTRA_LIGHT,
-};
+} as const;
 
 export interface InfantrySquad {
-    id: InfantrySquadId,
-    unit_type_id: typeof TYPE_INFANTRY,
+    id: INFANTRY,
+    unit_type_id: UNIT_TYPE.INFANTRY,
     size_id: SIZE,
     move: number,
     armor: number,
     structure: number,
     display_name: string,
-    weapon_ids: UnitWeaponId[],
+    weapon_ids: UNIT_WEAPON[],
     traits: Trait[]
 }
 
 export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
-    [INFANTRY_RIFLE_SQUAD]: {
+    [INFANTRY.RIFLE_SQUAD]: {
         ...baseInfantryStats,
         display_name: 'Rifle',
         weapon_ids: [
-            INFANTRY_RIFLES,
+            UNIT_WEAPON.INFANTRY_RIFLES,
         ],
         traits: [
             trait(UNIT_TRAIT.SUPPRESSIVE_FIRE),
         ],
     },
-    [INFANTRY_ANTI_TANK_SQUAD]: {
+    [INFANTRY.ANTI_TANK_SQUAD]: {
         ...baseInfantryStats,
         display_name: 'Anti-Tank',
         weapon_ids: [
-            INFANTRY_RIFLES,
-            INFANTRY_MISSILE_LAUNCHER,
+            UNIT_WEAPON.INFANTRY_RIFLES,
+            UNIT_WEAPON.INFANTRY_MISSILE_LAUNCHER,
         ],
         traits: [],
     },
-    [INFANTRY_RECON_SQUAD]: {
+    [INFANTRY.RECON_SQUAD]: {
         ...baseInfantryStats,
         display_name: 'Recon',
         weapon_ids: [
-            INFANTRY_RIFLES,
+            UNIT_WEAPON.INFANTRY_RIFLES,
         ],
         traits: [
             trait(UNIT_TRAIT.TARGET_DESIGNATOR),
         ],
     },
-    [INFANTRY_ENGINEER_SQUAD]: {
+    [INFANTRY.ENGINEER_SQUAD]: {
         ...baseInfantryStats,
         display_name: 'Engineers',
         weapon_ids: [
-            INFANTRY_RIFLES,
+            UNIT_WEAPON.INFANTRY_RIFLES,
         ],
         traits: [
             trait(UNIT_TRAIT.MINE_SWEEPER),
         ],
     },
-    [INFANTRY_ARC_SUIT_SQUAD]: {
+    [INFANTRY.ARC_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 4,
         armor: 2,
         structure: 2,
         display_name: 'Arc Suits',
         weapon_ids: [
-            INFANTRY_RIFLES,
-            INFANTRY_ELECTRO_ARC_PULSERS,
+            UNIT_WEAPON.INFANTRY_RIFLES,
+            UNIT_WEAPON.INFANTRY_ELECTRO_ARC_PULSERS,
         ],
         traits: [
             trait(UNIT_TRAIT.SUPPRESSIVE_FIRE),
         ],
     },
-    [INFANTRY_REAPER_SUIT_SQUAD]: {
+    [INFANTRY.REAPER_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 4,
         armor: 2,
         structure: 2,
         display_name: 'Reaper Suits',
         weapon_ids: [
-            INFANTRY_RIFLES,
-            INFANTRY_HEAVY_MISSILE_LAUNCHER,
+            UNIT_WEAPON.INFANTRY_RIFLES,
+            UNIT_WEAPON.INFANTRY_HEAVY_MISSILE_LAUNCHER,
         ],
         traits: [],
     },
-    [INFANTRY_VIPER_SUIT_SQUAD]: {
+    [INFANTRY.VIPER_SUIT_SQUAD]: {
         ...baseSuitStats,
         move: 5,
         armor: 2,
         structure: 2,
         display_name: 'Viper Suits',
         weapon_ids: [
-            INFANTRY_HEAVY_RIFLES,
+            UNIT_WEAPON.INFANTRY_HEAVY_RIFLES,
         ],
         traits: [
             trait(UNIT_TRAIT.TARGET_DESIGNATOR),

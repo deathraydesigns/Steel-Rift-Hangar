@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ORDER_SUPPORT } from '../../../data/orders/support-orders';
+import { ORDER } from '../../../data/orders';
 import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import CardFooter from './CardParts/CardFooter.vue';
 import CardHeader from './CardParts/CardHeader.vue';
@@ -20,7 +20,7 @@ const vehicleWeapons = computed(() => store.getUnitAttachmentVehicleWeaponsCardI
 const vehicleOrders = computed(() => {
   const orders = store.getUnitAttachmentGrantedOrdersCollection(unitAttachmentId);
 
-  orders.remove(ORDER_SUPPORT);
+  orders.remove(ORDER.SUPPORT);
 
   return orders.all();
 });

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { traitDisplayNames } from '../../../data/data-helpers';
-import type { SupportAssetWeaponId } from '../../../data/support-asset-weapons';
-import { TRAIT_LIMITED } from '../../../data/weapon-traits.js';
+import type { SUPPORT_ASSET_WEAPON } from '../../../data/support-asset-weapons';
+import { WEAPON_TRAIT } from '../../../data/weapon-traits.js';
 import { findById } from '../../../store/helpers/collection-helper';
 import { useSupportAssetWeaponsStore } from '../../../store/support-asset-weapons-store';
 import SvgIcon from '../../UI/Icon.vue';
@@ -13,7 +13,7 @@ import CardHeader from './CardParts/CardHeader.vue';
 const supportAssetStore = useSupportAssetWeaponsStore();
 
 const { supportAssetId } = defineProps<{
-  supportAssetId: SupportAssetWeaponId,
+  supportAssetId: SUPPORT_ASSET_WEAPON,
 }>();
 
 const info = computed(() => supportAssetStore.getSupportAssetInfo(supportAssetId));
@@ -21,12 +21,12 @@ const info = computed(() => supportAssetStore.getSupportAssetInfo(supportAssetId
 const weapon = computed(() => info.value.off_table_weapon);
 
 const traits = computed(() => {
-  const filteredTraits = weapon.value.traits.filter(trait => trait.id !== TRAIT_LIMITED);
+  const filteredTraits = weapon.value.traits.filter(trait => trait.id !== WEAPON_TRAIT.LIMITED);
   return traitDisplayNames(filteredTraits);
 });
 
 const max_uses = computed(() => {
-  const limitedTrait = findById(weapon.value.traits, TRAIT_LIMITED);
+  const limitedTrait = findById(weapon.value.traits, WEAPON_TRAIT.LIMITED);
   if (limitedTrait) {
     return limitedTrait.number;
   }

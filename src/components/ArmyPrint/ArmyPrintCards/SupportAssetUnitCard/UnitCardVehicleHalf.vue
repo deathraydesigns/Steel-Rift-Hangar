@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { Order } from '../../../../data/orders';
 import type { UnitWeaponInfo } from '../../../../data/support-assets/_support-asset-types';
 import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
-import type { Order, Trait } from '../../../../types';
+import type { Trait } from '../../../../types';
 import UnitCardTraits from './UnitCardTraits.vue';
 import UnitCardVehicles from './UnitCardVehicles.vue';
 import UnitCardWeapons from './UnitCardWeapons.vue';

@@ -1,24 +1,23 @@
 import type { GarrisonUnitInfo, Trait } from '../../types';
-import type { InfantrySquad, InfantrySquadId } from '../infantry-squads';
-import type { SupportAssetUnitId } from '../support-asset-units';
+import type { INFANTRY, InfantrySquad } from '../infantry-squads';
 import type { SIZE, UnitSize } from '../unit-sizes';
 import type { UNIT_TRAIT } from '../unit-traits';
-import type { UnitType, UnitTypeId } from '../unit-types';
-import type { UnitWeapon, UnitWeaponId } from '../unit-weapons';
-import type { UpgradePodId } from './ultra-light-hev-squadron';
+import type { UnitType, UNIT_TYPE } from '../unit-types';
+import type { UnitWeapon, UNIT_WEAPON } from '../unit-weapons';
+import { type UpgradePodId } from './ultra-light-hev-squadron';
 
 export type UnitVehicleId = number & { readonly __brandUnitVehicleId: unique symbol }
 
 export interface VehicleAttachment {
     id: number;
     vehicle_id: UnitVehicleId,
-    weapon_choices?: Record<string, UnitWeaponId>,
-    garrison_units?: InfantrySquadId[],
+    weapon_choices?: Record<string, UNIT_WEAPON>,
+    garrison_units?: INFANTRY[],
 }
 
 export interface SupportAssetUnitAttachment {
     id: number,
-    support_asset_unit_id: SupportAssetUnitId,
+    support_asset_unit_id: SUPPORT_ASSET_UNIT,
     vehicles_id_increment: number,
     vehicles: VehicleAttachment[],
     upgrade_pod_id?: UpgradePodId,
@@ -32,12 +31,12 @@ export interface SupportAssetUnitVehicleDef {
     armor: number,
     structure: number,
     garrison_ul_hev?: boolean,
-    weapon_ids?: UnitWeaponId[],
+    weapon_ids?: UNIT_WEAPON[],
     // each key is a slot to choose one weapon,
     // each value is weapons to choose from in that slot
-    weapon_choice_ids?: Record<string, UnitWeaponId[]>,
+    weapon_choice_ids?: Record<string, UNIT_WEAPON[]>,
     // units to choose from, based on garrison trait
-    garrison_choice_unit_ids?: InfantrySquadId[],
+    garrison_choice_unit_ids?: INFANTRY[],
     // added to all garrison units
     garrison_unit_traits?: Trait[],
     traits?: Trait<UNIT_TRAIT>[],
@@ -45,14 +44,25 @@ export interface SupportAssetUnitVehicleDef {
 
 export interface UpgradePod {
     id: UpgradePodId,
-    weapon_id?: UnitWeaponId,
+    weapon_id?: UNIT_WEAPON,
     trait?: Trait<UNIT_TRAIT>,
 }
 
+export enum SUPPORT_ASSET_UNIT {
+    ASSAULT_VEHICLE_SQUADRON = 'ASSAULT_VEHICLE_SQUADRON',
+    HEAVY_TANK_SQUADRON = 'HEAVY_TANK_SQUADRON',
+    SUPPORT_VEHICLE_SQUADRON = 'SUPPORT_VEHICLE_SQUADRON',
+    LAS_WING_ATTACK_SQUADRON = 'LAS_WING_ATTACK_SQUADRON',
+    LIGHT_VEHICLE_SQUADRON = 'LIGHT_VEHICLE_SQUADRON',
+    INFANTRY_OUTPOST = 'INFANTRY_OUTPOST',
+    LAS_WING_TRANSPORT_SQUADRON = 'LAS_WING_TRANSPORT_SQUADRON',
+    ULTRA_LIGHT_HEV_SQUADRON = 'ULTRA_LIGHT_HEV_SQUADRON',
+}
+
 export interface SupportAssetUnitDef {
-    id: SupportAssetUnitId,
+    id: SUPPORT_ASSET_UNIT,
     display_name: string,
-    unit_type_id: UnitTypeId,
+    unit_type_id: UNIT_TYPE,
     size_id: SIZE,
     cost: number,
     max_armor_tons?: number,
@@ -67,7 +77,7 @@ export interface SupportAssetUnitDef {
 }
 
 export interface SupportAssetUnitInfo {
-    id: SupportAssetUnitId,
+    id: SUPPORT_ASSET_UNIT,
     display_name: string,
     unit_type_id: string,
     size_id: SIZE,
@@ -87,7 +97,7 @@ export interface SupportAssetUnitInfo {
 
 export interface UnitAttachmentInfo {
     id: number,
-    support_asset_unit_id: SupportAssetUnitId,
+    support_asset_unit_id: SUPPORT_ASSET_UNIT,
     unit_type: UnitType,
     display_name: string,
     size: UnitSize,
@@ -115,7 +125,7 @@ export interface InfantrySquadInfo extends InfantrySquad {
 
 export interface UnitVehicleInfo {
     id: UnitVehicleId,
-    support_asset_unit_id: SupportAssetUnitId,
+    support_asset_unit_id: SUPPORT_ASSET_UNIT,
     weapons: UnitWeaponInfo[],
     display_name: string,
     move: number,

@@ -1,9 +1,9 @@
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, ref } from 'vue';
 import { GAME_SIZES, getGameSizeId } from '../data/game-sizes';
-import { MINEFIELD_DRONE_CARRIER_SYSTEM } from '../data/mech-upgrades';
-import { ORDER_SUPPORT_MSOE } from '../data/orders/support-orders';
-import { MINE_DRONE_BARRAGE } from '../data/support-asset-weapons';
+import { MECH_UPGRADE } from '../data/mech-upgrades';
+import { ORDER } from '../data/orders';
+import { SUPPORT_ASSET_WEAPON } from '../data/support-asset-weapons';
 import { UNIT_TRAIT } from '../data/unit-traits';
 import { useMechStore } from './mech-store';
 import { useSupportAssetCountsStore } from './support-asset-count-store';
@@ -39,7 +39,7 @@ export const useArmyListStore = defineScopeableStore('army-list', ({ scope }: { 
         const includes_mine_drones = computed(() => {
 
             const match = mechStore.mechs.find((mech) => {
-                return mech.upgrades.find(t => t.upgrade_id === MINEFIELD_DRONE_CARRIER_SYSTEM);
+                return mech.upgrades.find(t => t.upgrade_id === MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM);
             });
 
             if (match) {
@@ -49,7 +49,7 @@ export const useArmyListStore = defineScopeableStore('army-list', ({ scope }: { 
             if (supportAssetUnitStore.has_mine_drones) {
                 return true;
             }
-            return supportAssetWeaponsStore.hasSupportAssetId(MINE_DRONE_BARRAGE);
+            return supportAssetWeaponsStore.hasSupportAssetId(SUPPORT_ASSET_WEAPON.MINE_DRONE_BARRAGE);
         });
 
         const includes_msoe = computed(() => {
@@ -61,7 +61,7 @@ export const useArmyListStore = defineScopeableStore('army-list', ({ scope }: { 
                 });
             });
 
-            return hasLauncher || supportAssetUnitStore.getAllGrantedOrdersCollection().includes(ORDER_SUPPORT_MSOE);
+            return hasLauncher || supportAssetUnitStore.getAllGrantedOrdersCollection().includes(ORDER.SUPPORT_MSOE);
         });
 
         return {

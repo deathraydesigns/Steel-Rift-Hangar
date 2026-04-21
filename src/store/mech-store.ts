@@ -4,48 +4,18 @@ import { computed, readonly, ref } from 'vue';
 import { updateObject } from '../data/data-helpers';
 import type { FactionPerk } from '../data/faction-perks';
 import { DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS } from '../data/factions';
-import { MECH_ARMOR_UPGRADES, type MechArmorUpgradeId, NO_ARMOR_UPGRADE } from '../data/mech-armor-upgrades';
+import { MECH_ARMOR_UPGRADE, MECH_ARMOR_UPGRADES } from '../data/mech-armor-upgrades';
 import { MECH_BODY_MOD, MECH_BODY_MODS } from '../data/mech-body';
 import { MECH_MOBILITIES, MECH_MOBILITY } from '../data/mech-mobility';
 import { TEAM_PERK } from '../data/mech-team-perks';
-import { type MechTeamId, TEAM_GENERAL, TEAM_SHELF } from '../data/mech-teams';
-import {
-    DIRECTIONAL_THRUSTER,
-    ELECTRONIC_COUNTERMEASURES,
-    getUpgradeTraits,
-    JUMP_JETS,
-    MECH_UPGRADES,
-    type MechUpgradeId,
-    MINEFIELD_DRONE_CARRIER_SYSTEM,
-    NITRO_BOOST,
-    TARGET_DESIGNATOR,
-} from '../data/mech-upgrades';
-import {
-    HOWITZER,
-    MECH_WEAPONS,
-    MECH_WEAPONS_BY_TYPE,
-    type MechWeaponId,
-    type MechWeaponInfo,
-} from '../data/mech-weapons';
+import { MECH_TEAM } from '../data/mech-teams';
+import { getUpgradeTraits, MECH_UPGRADE, MECH_UPGRADES } from '../data/mech-upgrades';
+import { MECH_WEAPON, MECH_WEAPONS, MECH_WEAPONS_BY_TYPE, type MechWeaponInfo } from '../data/mech-weapons';
 import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
-import { TYPE_HEV } from '../data/unit-types';
-import { CLUSTER_ROCKETS } from '../data/unit-weapons';
-import {
-    TRAIT_COMPACT,
-    TRAIT_UPGRADE_LIMITED,
-    UPGRADE_TRAITS,
-    upgradeTraitDisplayName,
-    type UpgradeTraitId,
-} from '../data/upgrade-traits';
-import {
-    TRAIT_LIMITED,
-    TRAIT_MELEE,
-    TRAIT_SHORT,
-    TRAIT_SMART,
-    WEAPON_TRAITS,
-    weaponTraitDisplayName,
-    type WeaponTraitId,
-} from '../data/weapon-traits';
+import { UNIT_TYPE } from '../data/unit-types';
+import { UNIT_WEAPON } from '../data/unit-weapons';
+import { UPGRADE_TRAIT, UPGRADE_TRAITS, upgradeTraitDisplayName } from '../data/upgrade-traits';
+import { WEAPON_TRAIT, WEAPON_TRAITS, weaponTraitDisplayName } from '../data/weapon-traits';
 import { toaster } from '../toaster';
 import type { MechArmorUpgradeInfo, MechUpgradeInfo } from '../types';
 import {
@@ -68,9 +38,9 @@ export type AddMechOptions = {
     size_id?: MechSizeId,
     structure_mod_id?: MECH_BODY_MOD,
     armor_mod_id?: MECH_BODY_MOD,
-    armor_upgrade_id?: MechArmorUpgradeId,
+    armor_upgrade_id?: MECH_ARMOR_UPGRADE,
     mobility_id?: MECH_MOBILITY,
-    preferred_team_id?: MechTeamId,
+    preferred_team_id?: MECH_TEAM,
     name?: string,
 };
 export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: string }) => {
@@ -99,9 +69,9 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             size_id = size_id ?? SIZE.MEDIUM;
             structure_mod_id = structure_mod_id ?? MECH_BODY_MOD.STANDARD;
             armor_mod_id = armor_mod_id ?? MECH_BODY_MOD.STANDARD;
-            armor_upgrade_id = armor_upgrade_id ?? NO_ARMOR_UPGRADE;
+            armor_upgrade_id = armor_upgrade_id ?? MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE;
             mobility_id = mobility_id ?? MECH_MOBILITY.BI_PEDAL;
-            preferred_team_id = teamStore.normalizePreferredTeamId(preferred_team_id ?? TEAM_GENERAL);
+            preferred_team_id = teamStore.normalizePreferredTeamId(preferred_team_id ?? MECH_TEAM.GENERAL);
 
             let id = mechs_id_increment.value++;
             let mech: Mech = {
@@ -118,7 +88,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 upgrades: [],
                 upgrades_id_increment: 1,
                 display_order: null,
-                unit_type_id: TYPE_HEV,
+                unit_type_id: UNIT_TYPE.HEV,
             };
 
             mechs.value.push(mech);
@@ -190,7 +160,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             deleteItemById(mechs.value, mechId);
         }
 
-        function addMechWeaponAttachment(mechId: number, weaponId: MechWeaponId) {
+        function addMechWeaponAttachment(mechId: number, weaponId: MECH_WEAPON) {
             let mech = findById(mechs.value, mechId);
             if (mech) {
                 let id = mech.weapons_id_increment++;
@@ -218,7 +188,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             }
         }
 
-        function addMechUpgradeAttachment(mechId: number, upgradeId: MechUpgradeId) {
+        function addMechUpgradeAttachment(mechId: number, upgradeId: MECH_UPGRADE) {
             let mech = findById(mechs.value, mechId);
             if (mech) {
                 let id = mech.upgrades_id_increment++;
@@ -288,7 +258,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
             mechs.value.forEach((mech) => {
                 const { teamId } = teamStore.getMechTeamAndGroupIds(mech.id);
-                if (teamId !== TEAM_SHELF) {
+                if (teamId !== MECH_TEAM.SHELF) {
                     const m = getMechInfo(mech.id);
                     if (!m) return;
                     tons += m.size.max_tons;
@@ -368,7 +338,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             let display_name = name || placeholder_name;
 
             let { move, jump } = (MECH_SIZES)[size_id];
-            const jumpJets = findBy(upgrades, 'upgrade_id', JUMP_JETS);
+            const jumpJets = findBy(upgrades, 'upgrade_id', MECH_UPGRADE.JUMP_JETS);
 
             if (jumpJets) {
                 const hasJumpBooster = teamStore.getMechHasTeamPerkId(mechId, TEAM_PERK.JUMP_BOOSTER);
@@ -436,7 +406,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             return grantedOrders;
         }
 
-        function getWeaponInfo(mechId: number, weaponId: MechWeaponId): MechWeaponInfo | null {
+        function getWeaponInfo(mechId: number, weaponId: MECH_WEAPON): MechWeaponInfo | null {
             const mech = getMech(mechId);
             if (!mech) return null;
             const size_id = mech.size_id;
@@ -453,7 +423,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             } = weapon;
 
             let { traits, team_perks, faction_perks, range_modifier } = getWeaponTraitsInfo(mechId, weaponId);
-            const traitLimited = findById(traits, TRAIT_LIMITED);
+            const traitLimited = findById(traits, WEAPON_TRAIT.LIMITED);
 
             let max_uses = null;
             if (traitLimited) {
@@ -482,7 +452,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             let melee_base_damage = 0;
             let melee_trait_damage = 0;
 
-            const melee = findById<Trait<WeaponTraitId>>(traits, TRAIT_MELEE);
+            const melee = findById<Trait<WEAPON_TRAIT>>(traits, WEAPON_TRAIT.MELEE);
             if (melee) {
                 melee_base_damage = size.smash_damage + 1;
                 melee_trait_damage = melee.number as number;
@@ -511,7 +481,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
         }
 
         interface MechWeaponTraitsInfo {
-            traits: Trait<WeaponTraitId>[],
+            traits: Trait<WEAPON_TRAIT>[],
             team_perks: TeamPerkInfo[],
             faction_perks: FactionPerk[],
             range_modifier: number
@@ -522,7 +492,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             if (!mech) return { traits: [], team_perks: [], faction_perks: [], range_modifier: 0 };
             const size_id = mech.size_id;
             const weapon = (MECH_WEAPONS)[weaponId];
-            let traits: Trait<WeaponTraitId>[] = structuredClone(weapon.traits_by_size[size_id]);
+            let traits: Trait<WEAPON_TRAIT>[] = structuredClone(weapon.traits_by_size[size_id]);
             const perks = teamStore.getTeamPerksInfoByMech(mechId);
 
             const faction_perks: FactionPerk[] = [];
@@ -530,9 +500,9 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
             let range_modifier = 0;
 
-            if (weaponId === CLUSTER_ROCKETS) {
+            if (weaponId === UNIT_WEAPON.CLUSTER_ROCKETS) {
                 const perk = findById<TeamPerkInfo>(perks, TEAM_PERK.EXTRA_CLUSTER_ROCKET_AMMO);
-                const traitLimited = findById<Trait<WeaponTraitId>>(traits, TRAIT_LIMITED);
+                const traitLimited = findById<Trait<WEAPON_TRAIT>>(traits, WEAPON_TRAIT.LIMITED);
 
                 if (perk) {
                     if (traitLimited) (traitLimited.number as number) += perk.value;
@@ -542,26 +512,26 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
             const perk = findById(perks, TEAM_PERK.BARREL_EXTENSIONS);
             if (perk) {
-                const match = findById(traits, TRAIT_SHORT);
+                const match = findById(traits, WEAPON_TRAIT.SHORT);
                 if (match) {
                     range_modifier = perk.value;
                     team_perks.push(perk);
                 }
             }
 
-            if (weaponId === HOWITZER) {
+            if (weaponId === MECH_WEAPON.HOWITZER) {
                 const perk = findById(perks, TEAM_PERK.EXTRA_CLUSTER_ROCKET_AMMO);
                 if (perk) {
-                    traits.push({ id: TRAIT_SMART });
+                    traits.push({ id: WEAPON_TRAIT.SMART });
                     team_perks.push(perk);
                 }
             }
 
             traits = traits.map((trait) => ({
-                ...WEAPON_TRAITS[trait.id as WeaponTraitId],
+                ...WEAPON_TRAITS[trait.id as WEAPON_TRAIT],
                 ...trait,
                 display_name: weaponTraitDisplayName(trait),
-            })) as Trait<WeaponTraitId>[];
+            })) as Trait<WEAPON_TRAIT>[];
 
             return { traits, team_perks, faction_perks, range_modifier };
         }
@@ -619,7 +589,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
         function getMechAvailableWeaponsInfo(mechId: number) {
 
-            const makeList = (weapons: MechWeaponId[]) => {
+            const makeList = (weapons: MECH_WEAPON[]) => {
                 const result = weapons.map((weaponId) => {
                     const {
                         required,
@@ -641,19 +611,19 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             };
         }
 
-        function getUpgradeTraitsInfo(mechId: number, upgradeId: MechUpgradeId): null | MechUpgradeTraitsInfo {
+        function getUpgradeTraitsInfo(mechId: number, upgradeId: MECH_UPGRADE): null | MechUpgradeTraitsInfo {
             let mech = getMech(mechId);
             if (!mech) return null;
             let { size_id } = mech;
             let traits = getUpgradeTraits(upgradeId, size_id);
 
-            const traitLimited = findById(traits, TRAIT_UPGRADE_LIMITED);
+            const traitLimited = findById(traits, UPGRADE_TRAIT.LIMITED);
             const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
 
             const used_team_perks: TeamPerkInfo[] = [];
             const faction_perks: FactionPerk[] = [];
 
-            if (upgradeId === NITRO_BOOST) {
+            if (upgradeId === MECH_UPGRADE.NITRO_BOOST) {
                 let perk = findById(teamPerks, TEAM_PERK.EXTRA_NITRO);
                 if (perk) {
                     if (traitLimited) {
@@ -663,7 +633,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 }
             }
 
-            if (upgradeId === MINEFIELD_DRONE_CARRIER_SYSTEM) {
+            if (upgradeId === MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM) {
                 const materielPerk = factionStore.hasMaterielStockpilesInfo;
                 if (materielPerk) {
                     if (traitLimited) {
@@ -690,7 +660,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             };
         }
 
-        function getUpgradeInfo(mechId: number, upgradeId: MechUpgradeId): MechUpgradeInfo | null {
+        function getUpgradeInfo(mechId: number, upgradeId: MECH_UPGRADE): MechUpgradeInfo | null {
             let mech = getMech(mechId);
             if (!mech) return null;
             let { size_id, upgrades } = mech;
@@ -733,7 +703,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 validation_message = `Only available for ${validSizeDisplayNames.join('/')} HE-Vs`;
             }
 
-            const traitCompact = findById(traits, TRAIT_COMPACT);
+            const traitCompact = findById(traits, UPGRADE_TRAIT.COMPACT);
             if (traitCompact) {
                 const prevCompact = upgrades.find((upgrade) => {
                     if (upgrade.upgrade_id === upgradeId) {
@@ -742,16 +712,16 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                     const t = getUpgradeTraitsInfo(mechId, upgrade.upgrade_id);
                     if (!t) return;
 
-                    return findById(traits, TRAIT_COMPACT);
+                    return findById(traits, UPGRADE_TRAIT.COMPACT);
                 });
 
                 if (prevCompact) {
                     valid = false;
-                    validation_message = `Only one Upgrade with the ${(UPGRADE_TRAITS)[TRAIT_COMPACT].display_name} trait may be selected.`;
+                    validation_message = `Only one Upgrade with the ${(UPGRADE_TRAITS)[UPGRADE_TRAIT.COMPACT].display_name} trait may be selected.`;
                 }
             }
 
-            if (upgradeId === TARGET_DESIGNATOR) {
+            if (upgradeId === MECH_UPGRADE.TARGET_DESIGNATOR) {
                 let perk = findById(teamPerks, TEAM_PERK._0_SLOT_TARGET_DESIGNATORS);
                 if (perk) {
                     slots = 0;
@@ -765,7 +735,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 }
             }
 
-            if (upgradeId === DIRECTIONAL_THRUSTER) {
+            if (upgradeId === MECH_UPGRADE.DIRECTIONAL_THRUSTER) {
                 let perk = findById(teamPerks, TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS);
                 if (perk) {
                     slots = 0;
@@ -773,7 +743,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 }
             }
 
-            if (upgradeId === ELECTRONIC_COUNTERMEASURES) {
+            if (upgradeId === MECH_UPGRADE.ELECTRONIC_COUNTERMEASURES) {
                 let perk = findById(teamPerks, TEAM_PERK._0_SLOT_ECM);
                 if (perk) {
                     slots = 0;
@@ -831,7 +801,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             if (!mech) return [];
             const existingUpgradeIds = mech.upgrades.map((item) => item.upgrade_id);
 
-            const result = (Object.keys(MECH_UPGRADES) as MechUpgradeId[])
+            const result = (Object.keys(MECH_UPGRADES) as MECH_UPGRADE[])
                 .filter((upgradeId) => !existingUpgradeIds.includes(upgradeId))
                 .map((upgradeId) => getUpgradeInfo(mechId, upgradeId))
                 .filter(v => !!v);
@@ -849,7 +819,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             return getMechArmorUpgradeInfo(mechId, armor_upgrade_id);
         }
 
-        function getMechArmorUpgradeInfo(mechId: number, armorUpgradeId: MechArmorUpgradeId): null | MechArmorUpgradeInfo {
+        function getMechArmorUpgradeInfo(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE): null | MechArmorUpgradeInfo {
             let mech = getMech(mechId);
             if (!mech) return null;
             let {
@@ -924,7 +894,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
         }
 
         function getMechAvailableArmorUpgrades(mechId: number): MechArmorUpgradeInfo[] {
-            return (Object.keys(MECH_ARMOR_UPGRADES) as MechArmorUpgradeId[])
+            return (Object.keys(MECH_ARMOR_UPGRADES) as MECH_ARMOR_UPGRADE[])
                 .map(armorUpgradeId => getMechArmorUpgradeInfo(mechId, armorUpgradeId))
                 .filter(v => !!v);
         }
@@ -951,7 +921,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                     traitIds.forEach((traitId) => (traitIdMap)[traitId] = true);
                 });
             });
-            return Object.keys(traitIdMap) as UpgradeTraitId[];
+            return Object.keys(traitIdMap) as UPGRADE_TRAIT[];
         });
 
         const getUsedUpgradeTraitsInfo = computed(() => {
@@ -972,7 +942,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                     idMap[upgrade.upgrade_id] = true;
                 });
             });
-            return Object.keys(idMap) as MechUpgradeId[];
+            return Object.keys(idMap) as MECH_UPGRADE[];
         });
 
         const getUsedUpgradesInfo = computed(() => {

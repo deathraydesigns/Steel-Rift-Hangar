@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { sortBy } from 'es-toolkit';
 import { computed } from 'vue';
-import { TRAIT_LIMITED, TRAIT_SHORT, type WeaponTraitId } from '../../../../data/weapon-traits.js';
+import { WEAPON_TRAIT } from '../../../../data/weapon-traits.js';
 import type { Trait } from '../../../../types';
 import FormatInches from '../../../functional/format-inches.vue';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
@@ -13,7 +13,7 @@ type BasicWeaponInfo = {
   melee_base_damage?: number | null,
   melee_trait_damage?: number,
   melee_total_damage?: number,
-  traits: Trait<WeaponTraitId>[],
+  traits: Trait<WEAPON_TRAIT>[],
 }
 
 const { weapons, damageSuffix = '' } = defineProps<{
@@ -22,7 +22,7 @@ const { weapons, damageSuffix = '' } = defineProps<{
 }>();
 
 function filterTraits(traits: Trait[]) {
-  return traits.filter((trait) => trait.id !== TRAIT_LIMITED && trait.id !== TRAIT_SHORT);
+  return traits.filter((trait) => trait.id !== WEAPON_TRAIT.LIMITED && trait.id !== WEAPON_TRAIT.SHORT);
 }
 
 const sortedWeapons = computed(() => sortBy<BasicWeaponInfo>(weapons, ['display_name']).reverse());

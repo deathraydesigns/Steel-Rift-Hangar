@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BButton, BCollapse } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import { TEAM_SHELF } from '../../data/mech-teams.js';
+import { MECH_TEAM } from '../../data/mech-teams.js';
 import { useMechStore } from '../../store/mech-store';
 import { useTeamStore } from '../../store/team-store';
 import { useValidationStore } from '../../store/validation-store';
@@ -42,7 +42,7 @@ const teamId = computed(() => {
   return teamId;
 });
 const teamIcon = computed(() => teamStore.getTeamDef(teamId.value).icon);
-const showPreferredTeam = computed(() => teamId.value === TEAM_SHELF);
+const showPreferredTeam = computed(() => teamId.value === MECH_TEAM.SHELF);
 
 </script>
 <template>
@@ -142,7 +142,7 @@ const showPreferredTeam = computed(() => teamId.value === TEAM_SHELF);
           <div class="output-container ms-3">
             <div class="fw-bold mb-2 pt-2 text-light">Card Preview</div>
             <HEVCard :mech-id="mechId" class="shadow" />
-            <MechPreferredTeamDropDown :mech-id="mechId" v-if="teamId === TEAM_SHELF" />
+            <MechPreferredTeamDropDown :mech-id="mechId" v-if="teamId === MECH_TEAM.SHELF" />
           </div>
         </div>
       </BCollapse>

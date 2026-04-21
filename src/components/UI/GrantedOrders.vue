@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { type OrderId, ORDERS } from '../../data/orders';
+import { type ORDER, ORDERS } from '../../data/orders';
 
 const { orderIds } = defineProps<{
-  orderIds: OrderId[];
+  orderIds: ORDER[];
 }>();
 
 const orders = computed(() => {

@@ -4,10 +4,8 @@ import { computed } from 'vue';
 import { FACTIONS } from '../data/factions';
 import { MECH_TEAMS } from '../data/mech-teams';
 import {
-    SA_BRAWLERS,
-    SA_ENFORCERS,
-    SA_STALKERS,
-    SA_TITAN_KILLERS,
+    SECONDARY_AGENDA,
+
     SECONDARY_AGENDAS,
     type SecondaryAgenda,
 } from '../data/secondary-agendas';
@@ -66,19 +64,19 @@ export const useSecondaryAgendaStore = defineScopeableStore('secondary-agenda', 
         const sizesByCount = countBy(mechStore.mechs, (mech) => mech.size_id);
 
         if (sizesByCount[SIZE.LIGHT] >= 2) {
-            result.push(SECONDARY_AGENDAS[SA_STALKERS]);
+            result.push(SECONDARY_AGENDAS[SECONDARY_AGENDA.STALKERS]);
         }
 
         if (sizesByCount[SIZE.MEDIUM] >= 2) {
-            result.push(SECONDARY_AGENDAS[SA_BRAWLERS]);
+            result.push(SECONDARY_AGENDAS[SECONDARY_AGENDA.BRAWLERS]);
         }
 
         if (sizesByCount[SIZE.HEAVY] >= 2) {
-            result.push(SECONDARY_AGENDAS[SA_ENFORCERS]);
+            result.push(SECONDARY_AGENDAS[SECONDARY_AGENDA.ENFORCERS]);
         }
 
         if (sizesByCount[SIZE.ULTRA] >= 2) {
-            result.push(SECONDARY_AGENDAS[SA_TITAN_KILLERS]);
+            result.push(SECONDARY_AGENDAS[SECONDARY_AGENDA.TITAN_KILLERS]);
         }
 
         return result;

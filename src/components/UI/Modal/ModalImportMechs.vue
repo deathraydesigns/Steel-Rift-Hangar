@@ -2,7 +2,7 @@
 import { BDropdown, BModal } from 'bootstrap-vue-next';
 import { disposeOfPiniaScope } from 'pinia-scope';
 import { computed, reactive, toRaw } from 'vue';
-import { MECH_TEAMS, type MechTeamId, TEAM_SHELF } from '../../../data/mech-teams.js';
+import { MECH_TEAM, MECH_TEAMS } from '../../../data/mech-teams.js';
 import { useArmyListStore } from '../../../store/army-list-store';
 import { loadSaveFileData } from '../../../store/helpers/store-save-load';
 import { useMechStore } from '../../../store/mech-store';
@@ -28,19 +28,19 @@ const mechList = computed(() => {
     mech = toRaw(mech);
     const existing = mechImports.get(mech.id);
     const { teamId } = teamStore.getMechTeamAndGroupIds(mech.id);
-    const targetTeamId: MechTeamId = existing?.teamId || mech.preferred_team_id || teamId;
+    const targetTeamId: MECH_TEAM = existing?.teamId || mech.preferred_team_id || teamId;
 
     return {
       mechId: mech.id,
       willImport: existing?.import,
-      shelved: teamId === TEAM_SHELF,
+      shelved: teamId === MECH_TEAM.SHELF,
       preferredTeam: MECH_TEAMS[mech.preferred_team_id],
       targetTeam: MECH_TEAMS[targetTeamId],
     };
   });
 });
 
-function add(mechId: number, teamId: MechTeamId) {
+function add(mechId: number, teamId: MECH_TEAM) {
   const existing = mechImports.get(mechId);
   if (existing) {
     existing.teamId = teamId;

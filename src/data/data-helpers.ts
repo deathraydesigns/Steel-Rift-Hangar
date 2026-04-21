@@ -47,9 +47,9 @@ export function makeStaticListIds<T extends { id: any }>(
     return result;
 }
 
-export function makeFrozenStaticListIds<T extends { id: any }>(
-    obj: Record<string, Omit<T, 'id'>>,
-): Readonly<Record<T['id'], T>> {
+export function makeFrozenStaticListIds<T extends { id: ID }, ID extends string = T['id']>(
+    obj: Record<ID, Omit<T, 'id'>>,
+): Readonly<Record<ID, T>> {
     return deepFreeze(makeStaticListIds(obj));
 }
 

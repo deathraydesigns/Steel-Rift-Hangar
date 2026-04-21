@@ -1,13 +1,13 @@
-import { type OrderId, ORDERS } from '../../data/orders';
+import { type ORDER, ORDERS } from '../../data/orders';
 
 export type GrantedOrderCollection = ReturnType<typeof makeGrantedOrderCollection>
 
 export interface GrantedOrderIdObj {
-    granted_order_ids?: OrderId[],
+    granted_order_ids?: ORDER[],
 }
 
 export function makeGrantedOrderCollection() {
-    const orderIdMap = new Map<OrderId, boolean>();
+    const orderIdMap = new Map<ORDER, boolean>();
 
     function add(obj: GrantedOrderIdObj) {
         obj.granted_order_ids?.forEach(orderId => {
@@ -15,7 +15,7 @@ export function makeGrantedOrderCollection() {
         });
     }
 
-    function remove(id: OrderId) {
+    function remove(id: ORDER) {
         orderIdMap.delete(id);
     }
 
@@ -25,13 +25,13 @@ export function makeGrantedOrderCollection() {
         });
     }
 
-    function addIds(ids: OrderId[]) {
+    function addIds(ids: ORDER[]) {
         ids.forEach(orderId => {
             orderIdMap.set(orderId, true);
         });
     }
 
-    function ids(): OrderId[] {
+    function ids(): ORDER[] {
         return [...orderIdMap.keys()];
     }
 
@@ -39,7 +39,7 @@ export function makeGrantedOrderCollection() {
         return ids().map(id => ORDERS[id]);
     }
 
-    function includes(id: OrderId) {
+    function includes(id: ORDER) {
         return orderIdMap.has(id);
     }
 

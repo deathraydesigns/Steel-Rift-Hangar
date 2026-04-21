@@ -2,7 +2,7 @@ import { pack3 } from './hev-packs/Akamatsu Assassination Team Box';
 import { pack4 } from './hev-packs/Cerberus Gunslinger Team Box';
 import { pack1 } from './hev-packs/Quick Start - Authority';
 import { pack2 } from './hev-packs/Quick Start - Freelance';
-import type { MechTeamId } from './mech-teams';
+import type { MECH_TEAM } from './mech-teams';
 
 export const HEV_PACKS = [
     makePack(pack1 as any),
@@ -13,7 +13,7 @@ export const HEV_PACKS = [
 
 export type HevPack = ReturnType<typeof makePack>
 
-function makePack({ name, team_id, mechs }: { name: string, team_id: MechTeamId, mechs: string[] }) {
+function makePack({ name, team_id, mechs }: { name: string, team_id: MECH_TEAM, mechs: string[] }) {
     return {
         name,
         team_id,

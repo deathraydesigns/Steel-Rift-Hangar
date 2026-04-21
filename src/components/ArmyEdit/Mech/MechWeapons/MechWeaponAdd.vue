@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
-import type { MechWeaponId } from '../../../../data/mech-weapons';
+import type { MECH_WEAPON } from '../../../../data/mech-weapons';
 import { useMechStore } from '../../../../store/mech-store';
 import FormatInches from '../../../functional/format-inches.vue';
 import FormatNumber from '../../../functional/format-number.vue';
@@ -22,7 +22,7 @@ const {
 
 const mechStore = useMechStore();
 
-function addWeapon(id: MechWeaponId) {
+function addWeapon(id: MECH_WEAPON) {
   mechStore.addMechWeaponAttachment(mechId, id);
 }
 

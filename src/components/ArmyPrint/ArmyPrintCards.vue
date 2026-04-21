@@ -2,9 +2,9 @@
 import { flatMap, sortBy } from 'es-toolkit';
 import { chunk } from 'es-toolkit';
 import { computed } from 'vue';
-import type { FactionPerkId } from '../../data/faction-perks';
-import type { MechTeamId } from '../../data/mech-teams';
-import type { SupportAssetWeaponId } from '../../data/support-asset-weapons';
+import type { FACTION_PERK } from '../../data/faction-perks';
+import type { MECH_TEAM } from '../../data/mech-teams';
+import type { SUPPORT_ASSET_WEAPON } from '../../data/support-asset-weapons';
 import { useFactionStore } from '../../store/faction-store';
 import { usePrintSettingsStore } from '../../store/print-settings-store';
 import { useSupportAssetUnitsStore } from '../../store/support-asset-units-store';
@@ -31,7 +31,7 @@ type CardItem =
   | SupportAssetWeaponCard;
 
 function getMechCardsByTeam() {
-  let results: Partial<Record<MechTeamId, CardItem[]>> = {};
+  let results: Partial<Record<MECH_TEAM, CardItem[]>> = {};
 
   teamStore.non_shelf_teams.forEach(team => {
     const teamMechIds = teamStore.getTeamMechIds(team.id);
@@ -99,7 +99,7 @@ type RefCard = {
 
 type FactionPerkCard = {
   type: 'faction_perk',
-  perkId: FactionPerkId,
+  perkId: FACTION_PERK,
 }
 
 const referenceCards = computed(() => {
@@ -145,7 +145,7 @@ export type SupportAssetCard = {
 
 export type SupportAssetWeaponCard = {
   type: 'support_asset_weapon',
-  supportAssetId: SupportAssetWeaponId,
+  supportAssetId: SUPPORT_ASSET_WEAPON,
   cardSize: number,
 }
 

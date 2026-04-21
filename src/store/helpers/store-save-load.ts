@@ -1,6 +1,6 @@
 import { getStoreUnscopedId } from 'pinia-scope';
 import { MECH_MOBILITY } from '../../data/mech-mobility';
-import { TEAM_MULTIROLE, TEAM_SHELF } from '../../data/mech-teams';
+import { MECH_TEAM } from '../../data/mech-teams';
 import { ULTRA_LIGHT_HEV_SQUADRON } from '../../data/support-assets/ultra-light-hev-squadron';
 import { useArmyListStore } from '../army-list-store';
 import { useFactionStore } from '../faction-store';
@@ -98,11 +98,11 @@ export function migrateLoadData(data: any) {
     if (data.save_schema_version < 4) {
         const tacticalTeam = data?.team?.teams?.find((team: any) => team.id === 'TEAM_TACTICAL');
         if (tacticalTeam) {
-            tacticalTeam.id = TEAM_MULTIROLE;
+            tacticalTeam.id = MECH_TEAM.MULTIROLE;
         }
     }
 
-    const shelfTeam = data?.team?.teams?.find((team: any) => team.id === TEAM_SHELF);
+    const shelfTeam = data?.team?.teams?.find((team: any) => team.id === MECH_TEAM.SHELF);
 
     if (!shelfTeam) {
         if (!data.team) {

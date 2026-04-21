@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { NO_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
+import { MECH_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
 import { MECH_MOBILITIES, MECH_MOBILITY } from '../../../../data/mech-mobility';
-import { MINEFIELD_DRONE_CARRIER_SYSTEM } from '../../../../data/mech-upgrades.js';
-import { TRAIT_COMPACT, TRAIT_UPGRADE_LIMITED } from '../../../../data/upgrade-traits.js';
+import { MECH_UPGRADE } from '../../../../data/mech-upgrades.js';
+import { UPGRADE_TRAIT } from '../../../../data/upgrade-traits.js';
 import { useMechStore } from '../../../../store/mech-store';
 import { useTeamStore } from '../../../../store/team-store';
 import type { Trait } from '../../../../types';
@@ -27,7 +27,7 @@ type UpgradeItem = {
 const upgrades = computed((): UpgradeItem[] => {
   const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId)!;
   const armorUpgradeArray: { display_name?: string }[] = [];
-  if (armorUpgrade.id !== NO_ARMOR_UPGRADE) {
+  if (armorUpgrade.id !== MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE) {
     armorUpgradeArray.push({
       display_name: armorUpgrade.card_upgrade_display_name,
     });
@@ -38,13 +38,13 @@ const upgrades = computed((): UpgradeItem[] => {
 
       if (item.traits) {
         item.traits = item.traits
-          .filter(trait => trait.id !== TRAIT_COMPACT && trait.id !== TRAIT_UPGRADE_LIMITED);
+          .filter(trait => trait.id !== UPGRADE_TRAIT.COMPACT && trait.id !== UPGRADE_TRAIT.LIMITED);
       }
 
       return item;
     })
     // shown in weapons row instead
-    .filter(item => item.upgrade_id !== MINEFIELD_DRONE_CARRIER_SYSTEM);
+    .filter(item => item.upgrade_id !== MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM);
 
   const teamPerks = teamStore.getTeamPerksInfoByMech(mechId).filter(({ visible_on_card }) => visible_on_card);
   teamPerks.forEach(item => (item as any).is_team_perk = true);

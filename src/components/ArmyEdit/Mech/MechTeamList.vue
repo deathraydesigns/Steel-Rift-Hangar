@@ -2,7 +2,7 @@
 import { BButton } from 'bootstrap-vue-next';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { TEAM_GENERAL, TEAM_SHELF } from '../../../data/mech-teams.js';
+import { MECH_TEAM } from '../../../data/mech-teams.js';
 import { useTeamStore } from '../../../store/team-store';
 import BtnAddTeam from '../../UI/BtnAddTeam.vue';
 import SvgIcon from '../../UI/Icon.vue';
@@ -12,22 +12,22 @@ import MechTeamGroup from '../MechTeam/MechTeamGroup.vue';
 const teamStore = useTeamStore();
 const { special_teams } = storeToRefs(teamStore);
 
-const baseMechCount = computed(() => teamStore.getTeamMechCount(TEAM_GENERAL) || teamStore.getTeamMechCount(TEAM_SHELF));
+const baseMechCount = computed(() => teamStore.getTeamMechCount(MECH_TEAM.GENERAL) || teamStore.getTeamMechCount(MECH_TEAM.SHELF));
 
 function addGeneralMech() {
-  teamStore.addMechToTeamWithDefaults(TEAM_GENERAL, 'A');
+  teamStore.addMechToTeamWithDefaults(MECH_TEAM.GENERAL, 'A');
 }
 
 </script>
 <template>
   <MechTeamGroup
-    :team-id="TEAM_SHELF"
+    :team-id="MECH_TEAM.SHELF"
     group-id="A"
     v-show="baseMechCount"
   />
 
   <MechTeamGroup
-    :team-id="TEAM_GENERAL"
+    :team-id="MECH_TEAM.GENERAL"
     group-id="A"
     v-show="baseMechCount"
   />

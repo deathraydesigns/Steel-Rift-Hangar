@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BDropdown, BDropdownItem, BPopover } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import { MECH_TEAM_ARRAY, MECH_TEAMS, type MechTeamId, TEAM_SHELF } from '../../../../data/mech-teams.js';
+import { MECH_TEAM, MECH_TEAM_ARRAY, MECH_TEAMS } from '../../../../data/mech-teams.js';
 import { useMechStore } from '../../../../store/mech-store';
 import SvgIcon from '../../../UI/Icon.vue';
 
@@ -22,13 +22,13 @@ const preferredTeam = computed(() => {
   return MECH_TEAMS[preferredTeamId.value];
 });
 
-function setPreferredTeamId(teamId: MechTeamId) {
+function setPreferredTeamId(teamId: MECH_TEAM) {
   mechStore.updateMech(mechId, {
     preferred_team_id: teamId,
   });
 }
 
-const preferredTeamOptions = computed(() => MECH_TEAM_ARRAY.filter(t => t.id !== TEAM_SHELF));
+const preferredTeamOptions = computed(() => MECH_TEAM_ARRAY.filter(t => t.id !== MECH_TEAM.SHELF));
 </script>
 <template>
   <div class="fw-bold m-2">

@@ -5,28 +5,24 @@ export type UnitType = {
     display_name: string
 }
 
-export const TYPE_HEV = 'TYPE_HEV' as const;
-export const TYPE_VEHICLE = 'TYPE_VEHICLE' as const;
-export const TYPE_INFANTRY = 'TYPE_INFANTRY' as const;
-export const TYPE_FORTIFICATION = 'TYPE_FORTIFICATION' as const;
-
-export type UnitTypeId =
-    | typeof TYPE_HEV
-    | typeof TYPE_VEHICLE
-    | typeof TYPE_INFANTRY
-    | typeof TYPE_FORTIFICATION
+export enum UNIT_TYPE {
+    HEV = 'TYPE_HEV',
+    VEHICLE = 'TYPE_VEHICLE',
+    INFANTRY = 'TYPE_INFANTRY',
+    FORTIFICATION = 'TYPE_FORTIFICATION',
+}
 
 export const UNIT_TYPES = makeFrozenStaticListIds<UnitType>({
-    [TYPE_HEV]: {
+    [UNIT_TYPE.HEV]: {
         display_name: 'HE-V',
     },
-    [TYPE_VEHICLE]: {
+    [UNIT_TYPE.VEHICLE]: {
         display_name: 'Vehicle',
     },
-    [TYPE_INFANTRY]: {
+    [UNIT_TYPE.INFANTRY]: {
         display_name: 'Infantry',
     },
-    [TYPE_FORTIFICATION]: {
+    [UNIT_TYPE.FORTIFICATION]: {
         display_name: 'Fortification',
     },
 });

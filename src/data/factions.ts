@@ -1,188 +1,146 @@
 import { makeFrozenStaticListIds } from './data-helpers';
-import {
-    BLO_DISGRACED_TRILLIONAIRE_OUTRAGEOUS_SUPPORT_BUDGET,
-    BLO_DISGRACED_TRILLIONAIRE_PURCHASED_OUTCOMES,
-    BLO_DISGRACED_TRILLIONAIRE_TOP_END_HARDWARE,
-    BLO_EX_MILITARY_VETERANS,
-    BLO_POLITICAL_EXTREMISTS_EXPANSIONIST,
-    BLO_POLITICAL_EXTREMISTS_IDEOLOGICAL,
-    BLO_POLITICAL_EXTREMISTS_PROTECTIVIST,
-    DWC_OUTRAGEOUS_SUPPORT_BUDGET,
-    DWC_PURCHASED_OUTCOMES,
-    DWC_TOP_END_HARDWARE,
-    E_EMBEDDED_INFORMANTS,
-    E_EXHAUSTIVE_INTEL_GATHERING,
-    E_PAID_SABOTEURS,
-    type FactionPerkId,
-    MT_COORDINATED_ASSAULTS,
-    MT_COVERED_ADVANCES,
-    MT_ELITE_PILOT_PROGRAM,
-    OI_MATERIEL_STOCKPILES,
-    OI_ORBITAL_STOCKPILES,
-    OI_STRATEGIC_ENERGY_RESERVES,
-    PP_EXPANSIONIST,
-    PP_IDEOLOGICAL,
-    PP_PROTECTIVIST,
-    RA_BAIT_AND_SWITCH,
-    RA_RECKLESS_PILOTING,
-    RA_UNPREDICTABLE_GAMBITS,
-    RD_ADVANCED_ENERGY_MANAGEMENT_SYSTEMS,
-    RD_ADVANCED_HARDPOINT_DESIGN,
-    RD_ADVANCED_STRUCTURAL_COMPONENTS,
-    UA_INTIMIDATION_TACTICS,
-    UA_NETWORK_HACKERS,
-    UA_TECH_PIRATES_ADVANCED_ENERGY_MANAGEMENT_SYSTEM,
-    UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN,
-    UA_TECH_PIRATES_ADVANCED_STRUCTURAL_COMPONENTS,
-} from './faction-perks';
-import { SA_ASSET_PROTECTION, SA_TERRITORIAL, SA_WILDCARDS, type SecondaryAgendaId } from './secondary-agendas';
+import { FACTION_PERK } from './faction-perks';
+import { SECONDARY_AGENDA } from './secondary-agendas';
 
-export const NO_FACTION = 'NO_FACTION' as const;
-export const AUTHORITIES = 'AUTHORITIES' as const;
-export const CORPORATIONS = 'CORPORATIONS' as const;
-export const FREELANCERS = 'FREELANCERS' as const;
-
-export const MILITARY_TRAINING = 'MILITARY_TRAINING' as const;
-export const POLITICAL_PRIORITY = 'POLITICAL_PRIORITY' as const;
-export const OLD_INFRASTRUCTURE = 'OLD_INFRASTRUCTURE' as const;
-export const ESPIONAGE = 'ESPIONAGE' as const;
-export const RESEARCH_AND_DEVELOPMENT = 'RESEARCH_AND_DEVELOPMENT' as const;
-export const DEEP_WAR_CHEST = 'DEEP_WAR_CHEST' as const;
-export const ROGUE_AGENCY = 'ROGUE_AGENCY' as const;
-export const UNDERWORLD_AFFILIATIONS = 'UNDERWORLD_AFFILIATIONS' as const;
-export const BIG_LEAGUE_ORIGINS = 'BIG_LEAGUE_ORIGINS' as const;
+export enum FACTION {
+    NO_FACTION = 'NO_FACTION',
+    AUTHORITIES = 'AUTHORITIES',
+    CORPORATIONS = 'CORPORATIONS',
+    FREELANCERS = 'FREELANCERS',
+}
 
 export const DWC_TOP_END_HARDWARE_BONUS_TONS = -2;
 export const RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS = -1;
 
-export type FactionId =
-    | typeof NO_FACTION
-    | typeof AUTHORITIES
-    | typeof CORPORATIONS
-    | typeof FREELANCERS;
+export enum FACTION_PERK_GROUP {
+    MILITARY_TRAINING = 'MILITARY_TRAINING',
+    POLITICAL_PRIORITY = 'POLITICAL_PRIORITY',
+    OLD_INFRASTRUCTURE = 'OLD_INFRASTRUCTURE',
+    ESPIONAGE = 'ESPIONAGE',
+    RESEARCH_AND_DEVELOPMENT = 'RESEARCH_AND_DEVELOPMENT',
+    DEEP_WAR_CHEST = 'DEEP_WAR_CHEST',
+    ROGUE_AGENCY = 'ROGUE_AGENCY',
+    UNDERWORLD_AFFILIATIONS = 'UNDERWORLD_AFFILIATIONS',
+    BIG_LEAGUE_ORIGINS = 'BIG_LEAGUE_ORIGINS',
+}
 
-export type FactionPerkGroupId =
-    | typeof MILITARY_TRAINING
-    | typeof POLITICAL_PRIORITY
-    | typeof OLD_INFRASTRUCTURE
-    | typeof ESPIONAGE
-    | typeof RESEARCH_AND_DEVELOPMENT
-    | typeof DEEP_WAR_CHEST
-    | typeof ROGUE_AGENCY
-    | typeof UNDERWORLD_AFFILIATIONS
-    | typeof BIG_LEAGUE_ORIGINS;
-
-export interface FactionPerkGroup {
-    id: FactionPerkGroupId;
+export interface FactionPerkGroup<ID extends Partial<FACTION_PERK_GROUP>> {
+    id: ID;
     display_name: string;
-    perk_ids: FactionPerkId[];
+    perk_ids: FACTION_PERK[];
 }
 
 export interface Faction {
-    id: FactionId;
+    id: FACTION;
     display_name: string;
-    secondary_agenda_id?: SecondaryAgendaId;
-    faction_perk_groups: Readonly<Record<FactionPerkGroupId, FactionPerkGroup>>;
+    secondary_agenda_id?: SECONDARY_AGENDA;
+    faction_perk_groups: Readonly<Partial<Record<FACTION_PERK_GROUP, FactionPerkGroup<any>>>>;
 }
 
-export const FACTIONS: Readonly<Record<FactionId, Faction>> = makeFrozenStaticListIds<Faction>({
-    [NO_FACTION]: {
+function perkGroups<ID extends FACTION_PERK_GROUP>(
+    obj: Record<ID, Omit<FactionPerkGroup<ID>, 'id'>>,
+) {
+    return makeFrozenStaticListIds<FactionPerkGroup<ID>, ID>(obj);
+}
+
+export const FACTIONS = makeFrozenStaticListIds<Faction>({
+    [FACTION.NO_FACTION]: {
         display_name: 'None',
-        faction_perk_groups: makeFrozenStaticListIds<FactionPerkGroup>({}),
+        faction_perk_groups: makeFrozenStaticListIds({}),
     },
-    [AUTHORITIES]: {
+    [FACTION.AUTHORITIES]: {
         display_name: 'Authorities',
-        secondary_agenda_id: SA_TERRITORIAL,
-        faction_perk_groups: makeFrozenStaticListIds<FactionPerkGroup>({
-            [MILITARY_TRAINING]: {
+        secondary_agenda_id: SECONDARY_AGENDA.TERRITORIAL,
+        faction_perk_groups: perkGroups({
+            [FACTION_PERK_GROUP.MILITARY_TRAINING]: {
                 display_name: 'Military Training',
                 perk_ids: [
-                    MT_COORDINATED_ASSAULTS,
-                    MT_COVERED_ADVANCES,
-                    MT_ELITE_PILOT_PROGRAM,
+                    FACTION_PERK.MT_COORDINATED_ASSAULTS,
+                    FACTION_PERK.MT_COVERED_ADVANCES,
+                    FACTION_PERK.MT_ELITE_PILOT_PROGRAM,
                 ],
             },
-            [POLITICAL_PRIORITY]: {
+            [FACTION_PERK_GROUP.POLITICAL_PRIORITY]: {
                 display_name: 'Political Priority',
                 perk_ids: [
-                    PP_EXPANSIONIST,
-                    PP_PROTECTIVIST,
-                    PP_IDEOLOGICAL,
+                    FACTION_PERK.PP_EXPANSIONIST,
+                    FACTION_PERK.PP_PROTECTIVIST,
+                    FACTION_PERK.PP_IDEOLOGICAL,
                 ],
             },
-            [OLD_INFRASTRUCTURE]: {
+            [FACTION_PERK_GROUP.OLD_INFRASTRUCTURE]: {
                 display_name: 'Old Infrastructure',
                 perk_ids: [
-                    OI_ORBITAL_STOCKPILES,
-                    OI_STRATEGIC_ENERGY_RESERVES,
-                    OI_MATERIEL_STOCKPILES,
+                    FACTION_PERK.OI_ORBITAL_STOCKPILES,
+                    FACTION_PERK.OI_STRATEGIC_ENERGY_RESERVES,
+                    FACTION_PERK.OI_MATERIEL_STOCKPILES,
                 ],
             },
         }),
     },
-    [CORPORATIONS]: {
+    [FACTION.CORPORATIONS]: {
         display_name: 'Corporations',
-        secondary_agenda_id: SA_ASSET_PROTECTION,
-        faction_perk_groups: makeFrozenStaticListIds<FactionPerkGroup>({
-            [ESPIONAGE]: {
+        secondary_agenda_id: SECONDARY_AGENDA.ASSET_PROTECTION,
+        faction_perk_groups: perkGroups({
+            [FACTION_PERK_GROUP.ESPIONAGE]: {
                 display_name: 'Espionage',
                 perk_ids: [
-                    E_EMBEDDED_INFORMANTS,
-                    E_PAID_SABOTEURS,
-                    E_EXHAUSTIVE_INTEL_GATHERING,
+                    FACTION_PERK.E_EMBEDDED_INFORMANTS,
+                    FACTION_PERK.E_PAID_SABOTEURS,
+                    FACTION_PERK.E_EXHAUSTIVE_INTEL_GATHERING,
                 ],
             },
-            [RESEARCH_AND_DEVELOPMENT]: {
+            [FACTION_PERK_GROUP.RESEARCH_AND_DEVELOPMENT]: {
                 display_name: 'Research and Development',
                 perk_ids: [
-                    RD_ADVANCED_HARDPOINT_DESIGN,
-                    RD_ADVANCED_ENERGY_MANAGEMENT_SYSTEMS,
-                    RD_ADVANCED_STRUCTURAL_COMPONENTS,
+                    FACTION_PERK.RD_ADVANCED_HARDPOINT_DESIGN,
+                    FACTION_PERK.RD_ADVANCED_ENERGY_MANAGEMENT_SYSTEMS,
+                    FACTION_PERK.RD_ADVANCED_STRUCTURAL_COMPONENTS,
                 ],
             },
-            [DEEP_WAR_CHEST]: {
+            [FACTION_PERK_GROUP.DEEP_WAR_CHEST]: {
                 display_name: 'Deep War Chest',
                 perk_ids: [
-                    DWC_TOP_END_HARDWARE,
-                    DWC_OUTRAGEOUS_SUPPORT_BUDGET,
-                    DWC_PURCHASED_OUTCOMES,
+                    FACTION_PERK.DWC_TOP_END_HARDWARE,
+                    FACTION_PERK.DWC_OUTRAGEOUS_SUPPORT_BUDGET,
+                    FACTION_PERK.DWC_PURCHASED_OUTCOMES,
                 ],
             },
         }),
     },
-    [FREELANCERS]: {
+    [FACTION.FREELANCERS]: {
         display_name: 'Freelancers',
-        secondary_agenda_id: SA_WILDCARDS,
-        faction_perk_groups: makeFrozenStaticListIds<FactionPerkGroup>({
-            [ROGUE_AGENCY]: {
+        secondary_agenda_id: SECONDARY_AGENDA.WILDCARDS,
+        faction_perk_groups: perkGroups({
+            [FACTION_PERK_GROUP.ROGUE_AGENCY]: {
                 display_name: 'Rogue Agency',
                 perk_ids: [
-                    RA_UNPREDICTABLE_GAMBITS,
-                    RA_RECKLESS_PILOTING,
-                    RA_BAIT_AND_SWITCH,
+                    FACTION_PERK.RA_UNPREDICTABLE_GAMBITS,
+                    FACTION_PERK.RA_RECKLESS_PILOTING,
+                    FACTION_PERK.RA_BAIT_AND_SWITCH,
                 ],
             },
-            [UNDERWORLD_AFFILIATIONS]: {
+            [FACTION_PERK_GROUP.UNDERWORLD_AFFILIATIONS]: {
                 display_name: 'Underworld Affiliations',
                 perk_ids: [
-                    UA_NETWORK_HACKERS,
-                    UA_INTIMIDATION_TACTICS,
-                    UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN,
-                    UA_TECH_PIRATES_ADVANCED_ENERGY_MANAGEMENT_SYSTEM,
-                    UA_TECH_PIRATES_ADVANCED_STRUCTURAL_COMPONENTS,
+                    FACTION_PERK.UA_NETWORK_HACKERS,
+                    FACTION_PERK.UA_INTIMIDATION_TACTICS,
+                    FACTION_PERK.UA_TECH_PIRATES_ADVANCED_HARDPOINT_DESIGN,
+                    FACTION_PERK.UA_TECH_PIRATES_ADVANCED_ENERGY_MANAGEMENT_SYSTEM,
+                    FACTION_PERK.UA_TECH_PIRATES_ADVANCED_STRUCTURAL_COMPONENTS,
                 ],
             },
-            [BIG_LEAGUE_ORIGINS]: {
+            [FACTION_PERK_GROUP.BIG_LEAGUE_ORIGINS]: {
                 display_name: 'Big League Origins',
                 perk_ids: [
-                    BLO_EX_MILITARY_VETERANS,
-                    BLO_POLITICAL_EXTREMISTS_EXPANSIONIST,
-                    BLO_POLITICAL_EXTREMISTS_PROTECTIVIST,
-                    BLO_POLITICAL_EXTREMISTS_IDEOLOGICAL,
+                    FACTION_PERK.BLO_EX_MILITARY_VETERANS,
+                    FACTION_PERK.BLO_POLITICAL_EXTREMISTS_EXPANSIONIST,
+                    FACTION_PERK.BLO_POLITICAL_EXTREMISTS_PROTECTIVIST,
+                    FACTION_PERK.BLO_POLITICAL_EXTREMISTS_IDEOLOGICAL,
 
-                    BLO_DISGRACED_TRILLIONAIRE_TOP_END_HARDWARE,
-                    BLO_DISGRACED_TRILLIONAIRE_OUTRAGEOUS_SUPPORT_BUDGET,
-                    BLO_DISGRACED_TRILLIONAIRE_PURCHASED_OUTCOMES,
+                    FACTION_PERK.BLO_DISGRACED_TRILLIONAIRE_TOP_END_HARDWARE,
+                    FACTION_PERK.BLO_DISGRACED_TRILLIONAIRE_OUTRAGEOUS_SUPPORT_BUDGET,
+                    FACTION_PERK.BLO_DISGRACED_TRILLIONAIRE_PURCHASED_OUTCOMES,
                 ],
             },
         }),

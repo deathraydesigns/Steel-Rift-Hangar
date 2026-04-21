@@ -1,15 +1,15 @@
-import { EXTRA_PLATING_ARMOR_UPGRADE, NO_ARMOR_UPGRADE } from '../mech-armor-upgrades';
+import { MECH_ARMOR_UPGRADE } from '../mech-armor-upgrades';
 import { MECH_BODY_MOD } from '../mech-body';
 import { MECH_MOBILITY } from '../mech-mobility';
-import { TEAM_ASSASSIN } from '../mech-teams';
-import { DIRECTIONAL_THRUSTER, HIGH_SPEED_SERVOS, JUMP_JETS } from '../mech-upgrades';
-import { COMBAT_BLADE, PLASMA_BLADE } from '../mech-weapons';
+import { MECH_TEAM } from '../mech-teams';
+import { MECH_UPGRADE } from '../mech-upgrades';
+import { MECH_WEAPON } from '../mech-weapons';
 import { SIZE } from '../unit-sizes';
-import { TYPE_HEV } from '../unit-types';
+import { UNIT_TYPE } from '../unit-types';
 
 export const pack3 = {
     name: 'Akamatsu Assassination Team Box',
-    team_id: TEAM_ASSASSIN,
+    team_id: MECH_TEAM.ASSASSIN,
     mechs: [
         {
             id: 1,
@@ -17,13 +17,13 @@ export const pack3 = {
             size_id: SIZE.LIGHT,
             structure_mod_id: MECH_BODY_MOD.REINFORCED,
             armor_mod_id: MECH_BODY_MOD.STANDARD,
-            armor_upgrade_id: NO_ARMOR_UPGRADE,
+            armor_upgrade_id: MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE,
             mobility_id: MECH_MOBILITY.BI_PEDAL,
-            preferred_team_id: TEAM_ASSASSIN,
+            preferred_team_id: MECH_TEAM.ASSASSIN,
             weapons: [
                 {
                     id: 1,
-                    weapon_id: COMBAT_BLADE,
+                    weapon_id: MECH_WEAPON.COMBAT_BLADE,
                     display_order: 0,
                 },
             ],
@@ -31,23 +31,23 @@ export const pack3 = {
             upgrades: [
                 {
                     id: 1,
-                    upgrade_id: DIRECTIONAL_THRUSTER,
+                    upgrade_id: MECH_UPGRADE.DIRECTIONAL_THRUSTER,
                     display_order: 0,
                 },
                 {
                     id: 2,
-                    upgrade_id: HIGH_SPEED_SERVOS,
+                    upgrade_id: MECH_UPGRADE.HIGH_SPEED_SERVOS,
                     display_order: 1,
                 },
                 {
                     id: 3,
-                    upgrade_id: JUMP_JETS,
+                    upgrade_id: MECH_UPGRADE.JUMP_JETS,
                     display_order: 2,
                 },
             ],
             upgrades_id_increment: 4,
             display_order: 0,
-            unit_type_id: TYPE_HEV,
+            unit_type_id: UNIT_TYPE.HEV,
             visible: true,
         },
         {
@@ -56,13 +56,13 @@ export const pack3 = {
             size_id: SIZE.MEDIUM,
             structure_mod_id: MECH_BODY_MOD.REINFORCED,
             armor_mod_id: MECH_BODY_MOD.STANDARD,
-            armor_upgrade_id: EXTRA_PLATING_ARMOR_UPGRADE,
+            armor_upgrade_id: MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE,
             mobility_id: MECH_MOBILITY.BI_PEDAL,
-            preferred_team_id: TEAM_ASSASSIN,
+            preferred_team_id: MECH_TEAM.ASSASSIN,
             weapons: [
                 {
                     id: 1,
-                    weapon_id: PLASMA_BLADE,
+                    weapon_id: MECH_WEAPON.PLASMA_BLADE,
                     display_order: 0,
                 },
             ],
@@ -70,23 +70,23 @@ export const pack3 = {
             upgrades: [
                 {
                     id: 1,
-                    upgrade_id: DIRECTIONAL_THRUSTER,
+                    upgrade_id: MECH_UPGRADE.DIRECTIONAL_THRUSTER,
                     display_order: 0,
                 },
                 {
                     id: 2,
-                    upgrade_id: HIGH_SPEED_SERVOS,
+                    upgrade_id: MECH_UPGRADE.HIGH_SPEED_SERVOS,
                     display_order: 1,
                 },
                 {
                     id: 4,
-                    upgrade_id: JUMP_JETS,
+                    upgrade_id: MECH_UPGRADE.JUMP_JETS,
                     display_order: 2,
                 },
             ],
             upgrades_id_increment: 5,
             display_order: 1,
-            unit_type_id: TYPE_HEV,
+            unit_type_id: UNIT_TYPE.HEV,
             visible: true,
         },
         {
@@ -95,13 +95,13 @@ export const pack3 = {
             size_id: SIZE.LIGHT,
             structure_mod_id: MECH_BODY_MOD.REINFORCED,
             armor_mod_id: MECH_BODY_MOD.STANDARD,
-            armor_upgrade_id: NO_ARMOR_UPGRADE,
+            armor_upgrade_id: MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE,
             mobility_id: MECH_MOBILITY.BI_PEDAL,
-            preferred_team_id: TEAM_ASSASSIN,
+            preferred_team_id: MECH_TEAM.ASSASSIN,
             weapons: [
                 {
                     id: 1,
-                    weapon_id: COMBAT_BLADE,
+                    weapon_id: MECH_WEAPON.COMBAT_BLADE,
                     display_order: 0,
                 },
             ],
@@ -109,23 +109,23 @@ export const pack3 = {
             upgrades: [
                 {
                     id: 1,
-                    upgrade_id: DIRECTIONAL_THRUSTER,
+                    upgrade_id: MECH_UPGRADE.DIRECTIONAL_THRUSTER,
                     display_order: 0,
                 },
                 {
                     id: 2,
-                    upgrade_id: HIGH_SPEED_SERVOS,
+                    upgrade_id: MECH_UPGRADE.HIGH_SPEED_SERVOS,
                     display_order: 1,
                 },
                 {
                     id: 3,
-                    upgrade_id: JUMP_JETS,
+                    upgrade_id: MECH_UPGRADE.JUMP_JETS,
                     display_order: 2,
                 },
             ],
             upgrades_id_increment: 4,
             display_order: 2,
-            unit_type_id: TYPE_HEV,
+            unit_type_id: UNIT_TYPE.HEV,
             visible: true,
         },
         {
@@ -134,13 +134,13 @@ export const pack3 = {
             size_id: SIZE.MEDIUM,
             structure_mod_id: MECH_BODY_MOD.REINFORCED,
             armor_mod_id: MECH_BODY_MOD.STANDARD,
-            armor_upgrade_id: EXTRA_PLATING_ARMOR_UPGRADE,
+            armor_upgrade_id: MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE,
             mobility_id: MECH_MOBILITY.BI_PEDAL,
-            preferred_team_id: TEAM_ASSASSIN,
+            preferred_team_id: MECH_TEAM.ASSASSIN,
             weapons: [
                 {
                     id: 1,
-                    weapon_id: PLASMA_BLADE,
+                    weapon_id: MECH_WEAPON.PLASMA_BLADE,
                     display_order: 0,
                 },
             ],
@@ -148,23 +148,23 @@ export const pack3 = {
             upgrades: [
                 {
                     id: 1,
-                    upgrade_id: DIRECTIONAL_THRUSTER,
+                    upgrade_id: MECH_UPGRADE.DIRECTIONAL_THRUSTER,
                     display_order: 0,
                 },
                 {
                     id: 2,
-                    upgrade_id: HIGH_SPEED_SERVOS,
+                    upgrade_id: MECH_UPGRADE.HIGH_SPEED_SERVOS,
                     display_order: 1,
                 },
                 {
                     id: 3,
-                    upgrade_id: JUMP_JETS,
+                    upgrade_id: MECH_UPGRADE.JUMP_JETS,
                     display_order: 2,
                 },
             ],
             upgrades_id_increment: 4,
             display_order: 3,
-            unit_type_id: TYPE_HEV,
+            unit_type_id: UNIT_TYPE.HEV,
             visible: true,
         },
     ],

@@ -2,7 +2,7 @@
 import { BButton, BCollapse, BPopover } from 'bootstrap-vue-next';
 import { computed, ref } from 'vue';
 import { Container, Draggable, type DropResult } from 'vue-dndrop';
-import { type MechTeamId, TEAM_SHELF } from '../../../data/mech-teams.js';
+import { MECH_TEAM } from '../../../data/mech-teams.js';
 import { useTeamStore } from '../../../store/team-store';
 import { useValidationStore } from '../../../store/validation-store';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
@@ -15,7 +15,7 @@ const teamStore = useTeamStore();
 const validationStore = useValidationStore();
 
 const { teamId, groupId } = defineProps<{
-  teamId: MechTeamId,
+  teamId: MECH_TEAM,
   groupId: string
 }>();
 
@@ -57,8 +57,8 @@ function getChildPayload(index: number) {
   };
 }
 
-function onDrop(toTeamId: MechTeamId, toGroupId: string, dropResult: DropResult<{
-  teamId: MechTeamId,
+function onDrop(toTeamId: MECH_TEAM, toGroupId: string, dropResult: DropResult<{
+  teamId: MECH_TEAM,
   groupId: string,
   mechId: number,
 }>) {
@@ -178,7 +178,7 @@ const placeholder = ref({
           <BPopover>
             <template #target>
               <span
-                v-show="teamId === TEAM_SHELF"
+                v-show="teamId === MECH_TEAM.SHELF"
                 class="btn btn-sm btn-overlay"
               >
                 ?

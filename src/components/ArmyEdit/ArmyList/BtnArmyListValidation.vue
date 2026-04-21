@@ -1,9 +1,8 @@
 <script setup lang="ts">
-
 import { BButton, BModal } from 'bootstrap-vue-next';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import { TEAM_GENERAL } from '../../../data/mech-teams.js';
+import { MECH_TEAM } from '../../../data/mech-teams.js';
 import { useTeamStore } from '../../../store/team-store';
 import { useValidationStore } from '../../../store/validation-store';
 import TeamGroupValidation from './BtnArmyListValidation/TeamGroupValidation.vue';
@@ -16,7 +15,7 @@ const modal = ref(false);
 const { list_is_valid, list_validation, team_validation } = storeToRefs(validationStore);
 
 const generalTeamGroupValidation = computed(() => {
-  const team = team_validation.value.find(team => team.id === TEAM_GENERAL);
+  const team = team_validation.value.find(team => team.id === MECH_TEAM.GENERAL);
   if (team) {
     return team.groups[0];
   }

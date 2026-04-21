@@ -1,80 +1,50 @@
 import type { MechTeam, MechTeamGroup, MechTeamSize } from '../types';
 import { deepFreeze, makeFrozenStaticListIds, makeStaticListIds } from './data-helpers';
-import {
-    ABLATIVE_ARMOR_UPGRADE,
-    CERAMIC_ARMOR_UPGRADE,
-    CLAYMORE_ARMOR_UPGRADE,
-    EXTRA_PLATING_ARMOR_UPGRADE,
-    HEAVY_PLATING_ARMOR_UPGRADE,
-    REACTIVE_ARMOR_UPGRADE,
-} from './mech-armor-upgrades';
+import { MECH_ARMOR_UPGRADE } from './mech-armor-upgrades';
 import { MECH_BODY_MOD } from './mech-body';
 import { TEAM_PERK } from './mech-team-perks';
-import { DIRECTIONAL_THRUSTER, HAPTIC_SUIT, NITRO_BOOST, TARGET_DESIGNATOR } from './mech-upgrades';
-import { HOWITZER, MISSILES, ROCKET_PACK } from './mech-weapons';
-import {
-    SA_DEATH_FROM_ABOVE,
-    SA_DONT_GIVE_AN_INCH,
-    SA_DRIVE_THEM_OUT,
-    SA_EXPAND_THE_NETWORK,
-    SA_FIRE_FOR_EFFECT,
-    SA_MISSION_MOMENTUM,
-    SA_TARGET_ELIMINATED,
-    SA_TROPHY_TAKERS,
-} from './secondary-agendas';
+import { MECH_UPGRADE } from './mech-upgrades';
+import { MECH_WEAPON } from './mech-weapons';
+import { SECONDARY_AGENDA } from './secondary-agendas';
 import { MECH_SIZES, type MechSizeId, SIZE } from './unit-sizes';
+import { WEAPON_TRAIT } from './weapon-traits';
 
-import { TRAIT_MELEE, TRAIT_REACH, TRAIT_SHORT } from './weapon-traits';
+export enum MECH_TEAM_SIZE {
+    SMALL = 'TEAM_SIZE_SMALL',
+    MEDIUM = 'TEAM_SIZE_MEDIUM',
+    LARGE = 'TEAM_SIZE_LARGE',
+}
 
-export const TEAM_SIZE_SMALL = 'TEAM_SIZE_SMALL' as const;
-export const TEAM_SIZE_MEDIUM = 'TEAM_SIZE_MEDIUM' as const;
-export const TEAM_SIZE_LARGE = 'TEAM_SIZE_LARGE' as const;
+export enum MECH_TEAM {
+    SHELF = 'TEAM_SHELF',
+    GENERAL = 'TEAM_GENERAL',
+    FIRE_SUPPORT = 'TEAM_FIRE_SUPPORT',
+    RECON = 'TEAM_RECON',
+    SECURITY = 'TEAM_SECURITY',
+    MULTIROLE = 'TEAM_MULTIROLE',
+    ASSASSIN = 'TEAM_ASSASSIN',
+    BERSERKER = 'TEAM_BERSERKER',
+    GUNSLINGER = 'TEAM_GUNSLINGER',
+    NETWORKED_AI = 'TEAM_NETWORKED_AI',
+}
 
-export type MechTeamSizeId =
-    | typeof TEAM_SIZE_SMALL
-    | typeof TEAM_SIZE_MEDIUM
-    | typeof TEAM_SIZE_LARGE;
-
-export const TEAM_SHELF = 'TEAM_SHELF' as const;
-export const TEAM_GENERAL = 'TEAM_GENERAL' as const;
-export const TEAM_FIRE_SUPPORT = 'TEAM_FIRE_SUPPORT' as const;
-export const TEAM_RECON = 'TEAM_RECON' as const;
-export const TEAM_SECURITY = 'TEAM_SECURITY' as const;
-export const TEAM_MULTIROLE = 'TEAM_MULTIROLE' as const;
-export const TEAM_ASSASSIN = 'TEAM_ASSASSIN' as const;
-export const TEAM_BERSERKER = 'TEAM_BERSERKER' as const;
-export const TEAM_GUNSLINGER = 'TEAM_GUNSLINGER' as const;
-export const TEAM_NETWORKED_AI = 'TEAM_NETWORKED_AI' as const;
-
-export type MechTeamId =
-    | typeof TEAM_SHELF
-    | typeof TEAM_GENERAL
-    | typeof TEAM_FIRE_SUPPORT
-    | typeof TEAM_RECON
-    | typeof TEAM_SECURITY
-    | typeof TEAM_MULTIROLE
-    | typeof TEAM_ASSASSIN
-    | typeof TEAM_BERSERKER
-    | typeof TEAM_GUNSLINGER
-    | typeof TEAM_NETWORKED_AI
-
-export const MECH_TEAM_SIZES: Readonly<Record<MechTeamSizeId, MechTeamSize>> = makeFrozenStaticListIds<MechTeamSize>({
-    [TEAM_SIZE_SMALL]: {
+export const MECH_TEAM_SIZES: Readonly<Record<MECH_TEAM_SIZE, MechTeamSize>> = makeFrozenStaticListIds<MechTeamSize>({
+    [MECH_TEAM_SIZE.SMALL]: {
         display_name: 'Small',
         description: '2',
     },
-    [TEAM_SIZE_MEDIUM]: {
+    [MECH_TEAM_SIZE.MEDIUM]: {
         display_name: 'Medium',
         description: '2-3',
     },
-    [TEAM_SIZE_LARGE]: {
+    [MECH_TEAM_SIZE.LARGE]: {
         display_name: 'Large',
         description: '2-4',
     },
 });
 
-export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStaticListIds<MechTeam>({
-    [TEAM_SHELF]: {
+export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStaticListIds<MechTeam>({
+    [MECH_TEAM.SHELF]: {
         display_name: 'Shelved HE-Vs',
         icon: 'hev',
         groups: makeStaticListIds<MechTeamGroup>({
@@ -91,7 +61,7 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             }),
         }),
     },
-    [TEAM_GENERAL]: {
+    [MECH_TEAM.GENERAL]: {
         display_name: 'HE-Vs',
         icon: 'hev',
         groups: makeStaticListIds<MechTeamGroup>({
@@ -108,26 +78,26 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             }),
         }),
     },
-    [TEAM_FIRE_SUPPORT]: {
+    [MECH_TEAM.FIRE_SUPPORT]: {
         display_name: 'Fire Support Team',
         display_name_short: 'Fire Support',
         icon: 'team-fire-support',
-        secondary_agenda_id: SA_FIRE_FOR_EFFECT,
+        secondary_agenda_id: SECONDARY_AGENDA.FIRE_FOR_EFFECT,
         groups: makeStaticListIds<MechTeamGroup>({
             'A': makeGroup({
                 min_count: 1,
                 max_count: 2,
                 size_ids: [SIZE.LIGHT],
-                required_upgrade_ids: [TARGET_DESIGNATOR],
+                required_upgrade_ids: [MECH_UPGRADE.TARGET_DESIGNATOR],
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 2,
                 size_ids: [SIZE.MEDIUM, SIZE.HEAVY],
                 required_weapon_ids: [
-                    ROCKET_PACK,
-                    HOWITZER,
-                    MISSILES,
+                    MECH_WEAPON.ROCKET_PACK,
+                    MECH_WEAPON.HOWITZER,
+                    MECH_WEAPON.MISSILES,
                 ],
             }),
         }),
@@ -150,23 +120,23 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             ],
         },
     },
-    [TEAM_RECON]: {
+    [MECH_TEAM.RECON]: {
         display_name: 'Recon Team',
         display_name_short: 'Recon',
         icon: 'team-recon',
-        secondary_agenda_id: SA_DEATH_FROM_ABOVE,
+        secondary_agenda_id: SECONDARY_AGENDA.DEATH_FROM_ABOVE,
         groups: makeStaticListIds<MechTeamGroup>({
             'A': makeGroup({
                 min_count: 1,
                 max_count: 4,
                 size_ids: [SIZE.LIGHT],
-                required_upgrade_ids: [TARGET_DESIGNATOR],
+                required_upgrade_ids: [MECH_UPGRADE.TARGET_DESIGNATOR],
             }),
             'B': makeGroup({
                 min_count: 0,
                 max_count: 2,
                 size_ids: [SIZE.MEDIUM, SIZE.HEAVY],
-                required_upgrade_ids: [TARGET_DESIGNATOR],
+                required_upgrade_ids: [MECH_UPGRADE.TARGET_DESIGNATOR],
                 limited_structure_mod_ids: [MECH_BODY_MOD.STRIPPED],
                 limited_armor_mod_ids: [MECH_BODY_MOD.STRIPPED],
             }),
@@ -190,23 +160,23 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             ],
         },
     },
-    [TEAM_SECURITY]: {
+    [MECH_TEAM.SECURITY]: {
         display_name: 'Security Team',
         display_name_short: 'Security',
         icon: 'team-security',
-        secondary_agenda_id: SA_DONT_GIVE_AN_INCH,
+        secondary_agenda_id: SECONDARY_AGENDA.DONT_GIVE_AN_INCH,
         groups: makeStaticListIds<MechTeamGroup>({
             'A': makeGroup({
                 min_count: 1,
                 max_count: 4,
                 size_ids: [SIZE.MEDIUM],
                 limited_armor_upgrade_ids: [
-                    ABLATIVE_ARMOR_UPGRADE,
-                    REACTIVE_ARMOR_UPGRADE,
-                    CERAMIC_ARMOR_UPGRADE,
-                    CLAYMORE_ARMOR_UPGRADE,
-                    EXTRA_PLATING_ARMOR_UPGRADE,
-                    HEAVY_PLATING_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.ABLATIVE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.CERAMIC_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.CLAYMORE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE,
                 ],
                 required_armor_or_structure_mod_id_once: MECH_BODY_MOD.REINFORCED,
                 limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
@@ -217,12 +187,12 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
                 max_count: 2,
                 size_ids: [SIZE.HEAVY],
                 limited_armor_upgrade_ids: [
-                    ABLATIVE_ARMOR_UPGRADE,
-                    REACTIVE_ARMOR_UPGRADE,
-                    CERAMIC_ARMOR_UPGRADE,
-                    CLAYMORE_ARMOR_UPGRADE,
-                    EXTRA_PLATING_ARMOR_UPGRADE,
-                    HEAVY_PLATING_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.ABLATIVE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.CERAMIC_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.CLAYMORE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE,
                 ],
                 limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
                 limited_armor_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
@@ -232,12 +202,12 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
                 max_count: 2,
                 size_ids: [SIZE.ULTRA],
                 limited_armor_upgrade_ids: [
-                    ABLATIVE_ARMOR_UPGRADE,
-                    REACTIVE_ARMOR_UPGRADE,
-                    CERAMIC_ARMOR_UPGRADE,
-                    CLAYMORE_ARMOR_UPGRADE,
-                    EXTRA_PLATING_ARMOR_UPGRADE,
-                    HEAVY_PLATING_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.ABLATIVE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.CERAMIC_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.CLAYMORE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE,
                 ],
                 limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
                 limited_armor_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
@@ -266,11 +236,11 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             ],
         },
     },
-    [TEAM_MULTIROLE]: {
+    [MECH_TEAM.MULTIROLE]: {
         display_name: 'Multirole Team',
         display_name_short: 'Multirole',
         icon: 'team-multirole',
-        secondary_agenda_id: SA_MISSION_MOMENTUM,
+        secondary_agenda_id: SECONDARY_AGENDA.MISSION_MOMENTUM,
         groups: makeStaticListIds<MechTeamGroup>({
             'A': makeGroup({
                 min_count: 1,
@@ -314,37 +284,37 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             ],
         },
     },
-    [TEAM_BERSERKER]: {
+    [MECH_TEAM.BERSERKER]: {
         display_name: 'Berserker Team',
         display_name_short: 'Berserker',
         icon: 'team-berserker',
-        secondary_agenda_id: SA_DRIVE_THEM_OUT,
+        secondary_agenda_id: SECONDARY_AGENDA.DRIVE_THEM_OUT,
         groups: makeStaticListIds<MechTeamGroup>({
             'A': makeGroup({
                 min_count: 0,
                 max_count: 2,
                 size_ids: [SIZE.LIGHT],
-                required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
+                required_at_least_one_weapon_with_trait_id: WEAPON_TRAIT.MELEE,
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 3,
                 size_ids: [SIZE.MEDIUM],
-                required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
+                required_at_least_one_weapon_with_trait_id: WEAPON_TRAIT.MELEE,
             }),
             'C': makeGroup({
                 min_count: 1,
                 max_count: 2,
                 size_ids: [SIZE.HEAVY],
-                required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
-                required_upgrade_ids: [NITRO_BOOST],
+                required_at_least_one_weapon_with_trait_id: WEAPON_TRAIT.MELEE,
+                required_upgrade_ids: [MECH_UPGRADE.NITRO_BOOST],
             }),
             'D': makeGroup({
                 min_count: 0,
                 max_count: 1,
                 size_ids: [SIZE.ULTRA],
-                limited_armor_upgrade_ids: [HEAVY_PLATING_ARMOR_UPGRADE],
-                required_upgrade_ids: [NITRO_BOOST],
+                limited_armor_upgrade_ids: [MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE],
+                required_upgrade_ids: [MECH_UPGRADE.NITRO_BOOST],
             }),
         }),
         team_size_perk_columns: [
@@ -374,32 +344,32 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             ],
         },
     },
-    [TEAM_GUNSLINGER]: {
+    [MECH_TEAM.GUNSLINGER]: {
         display_name: 'Gunslinger Team',
         display_name_short: 'Gunslinger',
         icon: 'team-gunslinger',
-        secondary_agenda_id: SA_TROPHY_TAKERS,
+        secondary_agenda_id: SECONDARY_AGENDA.TROPHY_TAKERS,
         groups: makeStaticListIds<MechTeamGroup>({
             'A': makeGroup({
                 min_count: 0,
                 max_count: 2,
                 size_ids: [SIZE.LIGHT],
-                required_upgrade_ids: [HAPTIC_SUIT],
-                limited_weapons_with_at_least_one_of_trait_ids: [TRAIT_MELEE, TRAIT_SHORT],
+                required_upgrade_ids: [MECH_UPGRADE.HAPTIC_SUIT],
+                limited_weapons_with_at_least_one_of_trait_ids: [WEAPON_TRAIT.MELEE, WEAPON_TRAIT.SHORT],
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 2,
                 size_ids: [SIZE.MEDIUM],
-                required_upgrade_ids: [HAPTIC_SUIT],
-                limited_weapons_with_at_least_one_of_trait_ids: [TRAIT_MELEE, TRAIT_SHORT],
+                required_upgrade_ids: [MECH_UPGRADE.HAPTIC_SUIT],
+                limited_weapons_with_at_least_one_of_trait_ids: [WEAPON_TRAIT.MELEE, WEAPON_TRAIT.SHORT],
             }),
             'C': makeGroup({
                 min_count: 1,
                 max_count: 2,
                 size_ids: [SIZE.HEAVY],
-                required_upgrade_ids: [HAPTIC_SUIT],
-                limited_weapons_with_at_least_one_of_trait_ids: [TRAIT_MELEE, TRAIT_SHORT],
+                required_upgrade_ids: [MECH_UPGRADE.HAPTIC_SUIT],
+                limited_weapons_with_at_least_one_of_trait_ids: [WEAPON_TRAIT.MELEE, WEAPON_TRAIT.SHORT],
             }),
         }),
         team_size_perk_columns: [
@@ -425,27 +395,27 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             ],
         },
     },
-    [TEAM_ASSASSIN]: {
+    [MECH_TEAM.ASSASSIN]: {
         display_name: 'Assassination Team',
         display_name_short: 'Assassination',
         icon: 'team-assassination',
-        secondary_agenda_id: SA_TARGET_ELIMINATED,
+        secondary_agenda_id: SECONDARY_AGENDA.TARGET_ELIMINATED,
         groups: makeStaticListIds<MechTeamGroup>({
             'A': makeGroup({
                 min_count: 1,
                 max_count: 3,
                 size_ids: [SIZE.LIGHT],
-                required_upgrade_ids: [DIRECTIONAL_THRUSTER],
-                required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
-                prohibited_weapons_with_trait_ids: [TRAIT_REACH],
+                required_upgrade_ids: [MECH_UPGRADE.DIRECTIONAL_THRUSTER],
+                required_at_least_one_weapon_with_trait_id: WEAPON_TRAIT.MELEE,
+                prohibited_weapons_with_trait_ids: [WEAPON_TRAIT.REACH],
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 3,
                 size_ids: [SIZE.MEDIUM],
-                required_upgrade_ids: [DIRECTIONAL_THRUSTER],
-                required_at_least_one_weapon_with_trait_id: TRAIT_MELEE,
-                prohibited_weapons_with_trait_ids: [TRAIT_REACH],
+                required_upgrade_ids: [MECH_UPGRADE.DIRECTIONAL_THRUSTER],
+                required_at_least_one_weapon_with_trait_id: WEAPON_TRAIT.MELEE,
+                prohibited_weapons_with_trait_ids: [WEAPON_TRAIT.REACH],
             }),
         }),
         team_size_perk_columns: [
@@ -471,11 +441,11 @@ export const MECH_TEAMS: Readonly<Record<MechTeamId, MechTeam>> = makeFrozenStat
             ],
         },
     },
-    [TEAM_NETWORKED_AI]: {
+    [MECH_TEAM.NETWORKED_AI]: {
         display_name: 'Networked AI Team',
         display_name_short: 'Networked AI',
         icon: 'team-ai',
-        secondary_agenda_id: SA_EXPAND_THE_NETWORK,
+        secondary_agenda_id: SECONDARY_AGENDA.EXPAND_THE_NETWORK,
         groups: makeStaticListIds<MechTeamGroup>({
             'A': makeGroup({
                 min_count: 0,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import type { MechArmorUpgradeId } from '../../../../data/mech-armor-upgrades';
+import type { MECH_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
 import { useMechStore } from '../../../../store/mech-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
@@ -18,7 +18,7 @@ const {
   mechId: number,
 }>();
 
-const model = defineModel<MechArmorUpgradeId>({ required: true });
+const model = defineModel<MECH_ARMOR_UPGRADE>({ required: true });
 const options = computed(() => mechStore.getMechAvailableArmorUpgrades(mechId));
 
 const armorUpgrade = computed(() => {
@@ -28,7 +28,7 @@ const armorUpgrade = computed(() => {
 
 const info = computed(() => mechStore.getMechArmorUpgradeAttachmentInfo(mechId)!);
 
-function selectOption(value: MechArmorUpgradeId) {
+function selectOption(value: MECH_ARMOR_UPGRADE) {
   model.value = value;
 }
 </script>

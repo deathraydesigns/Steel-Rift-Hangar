@@ -2,7 +2,7 @@
 import { BDropdownDivider, BDropdownHeader, BDropdownItem } from 'bootstrap-vue-next';
 import { groupBy, sortBy } from 'es-toolkit';
 import { computed } from 'vue';
-import { MECH_TEAM_ARRAY, MECH_TEAMS, type MechTeamId, TEAM_GENERAL, TEAM_SHELF } from '../../data/mech-teams.js';
+import { MECH_TEAM, MECH_TEAM_ARRAY, MECH_TEAMS } from '../../data/mech-teams.js';
 import { useTeamStore } from '../../store/team-store';
 import type { MechTeam } from '../../types';
 import SvgIcon from './Icon.vue';
@@ -20,14 +20,14 @@ const sortTeamsByOriginalIndex = (team: MechTeam) => MECH_TEAM_ARRAY.findIndex((
 
 const existingTeams = computed(() => {
   return [
-    MECH_TEAMS[TEAM_GENERAL],
-    MECH_TEAMS[TEAM_SHELF],
+    MECH_TEAMS[MECH_TEAM.GENERAL],
+    MECH_TEAMS[MECH_TEAM.SHELF],
     ...sortBy(specialTeamTypes.value.existing, [sortTeamsByOriginalIndex]),
   ];
 });
 const notExistingTeams = computed(() => sortBy(specialTeamTypes.value.notExisting, [sortTeamsByOriginalIndex]));
 
-function selectTeam(teamId: MechTeamId) {
+function selectTeam(teamId: MECH_TEAM) {
   selectedTeamId.value = teamId;
 }
 </script>

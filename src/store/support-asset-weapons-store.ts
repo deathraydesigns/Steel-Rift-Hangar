@@ -1,15 +1,15 @@
 import { storeToRefs } from 'pinia';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, readonly, ref, watch } from 'vue';
-import { DWC_OUTRAGEOUS_SUPPORT_BUDGET, FACTION_PERKS, OI_ORBITAL_STOCKPILES } from '../data/faction-perks';
+import { FACTION_PERK, FACTION_PERKS } from '../data/faction-perks';
 import { MECH_TEAM_PERKS, TEAM_PERK } from '../data/mech-team-perks';
 import {
     type OffTableWeaponInfo,
+    type SUPPORT_ASSET_WEAPON,
     SUPPORT_ASSET_WEAPONS,
-    type SupportAssetWeaponId,
     type SupportAssetWeaponInfo,
 } from '../data/support-asset-weapons';
-import { TRAIT_LIMITED, WEAPON_TRAITS, weaponTraitDisplayName } from '../data/weapon-traits';
+import { WEAPON_TRAIT, WEAPON_TRAITS, weaponTraitDisplayName } from '../data/weapon-traits';
 import { useFactionStore } from './faction-store';
 import { sumBy } from './helpers/collection-helper';
 import { useTeamStore } from './team-store';
@@ -20,8 +20,8 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
         const factionStore = useFactionStore(scope);
         const teamStore = useTeamStore(scope);
 
-        const outrageous_budget_perk_support_asset_id = ref<SupportAssetWeaponId | null>(null);
-        const support_asset_weapon_ids = ref<SupportAssetWeaponId[]>([]);
+        const outrageous_budget_perk_support_asset_id = ref<SUPPORT_ASSET_WEAPON | null>(null);
+        const support_asset_weapon_ids = ref<SUPPORT_ASSET_WEAPON[]>([]);
 
         function $reset() {
             support_asset_weapon_ids.value = [];
@@ -29,7 +29,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
         }
 
         const available_support_asset_weapon_ids = computed(() => {
-            return (Object.keys(SUPPORT_ASSET_WEAPONS) as SupportAssetWeaponId[])
+            return (Object.keys(SUPPORT_ASSET_WEAPONS) as SUPPORT_ASSET_WEAPON[])
                 .filter((id) => !support_asset_weapon_ids.value.includes(id));
         });
 
@@ -43,7 +43,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
                 .map(id => getSupportAssetInfo(id));
         });
 
-        function getSupportAssetInfo(supportAssetId: SupportAssetWeaponId): SupportAssetWeaponInfo {
+        function getSupportAssetInfo(supportAssetId: SUPPORT_ASSET_WEAPON): SupportAssetWeaponInfo {
             let asset = SUPPORT_ASSET_WEAPONS[supportAssetId];
             const assetInfo = Object.assign({}, asset) as SupportAssetWeaponInfo;
             assetInfo.notes = [];
@@ -52,24 +52,24 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
             weapon.traits = weapon.traits.map((trait) => Object.assign({}, trait));
             weapon.damage_modifiers = [];
 
-            if (factionStore.hasPerk(OI_ORBITAL_STOCKPILES)) {
+            if (factionStore.hasPerk(FACTION_PERK.OI_ORBITAL_STOCKPILES)) {
                 let hasLimitedTrait = false;
                 weapon.traits.forEach((trait) => {
-                    if (trait.id === TRAIT_LIMITED) {
+                    if (trait.id === WEAPON_TRAIT.LIMITED) {
                         (trait.number as number) += 1;
                         hasLimitedTrait = true;
                     }
                 });
                 if (hasLimitedTrait) {
                     assetInfo.notes.push({
-                        ...FACTION_PERKS[OI_ORBITAL_STOCKPILES],
-                        display_name: FACTION_PERKS[OI_ORBITAL_STOCKPILES].display_name + ' Limit(+1) applied',
+                        ...FACTION_PERKS[FACTION_PERK.OI_ORBITAL_STOCKPILES],
+                        display_name: FACTION_PERKS[FACTION_PERK.OI_ORBITAL_STOCKPILES].display_name + ' Limit(+1) applied',
                         is_faction_perk: true,
                     });
                 }
             }
 
-            if (factionStore.hasPerk(DWC_OUTRAGEOUS_SUPPORT_BUDGET)) {
+            if (factionStore.hasPerk(FACTION_PERK.DWC_OUTRAGEOUS_SUPPORT_BUDGET)) {
                 if (assetInfo.id === outrageous_budget_perk_support_asset_id.value) {
                     assetInfo.cost = 0;
                     if (weapon.damage ?? 0 > 0) {
@@ -83,7 +83,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
                     });
 
                     assetInfo.notes.push({
-                        ...FACTION_PERKS[DWC_OUTRAGEOUS_SUPPORT_BUDGET],
+                        ...FACTION_PERKS[FACTION_PERK.DWC_OUTRAGEOUS_SUPPORT_BUDGET],
                         is_faction_perk: true,
                     });
                 }
@@ -119,14 +119,14 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
             return readonly(assetInfo) as SupportAssetWeaponInfo;
         }
 
-        function hasSupportAssetId(supportAssetId: SupportAssetWeaponId) {
+        function hasSupportAssetId(supportAssetId: SUPPORT_ASSET_WEAPON) {
             return support_asset_weapon_ids.value.includes(supportAssetId);
         }
 
         const used_tons = computed(() => sumBy(support_asset_weapons_info.value, 'cost'));
         const used_count = computed(() => support_asset_weapon_ids.value.length);
 
-        function removeSupportAssetId(id: SupportAssetWeaponId) {
+        function removeSupportAssetId(id: SUPPORT_ASSET_WEAPON) {
             let index = support_asset_weapon_ids.value.indexOf(id);
             if (index !== -1) {
                 support_asset_weapon_ids.value.splice(index, 1);
@@ -135,7 +135,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
             syncOutrageousSupportBudget();
         }
 
-        function addSupportAsset(id: SupportAssetWeaponId) {
+        function addSupportAsset(id: SUPPORT_ASSET_WEAPON) {
             support_asset_weapon_ids.value.push(id);
         }
 
@@ -148,7 +148,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
         const { perk_1_id, perk_2_id } = storeToRefs(factionStore);
 
         function syncOutrageousSupportBudgetPerk() {
-            if (!factionStore.hasPerk(DWC_OUTRAGEOUS_SUPPORT_BUDGET)) {
+            if (!factionStore.hasPerk(FACTION_PERK.DWC_OUTRAGEOUS_SUPPORT_BUDGET)) {
                 outrageous_budget_perk_support_asset_id.value = null;
             }
         }

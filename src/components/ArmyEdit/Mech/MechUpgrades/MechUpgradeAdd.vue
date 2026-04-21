@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import type { MechUpgradeId } from '../../../../data/mech-upgrades';
+import type { MECH_UPGRADE } from '../../../../data/mech-upgrades';
 import { useMechStore } from '../../../../store/mech-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
@@ -18,7 +18,7 @@ const { mechId } = defineProps<{
 const mechStore = useMechStore();
 const options = computed(() => mechStore.getMechAvailableUpgradesInfo(mechId));
 
-function addUpgrade(upgradeId: MechUpgradeId) {
+function addUpgrade(upgradeId: MECH_UPGRADE) {
   mechStore.addMechUpgradeAttachment(mechId, upgradeId);
 }
 </script>

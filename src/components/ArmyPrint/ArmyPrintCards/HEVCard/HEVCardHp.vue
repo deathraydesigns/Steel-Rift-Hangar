@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { chunk } from 'es-toolkit';
 import { computed } from 'vue';
-import { RD_ADVANCED_STRUCTURAL_COMPONENTS } from '../../../../data/faction-perks.js';
-import {
-  EXTRA_PLATING_ARMOR_UPGRADE,
-  HEAVY_PLATING_ARMOR_UPGRADE,
-  NO_ARMOR_UPGRADE,
-} from '../../../../data/mech-armor-upgrades';
+import { FACTION_PERK } from '../../../../data/faction-perks.js';
+import { MECH_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
 import { SIZE } from '../../../../data/unit-sizes.js';
 import { useFactionStore } from '../../../../store/faction-store';
 import { useMechStore } from '../../../../store/mech-store';
@@ -95,7 +91,7 @@ const structureHp = computed(() => {
     points = points.concat(items);
   });
 
-  if (factionStore.hasPerk(RD_ADVANCED_STRUCTURAL_COMPONENTS)) {
+  if (factionStore.hasPerk(FACTION_PERK.RD_ADVANCED_STRUCTURAL_COMPONENTS)) {
     points = ['-', '-'].concat(points);
     points.splice(points.length - 2, 2);
   }
@@ -110,9 +106,9 @@ const armorUpgrade = computed(() => {
   const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId);
 
   const exclude: string[] = [
-    NO_ARMOR_UPGRADE,
-    EXTRA_PLATING_ARMOR_UPGRADE,
-    HEAVY_PLATING_ARMOR_UPGRADE,
+    MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE,
+    MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE,
+    MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE,
   ];
 
   if (armorUpgrade && !exclude.includes(armorUpgrade?.id ?? '')) {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { BLO_EX_MILITARY_VETERANS, FACTION_PERKS, type FactionPerkId } from '../../../data/faction-perks.js';
-import { AUTHORITIES, FACTIONS, MILITARY_TRAINING } from '../../../data/factions.js';
+import { FACTION_PERK, FACTION_PERKS } from '../../../data/faction-perks.js';
+import { FACTION, FACTION_PERK_GROUP, FACTIONS } from '../../../data/factions.js';
 import { useFactionStore } from '../../../store/faction-store';
 import CardFooter from './CardParts/CardFooter.vue';
 import CardHeader from './CardParts/CardHeader.vue';
@@ -10,13 +10,13 @@ import CardHeader from './CardParts/CardHeader.vue';
 const { faction_display_name } = storeToRefs(useFactionStore());
 
 const { perkId } = defineProps<{
-  perkId: FactionPerkId;
+  perkId: FACTION_PERK;
 }>();
 
 const info = computed(() => FACTION_PERKS[perkId]);
 
 const militaryTrainingPerks = computed(() => {
-  const perkIds = FACTIONS[AUTHORITIES].faction_perk_groups[MILITARY_TRAINING].perk_ids;
+  const perkIds = FACTIONS[FACTION.AUTHORITIES].faction_perk_groups[FACTION_PERK_GROUP.MILITARY_TRAINING]!.perk_ids;
   return perkIds.map(perkId => {
     return FACTION_PERKS[perkId];
   });
@@ -35,7 +35,7 @@ const militaryTrainingPerks = computed(() => {
         </span>
       </div>
 
-      <template v-if="perkId === BLO_EX_MILITARY_VETERANS">
+      <template v-if="perkId === FACTION_PERK.BLO_EX_MILITARY_VETERANS">
         <div v-for="perk in militaryTrainingPerks">
 
           <div class="card-description">

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { BButton, BFormSelect } from 'bootstrap-vue-next';
 import { computed, inject } from 'vue';
-import type { InfantrySquadId } from '../../../data/infantry-squads';
+import type { INFANTRY } from '../../../data/infantry-squads';
 import { SUPPORT_ASSET_UNITS } from '../../../data/support-asset-units';
-import { ULTRA_LIGHT_HEV_SQUADRON } from '../../../data/support-assets/ultra-light-hev-squadron';
-import type { UnitWeaponId } from '../../../data/unit-weapons';
+import { SUPPORT_ASSET_UNIT } from '../../../data/support-assets/_support-asset-types';
+import type { UNIT_WEAPON } from '../../../data/unit-weapons';
 import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import FormatInches from '../../functional/format-inches.vue';
 import TraitList from '../../UI/TraitList.vue';
@@ -29,16 +29,16 @@ const has_structure = inject('has_structure');
 const has_jump = inject('has_jump');
 const has_garrison = inject('has_garrison');
 
-function setWeaponChoice(choiceId: string, weaponId: UnitWeaponId) {
+function setWeaponChoice(choiceId: string, weaponId: UNIT_WEAPON) {
   unitStore.setUnitVehicleWeaponChoice(supportAssetAttachmentId, supportAssetVehicleAttachmentId, choiceId, weaponId);
 }
 
-function setGarrisonChoice(index: number, squadId: InfantrySquadId) {
+function setGarrisonChoice(index: number, squadId: INFANTRY) {
   unitStore.setUnitVehicleGarrisonChoice(supportAssetAttachmentId, supportAssetVehicleAttachmentId, index, squadId);
 }
 
 function addUlHev() {
-  unitStore.addSupportAsset(ULTRA_LIGHT_HEV_SQUADRON);
+  unitStore.addSupportAsset(SUPPORT_ASSET_UNIT.ULTRA_LIGHT_HEV_SQUADRON);
 }
 </script>
 <template>
@@ -82,17 +82,17 @@ function addUlHev() {
     </td>
     <td v-if="has_garrison">
       <template v-if="unitInfo.garrison_ul_hev">
-        <template v-if="!unitStore.hasUnitId(ULTRA_LIGHT_HEV_SQUADRON)">
+        <template v-if="!unitStore.hasUnitId(SUPPORT_ASSET_UNIT.ULTRA_LIGHT_HEV_SQUADRON)">
           <BButton
             size="sm"
             @click="addUlHev"
           >
             Add
-            {{ SUPPORT_ASSET_UNITS[ULTRA_LIGHT_HEV_SQUADRON].display_name }}
+            {{ SUPPORT_ASSET_UNITS[SUPPORT_ASSET_UNIT.ULTRA_LIGHT_HEV_SQUADRON].display_name }}
           </BButton>
         </template>
         <template v-else>
-          {{ SUPPORT_ASSET_UNITS[ULTRA_LIGHT_HEV_SQUADRON].display_name }}
+          {{ SUPPORT_ASSET_UNITS[SUPPORT_ASSET_UNIT.ULTRA_LIGHT_HEV_SQUADRON].display_name }}
           <br>
           (separate support asset)
         </template>

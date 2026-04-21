@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BPopover } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import { MECH_TEAMS, type MechTeamId } from '../../data/mech-teams.js';
+import { MECH_TEAMS, type MECH_TEAM } from '../../data/mech-teams.js';
 import SvgIcon from './Icon.vue';
 
 const {
@@ -10,7 +10,7 @@ const {
   btnClass = '',
 } = defineProps<{
   show: boolean,
-  teamId: MechTeamId,
+  teamId: MECH_TEAM,
   btnClass: string,
 }>();
 

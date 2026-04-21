@@ -1,30 +1,20 @@
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, readonly, ref } from 'vue';
-import {
-    DWC_OUTRAGEOUS_SUPPORT_BUDGET,
-    DWC_TOP_END_HARDWARE,
-    FACTION_PERKS,
-    type FactionPerkId,
-    type FactionPerkInfo,
-    isMatchingPerkOrCopy,
-    OI_MATERIEL_STOCKPILES,
-    RD_ADVANCED_HARDPOINT_DESIGN,
-} from '../data/faction-perks';
+import { FACTION_PERK, FACTION_PERKS, type FactionPerkInfo, isMatchingPerkOrCopy } from '../data/faction-perks';
 import {
     DWC_TOP_END_HARDWARE_BONUS_TONS,
-    type FactionId,
+    FACTION,
     FACTIONS,
-    NO_FACTION,
     RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS,
 } from '../data/factions';
 
 export const useFactionStore = defineScopeableStore('faction', ({ scope }: { scope: string }) => {
 
-        const defaultFactionId = NO_FACTION;
+        const defaultFactionId = FACTION.NO_FACTION;
 
-        const perk_1_id = ref<FactionPerkId | null>(null);
-        const perk_2_id = ref<FactionPerkId | null>(null);
-        const faction_id = ref<FactionId>(defaultFactionId);
+        const perk_1_id = ref<FACTION_PERK | null>(null);
+        const perk_2_id = ref<FACTION_PERK | null>(null);
+        const faction_id = ref<FACTION>(defaultFactionId);
 
         function $reset() {
             faction_id.value = defaultFactionId;
@@ -34,18 +24,18 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
 
         const faction_display_name = computed(() => FACTIONS[faction_id.value].display_name);
 
-        function perkBelongsToFaction(perkId: FactionPerkId | null) {
+        function perkBelongsToFaction(perkId: FACTION_PERK | null) {
             if (!perkId) return false;
             return !!Object.values(FACTIONS[faction_id.value].faction_perk_groups).find((perkGroup) => {
                 return perkGroup.perk_ids.includes(perkId);
             });
         }
 
-        function hasPerk(perkId: FactionPerkId) {
+        function hasPerk(perkId: FACTION_PERK) {
             return isMatchingPerkOrCopy(perkId, perk_1_id.value) || isMatchingPerkOrCopy(perkId, perk_2_id.value);
         }
 
-        function getMatchingPerkOrCopyInfo(perkId: FactionPerkId) {
+        function getMatchingPerkOrCopyInfo(perkId: FACTION_PERK) {
             if (isMatchingPerkOrCopy(perkId, perk_1_id.value)) {
                 return FACTION_PERKS[perk_1_id.value!];
             }
@@ -55,11 +45,11 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
             }
         }
 
-        function hasExactPerk(perkId: FactionPerkId) {
+        function hasExactPerk(perkId: FACTION_PERK) {
             return perkId === perk_1_id.value || perkId === perk_2_id.value;
         }
 
-        function addPerk(perkId: FactionPerkId) {
+        function addPerk(perkId: FACTION_PERK) {
             if (perk_1_id.value === null) {
                 perk_1_id.value = perkId;
                 return;
@@ -89,7 +79,7 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
             }
         }
 
-        function getPerkInfo(perkId: FactionPerkId | null): null | FactionPerkInfo {
+        function getPerkInfo(perkId: FACTION_PERK | null): null | FactionPerkInfo {
             if (!perkId || !FACTION_PERKS[perkId]) {
                 return null;
             }
@@ -118,7 +108,7 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
             return false;
         }
 
-        function findPerkGroupId(perkId: FactionPerkId | null) {
+        function findPerkGroupId(perkId: FACTION_PERK | null) {
             if (!perkId) return;
             const factions = Object.values(FACTIONS);
             for (let i = 0; i < factions.length; i++) {
@@ -159,18 +149,18 @@ export const useFactionStore = defineScopeableStore('faction', ({ scope }: { sco
             });
         });
 
-        const hasAdvancedHardPoints = computed(() => hasPerk(RD_ADVANCED_HARDPOINT_DESIGN));
-        const hasOutrageousSupportBudget = computed(() => hasPerk(DWC_OUTRAGEOUS_SUPPORT_BUDGET));
+        const hasAdvancedHardPoints = computed(() => hasPerk(FACTION_PERK.RD_ADVANCED_HARDPOINT_DESIGN));
+        const hasOutrageousSupportBudget = computed(() => hasPerk(FACTION_PERK.DWC_OUTRAGEOUS_SUPPORT_BUDGET));
 
-        const advancedHardPointsInfo = computed(() => getMatchingPerkOrCopyInfo(RD_ADVANCED_HARDPOINT_DESIGN));
+        const advancedHardPointsInfo = computed(() => getMatchingPerkOrCopyInfo(FACTION_PERK.RD_ADVANCED_HARDPOINT_DESIGN));
 
-        const hasTopEndHardware = computed(() => hasPerk(DWC_TOP_END_HARDWARE));
-        const topEndHardwareInfo = computed(() => getMatchingPerkOrCopyInfo(DWC_TOP_END_HARDWARE));
+        const hasTopEndHardware = computed(() => hasPerk(FACTION_PERK.DWC_TOP_END_HARDWARE));
+        const topEndHardwareInfo = computed(() => getMatchingPerkOrCopyInfo(FACTION_PERK.DWC_TOP_END_HARDWARE));
 
         const advancedHardPointsBonusSlots = computed(() => RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS);
         const topEndHardwareBonusTons = computed(() => DWC_TOP_END_HARDWARE_BONUS_TONS);
 
-        const hasMaterielStockpilesInfo = computed(() => getMatchingPerkOrCopyInfo(OI_MATERIEL_STOCKPILES));
+        const hasMaterielStockpilesInfo = computed(() => getMatchingPerkOrCopyInfo(FACTION_PERK.OI_MATERIEL_STOCKPILES));
 
         const factions_info = computed(() => {
             return readonly(Object.values(FACTIONS).map(({ id, display_name }) => {
