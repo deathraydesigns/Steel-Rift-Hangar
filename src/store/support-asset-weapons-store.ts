@@ -1,3 +1,4 @@
+import { sumBy } from 'es-toolkit';
 import { storeToRefs } from 'pinia';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, readonly, ref, watch } from 'vue';
@@ -11,7 +12,6 @@ import {
 } from '../data/support-asset-weapons';
 import { WEAPON_TRAIT, WEAPON_TRAITS, weaponTraitDisplayName } from '../data/weapon-traits';
 import { useFactionStore } from './faction-store';
-import { sumBy } from './helpers/collection-helper';
 import { useTeamStore } from './team-store';
 
 export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-asset', ({ scope }: {
@@ -123,7 +123,7 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
             return support_asset_weapon_ids.value.includes(supportAssetId);
         }
 
-        const used_tons = computed(() => sumBy(support_asset_weapons_info.value, 'cost'));
+        const used_tons = computed(() => sumBy(support_asset_weapons_info.value, v => v.cost));
         const used_count = computed(() => support_asset_weapon_ids.value.length);
 
         function removeSupportAssetId(id: SUPPORT_ASSET_WEAPON) {
