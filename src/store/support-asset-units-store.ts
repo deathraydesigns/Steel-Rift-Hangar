@@ -22,7 +22,7 @@ import type { UpgradePodId } from '../data/support-assets/ultra-light-hev-squadr
 import { UNIT_SIZES } from '../data/unit-sizes';
 import { freshUnitTrait, UNIT_TRAIT, UNIT_TRAITS, unitTraitDisplayName } from '../data/unit-traits';
 import { UNIT_TYPE, UNIT_TYPES } from '../data/unit-types';
-import { UNIT_WEAPONS, type UNIT_WEAPON } from '../data/unit-weapons';
+import { type UNIT_WEAPON, UNIT_WEAPONS } from '../data/unit-weapons';
 import { freshWeaponTrait, WEAPON_TRAIT, WEAPON_TRAITS } from '../data/weapon-traits';
 import { type GarrisonUnitInfo, type Trait } from '../types';
 import { filterUniqueById, findById, findItemIndexById } from './helpers/collection-helper';
@@ -357,12 +357,12 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             if (!weapon) {
                 throw new Error(`unit weapon id: ${weaponId} not found`);
             }
-            const weaponInfo = Object.assign({}, weapon) as UnitWeaponInfo;
+            const weaponInfo = { ...weapon } as UnitWeaponInfo;
 
             weaponInfo.traits = (weapon?.traits?.map((trait) => freshWeaponTrait(trait))
                 .filter((w) => w.id !== WEAPON_TRAIT.SHORT) || []) as Trait<WEAPON_TRAIT>[];
 
-            const limitedTrait = findById<Trait<WEAPON_TRAIT>>(weapon.traits, WEAPON_TRAIT.LIMITED);
+            const limitedTrait = findById(weapon.traits, WEAPON_TRAIT.LIMITED);
 
             if (limitedTrait) {
                 weaponInfo.max_uses = limitedTrait.number as number;
