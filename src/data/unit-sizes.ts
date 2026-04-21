@@ -33,15 +33,16 @@ export const UNIT_SIZES = makeFrozenStaticListIds<UnitSize>({
 
 export interface MechSize {
     id: MechSizeId,
-    display_name: string;
-    armor: number;
-    structure: number;
-    max_slots: number;
-    max_tons: number;
-    move: number;
-    jump: number;
-    defense: number;
-    smash_damage: number;
+    display_name: string,
+    armor: number,
+    structure: number,
+    max_slots: number,
+    max_tons: number,
+    move: number,
+    jump: number,
+    defense: number,
+    smash_damage: number,
+    max_armor_upgrades: number,
 }
 
 export const MECH_SIZES = makeFrozenStaticListIds<MechSize>({
@@ -55,6 +56,7 @@ export const MECH_SIZES = makeFrozenStaticListIds<MechSize>({
         jump: 10,
         defense: 3,
         smash_damage: 3,
+        max_armor_upgrades: 1,
     },
     [SIZE.MEDIUM]: {
         display_name: UNIT_SIZES[SIZE.MEDIUM].display_name,
@@ -66,6 +68,7 @@ export const MECH_SIZES = makeFrozenStaticListIds<MechSize>({
         jump: 8,
         defense: 4,
         smash_damage: 4,
+        max_armor_upgrades: 1,
     },
     [SIZE.HEAVY]: {
         display_name: UNIT_SIZES[SIZE.HEAVY].display_name,
@@ -77,6 +80,7 @@ export const MECH_SIZES = makeFrozenStaticListIds<MechSize>({
         jump: 6,
         defense: 5,
         smash_damage: 5,
+        max_armor_upgrades: 1,
     },
     [SIZE.ULTRA]: {
         display_name: UNIT_SIZES[SIZE.ULTRA].display_name,
@@ -88,6 +92,7 @@ export const MECH_SIZES = makeFrozenStaticListIds<MechSize>({
         jump: 4,
         defense: 6,
         smash_damage: 6,
+        max_armor_upgrades: 2,
     },
 });
 

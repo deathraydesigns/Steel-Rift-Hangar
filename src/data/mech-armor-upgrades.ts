@@ -11,14 +11,13 @@ export enum MECH_ARMOR_UPGRADE {
     CLAYMORE_ARMOR_UPGRADE = 'CLAYMORE_ARMOR_UPGRADE',
     EXTRA_PLATING_ARMOR_UPGRADE = 'EXTRA_PLATING_ARMOR_UPGRADE',
     HEAVY_PLATING_ARMOR_UPGRADE = 'HEAVY_PLATING_ARMOR_UPGRADE',
-    // REDUNDANT_INTERNALS = 'REDUNDANT_INTERNALS',
+    REDUNDANT_INTERNALS = 'REDUNDANT_INTERNALS',
 }
 
 export interface MechArmorUpgrade {
     id: MECH_ARMOR_UPGRADE,
     display_name: string,
-    cost: number,
-    slots: number,
+    slots: 0,
     card_upgrade_display_name?: string,
     description: string,
     cost_by_size: NumberBySize,
@@ -26,8 +25,15 @@ export interface MechArmorUpgrade {
     armor_mod: number | null,
 }
 
-interface MakeArmorUpgradeInput extends Omit<Optional<MechArmorUpgrade, 'cost' | 'cost_by_size' | 'limited_size_ids' | 'armor_mod'>, 'id'> {
-}
+type MakeArmorUpgradeInput =
+    Omit<Optional<MechArmorUpgrade, | 'slots' | 'cost_by_size' | 'limited_size_ids' | 'armor_mod'>, 'id'>
+    & ({
+    cost: number,
+    cost_by_size?: undefined
+} | {
+    cost?: undefined,
+    cost_by_size: NumberBySize
+})
 
 function makeArmorUpgrade(item: MakeArmorUpgradeInput): Omit<MechArmorUpgrade, 'id'> {
     const cost_by_size: NumberBySize = item.cost_by_size ?? {
@@ -39,8 +45,7 @@ function makeArmorUpgrade(item: MakeArmorUpgradeInput): Omit<MechArmorUpgrade, '
 
     return {
         display_name: item.display_name,
-        cost: item.cost ?? 0,
-        slots: item.slots,
+        slots: 0,
         card_upgrade_display_name: item.card_upgrade_display_name,
         description: item.description,
         cost_by_size,
@@ -54,7 +59,6 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
         display_name: 'Standard',
         description: '',
         cost: 0,
-        slots: 0,
     }),
     [MECH_ARMOR_UPGRADE.ABLATIVE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Ablative',
@@ -65,14 +69,12 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
             [SIZE.HEAVY]: 2,
             [SIZE.ULTRA]: 2,
         },
-        slots: 0,
         description: 'This Unit may re‑roll any failed Defense Rolls caused by the Blast effect.',
     }),
     [MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Reactive',
         card_upgrade_display_name: 'Reactive Armor',
         cost: 1,
-        slots: 0,
         description: 'Reduce the Attack Pool of Weapons with “Missile” or "Rocket” in the name Targeting this Unit by 1, to a minimum of 1.',
     }),
     [MECH_ARMOR_UPGRADE.CERAMIC_ARMOR_UPGRADE]: makeArmorUpgrade({
@@ -84,7 +86,6 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
             [SIZE.HEAVY]: 1,
             [SIZE.ULTRA]: 1,
         },
-        slots: 0,
         description: 'Each time this Unit would take Damage from the AP trait, roll a D6. On a 4+, ignore that Damage.',
     }),
     [MECH_ARMOR_UPGRADE.CLAYMORE_ARMOR_UPGRADE]: makeArmorUpgrade({
@@ -92,14 +93,12 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
         card_upgrade_display_name: 'Claymore Armor',
         description: 'Reduce the Attack Pool of incoming SMASH Orders by 1 to a minimum of 1.If a Unit equipped with Claymore Armor takes Structure Damage from a SMASH Order, the Active Unit is immediately targeted by an ENGAGE Order with a damage value of (2/2/3/3) and the Frag trait.',
         cost: 1,
-        slots: 0,
     }),
     [MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Extra Plating',
         card_upgrade_display_name: 'Extra Plating (+2 applied)',
         description: 'This Unit gains 2 additional Armor.',
         cost: 1,
-        slots: 0,
         armor_mod: 2,
     }),
     [MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE]: makeArmorUpgrade({
@@ -107,8 +106,15 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
         card_upgrade_display_name: 'Heavy Plating (+4 applied)',
         description: 'This Unit gains 4 additional Armor.',
         cost: 2,
-        slots: 0,
         armor_mod: 4,
         limited_size_ids: [SIZE.ULTRA],
+    }),
+    [MECH_ARMOR_UPGRADE.REDUNDANT_INTERNALS]: makeArmorUpgrade({
+        display_name: 'Redundant Internals',
+        card_upgrade_display_name: 'Redundant Internals (Fragile Int. Removed)',
+        description: 'This Unit no longer has the "Fragile Internals" rule applied when damaged.',
+        cost: 1,
+        armor_mod: 4,
+        limited_size_ids: [SIZE.LIGHT],
     }),
 });

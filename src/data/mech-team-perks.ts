@@ -50,6 +50,9 @@ export enum TEAM_PERK {
 
     AUX_DEFENSE_CONFIG = 'TEAM_PERK_AUX_DEFENSE_CONFIG',
     GRANTED_SUPPRESSIVE_FIRE = 'TEAM_PERK_GRANTED_SUPPRESSIVE_FIRE',
+    GRANTED_GUIDANCE_SUITE_MOVE = 'TEAM_PERK_GRANTED_GUIDANCE_SUITE_MOVE',
+
+    RETURN_SMASH = 'TEAM_PERK_RETURN_SMASH'
 }
 
 export const MECH_TEAM_PERKS = makeTeamPerks({
@@ -117,7 +120,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     },
     [TEAM_PERK.QUICKDRAW]: {
         display_name: 'Quickdraw',
-        description: 'This Unit may choose to Return Fire when it has an Activation Marker.After completing a Return Fire, the Unit is marked with a Redline Marker instead of an Activation Marker.',
+        description: 'This Unit may choose to Return Fire when it has an Activation Marker. After completing a Return Fire, the Unit is marked with a Redline Marker instead of an Activation Marker.',
         visible_on_card: true,
     },
     [TEAM_PERK.GUIDED_ROCKETS]: {
@@ -178,10 +181,21 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
         display_name: 'Aux. Defense Config',
         description: 'This HE-V may equip an additional Defensive Configuration. This uses an Upgrade slot.',
     },
-    [TEAM_PERK.GRANTED_SUPPRESSIVE_FIRE]: {},
+    [TEAM_PERK.GRANTED_SUPPRESSIVE_FIRE]: {
+        display_name: 'Granted Suppressive Fire',
+        description: 'This HE-V has the Suppressive Fire trait.',
+    },
     [TEAM_PERK.HOMING]: {
         display_name: 'Homing',
         description: 'Any Weapon with the SMART trait may select a Target that is not in LoS of the Active Unit. This Weapon has the Short (6”) trait when doing so. Attack Pools are not modified for Side or Rear Arc.',
+    },
+    [TEAM_PERK.RETURN_SMASH]: {
+        display_name: 'Return Smash',
+        description: 'When this Unit is Targeted by an ENGAGE or SMASH Order and does not have a Redline Marker, they may choose to declare “Return Smash”. Once the Active Unit’s ENGAGE or SMASH Order is complete, before it performs any further Orders, the Target Unit may immediately perform a SMASH Order. The SMASH Order must Target the interrupted Unit. Once this SMASH Order is complete, mark the Unit Returning Smash with a Redline Marker. If the interrupted Unit has Orders left to perform, they return to being the Active Unit, and play continues as normal.',
+    },
+    [TEAM_PERK.GRANTED_GUIDANCE_SUITE_MOVE]: {
+        display_name: 'Granted Guidance Suite (MOVE)',
+        description: 'Once per turn, a Medium or Heavy HE-V of this team counts as having the Guidance Suite (MOVE) trait. Declare the use of this at the beginning of that HE-V’s activation.',
     },
 });
 
@@ -219,7 +233,7 @@ function makeLightWeight(name: string) {
     };
 }
 
-function makeTeamPerks(perks: Record<string, TeamPerkInput>): Readonly<Record<string, TeamPerk>> {
+function makeTeamPerks(perks: Record<TEAM_PERK, TeamPerkInput>): Readonly<Record<TEAM_PERK, TeamPerk>> {
     let display_order = 0;
 
     Object.entries(perks).forEach(([perkId, perk]) => {
