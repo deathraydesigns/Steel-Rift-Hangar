@@ -420,7 +420,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
         const prohibitedWeaponIds = weaponIds.filter(weaponId => {
             let { traits } = mechStore.getWeaponTraitsInfo(mechId, weaponId);
-            const { valid } = teamStore.getWeaponTraitIsProhibited(mechId, weaponId, traits);
+            const { valid } = teamStore.getWeaponTraitsProhibited(mechId, traits);
             return !valid;
         });
 
@@ -494,9 +494,6 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
         if (validIds?.length) {
             if (!validIds.includes(armorUpgradeId)) {
-                console.log({
-                    validIds, armorUpgradeId
-                })
                 return {
                     valid: false,
                     armorUpgradeDisplayName: MECH_ARMOR_UPGRADES[armorUpgradeId].display_name,
