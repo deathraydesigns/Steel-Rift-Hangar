@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { chunk } from 'es-toolkit';
+import { chunk, sumBy } from 'es-toolkit';
 import { computed } from 'vue';
 import { FACTION_PERK } from '../../../../data/faction-perks.js';
 import { MECH_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
@@ -37,15 +37,9 @@ const structure6PerRow = computed(() => {
 
 const armorHp = computed(() => {
   const armorStat = info.value.armor_stat;
-
-  let baseArmor = armorStat;
-  let extraArmor = 0;
-
-  const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId);
-  if (armorUpgrade && armorUpgrade.armor_mod) {
-    extraArmor = armorUpgrade.armor_mod;
-    baseArmor = armorStat - extraArmor;
-  }
+  const armorUpgrades = mechStore.getMechAllArmorUpgradesInfo(mechId);
+  const extraArmor = sumBy(armorUpgrades, (v) => v.armor_mod ?? 0);
+  const baseArmor = armorStat - extraArmor;
 
   const points: string[] = [
     ...new Array(baseArmor).fill('armor'),
@@ -102,18 +96,17 @@ const structureHp = computed(() => {
   return chunk(points, 5);
 });
 
-const armorUpgrade = computed(() => {
-  const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId);
+const armorUpgrades = computed(() => {
+  const armorUpgrades = mechStore.getMechAllArmorUpgradesInfo(mechId);
 
   const exclude: string[] = [
     MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE,
     MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE,
     MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE,
+    MECH_ARMOR_UPGRADE.REDUNDANT_INTERNALS,
   ];
 
-  if (armorUpgrade && !exclude.includes(armorUpgrade?.id ?? '')) {
-    return armorUpgrade;
-  }
+  return armorUpgrades.filter(armorUpgrade => !exclude.includes(armorUpgrade.id ?? ''));
 });
 
 </script>
@@ -121,7 +114,9 @@ const armorUpgrade = computed(() => {
   <div class="row g-1 row-damage">
     <div class="col-5">
       <div class="hp-heading">
-        ARMOR <small class="fw-light" v-if="armorUpgrade">({{ armorUpgrade.display_name }})</small>
+        ARMOR <small class="fw-light" v-if="armorUpgrades && armorUpgrades.length === 1">
+        ({{ armorUpgrades[0].display_name }})
+      </small>
       </div>
       <div class="hp-container">
         <div class="hp-row" v-for="row in armorHp">

@@ -6,7 +6,7 @@ import { ORDERS } from '../../../data/orders';
 
 const { title, traits } = defineProps<{
   title: string,
-  traits: TraitDef[],
+  traits: TraitDef<any>[],
 }>();
 const traitsWithOrders = computed(() => {
   const results = traits.map(trait => {

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 
-import type { Trait } from '../../types';
+import type { TraitInfo } from '../../types';
 import BtnToolTip from './BtnToolTip.vue';
 import GrantedOrders from './GrantedOrders.vue';
 
 const { traits } = defineProps<{
-  traits: Trait[]
+  traits: TraitInfo<any>[]
 }>();
 
-function show(trait: Trait) {
+function show(trait: TraitInfo<any>) {
   return !!(trait.description || trait.granted_order_ids?.length);
 }
 </script>

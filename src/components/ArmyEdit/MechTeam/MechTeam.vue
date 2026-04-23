@@ -2,8 +2,8 @@
 import { BButton, BCollapse, BOffcanvas } from 'bootstrap-vue-next';
 import { computed, ref } from 'vue';
 import { MECH_TEAM_PERKS, TEAM_PERK } from '../../../data/mech-team-perks';
-import type { MECH_TEAM } from '../../../data/mech-teams';
-import { MECH_SIZES, type MechSizeId } from '../../../data/unit-sizes.js';
+import type { MECH_TEAM, MechTeamPerkColumn } from '../../../data/mech-teams';
+import { MECH_SIZES } from '../../../data/unit-sizes.js';
 import { useTeamStore } from '../../../store/team-store';
 import { useValidationStore } from '../../../store/validation-store';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
@@ -27,12 +27,16 @@ const teamPerkIdDef = computed(() => (perkId: TEAM_PERK) => MECH_TEAM_PERKS[perk
 const validation = computed(() => validationStore.getTeamValidation(teamId));
 const valid = computed(() => validation.value.valid);
 
-const sizeDisplayNames = computed(() => (sizeIds: MechSizeId[]) => {
-  if (sizeIds.length === 4) {
+const sizeDisplayNames = computed(() => (column: MechTeamPerkColumn) => {
+  if ('custom_perk_column' in column) {
+    return column.custom_perk_column;
+  }
+
+  if (column.length === 4) {
     return 'All';
   }
 
-  return sizeIds
+  return column
     .map((sizeId) => MECH_SIZES[sizeId].display_name)
     .join('/');
 });
@@ -166,8 +170,8 @@ function collapseAll() {
       <thead>
       <tr>
         <th>Team Size</th>
-        <th v-for="(sizeIds) in team.team_size_perk_columns">
-          {{ sizeDisplayNames(sizeIds) }} HE-Vs
+        <th v-for="col in team.team_size_perk_columns">
+          {{ sizeDisplayNames(col) }} HE-Vs
         </th>
       </tr>
       </thead>

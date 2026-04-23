@@ -1,14 +1,14 @@
-import { difference, groupBy, sortBy, sumBy } from 'es-toolkit';
+import { difference, sumBy } from 'es-toolkit';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, ref } from 'vue';
 import { GAME_SIZES } from '../data/game-sizes';
 import { MECH_BODY_MODS, MECH_BODY_MODS_DROP_DOWN } from '../data/mech-body';
-import { MECH_TEAM_PERKS, TEAM_PERK } from '../data/mech-team-perks';
+import { MECH_TEAM_PERKS, perkIdsToInfo, TEAM_PERK } from '../data/mech-team-perks';
 import { MECH_TEAM, MECH_TEAM_SIZE, MECH_TEAM_SIZES, MECH_TEAMS } from '../data/mech-teams';
 import type { MECH_UPGRADE } from '../data/mech-upgrades';
-import { MECH_WEAPONS, type MECH_WEAPON, weaponHasTrait } from '../data/mech-weapons';
+import { type MECH_WEAPON, MECH_WEAPONS, weaponHasTrait } from '../data/mech-weapons';
 import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
-import { WEAPON_TRAITS, type WEAPON_TRAIT } from '../data/weapon-traits';
+import { type WEAPON_TRAIT, WEAPON_TRAITS } from '../data/weapon-traits';
 import type { Mech, MechGroupInstance, MechTeamInstance, MechWeaponAttachment, Trait } from '../types';
 import { useArmyListStore } from './army-list-store';
 import { findBy, findById, findItemIndexById, move, setDisplayOrders } from './helpers/collection-helper';
@@ -526,8 +526,8 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             return result;
         }
 
-        function getUsedTeamAbilityPerkIds(teamId: MECH_TEAM) {
-            const perkIdsMap: Record<string, boolean> = {};
+        function getUsedTeamAbilityPerkIds(teamId: MECH_TEAM): TEAM_PERK[] {
+            const perkIdsSet = new Set<TEAM_PERK>();
             const mechIds = getTeamMechIds(teamId);
 
             mechIds.forEach((mechId) => {
@@ -535,13 +535,14 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 if (!mech) return;
                 const sizeId = mech.size_id;
                 const perkIds = getTeamPerkIdsByMechSize(teamId, sizeId);
-                perkIds.forEach(perkId => perkIdsMap[perkId] = true);
+
+                perkIds.forEach(perkId => perkIdsSet.add(perkId));
             });
 
-            return Object.keys(perkIdsMap);
+            return [...perkIdsSet.values()];
         }
 
-        const allUsedTeamAbilityPerkIds = computed(() => {
+        const allUsedTeamAbilityPerkIds = computed((): TEAM_PERK[] => {
             const perks = makeUniqueItemIdCollection(MECH_TEAM_PERKS);
             teams.value.forEach(team => {
                 const perkIds = getUsedTeamAbilityPerkIds(team.id);
@@ -568,15 +569,15 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             if (!columns) return [];
 
             const indexes: number[] = [];
-            columns.forEach((sizeIds, index) => {
-                if (sizeIds.includes(sizeId)) {
+            columns.forEach((column, index) => {
+                if ('custom_perk_column' in column) return;
+
+                if (column.includes(sizeId)) {
                     indexes.push(index);
                 }
             });
 
-            if (!indexes.length) {
-                return [];
-            }
+            if (!indexes.length) return [];
 
             const teamSize = getTeamMechCount(teamId);
 
@@ -658,7 +659,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 size_id,
                 structure_mod_id,
                 armor_mod_id,
-                armor_upgrade_id,
+                armor_upgrade_ids,
                 mobility_id,
                 preferred_team_id,
                 name,
@@ -671,7 +672,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 size_id,
                 structure_mod_id,
                 armor_mod_id,
-                armor_upgrade_id,
+                armor_upgrade_ids,
                 mobility_id,
                 preferred_team_id,
                 name,
@@ -707,8 +708,10 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             if (groupDef?.limited_armor_mod_ids?.length) {
                 mechOptions.armor_mod_id = groupDef.limited_armor_mod_ids[0];
             }
-            if (groupDef?.limited_armor_upgrade_ids?.length) {
-                mechOptions.armor_upgrade_id = groupDef.limited_armor_upgrade_ids[0];
+            if (groupDef?.default_armor_upgrade_ids?.length) {
+                mechOptions.armor_upgrade_ids = [...groupDef.default_armor_upgrade_ids];
+            } else if (groupDef?.limited_armor_upgrade_ids?.length) {
+                mechOptions.armor_upgrade_ids = [groupDef.limited_armor_upgrade_ids[0]];
             }
             if (groupDef?.required_armor_or_structure_mod_id_once) {
                 mechOptions.structure_mod_id = groupDef.required_armor_or_structure_mod_id_once;
@@ -886,71 +889,6 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
         };
     },
 );
-
-export interface TeamPerkInfo {
-    id: TEAM_PERK,
-    display_name: string,
-    display_name_short: string,
-    description: string,
-    stackable: boolean,
-    display_order: number | null,
-    value: number,
-    visible_on_card: boolean,
-    card_note: string,
-}
-
-function perkIdsToInfo(perkIds: TEAM_PERK[]): TeamPerkInfo[] {
-    const grouped = groupBy(perkIds, (perkId) => perkId);
-
-    let result = Object.entries(grouped).map(([perkId, perkIds]) => {
-        const repeatCount = perkIds.length;
-        const perkInfo = MECH_TEAM_PERKS[perkId];
-        let {
-            id,
-            display_name,
-            display_name_short,
-            description,
-            stackable,
-            display_order,
-            renderDisplayName,
-            renderDesc,
-            value,
-            visible_on_card,
-            card_note,
-        } = perkInfo;
-
-        if (repeatCount > 1 && stackable) {
-            const newValue = (value ?? 1) * repeatCount;
-            return {
-                id,
-                display_name: renderDisplayName!(value!, repeatCount),
-                display_name_short,
-                description: renderDesc!(value!, repeatCount),
-                display_order,
-                value: newValue,
-                visible_on_card,
-                card_note,
-                repeatCount,
-                stackable: stackable,
-            } as TeamPerkInfo;
-        }
-
-        return {
-            id,
-            display_name,
-            display_name_short,
-            description,
-            display_order,
-            value,
-            visible_on_card,
-            card_note,
-            repeatCount: 1,
-            stackable,
-        } as TeamPerkInfo;
-    });
-
-    return sortBy(result, ['display_order']);
-}
 
 function makeGeneralTeam(): MechTeamInstance {
     return {

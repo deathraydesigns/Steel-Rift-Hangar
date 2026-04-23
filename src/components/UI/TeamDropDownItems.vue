@@ -2,9 +2,8 @@
 import { BDropdownDivider, BDropdownHeader, BDropdownItem } from 'bootstrap-vue-next';
 import { groupBy, sortBy } from 'es-toolkit';
 import { computed } from 'vue';
-import { MECH_TEAM, MECH_TEAM_ARRAY, MECH_TEAMS } from '../../data/mech-teams.js';
+import { MECH_TEAM, MECH_TEAM_ARRAY, MECH_TEAMS, type MechTeam } from '../../data/mech-teams.js';
 import { useTeamStore } from '../../store/team-store';
-import type { MechTeam } from '../../types';
 import SvgIcon from './Icon.vue';
 
 const teamStore = useTeamStore();

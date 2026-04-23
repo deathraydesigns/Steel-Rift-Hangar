@@ -1,5 +1,5 @@
 import { makeStaticListIds, trait } from '../data-helpers';
-import { SIZE } from '../unit-sizes';
+import { SIZE, UNIT_SIZES } from '../unit-sizes';
 import { UNIT_TRAIT } from '../unit-traits';
 import { UNIT_TYPE } from '../unit-types';
 import { UNIT_WEAPON } from '../unit-weapons';
@@ -10,20 +10,24 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
     size_id: SIZE.ULTRA_LIGHT,
     display_name: 'Light Unit Squadron',
     cost: 10,
-    max_armor_tons: 10,
+    max_vehicle_tons: 10,
     defense: 3,
-    unit_points_description: 'This Unit must have a total of 10 armor',
+    unit_points_description: 'This Unit must have a total of 10 Tons',
     traits: [
-        trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Light Vehicle'),
+        trait(UNIT_TRAIT.AUXILIARY_UNIT, UNIT_SIZES[SIZE.LIGHT].display_name),
         trait(UNIT_TRAIT.SQUADRON),
         trait(UNIT_TRAIT.CLOSE_SUPPORT),
+        trait(UNIT_TRAIT.VULNERABLE),
     ],
     vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
         RECON: {
             move: 12,
+            jump: 0,
             armor: 0,
             structure: 1,
+            tons: 1,
             display_name: 'Recon',
+            max_vehicle_instances: 4,
             weapon_ids: [
                 UNIT_WEAPON.VEH_SUBMUNITIONS,
             ],
@@ -34,8 +38,10 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
         },
         FIRE_SUPPORT: {
             move: 8,
+            jump: 0,
             armor: 1,
             structure: 1,
+            tons: 2,
             display_name: 'Fire Support',
             weapon_ids: [
                 UNIT_WEAPON.VEH_AUTO_CANNON,
@@ -50,8 +56,10 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
         },
         TACTICAL: {
             move: 10,
+            jump: 0,
             armor: 1,
             structure: 1,
+            tons: 2,
             display_name: 'Tactical',
             weapon_ids: [
                 UNIT_WEAPON.VEH_AUTO_CANNON,
@@ -62,8 +70,10 @@ export const LIGHT_VEHICLE_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
         },
         ENGINEERING: {
             move: 8,
+            jump: 0,
             armor: 2,
             structure: 1,
+            tons: 2,
             display_name: 'Engineering',
             weapon_ids: [
                 UNIT_WEAPON.VEH_SUBMUNITIONS,

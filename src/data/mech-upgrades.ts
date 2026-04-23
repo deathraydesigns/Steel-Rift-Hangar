@@ -1,4 +1,5 @@
-import { type NumberBySize, type Trait, type TraitsBySize } from '../types';
+import type { Optional } from '../_helpers';
+import { type NumberBySize, type Trait, type TraitInfo, type TraitsBySize } from '../types';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
 import { type MechSizeId, SIZE } from './unit-sizes';
 import { UPGRADE_TRAIT, UPGRADE_TRAITS, upgradeTraitDisplayName } from './upgrade-traits';
@@ -19,29 +20,44 @@ export enum MECH_UPGRADE {
     NEURAL_INPUT = 'NEURAL_INPUT',
     NITRO_BOOST = 'NITRO_BOOST',
     COMBAT_SHIELD = 'COMBAT_SHIELD',
+
+    DRONE_TARGETING_SUPPORT = 'DRONE_TARGETING_SUPPORT',
+    DRONE_TACTICAL_AWARENESS = 'DRONE_TACTICAL_AWARENESS',
+    DRONE_MINE_DIRECTOR = 'DRONE_MINE_DIRECTOR'
+}
+
+export enum MechDroneUpgradeAttachType {
+    WEAPON = 'WEAPON',
+    MINE_DRONE_CARRIER = 'MINE_DRONE_CARRIER'
 }
 
 export interface MechUpgrade {
-    id: MECH_UPGRADE;
-    display_name: string;
-    description: string;
-    cost_by_size: NumberBySize;
-    traits: Trait[];
-    traits_by_size: Partial<TraitsBySize>;
-    limited_size_ids: MechSizeId[];
-    slots: number;
+    id: MECH_UPGRADE,
+    display_name: string,
+    description: string,
+    cost_by_size: NumberBySize,
+    traits: Trait<UPGRADE_TRAIT>[],
+    traits_by_size: Partial<TraitsBySize<UPGRADE_TRAIT>>,
+    limited_size_ids: MechSizeId[],
+    slots: number,
+    drone_attach_type: MechDroneUpgradeAttachType | null,
 }
 
-interface MakeUpgradeInput {
-    display_name: string;
-    description: string;
-    cost?: number | null;
-    cost_by_size?: Partial<NumberBySize>;
-    traits?: Trait[];
-    traits_by_size?: Partial<TraitsBySize>;
-    limited_size_ids?: MechSizeId[];
-    slots?: number;
-}
+type InputOmit = 'id' | 'cost' | 'cost_by_size'
+type InputOptional = 'drone_attach_type' | 'traits' | 'slots' | 'traits_by_size' | 'limited_size_ids';
+
+type MakeUpgradeInput =
+    Omit<
+        Optional<MechUpgrade, InputOptional>,
+        InputOmit
+    >
+    & ({
+    cost: number,
+    cost_by_size?: undefined,
+} | {
+    cost?: undefined,
+    cost_by_size: NumberBySize
+})
 
 function makeUpgrade(item: MakeUpgradeInput): Omit<MechUpgrade, 'id'> {
     const cost_by_size: NumberBySize = {
@@ -62,6 +78,7 @@ function makeUpgrade(item: MakeUpgradeInput): Omit<MechUpgrade, 'id'> {
         traits_by_size: item.traits_by_size ?? {},
         limited_size_ids,
         slots,
+        drone_attach_type: item.drone_attach_type ?? null,
     };
 }
 
@@ -107,14 +124,17 @@ export const MECH_UPGRADES: Record<MECH_UPGRADE, MechUpgrade> = makeFrozenStatic
         },
     }),
     [MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM]: makeUpgrade({
-        display_name: 'Minefield Drone Carrier System',
-        description: 'This Unit has the Minelayer (MOVE) trait. Limited (1/2/3/3)',
+        display_name: 'Mine Drone Carrier System',
+        description: 'This Unit has the Minelayer (MOVE) trait',
         cost_by_size: {
             [SIZE.LIGHT]: 2,
             [SIZE.MEDIUM]: 3,
             [SIZE.HEAVY]: 6,
             [SIZE.ULTRA]: 6,
         },
+        traits: [
+            trait(UPGRADE_TRAIT.MINELAYER, 'MOVE'),
+        ],
         traits_by_size: {
             [SIZE.LIGHT]: [trait(UPGRADE_TRAIT.LIMITED, 1)],
             [SIZE.MEDIUM]: [trait(UPGRADE_TRAIT.LIMITED, 2)],
@@ -124,7 +144,7 @@ export const MECH_UPGRADES: Record<MECH_UPGRADE, MechUpgrade> = makeFrozenStatic
         limited_size_ids: [SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
     }),
     [MECH_UPGRADE.MINEFIELD_DRONE_TRACKING_SYSTEM]: makeUpgrade({
-        display_name: 'Minefield Drone Tracking Submunitions',
+        display_name: 'Mine Drone Tracking Munitions',
         description: 'When making an ENGAGE Order, this Unit may target a Mine Drone Token. The Commander of the Target Mine Drone Token makes Defense Rolls on a 3+. If at least one point of Damage would be inflicted, remove the Token.',
         cost_by_size: {
             [SIZE.LIGHT]: 1,
@@ -168,7 +188,7 @@ export const MECH_UPGRADES: Record<MECH_UPGRADE, MechUpgrade> = makeFrozenStatic
     }),
     [MECH_UPGRADE.DIRECTIONAL_THRUSTER]: makeUpgrade({
         display_name: 'Directional Thruster',
-        description: 'Dash (2)',
+        description: 'This unit has the Dash (2) trait.',
         cost_by_size: {
             [SIZE.LIGHT]: 1,
             [SIZE.MEDIUM]: 2,
@@ -234,31 +254,61 @@ export const MECH_UPGRADES: Record<MECH_UPGRADE, MechUpgrade> = makeFrozenStatic
         display_name: 'Combat Shield',
         description: 'When this HE‑V is damaged by an ENGAGE or SMASH Order from its Front or Side Arcs, or makes a Defense Roll against a Blast effect, and it has more than 0 Armor remaining, roll 1D6 for each point of Damage it would receive. On a 5+, that point of Damage is ignored. Damage negated by this rule is treated as not having happened for the purposes of other weapon Trait effects, such as AP. When this HE‑V performs an ENGAGE Order, all of its Weapons receive a ‑1 to their Damage Rating.',
         cost_by_size: {
-            [SIZE.LIGHT]: 0, // only available in medium with TEAM_PERK_COMBAT_BUCKLER
+            [SIZE.LIGHT]: 0, // only available in medium with TEAM_PERK.COMBAT_BUCKLER
             [SIZE.MEDIUM]: 3,
             [SIZE.HEAVY]: 4,
             [SIZE.ULTRA]: 5,
         },
         limited_size_ids: [SIZE.HEAVY, SIZE.ULTRA],
     }),
+    [MECH_UPGRADE.DRONE_TARGETING_SUPPORT]: makeUpgrade({
+        display_name: 'Targeting Support Drone',
+        description: 'When using the Weapon in an ENGAGE Order, this Weapon gains the benefits of having been preceded by a LOCK ON Order. If the Target has Electronic Countermeasures, they prevent the LOCK ON Order benefits.',
+        drone_attach_type: MechDroneUpgradeAttachType.WEAPON,
+        cost: 1,
+        traits: [
+            trait(UPGRADE_TRAIT.COMPACT),
+        ],
+    }),
+    [MECH_UPGRADE.DRONE_TACTICAL_AWARENESS]: makeUpgrade({
+        display_name: 'Tactical Awareness Drone',
+        description: 'When selecting a Unit as a Target with the Weapon, Line of Sight may be drawn from any part of your silhouette, not just the nearest point on the front 180° Arc. This Weapon does not suffer the Secondary Target or Bypass Shot penalties.',
+        drone_attach_type: MechDroneUpgradeAttachType.WEAPON,
+        cost: 1,
+        traits: [
+            trait(UPGRADE_TRAIT.COMPACT),
+        ],
+    }),
+    [MECH_UPGRADE.DRONE_MINE_DIRECTOR]: makeUpgrade({
+        display_name: 'Mine Director Drone',
+        description: 'Once per turn during this HE-V’s Activation, one Mine Drone Token within 12” of this HE-V may be placed within 6” of its current position. These abilities may not be used while this HE-V has a Redline Marker.',
+        drone_attach_type: MechDroneUpgradeAttachType.MINE_DRONE_CARRIER,
+        cost: 1,
+        traits: [
+            trait(UPGRADE_TRAIT.COMPACT),
+        ],
+    }),
 });
 
 export const upgradeDisplayName = (id: MECH_UPGRADE): string => MECH_UPGRADES[id].display_name;
 
-export function getUpgradeTraits(
+export function getMechUpgradeTraitsInfo(
     upgradeId: MECH_UPGRADE,
     sizeId: MechSizeId,
-): Array<{ id: UPGRADE_TRAIT; number?: number | string; display_name: string; description: string }> {
+): TraitInfo<UPGRADE_TRAIT>[] {
     const upgrade = MECH_UPGRADES[upgradeId];
-    let traits: Trait[] = [];
+    let traits: Trait<UPGRADE_TRAIT>[] = [];
     if (upgrade.traits.length > 0) {
         traits = upgrade.traits;
-    } else if (upgrade.traits_by_size[sizeId]) {
-        traits = upgrade.traits_by_size[sizeId]!;
     }
-    return traits.map(({ id, number }) => ({
-        ...UPGRADE_TRAITS[id as UPGRADE_TRAIT],
-        number,
-        display_name: upgradeTraitDisplayName({ id, number }),
+    if (upgrade.traits_by_size[sizeId]) {
+        traits = [...traits, ...upgrade.traits_by_size[sizeId]];
+    }
+    return traits.map(({ id, X, Y }) => ({
+        dependent_trait_ids: [],
+        ...UPGRADE_TRAITS[id],
+        X,
+        Y,
+        display_name: upgradeTraitDisplayName({ id, X }),
     }));
 }

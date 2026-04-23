@@ -1,5 +1,9 @@
 import type { Optional } from '../_helpers';
-import type { Trait } from '../types';
+import type { Trait, TraitFormatter } from '../types';
+import type { MECH_UPGRADE } from './mech-upgrades';
+import type { ORDER } from './orders';
+import { UNIT_TRAIT } from './unit-traits';
+import type { UNIT_WEAPON } from './unit-weapons';
 import { weaponTraitDisplayName } from './weapon-traits';
 
 export interface DisplayNameItem {
@@ -70,40 +74,52 @@ export function deepFreeze<T extends object>(object: T, depth = 0): Readonly<T> 
     return Object.freeze(object);
 }
 
-export interface TraitDef {
-    id: string;
-    display_name: string;
-    description: string;
-    granted_order_ids: string[];
+export interface TraitDef<ID extends string> {
+    id: ID,
+    display_name: string,
+    description: string,
+    description_html?: string,
+    granted_order_ids: ORDER[],
+    referenced_upgrade_ids: MECH_UPGRADE[],
+    formatter?: TraitFormatter,
+    referenced_trait_ids: UNIT_TRAIT[];
 }
 
-export function makeTraits<
-    T extends TraitDef
->(items: Record<string, Omit<Optional<T, 'granted_order_ids'>, 'id'>>): Readonly<Record<string, T>> {
-    const result = {} as Record<string, T>;
-    for (const [id, item] of Object.entries(items)) {
-        result[id] = {
-            granted_order_ids: [],
-            ...item,
-            id,
-        } as unknown as T;
-    }
+type TraitDefOptional =
+    | 'description_html'
+    | 'referenced_upgrade_ids'
+    | 'referenced_trait_ids'
+    | 'granted_order_ids'
 
+export function makeTraits<T extends TraitDef<ID>, ID extends string = T['id']>(
+    items: Record<T['id'], Omit<Optional<T, TraitDefOptional>, 'id'>>,
+): Record<ID, TraitDef<ID>> {
+    const result = {} as Record<ID, TraitDef<ID>>;
+    for (const [id, item] of Object.entries(items)) {
+        const {
+            referenced_trait_ids = [],
+            granted_order_ids = [],
+            referenced_upgrade_ids = [],
+            ...rest
+        } = item as Omit<Optional<T, TraitDefOptional>, 'id'>;
+
+        result[id as T['id']] = {
+            ...rest,
+            granted_order_ids,
+            referenced_trait_ids,
+            referenced_upgrade_ids,
+            id: id as ID,
+        };
+    }
     return deepFreeze(result);
 }
 
-export function trait<ID extends string = string>(id: ID, number: number | string | undefined = undefined, type: string | undefined = undefined): Readonly<Trait<ID>> {
-    const obj: Trait = { id };
-    if (number !== undefined) {
-        obj.number = number;
-    }
-    if (type !== undefined) {
-        obj.type = type;
-    }
+export function trait<ID extends string = string>(id: ID, X?: number | string | undefined, Y?: number | string | undefined): Readonly<Trait<ID>> {
+    const obj: Trait<ID> = { id, X, Y };
 
     return Object.freeze(obj) as Readonly<Trait<ID>>;
 }
 
-export function traitDisplayNames(traits: Trait[]): string {
+export function traitDisplayNames(traits: Trait<any>[]): string {
     return traits.map((trait) => weaponTraitDisplayName(trait)).join(', ');
 }

@@ -45,10 +45,10 @@ function setUpgradePodChoice(upgradePodId: UpgradePodId) {
 }
 
 const unitTypeTrait = computed(() => {
-  return info.value?.traits.find((trait) => trait.id === UNIT_TRAIT.UNIT_SIZE_AND_TYPE);
+  return info.value?.traits.find((trait) => trait.id === UNIT_TRAIT.AUXILIARY_UNIT);
 });
 const traits = computed(() => {
-  return info.value?.traits.filter((trait) => trait.id !== UNIT_TRAIT.UNIT_SIZE_AND_TYPE) ?? [];
+  return info.value?.traits.filter((trait) => trait.id !== UNIT_TRAIT.AUXILIARY_UNIT) ?? [];
 });
 </script>
 <template>
@@ -84,6 +84,7 @@ const traits = computed(() => {
       <div class="text-end d-flex">
         <UnitVehicleAdd
           :options="options"
+          :has-max-tons="!!info.max_vehicle_tons"
           :disabled="add_disabled"
           @selected="addVehicle"
         >
@@ -123,7 +124,7 @@ const traits = computed(() => {
       <div class="card-body">
         <div class="d-flex">
           <div class="ms-2 flex-grow-1">
-            <span class="fw-bold">Unit Type:</span> {{ unitTypeTrait?.type }}
+            <span class="fw-bold">Unit Type:</span> {{ unitTypeTrait?.X }}
             <div>
               <span class="fw-bold">Unit Traits: </span>
               <TraitList :traits="traits" />

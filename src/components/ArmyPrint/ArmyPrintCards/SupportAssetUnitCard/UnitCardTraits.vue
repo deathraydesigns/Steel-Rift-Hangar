@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Order } from '../../../../data/orders';
-import { unitTraitDisplayName } from '../../../../data/unit-traits.js';
+import { UNIT_TRAIT, unitTraitDisplayName } from '../../../../data/unit-traits.js';
 import type { Trait } from '../../../../types';
 
 const { traits, orders } = defineProps<{
-  traits: Trait[],
+  traits: Trait<UNIT_TRAIT>[],
   orders: Order[],
 }>();
 </script>

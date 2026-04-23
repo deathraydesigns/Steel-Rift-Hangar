@@ -1,6 +1,6 @@
 import { makeStaticListIds, trait } from '../data-helpers';
 import { INFANTRY } from '../infantry-squads';
-import { SIZE } from '../unit-sizes';
+import { SIZE, UNIT_SIZES } from '../unit-sizes';
 import { UNIT_TRAIT } from '../unit-traits';
 import { UNIT_TYPE } from '../unit-types';
 import { UNIT_WEAPON } from '../unit-weapons';
@@ -15,8 +15,9 @@ export const INFANTRY_OUTPOST_DATA: Omit<SupportAssetUnitDef, 'id'> = {
     all_vehicle_must_be_the_same: true,
     defense: 6,
     traits: [
-        trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Fortification'),
-        trait(UNIT_TRAIT.GROUP_COMMAND),
+        trait(UNIT_TRAIT.AUXILIARY_UNIT, UNIT_SIZES[SIZE.ULTRA].display_name),
+        trait(UNIT_TRAIT.ASSET_COMMAND),
+        trait(UNIT_TRAIT.FORTIFICATION)
     ],
     vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
         BUNKER: {
@@ -24,6 +25,7 @@ export const INFANTRY_OUTPOST_DATA: Omit<SupportAssetUnitDef, 'id'> = {
             armor: 0,
             structure: 10,
             move: 0,
+            jump: 0,
             weapon_choice_ids: {
                 choice_1: [
                     UNIT_WEAPON.BUNKER_AUTO_CANNON,
@@ -33,7 +35,7 @@ export const INFANTRY_OUTPOST_DATA: Omit<SupportAssetUnitDef, 'id'> = {
             },
             traits: [
                 trait(UNIT_TRAIT.GARRISON, 6, 'Infantry Squads'),
-                trait(UNIT_TRAIT.BUNKER_MINE_DRONES, 2),
+                trait(UNIT_TRAIT.MINELAYER, 'ENGAGE', 3),
             ],
             garrison_choice_unit_ids: [
                 INFANTRY.RIFLE_SQUAD,

@@ -1,4 +1,3 @@
-import type { MechTeam, MechTeamGroup, MechTeamSize } from '../types';
 import { deepFreeze, makeFrozenStaticListIds, makeStaticListIds } from './data-helpers';
 import { MECH_ARMOR_UPGRADE } from './mech-armor-upgrades';
 import { MECH_BODY_MOD } from './mech-body';
@@ -6,6 +5,8 @@ import { TEAM_PERK } from './mech-team-perks';
 import { MECH_UPGRADE } from './mech-upgrades';
 import { MECH_WEAPON } from './mech-weapons';
 import { SECONDARY_AGENDA } from './secondary-agendas';
+import { SUPPORT_ASSET_UNITS } from './support-asset-units';
+import { SUPPORT_ASSET_UNIT } from './support-assets/_support-asset-types';
 import { MECH_SIZES, type MechSizeId, SIZE } from './unit-sizes';
 import { WEAPON_TRAIT } from './weapon-traits';
 
@@ -26,6 +27,47 @@ export enum MECH_TEAM {
     BERSERKER = 'TEAM_BERSERKER',
     GUNSLINGER = 'TEAM_GUNSLINGER',
     NETWORKED_AI = 'TEAM_NETWORKED_AI',
+    COORDINATED_ASSETS = 'TEAM_COORDINATED_ASSETS',
+}
+
+export interface MechTeamSize {
+    id: string;
+    display_name: string;
+    description: string;
+}
+
+export interface MechTeamGroup {
+    id: string,
+    display_name: string,
+    min_count: number | boolean,
+    max_count: number | boolean,
+    size_ids: MechSizeId[],
+    default_armor_upgrade_ids?: MECH_ARMOR_UPGRADE[],
+    required_weapon_ids: MECH_WEAPON[],
+    required_upgrade_ids: MECH_UPGRADE[],
+    required_at_least_one_of_upgrade_ids: MECH_UPGRADE[],
+    required_at_least_one_of_weapon_ids: MECH_WEAPON[],
+    required_at_least_one_weapon_with_trait_id: WEAPON_TRAIT | null,
+    required_armor_or_structure_mod_id_once: MECH_BODY_MOD | null,
+    prohibited_weapons_with_trait_ids: WEAPON_TRAIT[],
+    limited_weapons_with_at_least_one_of_trait_ids: WEAPON_TRAIT[],
+    limited_structure_mod_ids: MECH_BODY_MOD[],
+    limited_armor_mod_ids: MECH_BODY_MOD[],
+    limited_armor_upgrade_ids: MECH_ARMOR_UPGRADE[],
+    allow_duplicate_weapons: boolean,
+}
+
+export type MechTeamPerkColumn = MechSizeId[] | { custom_perk_column: string };
+
+export interface MechTeam {
+    id: MECH_TEAM,
+    display_name: string,
+    display_name_short?: string,
+    icon: string,
+    secondary_agenda_id?: SECONDARY_AGENDA,
+    groups: Record<string, MechTeamGroup>,
+    team_size_perk_columns?: MechTeamPerkColumn[],
+    team_size_perk_rows?: Record<number, TEAM_PERK[][]>,
 }
 
 export const MECH_TEAM_SIZES: Readonly<Record<MECH_TEAM_SIZE, MechTeamSize>> = makeFrozenStaticListIds<MechTeamSize>({
@@ -142,21 +184,25 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
             }),
         }),
         team_size_perk_columns: [
+            [SIZE.LIGHT, SIZE.MEDIUM, SIZE.HEAVY],
             [SIZE.LIGHT],
             [SIZE.MEDIUM, SIZE.HEAVY],
         ],
         team_size_perk_rows: {
             2: [
+                [],
                 [TEAM_PERK._0_SLOT_ECM],
                 [TEAM_PERK.RECON_INITIATIVE],
             ],
             3: [
-                [TEAM_PERK._0_SLOT_TARGET_DESIGNATORS],
                 [TEAM_PERK.SUPPORT_ASSET_DAMAGE],
+                [TEAM_PERK._0_SLOT_TARGET_DESIGNATORS],
+                [],
             ],
             4: [
-                [TEAM_PERK._0_TON_ECM, TEAM_PERK._0_TON_TARGET_DESIGNATORS],
-                [TEAM_PERK.DIRECTIONAL_ASSETS],
+                [],
+                [TEAM_PERK._0_TON_ECM],
+                [TEAM_PERK.GRANTED_GUIDANCE_SUITE_MOVE],
             ],
         },
     },
@@ -178,6 +224,7 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                     MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE,
                     MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE,
                 ],
+
                 required_armor_or_structure_mod_id_once: MECH_BODY_MOD.REINFORCED,
                 limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
                 limited_armor_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
@@ -211,6 +258,10 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                 ],
                 limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
                 limited_armor_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
+                default_armor_upgrade_ids: [
+                    MECH_ARMOR_UPGRADE.ABLATIVE_ARMOR_UPGRADE,
+                    MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE,
+                ],
             }),
         }),
         team_size_perk_columns: [
@@ -221,13 +272,13 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
         team_size_perk_rows: {
             2: [
                 [TEAM_PERK.AUX_DEFENSE_CONFIG],
-                [TEAM_PERK._0_SLOT_ARMOR_UPGRADES],
-                [TEAM_PERK._0_SLOT_ARMOR_UPGRADES, TEAM_PERK.EXTRA_TONNAGE],
+                [],
+                [TEAM_PERK.EXTRA_TONNAGE],
             ],
             3: [
                 [TEAM_PERK._0_TON_ARMOR_UPGRADES],
-                [TEAM_PERK._0_TON_ARMOR_UPGRADES, TEAM_PERK.EXTRA_TONNAGE],
-                [TEAM_PERK._0_TON_ARMOR_UPGRADES, TEAM_PERK.SIDE_DEFENSE],
+                [TEAM_PERK.EXTRA_TONNAGE],
+                [TEAM_PERK.SIDE_DEFENSE],
             ],
             4: [
                 [TEAM_PERK.GRANTED_SUPPRESSIVE_FIRE],
@@ -325,19 +376,19 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
         ],
         team_size_perk_rows: {
             2: [
-                [],
+                [TEAM_PERK._0_TON_ARMOR_UPGRADES],
                 [TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS],
                 [TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS],
                 [],
             ],
             3: [
-                [TEAM_PERK._0_SLOT_ARMOR_UPGRADES],
+                [TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS],
                 [TEAM_PERK.COMBAT_BUCKLER],
                 [],
                 [TEAM_PERK.EXTRA_NITRO],
             ],
             4: [
-                [TEAM_PERK._0_TON_ARMOR_UPGRADES],
+                [],
                 [],
                 [TEAM_PERK.EXTRA_NITRO],
                 [TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS],
@@ -373,25 +424,17 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
             }),
         }),
         team_size_perk_columns: [
-            [SIZE.LIGHT],
-            [SIZE.MEDIUM],
-            [SIZE.HEAVY],
+            [SIZE.LIGHT, SIZE.MEDIUM, SIZE.HEAVY],
         ],
         team_size_perk_rows: {
             2: [
-                [],
-                [TEAM_PERK.QUICKDRAW],
                 [TEAM_PERK.QUICKDRAW],
             ],
             3: [
-                [TEAM_PERK.QUICKDRAW],
                 [TEAM_PERK.BARREL_EXTENSIONS],
-                [],
             ],
             4: [
-                [TEAM_PERK.BARREL_EXTENSIONS],
-                [],
-                [TEAM_PERK.BARREL_EXTENSIONS],
+                [TEAM_PERK.RETURN_SMASH],
             ],
         },
     },
@@ -451,25 +494,41 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                 min_count: 0,
                 max_count: 1,
                 size_ids: [SIZE.LIGHT],
-                requires_at_least_one_companion_drone: true,
+                required_at_least_one_of_upgrade_ids: [
+                    MECH_UPGRADE.DRONE_MINE_DIRECTOR,
+                    MECH_UPGRADE.DRONE_TARGETING_SUPPORT,
+                    MECH_UPGRADE.DRONE_TACTICAL_AWARENESS,
+                ],
             }),
             'B': makeGroup({
                 min_count: 1,
                 max_count: 2,
                 size_ids: [SIZE.MEDIUM],
-                requires_at_least_one_companion_drone: true,
+                required_at_least_one_of_upgrade_ids: [
+                    MECH_UPGRADE.DRONE_MINE_DIRECTOR,
+                    MECH_UPGRADE.DRONE_TARGETING_SUPPORT,
+                    MECH_UPGRADE.DRONE_TACTICAL_AWARENESS,
+                ],
             }),
             'C': makeGroup({
                 min_count: 1,
                 max_count: 2,
                 size_ids: [SIZE.HEAVY],
-                requires_at_least_one_companion_drone: true,
+                required_at_least_one_of_upgrade_ids: [
+                    MECH_UPGRADE.DRONE_MINE_DIRECTOR,
+                    MECH_UPGRADE.DRONE_TARGETING_SUPPORT,
+                    MECH_UPGRADE.DRONE_TACTICAL_AWARENESS,
+                ],
             }),
             'D': makeGroup({
                 min_count: 0,
                 max_count: 1,
                 size_ids: [SIZE.ULTRA],
-                requires_at_least_one_companion_drone: true,
+                required_at_least_one_of_upgrade_ids: [
+                    MECH_UPGRADE.DRONE_MINE_DIRECTOR,
+                    MECH_UPGRADE.DRONE_TARGETING_SUPPORT,
+                    MECH_UPGRADE.DRONE_TACTICAL_AWARENESS,
+                ],
             }),
         }),
         team_size_perk_columns: [
@@ -484,6 +543,42 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
             ],
             4: [
                 [TEAM_PERK.TARGETING_LINK],
+            ],
+        },
+    },
+    [MECH_TEAM.COORDINATED_ASSETS]: {
+        display_name: 'Coordinated Assets Team',
+        display_name_short: 'Coordinated Assets',
+        icon: 'team-coordinated',
+        secondary_agenda_id: SECONDARY_AGENDA.COMBINED_ARMS_ASSAULT,
+        groups: makeStaticListIds<MechTeamGroup>({
+            'A': makeGroup({
+                min_count: 1,
+                max_count: 2,
+                size_ids: [SIZE.LIGHT, SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
+                prohibited_weapons_with_trait_ids: [WEAPON_TRAIT.BLAST],
+            }),
+        }),
+        team_size_perk_columns: [
+            [SIZE.LIGHT, SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
+            {
+                custom_perk_column: [
+                    SUPPORT_ASSET_UNITS[SUPPORT_ASSET_UNIT.ULTRA_LIGHT_HEV_SQUADRON].display_name,
+                    SUPPORT_ASSET_UNITS[SUPPORT_ASSET_UNIT.ASSAULT_VEHICLE_SQUADRON].display_name,
+                ].join(' or '),
+            },
+        ],
+        team_size_perk_rows: {
+            2: [
+                [TEAM_PERK.SQUEEZE],
+                [TEAM_PERK.SQUEEZE],
+            ],
+            3: [
+                [],
+                [TEAM_PERK.CONVOY],
+            ],
+            4: [
+                [TEAM_PERK.SYNCHRONIZED_STRIKE],
             ],
         },
     },
@@ -505,7 +600,7 @@ function makeGroup(obj: Partial<MechTeamGroup> & { size_ids: MechSizeId[] }): Om
         limited_armor_mod_ids: [],
         limited_armor_upgrade_ids: [],
         allow_duplicate_weapons: true,
-        requires_at_least_one_companion_drone: false,
+        required_at_least_one_of_upgrade_ids: [],
     };
     const result = Object.assign(defaults, obj);
 

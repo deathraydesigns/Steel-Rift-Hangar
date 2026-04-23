@@ -5,12 +5,11 @@ import { computed, readonly, ref, watch } from 'vue';
 import { FACTION_PERK, FACTION_PERKS } from '../data/faction-perks';
 import { MECH_TEAM_PERKS, TEAM_PERK } from '../data/mech-team-perks';
 import {
-    type OffTableWeaponInfo,
     type SUPPORT_ASSET_WEAPON,
     SUPPORT_ASSET_WEAPONS,
     type SupportAssetWeaponInfo,
 } from '../data/support-asset-weapons';
-import { WEAPON_TRAIT, WEAPON_TRAITS, weaponTraitDisplayName } from '../data/weapon-traits';
+import { WEAPON_TRAIT, weaponTraitInfo } from '../data/weapon-traits';
 import { useFactionStore } from './faction-store';
 import { useTeamStore } from './team-store';
 
@@ -44,19 +43,24 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
         });
 
         function getSupportAssetInfo(supportAssetId: SUPPORT_ASSET_WEAPON): SupportAssetWeaponInfo {
-            let asset = SUPPORT_ASSET_WEAPONS[supportAssetId];
-            const assetInfo = Object.assign({}, asset) as SupportAssetWeaponInfo;
-            assetInfo.notes = [];
-
-            const weapon = Object.assign({}, assetInfo.off_table_weapon) as OffTableWeaponInfo;
-            weapon.traits = weapon.traits.map((trait) => Object.assign({}, trait));
-            weapon.damage_modifiers = [];
+            const asset = SUPPORT_ASSET_WEAPONS[supportAssetId];
+            const damage_modifiers: number[] = [];
+            const assetInfo: SupportAssetWeaponInfo = {
+                ...asset,
+                notes: [],
+                off_table_weapon: {
+                    ...asset.off_table_weapon,
+                    damage_modifiers,
+                    traits: asset.off_table_weapon.traits.map(weaponTraitInfo),
+                },
+            };
+            const weapon = assetInfo.off_table_weapon;
 
             if (factionStore.hasPerk(FACTION_PERK.OI_ORBITAL_STOCKPILES)) {
                 let hasLimitedTrait = false;
                 weapon.traits.forEach((trait) => {
                     if (trait.id === WEAPON_TRAIT.LIMITED) {
-                        (trait.number as number) += 1;
+                        (trait.X as number) += 1;
                         hasLimitedTrait = true;
                     }
                 });
@@ -70,15 +74,16 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
             }
 
             if (factionStore.hasPerk(FACTION_PERK.DWC_OUTRAGEOUS_SUPPORT_BUDGET)) {
-                if (assetInfo.id === outrageous_budget_perk_support_asset_id.value) {
+                if (asset.id === outrageous_budget_perk_support_asset_id.value) {
                     assetInfo.cost = 0;
                     if (weapon.damage ?? 0 > 0) {
                         weapon.damage_modifiers.push(-1);
                     }
 
                     weapon.traits.forEach((trait) => {
-                        if (typeof trait.number === 'number') {
-                            trait.number -= 1;
+                        if (typeof trait.X === 'number') {
+                            trait.X -= 1;
+                            trait.X = Math.min(1, trait.X);
                         }
                     });
 
@@ -91,8 +96,8 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
 
             const perkIds = teamStore.allUsedTeamAbilityPerkIds;
             if (perkIds.includes(TEAM_PERK.SUPPORT_ASSET_DAMAGE)) {
-                if (weapon.damage) {
-                    weapon.damage_modifiers.push(1);
+                if (assetInfo.off_table_weapon.damage) {
+                    assetInfo.off_table_weapon.damage_modifiers.push(1);
 
                     assetInfo.notes.push({
                         ...MECH_TEAM_PERKS[TEAM_PERK.SUPPORT_ASSET_DAMAGE],
@@ -107,14 +112,6 @@ export const useSupportAssetWeaponsStore = defineScopeableStore('weapon-support-
                     is_team_perk: true,
                 });
             }
-
-            weapon.traits = weapon.traits.map((trait) => Object.assign({},
-                trait,
-                WEAPON_TRAITS[trait.id],
-                { display_name: weaponTraitDisplayName(trait) },
-            ));
-
-            assetInfo.off_table_weapon = weapon;
 
             return readonly(assetInfo) as SupportAssetWeaponInfo;
         }

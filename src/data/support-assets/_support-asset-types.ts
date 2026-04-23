@@ -1,12 +1,13 @@
-import type { GarrisonUnitInfo, Trait } from '../../types';
+import type { GarrisonUnitInfo, Trait, TraitInfo } from '../../types';
 import type { INFANTRY, InfantrySquad } from '../infantry-squads';
 import type { SIZE, UnitSize } from '../unit-sizes';
 import type { UNIT_TRAIT } from '../unit-traits';
-import type { UnitType, UNIT_TYPE } from '../unit-types';
-import type { UnitWeapon, UNIT_WEAPON } from '../unit-weapons';
+import type { UNIT_TYPE, UnitType } from '../unit-types';
+import type { UNIT_WEAPON, UnitWeapon } from '../unit-weapons';
+import { WEAPON_TRAIT } from '../weapon-traits';
 import { type UpgradePodId } from './ultra-light-hev-squadron';
 
-export type UnitVehicleId = number & { readonly __brandUnitVehicleId: unique symbol }
+export type UnitVehicleId = string & { readonly __brandUnitVehicleId: unique symbol }
 
 export interface VehicleAttachment {
     id: number;
@@ -21,25 +22,6 @@ export interface SupportAssetUnitAttachment {
     vehicles_id_increment: number,
     vehicles: VehicleAttachment[],
     upgrade_pod_id?: UpgradePodId,
-}
-
-export interface SupportAssetUnitVehicleDef {
-    id: UnitVehicleId,
-    display_name: string,
-    move: number,
-    jump?: number,
-    armor: number,
-    structure: number,
-    garrison_ul_hev?: boolean,
-    weapon_ids?: UNIT_WEAPON[],
-    // each key is a slot to choose one weapon,
-    // each value is weapons to choose from in that slot
-    weapon_choice_ids?: Record<string, UNIT_WEAPON[]>,
-    // units to choose from, based on garrison trait
-    garrison_choice_unit_ids?: INFANTRY[],
-    // added to all garrison units
-    garrison_unit_traits?: Trait[],
-    traits?: Trait<UNIT_TRAIT>[],
 }
 
 export interface UpgradePod {
@@ -65,85 +47,79 @@ export interface SupportAssetUnitDef {
     unit_type_id: UNIT_TYPE,
     size_id: SIZE,
     cost: number,
-    max_armor_tons?: number,
+    max_vehicle_tons?: number,
     max_vehicles?: number,
     max_duplicate_vehicles?: number,
     unit_points_description?: string,
     all_vehicle_must_be_the_same?: boolean,
     traits?: Trait<UNIT_TRAIT>[],
     defense: number,
-    vehicles: Record<string, SupportAssetUnitVehicleDef>,
+    vehicles: Record<UnitVehicleId, SupportAssetUnitVehicleDef>,
     upgrade_pods?: Record<UpgradePodId, UpgradePod>,
 }
 
-export interface SupportAssetUnitInfo {
-    id: SUPPORT_ASSET_UNIT,
-    display_name: string,
-    unit_type_id: string,
-    size_id: SIZE,
-    cost: number,
-    max_armor_tons?: number,
-    max_vehicles?: number,
-    max_duplicate_vehicles?: number,
-    unit_points_description?: string,
-    all_vehicle_must_be_the_same?: boolean,
-    traits: Trait<UNIT_TRAIT>[],
-    defense: number,
-    vehicles: Record<string, UnitVehicleInfo>,
-    upgrade_pods?: Record<UpgradePodId, UpgradePod>,
-    unit_type?: UnitType,
+export interface SupportAssetUnitInfo extends Omit<SupportAssetUnitDef, 'size_id' | 'traits' | 'vehicles' | 'unit_type_id'> {
+    traits: TraitInfo<UNIT_TRAIT>[],
+    vehicles: Record<UnitVehicleId, UnitVehicleInfo>,
+    unit_type: UnitType,
     size: UnitSize,
 }
 
-export interface UnitAttachmentInfo {
+export interface UnitAttachmentInfo extends Omit<SupportAssetUnitInfo, 'id' | 'vehicles' | 'upgrade_pods'> {
     id: number,
     support_asset_unit_id: SUPPORT_ASSET_UNIT,
-    unit_type: UnitType,
-    display_name: string,
-    size: UnitSize,
-    cost: number,
-    max_armor_tons?: number,
-    max_vehicles?: number,
-    max_duplicate_vehicles?: number,
-    unit_points_description?: string,
     upgrade_pod_id?: UpgradePodId,
     vehicles: UnitAttachmentVehicleInfo[],
-    traits: Trait[],
-    defense: number,
-    all_vehicle_must_be_the_same?: boolean,
 }
 
 export interface UnitWeaponInfo extends UnitWeapon {
     max_uses: number,
+    traits: TraitInfo<WEAPON_TRAIT>[];
 }
 
-export interface InfantrySquadInfo extends InfantrySquad {
+export interface InfantrySquadInfo extends Omit<InfantrySquad, 'traits'> {
     unit_type: UnitType,
     size: UnitSize,
     weapons: UnitWeaponInfo[],
+    traits: TraitInfo<UNIT_TRAIT>[]
 }
 
-export interface UnitVehicleInfo {
+export interface SupportAssetUnitVehicleDef {
     id: UnitVehicleId,
+    display_name: string,
+    move: number,
+    jump: number,
+    armor: number,
+    structure: number,
+    // used with max_tons
+    tons?: number,
+    max_vehicle_instances?: number,
+    garrison_ul_hev?: boolean,
+    weapon_ids?: UNIT_WEAPON[],
+    // each key is a slot to choose one weapon,
+    // each value is weapons to choose from in that slot
+    weapon_choice_ids?: Record<string, UNIT_WEAPON[]>,
+    // units to choose from, based on garrison trait
+    garrison_choice_unit_ids?: INFANTRY[],
+    // added to all garrison units
+    garrison_unit_traits?: Trait<UNIT_TRAIT>[],
+    traits?: Trait<UNIT_TRAIT>[],
+}
+
+export interface UnitVehicleInfo extends Omit<SupportAssetUnitVehicleDef, 'weapon_ids' | 'weapon_choice_ids' | 'garrison_choice_unit_ids' | 'garrison_unit_traits'> {
     support_asset_unit_id: SUPPORT_ASSET_UNIT,
     weapons: UnitWeaponInfo[],
     display_name: string,
-    move: number,
-    jump?: number,
-    armor: number,
-    structure: number,
-    garrison_ul_hev?: boolean,
-    garrison_units?: GarrisonUnitInfo[],
-    garrison_unit_traits?: Trait[],
-    traits: Trait[],
-    weapon_choices?: UnitWeaponInfo[][],
+    garrison_units: GarrisonUnitInfo[],
+    garrison_unit_traits: TraitInfo<UNIT_TRAIT>[],
+    traits: TraitInfo<UNIT_TRAIT>[],
+    weapon_choices: UnitWeaponInfo[][],
     valid: boolean,
-    validation_message: string,
+    validation_message: string | null,
+    tons?: number,
 }
 
-export interface UnitAttachmentVehicleInfo extends Omit<UnitVehicleInfo, 'id'> {
+export interface UnitAttachmentVehicleInfo extends Omit<UnitVehicleInfo, 'id' | 'weapon_choices'> {
     id: number,
     vehicle_id: UnitVehicleId,
-    valid: boolean,
-    validation_message: string,
 }

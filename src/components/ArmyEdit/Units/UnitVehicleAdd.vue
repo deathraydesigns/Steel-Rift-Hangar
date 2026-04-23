@@ -1,20 +1,22 @@
 <script setup lang="ts">
-
 import { BDropdown } from 'bootstrap-vue-next';
-import type { UnitVehicleInfo } from '../../../data/support-assets/_support-asset-types';
+import type { UnitVehicleId, UnitVehicleInfo } from '../../../data/support-assets/_support-asset-types';
 import FormatInches from '../../functional/format-inches.vue';
 import IconNotAvailable from '../../UI/IconNotAvailable.vue';
 import TraitList from '../../UI/TraitList.vue';
 import VehicleWeaponToolTip from '../../UI/VehicleWeaponToolTip.vue';
 
-const { disabled } = defineProps<{
+const { disabled, options, hasMaxTons } = defineProps<{
   disabled: boolean,
-  options: UnitVehicleInfo[]
+  options: UnitVehicleInfo[],
+  hasMaxTons?: boolean,
 }>();
 
-const emit = defineEmits(['selected']);
+const emit = defineEmits<{
+  (e: 'selected', id: UnitVehicleId): void,
+}>();
 
-function select(id: number, valid: boolean) {
+function select(id: UnitVehicleId, valid: boolean) {
   if (!valid) {
     return;
   }
@@ -49,6 +51,7 @@ function select(id: number, valid: boolean) {
           <td class="text-end">
             Structure
           </td>
+          <td v-if="hasMaxTons" class="text-end">Tons</td>
           <td>
             Weapons
           </td>
@@ -78,6 +81,9 @@ function select(id: number, valid: boolean) {
           </td>
           <td>
             {{ item.structure }}
+          </td>
+          <td v-if="hasMaxTons">
+            {{ item.tons }}
           </td>
           <td>
             <template v-if="item.weapons">

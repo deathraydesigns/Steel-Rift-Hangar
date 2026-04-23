@@ -2,6 +2,8 @@
 import { BFormInput } from 'bootstrap-vue-next';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
+import { MECH_ARMOR_UPGRADE } from '../../../data/mech-armor-upgrades';
+import { TEAM_PERK } from '../../../data/mech-team-perks';
 import { useFactionStore } from '../../../store/faction-store';
 import { useMechStore } from '../../../store/mech-store';
 import { useTeamStore } from '../../../store/team-store';
@@ -43,6 +45,7 @@ const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId)!
 const structureModValid = computed(() => !validationStore.teamGroupMechStructureInvalid(mechId));
 const armorModValid = computed(() => !validationStore.teamGroupMechArmorInvalid(mechId));
 const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeamGroupMessage(mechId));
+const hasAuxArmorUpgradePerk = computed(() => teamStore.getMechHasTeamPerkId(mechId, TEAM_PERK.AUX_DEFENSE_CONFIG));
 
 </script>
 <template>
@@ -105,11 +108,23 @@ const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeam
         :valid="structureModValid"
         :validation-message="notAvailableMessage"
       />
+
+      <template v-for="(armorUpgradeId, index) in mech.armor_upgrade_ids" :key="index">
+        <MechArmorUpgrades
+          :label="`Defensive Config ${mech.armor_upgrade_ids.length > 1 ? ': ' + (index + 1) : ''}`"
+          :mech-id="mech.id"
+          v-model="mech.armor_upgrade_ids[index]"
+        />
+      </template>
+
       <MechArmorUpgrades
-        label="Armor Upgrades"
-        v-model="mech.armor_upgrade_id"
+        v-if="hasAuxArmorUpgradePerk"
+        label="Defensive Config: Aux"
         :mech-id="mech.id"
+        :is-aux-input="true"
+        v-model="mech.aux_armor_upgrade_id"
       />
+
       <MechMobilities
         label="Mobility"
         v-model="mech.mobility_id"

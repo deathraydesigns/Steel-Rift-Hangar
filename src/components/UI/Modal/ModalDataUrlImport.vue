@@ -7,7 +7,9 @@ import { toaster } from '../../../toaster.js';
 const visible = defineModel<boolean>();
 const urlImportString = ref('');
 
-const emit = defineEmits(['data-url-success']);
+const emit = defineEmits<{
+  (e: 'data-url-success', json: any): void,
+}>();
 
 function makeInvalidError(message: string, error: any = null) {
   return {

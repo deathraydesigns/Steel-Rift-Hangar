@@ -100,6 +100,10 @@ export function migrateLoadData(data: any) {
         if (tacticalTeam) {
             tacticalTeam.id = MECH_TEAM.MULTIROLE;
         }
+
+        data?.mech?.mechs?.forEach((mech: any) => {
+            mech.armor_upgrade_ids = [mech.armor_upgrade_id];
+        });
     }
 
     const shelfTeam = data?.team?.teams?.find((team: any) => team.id === MECH_TEAM.SHELF);

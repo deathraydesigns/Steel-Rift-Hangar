@@ -29,7 +29,7 @@ const statArray = (stat: number) => {
   return chunk(Array(stat).fill(0), 4);
 };
 
-function filterTraits(traits: Trait[]) {
+function filterTraits(traits: Trait<UNIT_TRAIT>[]) {
   return traits.filter(t => t.id !== UNIT_TRAIT.GARRISON);
 }
 

@@ -1,9 +1,9 @@
 import { groupBy } from 'es-toolkit';
 import { findById } from '../store/helpers/collection-helper';
-import type { TeamPerkInfo } from '../store/team-store';
-import type { NumberBySize, Trait, TraitsBySize } from '../types';
+import type { NumberBySize, Trait, TraitInfo, TraitsBySize } from '../types';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
 import type { FactionPerk } from './faction-perks';
+import type { TeamPerkInfo } from './mech-team-perks';
 import { type MechSizeId, SIZE } from './unit-sizes';
 import { WEAPON_TRAIT } from './weapon-traits';
 
@@ -67,7 +67,7 @@ export interface MechWeaponInfo {
     melee_base_damage: number | null,
     melee_trait_damage: number,
     melee_total_damage: number,
-    traits: Trait<WEAPON_TRAIT>[],
+    traits: TraitInfo<WEAPON_TRAIT>[],
     team_perks: TeamPerkInfo[],
     faction_perks: FactionPerk[],
     max_uses: number | null,
@@ -526,12 +526,12 @@ function makeWeapon({
     };
 }
 
-export function getRangeFromShortTrait(traits: Trait[]): number | null {
+export function getRangeFromShortTrait(traits: Trait<WEAPON_TRAIT>[]): number | null {
     let range: number | null = null;
     if (traits) {
         const result = findById(traits, WEAPON_TRAIT.SHORT);
         if (result) {
-            range = result.number as number ?? null;
+            range = result.X as number ?? null;
         }
     }
     return range;

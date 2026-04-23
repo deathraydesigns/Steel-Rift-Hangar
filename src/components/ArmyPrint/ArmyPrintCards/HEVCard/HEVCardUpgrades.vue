@@ -6,7 +6,7 @@ import { MECH_UPGRADE } from '../../../../data/mech-upgrades.js';
 import { UPGRADE_TRAIT } from '../../../../data/upgrade-traits.js';
 import { useMechStore } from '../../../../store/mech-store';
 import { useTeamStore } from '../../../../store/team-store';
-import type { Trait } from '../../../../types';
+import type { TraitInfo } from '../../../../types';
 import SvgIcon from '../../../UI/Icon.vue';
 
 const mechStore = useMechStore();
@@ -19,18 +19,21 @@ const { mechId } = defineProps<{
 type UpgradeItem = {
   display_name?: string,
   card_note?: string,
-  traits?: Trait[],
+  traits?: TraitInfo<UPGRADE_TRAIT>[],
   is_team_perk?: boolean,
   max_uses?: number,
 }
 
 const upgrades = computed((): UpgradeItem[] => {
-  const armorUpgrade = mechStore.getMechArmorUpgradeAttachmentInfo(mechId)!;
+  const armorUpgrades = mechStore.getMechAllArmorUpgradesInfo(mechId)!;
   const armorUpgradeArray: { display_name?: string }[] = [];
-  if (armorUpgrade.id !== MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE) {
-    armorUpgradeArray.push({
-      display_name: armorUpgrade.card_upgrade_display_name,
-    });
+
+  for (const armorUpgrade of armorUpgrades) {
+    if (armorUpgrade.id !== MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE) {
+      armorUpgradeArray.push({
+        display_name: armorUpgrade.card_upgrade_display_name,
+      });
+    }
   }
 
   const upgradesAttachments = mechStore.getMechUpgradesAttachmentInfo(mechId)

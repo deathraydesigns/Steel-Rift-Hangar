@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { BPopover } from 'bootstrap-vue-next';
-import type { TeamPerkInfo } from '../../store/team-store';
+import type { TeamPerkInfo } from '../../data/mech-team-perks';
 import SvgIcon from './Icon.vue';
 
 const {

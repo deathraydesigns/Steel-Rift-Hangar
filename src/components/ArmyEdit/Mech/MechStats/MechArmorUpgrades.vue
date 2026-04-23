@@ -2,6 +2,7 @@
 import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
 import type { MECH_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
+import { TEAM_PERK } from '../../../../data/mech-team-perks';
 import { useMechStore } from '../../../../store/mech-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
@@ -13,20 +14,16 @@ const mechStore = useMechStore();
 const {
   label,
   mechId,
+  isAuxInput,
 } = defineProps<{
   label: string,
   mechId: number,
+  isAuxInput?: true,
 }>();
 
 const model = defineModel<MECH_ARMOR_UPGRADE>({ required: true });
-const options = computed(() => mechStore.getMechAvailableArmorUpgrades(mechId));
-
-const armorUpgrade = computed(() => {
-  const m = mechStore.getMech(mechId)!;
-  return mechStore.getMechArmorUpgradeInfo(mechId, m.armor_upgrade_id)!;
-});
-
-const info = computed(() => mechStore.getMechArmorUpgradeAttachmentInfo(mechId)!);
+const options = computed(() => mechStore.getMechAvailableArmorUpgrades(mechId, isAuxInput));
+const info = computed(() => mechStore.getMechArmorUpgradeInfo(mechId, model.value, isAuxInput)!);
 
 function selectOption(value: MECH_ARMOR_UPGRADE) {
   model.value = value;
@@ -43,7 +40,7 @@ function selectOption(value: MECH_ARMOR_UPGRADE) {
         :id="'mech-input-armor-upgrade-' + mechId"
         class="dropdown-form dropdown-table d-inline-block"
         :toggle-class="{'border-danger': !info.valid}"
-        :text="armorUpgrade.display_name"
+        :text="info.display_name"
         variant="default"
         lazy
       >
@@ -95,7 +92,7 @@ function selectOption(value: MECH_ARMOR_UPGRADE) {
             <td class="notes">
               <IconTeamGroupPerks
                 btn-class="me-1"
-                :perks="item.team_perks"
+                :perks="item.team_perks.filter(p => p.id !== TEAM_PERK.AUX_DEFENSE_CONFIG)"
               />
             </td>
             <td class="notes">
@@ -117,9 +114,9 @@ function selectOption(value: MECH_ARMOR_UPGRADE) {
       <IconTeamGroupPerks
         size="md"
         btn-class="ms-1"
-        :perks="armorUpgrade.team_perks"
+        :perks="info.team_perks"
       />
-      <BtnToolTip :enabled="!!armorUpgrade.description">
+      <BtnToolTip :enabled="!!info.description">
         <template #target>
           <span
             class="btn btn-md btn-default ms-1"
@@ -128,25 +125,25 @@ function selectOption(value: MECH_ARMOR_UPGRADE) {
           </span>
         </template>
         <template #content>
-          {{ armorUpgrade.description }}
+          {{ info.description }}
         </template>
       </BtnToolTip>
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <format-number :val="armorUpgrade.armor_mod" invert-color />
+        <format-number :val="info.armor_mod" invert-color />
       </div>
     </td>
     <td class="text-end">
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <format-number :val="armorUpgrade.slots" invert-color />
+        <format-number :val="info.slots" invert-color />
       </div>
     </td>
     <td class="text-end">
       <div class="col-form-label">
-        <format-number :val="armorUpgrade.cost" invert-color />
+        <format-number :val="info.cost" invert-color />
       </div>
     </td>
     <td></td>

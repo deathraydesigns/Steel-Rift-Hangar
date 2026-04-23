@@ -1,5 +1,6 @@
-import type { Trait } from '../types';
-import { inchFormater, numberFormater } from './data-formatters';
+import type { Trait, TraitInfo } from '../types';
+import { MINE_LAYER } from './_mine-layer';
+import { inchFormater, xFormater } from './data-formatters';
 import { makeTraits, type TraitDef } from './data-helpers';
 import { ORDER } from './orders';
 
@@ -7,41 +8,50 @@ export enum UPGRADE_TRAIT {
     COMPACT = 'TRAIT_COMPACT',
     DASH = 'TRAIT_DASH',
     LIMITED = 'TRAIT_UPGRADE_LIMITED',
+    MINELAYER = 'TRAIT_MINELAYER',
 }
 
-export interface UpgradeTraitDef extends TraitDef {
-    id: UPGRADE_TRAIT;
-    description: string;
-    formatter?: (name: string, number: number | string | undefined) => string;
+export interface UpgradeTraitDef extends TraitDef<UPGRADE_TRAIT> {
 }
 
 export const UPGRADE_TRAITS: Readonly<Record<UPGRADE_TRAIT, UpgradeTraitDef>> = makeTraits<UpgradeTraitDef>({
     [UPGRADE_TRAIT.COMPACT]: {
         display_name: 'Compact',
-        description: 'This upgrade does not take up a slot during upgrade. No HE-V may be equipped with more than one Upgrade with the Compact special Rule.',
+        description: 'This Upgrade does not take an Upgrade Slot to equip. No HE-V may be equipped with more than one Upgrade with the Compact trait.',
     },
     [UPGRADE_TRAIT.DASH]: {
         display_name: 'Dash',
-        description: 'This Unit may take the Dash order',
+        description: 'This Unit may be issued the Dash order',
         formatter: inchFormater,
         granted_order_ids: [ORDER.DASH],
     },
     [UPGRADE_TRAIT.LIMITED]: {
         display_name: 'Limited',
         description: 'This upgrade may only be used (X) times during a mission.',
-        formatter: numberFormater,
+        formatter: xFormater,
+    },
+    [UPGRADE_TRAIT.MINELAYER]: {
+        ...MINE_LAYER,
     },
 });
 
-export function upgradeTraitDisplayName({ id, number }: Trait): string {
+export function upgradeTraitInfo(trait: Trait<UPGRADE_TRAIT>): TraitInfo<UPGRADE_TRAIT> {
+    return {
+        dependent_trait_ids: [],
+        ...UPGRADE_TRAITS[trait.id],
+        ...trait,
+        display_name: upgradeTraitDisplayName(trait),
+    };
+}
 
-    const trait = UPGRADE_TRAITS[id as UPGRADE_TRAIT];
+export function upgradeTraitDisplayName({ id, X, Y }: Trait<UPGRADE_TRAIT>): string {
+    const trait = UPGRADE_TRAITS[id];
 
     if (!trait) {
         throw new Error('trait not found: ' + id);
     }
-    if (trait.formatter && number !== undefined) {
-        return trait.formatter(trait.display_name, number);
+    if (trait.formatter) {
+        return trait.formatter(trait.display_name, X, Y);
     }
     return trait.display_name;
 }

@@ -19,6 +19,7 @@ export enum ORDER {
     INFANTRY_LOCK_ON = 'ORDER_INFANTRY_LOCK_ON',
     INFANTRY_ENGAGE = 'ORDER_INFANTRY_ENGAGE',
     INFANTRY_DIG_IN = 'ORDER_INFANTRY_DIG_IN',
+    FLYING_MOVE = 'ORDER_FLYING_MOVE',
 }
 
 export const INFANTRY_ORDERS = [
@@ -27,14 +28,14 @@ export const INFANTRY_ORDERS = [
     ORDER.INFANTRY_LOCK_ON,
     ORDER.INFANTRY_DIG_IN,
     ORDER.INFANTRY_MUSTER,
-]
+];
 
 export type MobilityOrderId =
     | typeof ORDER.PLOW_THROUGH
     | typeof ORDER.HUNKER_DOWN
 
 export interface Order {
-    id: string,
+    id: ORDER,
     display_name: string,
     description: string,
 }
@@ -71,10 +72,10 @@ export const ORDERS = makeFrozenStaticListIds<Order>({
         display_name: 'Multi-spectral Obscuration Emitter (MSOE) Deployer',
         description: 'When this model performs a SUPPORT Order, it counts as having the MSOE Launcher (SUPPORT) trait.',
     }),
-    [ORDER.SUPPORT_MINE_DRONE_LAYER]: makeSupportOrder({
-        display_name: 'Mine-Drone Layer (X)',
+    [ORDER.SUPPORT_MINE_DRONE_LAYER]: {
+        display_name: 'MineLayer (SUPPORT)',
         description: 'When this model performs a SUPPORT Order, it counts as having the Minelayer (SUPPORT) trait. Use of this Upgrade has the Limited (X) trait.',
-    }),
+    },
     [ORDER.PLOW_THROUGH]: {
         display_name: 'Plow Through',
         description: 'Pivot this HE‑V up to 90°, then move up to its current move speed in a straight line, ignoring Rough Terrain. This HE‑V’s facing may not change at the end of this Order. This does not count as a MOVE Order.',
@@ -86,11 +87,11 @@ export const ORDERS = makeFrozenStaticListIds<Order>({
     },
     [ORDER.INFANTRY_MUSTER]: {
         display_name: 'Muster',
-        description: 'This is the only order that a Garrisoned Unit may perform. The Garrisoned Unit is placed within 1” of its Garrison. If the Garrisoned Unit has the Squadron Trait, place one model within 1” of the Garrison, then place the other models within 3” of that initial model. This Unit is no longer considered Garrisoned, and is now “Mustered”.',
+        description: 'The Garrisoned Unit is placed within 1” of its Garrison. If the Garrisoned Unit has the Squadron Trait, place one model within 1” of the Garrison, then place the other models within 3” of that initial model. This Unit is no longer considered Garrisoned, and is now “Mustered”. This is the only order that a Garrisoned Unit may perform. ',
     },
     [ORDER.INFANTRY_MOVE]: {
         display_name: 'Move',
-        description: 'As normal, except that this unit may perform this order twice in one Activation.',
+        description: 'As normal, except this unit may perform this order twice in one Activation.',
     },
     [ORDER.INFANTRY_LOCK_ON]: {
         display_name: 'Lock On',
@@ -103,6 +104,10 @@ export const ORDERS = makeFrozenStaticListIds<Order>({
     [ORDER.INFANTRY_DIG_IN]: {
         display_name: 'Dig In',
         description: 'This unit counts as being in Rough Terrain until the beginning of their next activation.',
+    },
+    [ORDER.FLYING_MOVE]: {
+        display_name: 'Flying Move',
+        description: 'Place the unit within its Speed horizontally of its current position. This ignores any restrictions for moving through Terrain or other Units provided it can be placed in range. The unit must be able to end its move in a place where its Base will fit, and may face any direction.',
     },
 });
 

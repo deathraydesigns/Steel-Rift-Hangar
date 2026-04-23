@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import type { Order } from '../../../../data/orders';
 import type { UnitWeaponInfo } from '../../../../data/support-assets/_support-asset-types';
+import type { UNIT_TRAIT } from '../../../../data/unit-traits';
 import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
 import type { Trait } from '../../../../types';
 import UnitCardTraits from './UnitCardTraits.vue';
@@ -13,7 +14,7 @@ const unitStore = useSupportAssetUnitsStore();
 const { unitAttachmentId } = defineProps<{
   unitAttachmentId: number,
   weapons: UnitWeaponInfo[],
-  traits: Trait[],
+  traits: Trait<UNIT_TRAIT>[],
   orders: Order[]
 }>();
 

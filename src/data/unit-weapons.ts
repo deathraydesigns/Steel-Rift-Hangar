@@ -1,6 +1,7 @@
 import type { Trait } from '../types';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
 import { getRangeFromShortTrait } from './mech-weapons';
+import { SIZE, UNIT_SIZES } from './unit-sizes';
 import { WEAPON_TRAIT } from './weapon-traits';
 
 export enum UNIT_WEAPON {
@@ -100,7 +101,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
         display_name: 'Dozer Blade',
         damage: null,
         traits: [
-            trait(WEAPON_TRAIT.MELEE, 'X'),
+            trait(WEAPON_TRAIT.SMASHER, UNIT_SIZES[SIZE.MEDIUM].display_name, 'X'),
             trait(WEAPON_TRAIT.CONCUSSIVE, 2),
         ],
     }),
@@ -235,7 +236,7 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
         display_name: 'UL Melee Weapon',
         damage: 3,
         traits: [
-            trait(WEAPON_TRAIT.MELEE, 'X'),
+            trait(WEAPON_TRAIT.SMASHER, UNIT_SIZES[SIZE.LIGHT].display_name, 'X'),
             trait(WEAPON_TRAIT.AP, 'X'),
         ],
     }),

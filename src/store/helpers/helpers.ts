@@ -54,32 +54,30 @@ export function makeGrantedOrderCollection() {
     };
 }
 
-export type UniqueItemIdCollection<T> = ReturnType<typeof makeUniqueItemIdCollection<T>>
+export function makeUniqueItemIdCollection<T extends { id: ID }, ID extends string>(DATA_STORE: Record<ID, T>) {
+    const idMap = new Set<ID>();
 
-export function makeUniqueItemIdCollection<T>(DATA_STORE: Record<string, T>) {
-    const idMap = new Map<string, boolean>();
-
-    function add(item: { id: string }) {
-        idMap.set(item.id, true);
+    function add(item: { id: ID }) {
+        idMap.add(item.id);
     }
 
-    function addMultiple(array: { id: string }[]) {
-        array.forEach(item => {
-            add(item);
-        });
+    function addMultiple(array: { id: ID }[]) {
+        for (const t of array) {
+            add(t);
+        }
     }
 
-    function addId(id: string) {
-        idMap.set(id, true);
+    function addId(id: ID) {
+        idMap.add(id);
     }
 
-    function addIds(array: string[]) {
-        array.forEach(id => {
+    function addIds(array: ID[]) {
+        for (const id of array) {
             addId(id);
-        });
+        }
     }
 
-    function ids() {
+    function ids(): ID[] {
         return [...idMap.keys()];
     }
 

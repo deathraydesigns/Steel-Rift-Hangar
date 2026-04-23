@@ -28,7 +28,7 @@ const traits = computed(() => {
 const max_uses = computed(() => {
   const limitedTrait = findById(weapon.value.traits, WEAPON_TRAIT.LIMITED);
   if (limitedTrait) {
-    return limitedTrait.number;
+    return limitedTrait.X;
   }
 });
 </script>

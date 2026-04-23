@@ -1,16 +1,41 @@
-import type { TeamPerk } from '../types';
+import { countBy, sortBy } from 'es-toolkit';
+import type { Optional } from '../_helpers';
+import type { Trait } from '../types';
+import { trait } from './data-helpers';
 import { MECH_UPGRADE, upgradeDisplayName } from './mech-upgrades';
+import { UNIT_TRAIT, UNIT_TRAITS } from './unit-traits';
 
-interface TeamPerkInput {
-    display_name?: string;
-    description?: string;
-    display_name_short?: string;
-    visible_on_card?: boolean;
-    card_note?: string;
-    value?: number;
-    stackable?: boolean;
-    renderDisplayName?: (value: number, repeatCount?: number) => string;
-    renderDesc?: (baseValue: number, repeatCount?: number) => string;
+export interface TeamPerk {
+    readonly id: TEAM_PERK,
+    display_name: string,
+    description: string,
+    display_order: number,
+    display_name_short: string,
+    visible_on_card: boolean,
+    card_note: string,
+    value: number | null,
+    stackable: boolean,
+    renderDisplayName?: (value: number, repeatCount?: number) => string,
+    renderDesc?: (baseValue: number, repeatCount?: number) => string,
+    granted_unit_traits: Trait<UNIT_TRAIT>[],
+}
+
+export interface TeamPerkInfo extends TeamPerk {
+    repeatCount: number;
+}
+
+type InputOptional =
+    | 'display_name'
+    | 'description'
+    | 'display_order'
+    | 'display_name_short'
+    | 'visible_on_card'
+    | 'stackable'
+    | 'card_note'
+    | 'value'
+    | 'granted_unit_traits'
+
+interface TeamPerkInput extends Omit<Optional<TeamPerk, InputOptional>, 'id'> {
 }
 
 export enum TEAM_PERK {
@@ -24,7 +49,6 @@ export enum TEAM_PERK {
     RECON_INITIATIVE = 'TEAM_PERK_RECON_INITIATIVE',
     SUPPORT_ASSET_DAMAGE = 'TEAM_PERK_SUPPORT_ASSET_DAMAGE',
     DIRECTIONAL_ASSETS = 'TEAM_PERK_DIRECTIONAL_ASSETS',
-    _0_SLOT_ARMOR_UPGRADES = 'TEAM_PERK__0_SLOT_ARMOR_UPGRADES',
     _0_TON_ARMOR_UPGRADES = 'TEAM_PERK__0_TON_ARMOR_UPGRADES',
     EXTRA_TONNAGE = 'TEAM_PERK_EXTRA_TONNAGE',
     SIDE_DEFENSE = 'TEAM_PERK_SIDE_DEFENSE',
@@ -43,6 +67,10 @@ export enum TEAM_PERK {
     AIR_BURST = 'TEAM_PERK_AIR_BURST',
     IMPACT_ROUNDS = 'TEAM_PERK_IMPACT_ROUNDS',
     MELEE_SPECIALIST = 'TEAM_PERK_MELEE_SPECIALIST',
+    RETURN_SMASH = 'TEAM_PERK_RETURN_SMASH',
+    SQUEEZE = 'TEAM_PERK_SQUEEZE',
+    CONVOY = 'TEAM_PERK_CONVOY',
+    SYNCHRONIZED_STRIKE = 'TEAM_PERK_SYNCHRONIZED_STRIKE',
 
     DRONE_RACK = 'TEAM_PERK_DRONE_RACK',
     DRONE_SHARING = 'TEAM_PERK_DRONE_SHARING',
@@ -51,8 +79,6 @@ export enum TEAM_PERK {
     AUX_DEFENSE_CONFIG = 'TEAM_PERK_AUX_DEFENSE_CONFIG',
     GRANTED_SUPPRESSIVE_FIRE = 'TEAM_PERK_GRANTED_SUPPRESSIVE_FIRE',
     GRANTED_GUIDANCE_SUITE_MOVE = 'TEAM_PERK_GRANTED_GUIDANCE_SUITE_MOVE',
-
-    RETURN_SMASH = 'TEAM_PERK_RETURN_SMASH'
 }
 
 export const MECH_TEAM_PERKS = makeTeamPerks({
@@ -60,7 +86,6 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [TEAM_PERK._0_TON_TARGET_DESIGNATORS]: makeLightWeight(upgradeDisplayName(MECH_UPGRADE.TARGET_DESIGNATOR)),
     [TEAM_PERK._0_SLOT_ECM]: makeMini(upgradeDisplayName(MECH_UPGRADE.ELECTRONIC_COUNTERMEASURES)),
     [TEAM_PERK._0_TON_ECM]: makeLightWeight(upgradeDisplayName(MECH_UPGRADE.ELECTRONIC_COUNTERMEASURES)),
-    [TEAM_PERK._0_SLOT_ARMOR_UPGRADES]: makeMini('Armor Upgrades'),
     [TEAM_PERK._0_TON_ARMOR_UPGRADES]: makeLightWeight('Armor Upgrades'),
     [TEAM_PERK._0_SLOT_DIRECTIONAL_THRUSTERS]: makeMini(upgradeDisplayName(MECH_UPGRADE.DIRECTIONAL_THRUSTER)),
     [TEAM_PERK.EXTRA_CLUSTER_ROCKET_AMMO]: {
@@ -125,12 +150,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     },
     [TEAM_PERK.GUIDED_ROCKETS]: {
         renderDisplayName: makeRenderDisplayName('Guided Rockets'),
-        renderDesc(baseValue, repeatCount = 1) {
-            let repeatStr = renderDescriptionRepeat(baseValue, repeatCount);
-            return `All Rocket Packs gain the Smart and Short (16") traits`;
-        },
-        value: 1,
-        stackable: true,
+        description: `All Rocket Packs gain the Smart and Short (16") traits`,
     },
     [TEAM_PERK.BARREL_EXTENSIONS]: {
         renderDisplayName: makeRenderDisplayName('Barrel Extensions'),
@@ -184,6 +204,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [TEAM_PERK.GRANTED_SUPPRESSIVE_FIRE]: {
         display_name: 'Granted Suppressive Fire',
         description: 'This HE-V has the Suppressive Fire trait.',
+        granted_unit_traits: [UNIT_TRAITS.TRAIT_SUPPRESSIVE_FIRE],
     },
     [TEAM_PERK.HOMING]: {
         display_name: 'Homing',
@@ -196,6 +217,19 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [TEAM_PERK.GRANTED_GUIDANCE_SUITE_MOVE]: {
         display_name: 'Granted Guidance Suite (MOVE)',
         description: 'Once per turn, a Medium or Heavy HE-V of this team counts as having the Guidance Suite (MOVE) trait. Declare the use of this at the beginning of that HE-V’s activation.',
+        granted_unit_traits: [trait(UNIT_TRAIT.GUIDANCE_SUITE, 'MOVE')],
+    },
+    [TEAM_PERK.SQUEEZE]: {
+        display_name: 'Squeeze',
+        description: 'Models in this team may move through other Models in this team. They may not end their movement on another Model’s base.'
+    },
+    [TEAM_PERK.CONVOY]: {
+        display_name: 'Convoy',
+        description: 'If you have already selected a UL HE-V Squadron for this team, you may select and include another in this team. If you have already selected an Assault Vehicle Squadron for this team, you may select and include another in this team. This ignores the usual restriction on including more than one Support Asset of a single type.',
+    },
+    [TEAM_PERK.SYNCHRONIZED_STRIKE]: {
+        display_name: 'Synchronized Strike',
+        description: 'Once per game, immediately after Activating a member Unit of this team, nominate another member Unit of this team that does not have an Activation Marker. If the Activated Unit was an HE-V, you must nominate a Support Asset. If the Activated Unit was a Support Asset, you must nominate an HE-V. The nominated Unit may Activate immediately. Play then passes as normal.',
     },
 });
 
@@ -237,17 +271,66 @@ function makeTeamPerks(perks: Record<TEAM_PERK, TeamPerkInput>): Readonly<Record
     let display_order = 0;
 
     Object.entries(perks).forEach(([perkId, perk]) => {
+
+        const id = perkId as TEAM_PERK;
+        const newPerk: TeamPerk = {
+            id,
+            display_name: '',
+            display_name_short: '',
+            description: '',
+            visible_on_card: false,
+            card_note: '',
+            value: null,
+            stackable: false,
+            granted_unit_traits: [],
+            ...perk,
+            display_order: display_order++,
+        };
+
         const mutablePerk = perk as TeamPerkInput & { id?: string; display_order?: number };
         mutablePerk.id = perkId;
-        if (mutablePerk.renderDisplayName) {
-            mutablePerk.display_name = mutablePerk.renderDisplayName(mutablePerk.value!);
+        if (newPerk.renderDisplayName) {
+            newPerk.display_name = newPerk.renderDisplayName(newPerk.value!);
         }
-        if (mutablePerk.renderDesc) {
-            mutablePerk.description = mutablePerk.renderDesc(mutablePerk.value!);
+        if (newPerk.renderDesc) {
+            newPerk.description = newPerk.renderDesc(newPerk.value!);
         }
-        mutablePerk.display_order = display_order++;
-        Object.freeze(mutablePerk);
+
+        perks[id] = newPerk;
+        Object.freeze(newPerk);
     });
 
     return Object.freeze(perks) as Readonly<Record<string, TeamPerk>>;
+}
+
+export function perkIdsToInfo(perkIds: TEAM_PERK[]): TeamPerkInfo[] {
+    const grouped = countBy(perkIds, (perkId) => perkId);
+
+    const result = Object.entries(grouped).map(([perkId, repeatCount]): TeamPerkInfo => {
+        const perkInfo = MECH_TEAM_PERKS[perkId as TEAM_PERK];
+        let {
+            display_name,
+            description,
+            stackable,
+            renderDisplayName,
+            renderDesc,
+            value,
+        } = perkInfo;
+
+        if (repeatCount > 1 && stackable) {
+            display_name = renderDisplayName!(value!, repeatCount);
+            description = renderDesc!(value!, repeatCount);
+            value = (value ?? 1) * repeatCount;
+        }
+
+        return {
+            ...perkInfo,
+            display_name,
+            description,
+            value,
+            repeatCount: 1,
+        };
+    });
+
+    return sortBy(result, ['display_order']);
 }

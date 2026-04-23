@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { type UnitWeapon } from '../../data/unit-weapons';
+import type { UnitWeaponInfo } from '../../data/support-assets/_support-asset-types';
 import FormatInches from '../functional/format-inches.vue';
 import BtnToolTip from './BtnToolTip.vue';
 
 const { weapon } = defineProps<{
-  weapon: UnitWeapon
+  weapon: UnitWeaponInfo
 }>();
 </script>
 <template>

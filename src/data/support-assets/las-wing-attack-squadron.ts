@@ -1,5 +1,6 @@
 import { makeStaticListIds, trait } from '../data-helpers';
-import { SIZE } from '../unit-sizes';
+import { ORDER, ORDERS } from '../orders';
+import { SIZE, UNIT_SIZES } from '../unit-sizes';
 import { UNIT_TRAIT } from '../unit-traits';
 import { UNIT_TYPE } from '../unit-types';
 import { UNIT_WEAPON } from '../unit-weapons';
@@ -7,6 +8,7 @@ import type { SupportAssetUnitDef, SupportAssetUnitVehicleDef } from './_support
 
 const baseStats = {
     move: 12,
+    jump: 0,
     armor: 2,
     structure: 0,
 };
@@ -19,9 +21,10 @@ export const LAS_WING_ATTACK_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
     max_vehicles: 4,
     defense: 3,
     traits: [
-        trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Light Vehicle'),
+        trait(UNIT_TRAIT.AUXILIARY_UNIT, UNIT_SIZES[SIZE.LIGHT].display_name),
         trait(UNIT_TRAIT.FLYING),
         trait(UNIT_TRAIT.FLYING_SQUADRON),
+        trait(UNIT_TRAIT.YIELDING),
     ],
     vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
         STRIKE_LAS_WING: {
@@ -49,8 +52,8 @@ export const LAS_WING_ATTACK_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
                 ],
             },
             traits: [
-                trait(UNIT_TRAIT.MINE_SWEEPER),
-                trait(UNIT_TRAIT.MSOE_LAUNCHER),
+                trait(UNIT_TRAIT.GUIDANCE_SUITE, ORDERS[ORDER.FLYING_MOVE].display_name),
+                trait(UNIT_TRAIT.MSOE_LAUNCHER, ORDERS[ORDER.FLYING_MOVE].display_name),
                 trait(UNIT_TRAIT.SCRAMBLERS),
             ],
         },

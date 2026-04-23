@@ -1,6 +1,6 @@
 import { type Trait } from '../types';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
-import { SIZE } from './unit-sizes';
+import { SIZE, UNIT_SIZES } from './unit-sizes';
 import { UNIT_TRAIT } from './unit-traits';
 import { UNIT_TYPE } from './unit-types';
 import { UNIT_WEAPON } from './unit-weapons';
@@ -15,17 +15,17 @@ export enum INFANTRY {
     VIPER_SUIT_SQUAD = 'INFANTRY_VIPER_SUIT_SQUAD',
 }
 
-const baseInfantryStats = {
+const baseStats = {
     unit_type_id: UNIT_TYPE.INFANTRY,
     size_id: SIZE.ULTRA_LIGHT,
-    move: 3,
-    armor: 0,
-    structure: 3,
 } as const;
 
-const baseSuitStats = {
-    unit_type_id: UNIT_TYPE.INFANTRY,
-    size_id: SIZE.ULTRA_LIGHT,
+
+const baseInfantryStats = {
+    ...baseStats,
+    move: 3,
+    armor: 0,
+    structure: 2,
 } as const;
 
 export interface InfantrySquad {
@@ -37,7 +37,7 @@ export interface InfantrySquad {
     structure: number,
     display_name: string,
     weapon_ids: UNIT_WEAPON[],
-    traits: Trait[]
+    traits: Trait<UNIT_TRAIT>[]
 }
 
 export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
@@ -81,7 +81,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
         ],
     },
     [INFANTRY.ARC_SUIT_SQUAD]: {
-        ...baseSuitStats,
+        ...baseStats,
         move: 4,
         armor: 2,
         structure: 2,
@@ -95,7 +95,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
         ],
     },
     [INFANTRY.REAPER_SUIT_SQUAD]: {
-        ...baseSuitStats,
+        ...baseStats,
         move: 4,
         armor: 2,
         structure: 2,
@@ -107,7 +107,7 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
         traits: [],
     },
     [INFANTRY.VIPER_SUIT_SQUAD]: {
-        ...baseSuitStats,
+        ...baseStats,
         move: 5,
         armor: 2,
         structure: 2,
@@ -124,3 +124,12 @@ export const INFANTRY_SQUADS = makeFrozenStaticListIds<InfantrySquad>({
 export function getInfantrySquad(id: keyof typeof INFANTRY_SQUADS): InfantrySquad {
     return Object.assign({}, INFANTRY_SQUADS[id]);
 }
+
+export const BASE_INFANTRY_TRAITS = [
+    trait(UNIT_TRAIT.AUXILIARY_UNIT, UNIT_SIZES[SIZE.ULTRA_LIGHT].display_name),
+    trait(UNIT_TRAIT.INFANTRY_UNIT),
+    trait(UNIT_TRAIT.SQUADRON),
+    trait(UNIT_TRAIT.ALL_TERRAIN),
+    trait(UNIT_TRAIT.VULNERABLE),
+    trait(UNIT_TRAIT.YIELDING),
+]

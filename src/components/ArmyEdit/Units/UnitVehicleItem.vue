@@ -23,6 +23,12 @@ const requiredWeapons = computed(() => unitStore.getUnitVehicleAttachmentRequire
 const garrisonUnitChoices = computed(() => unitStore.getUnitVehicleAttachmentAvailableGarrisonChoicesInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 const garrisonUnitsMax = computed(() => unitStore.getUnitVehicleAttachmentGarrisonMax(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 
+const canDuplicate = computed(() => {
+  const vehicleId = vehicleAttachment.value.vehicle_id;
+  const vehicles = unitStore.getAvailableVehiclesInfo(supportAssetAttachmentId)
+
+  return vehicles.find((vehicle) => vehicle.id === vehicleId)!.valid
+})
 const add_disabled = inject<boolean>('add_disabled');
 const has_armor = inject<boolean>('has_armor');
 const has_structure = inject('has_structure');
@@ -120,7 +126,7 @@ function addUlHev() {
         size="sm"
         class="ms-1"
         variant="secondary"
-        :disabled="add_disabled"
+        :disabled="add_disabled || !canDuplicate"
         @click="unitStore.addVehicle(supportAssetAttachmentId, unitInfo.vehicle_id)"
       >
         <span class="material-symbols-outlined">content_copy</span>

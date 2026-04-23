@@ -1,5 +1,5 @@
 import { makeStaticListIds, trait } from '../data-helpers';
-import { SIZE } from '../unit-sizes';
+import { SIZE, UNIT_SIZES } from '../unit-sizes';
 import { UNIT_TRAIT } from '../unit-traits';
 import { UNIT_TYPE } from '../unit-types';
 import { UNIT_WEAPON } from '../unit-weapons';
@@ -29,7 +29,7 @@ export const ULTRA_LIGHT_HEV_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
     max_vehicles: 3,
     defense: 2,
     traits: [
-        trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'UL HE-V'),
+        trait(UNIT_TRAIT.AUXILIARY_UNIT, UNIT_SIZES[SIZE.ULTRA_LIGHT].display_name),
         trait(UNIT_TRAIT.SQUADRON),
         trait(UNIT_TRAIT.CLOSE_SUPPORT),
         trait(UNIT_TRAIT.ALL_TERRAIN),

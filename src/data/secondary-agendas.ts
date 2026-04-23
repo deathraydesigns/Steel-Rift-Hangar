@@ -16,6 +16,7 @@ export enum SECONDARY_AGENDA {
     ENFORCERS = 'SA_ENFORCERS',
     TITAN_KILLERS = 'SA_TITAN_KILLERS',
     EXPAND_THE_NETWORK = 'SA_EXPAND_THE_NETWORK',
+    COMBINED_ARMS_ASSAULT = 'SA_COMBINED_ARMS_ASSAULT'
 }
 
 export interface SecondaryAgenda {
@@ -27,7 +28,7 @@ export interface SecondaryAgenda {
     subtype_display_name?: string;
 }
 
-export const SECONDARY_AGENDAS: Readonly<Record<SECONDARY_AGENDA, SecondaryAgenda>> = makeSecondaryAgendas({
+export const SECONDARY_AGENDAS: Record<SECONDARY_AGENDA, SecondaryAgenda> = makeSecondaryAgendas({
     [SECONDARY_AGENDA.MISSION_MOMENTUM]: {
         display_name: 'Mission Momentum',
         description: 'When checking for Victory, if your Force scored VP from the primary Mission Objective on turns 2 and 3, score 1 VP.',
@@ -93,9 +94,17 @@ export const SECONDARY_AGENDAS: Readonly<Record<SECONDARY_AGENDA, SecondaryAgend
         display_name: 'Expand the Network',
         description: 'When checking for Victory, if a) at least 2 member Units of the team are not Destroyed and b) each remaining member of the team is in a different quarter of the Mission Area, score 1 VP.',
     },
+    [SECONDARY_AGENDA.COMBINED_ARMS_ASSAULT]: {
+        display_name: 'Combined Arms Assault',
+        description: `When any member of this team destroys an enemy HE-V, before it is removed, the Commander of this unit places an Objective token in base to base with the Destroyed HE-V.` +
+            ` • If a Support Asset member of this team Destroyed the HE-V, an HE-V member of this team may CAPTURE it.` +
+            ` • If an HE-V member of this team Destroyed the HE-V, a Support Asset member of this team may CAPTURE it (Note: the Support Asset member may Control and CAPTURE an Objective for the purpose of this Agenda only).` +
+            ` • No other units may CAPTURE it.` +
+            ` If you CAPTURED this Objective token, when checking for Victory, score 1 VP.`,
+    },
 });
 
-function makeSecondaryAgendas(items: Record<string, Omit<SecondaryAgenda, 'id'>>): Record<SECONDARY_AGENDA, SecondaryAgenda> {
+function makeSecondaryAgendas(items: Record<SECONDARY_AGENDA, Omit<SecondaryAgenda, 'id'>>): Record<SECONDARY_AGENDA, SecondaryAgenda> {
     const result = {} as Record<SECONDARY_AGENDA, SecondaryAgenda>;
     for (const [id, item] of Object.entries(items)) {
         result[id as SECONDARY_AGENDA] = {

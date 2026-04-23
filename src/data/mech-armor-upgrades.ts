@@ -17,7 +17,7 @@ export enum MECH_ARMOR_UPGRADE {
 export interface MechArmorUpgrade {
     id: MECH_ARMOR_UPGRADE,
     display_name: string,
-    slots: 0,
+    slots: number,
     card_upgrade_display_name?: string,
     description: string,
     cost_by_size: NumberBySize,

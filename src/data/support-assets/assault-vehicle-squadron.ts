@@ -1,6 +1,6 @@
 import { makeStaticListIds, trait } from '../data-helpers';
 import { INFANTRY } from '../infantry-squads';
-import { SIZE } from '../unit-sizes';
+import { SIZE, UNIT_SIZES } from '../unit-sizes';
 import { UNIT_TRAIT } from '../unit-traits';
 import { UNIT_TYPE } from '../unit-types';
 import { UNIT_WEAPON } from '../unit-weapons';
@@ -8,6 +8,7 @@ import type { SupportAssetUnitDef, SupportAssetUnitVehicleDef } from './_support
 
 const baseStats = {
     move: 8,
+    jump: 0,
     armor: 3,
     structure: 2,
 };
@@ -20,7 +21,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
     max_vehicles: 4,
     defense: 4,
     traits: [
-        trait(UNIT_TRAIT.UNIT_SIZE_AND_TYPE, undefined, 'Medium Vehicle'),
+        trait(UNIT_TRAIT.AUXILIARY_UNIT, UNIT_SIZES[SIZE.MEDIUM].display_name),
         trait(UNIT_TRAIT.SQUADRON),
         trait(UNIT_TRAIT.ALL_TERRAIN),
     ],
@@ -57,7 +58,7 @@ export const ASSAULT_VEHICLE_SQUADRON_DATA: Omit<SupportAssetUnitDef, 'id'> = {
                 UNIT_WEAPON.VEH_SUBMUNITIONS,
             ],
             traits: [
-                trait(UNIT_TRAIT.GROUP_COMMAND),
+                trait(UNIT_TRAIT.ASSET_COMMAND),
                 trait(UNIT_TRAIT.GARRISON, 3, 'Infantry Squads'),
             ],
             garrison_choice_unit_ids: [

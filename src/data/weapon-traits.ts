@@ -1,5 +1,5 @@
-import type { Trait, TraitFormatter } from '../types';
-import { inchFormater, numberFormater } from './data-formatters';
+import type { Trait, TraitInfo } from '../types';
+import { inchFormater, xFormater, xyFormater } from './data-formatters';
 import { makeTraits, type TraitDef } from './data-helpers';
 
 export enum WEAPON_TRAIT {
@@ -24,19 +24,17 @@ export enum WEAPON_TRAIT {
     STAGGER = 'TRAIT_STAGGER',
     TETHER = 'TRAIT_TETHER',
     ANTI_AIR = 'TRAIT_ANTI_AIR',
+    SMASHER = 'TRAIT_SMASHER',
 }
 
-export interface WeaponTraitDef extends TraitDef {
-    id: WEAPON_TRAIT;
-    description: string;
-    formatter?: TraitFormatter;
+export interface WeaponTraitDef extends TraitDef<WEAPON_TRAIT> {
 }
 
 export const WEAPON_TRAITS: Readonly<Record<WEAPON_TRAIT, WeaponTraitDef>> = makeTraits<WeaponTraitDef>({
     [WEAPON_TRAIT.AP]: {
         display_name: 'AP',
         description: 'When a Target Unit suffers Damage from this Weapon, apply AP(Lt/Md/Hv/UH) Damage directly to the Target Unit’s Structure.',
-        formatter: numberFormater,
+        formatter: xFormater,
     },
     [WEAPON_TRAIT.BLAST]: {
         display_name: 'Blast',
@@ -76,12 +74,12 @@ export const WEAPON_TRAITS: Readonly<Record<WEAPON_TRAIT, WeaponTraitDef>> = mak
     [WEAPON_TRAIT.LIMITED]: {
         display_name: 'Limited',
         description: 'This Weapon, Upgrade, or Asset may only be used (X) times during a Mission. Track the number of uses remaining.',
-        formatter: numberFormater,
+        formatter: xFormater,
     },
     [WEAPON_TRAIT.MELEE]: {
         display_name: 'Melee',
         description: 'This Unit counts as one Weight Class larger during a SMASH Order. Add (X) to the Attack Pool of this Unit when it is performing a SMASH Order. This Weapon is not used in an ENGAGE Order. More than one Melee weapon does not grant this bonus multiple times.',
-        formatter: numberFormater,
+        formatter: xFormater,
     },
     [WEAPON_TRAIT.SHORT]: {
         display_name: 'Short',
@@ -94,7 +92,7 @@ export const WEAPON_TRAITS: Readonly<Record<WEAPON_TRAIT, WeaponTraitDef>> = mak
     [WEAPON_TRAIT.MINE_TOKENS]: {
         display_name: 'Mine Tokens',
         description: '',
-        formatter: numberFormater,
+        formatter: xFormater,
     },
     [WEAPON_TRAIT.BULKY]: {
         display_name: 'Bulky',
@@ -103,7 +101,7 @@ export const WEAPON_TRAITS: Readonly<Record<WEAPON_TRAIT, WeaponTraitDef>> = mak
     [WEAPON_TRAIT.CONCUSSIVE]: {
         display_name: 'Concussive',
         description: 'When a Target Unit suffers Damage from this Weapon, roll 1D6. Add +1 to the roll for each Weight Class larger the Active Unit is than the Target Unit. Subtract ‑1 from the roll for each Weight Class smaller the Active Unit is than the Target Unit. On a result of 4+, move the Target Unit up to (X)” directly away from the Active Unit. If, when the Target Unit is moved, it contacts any Blocking Terrain feature or another Unit, the Target Unit stops in base contact with the Terrain or Unit, and the Target Unit receives an additional 1 point of Damage with no Defense Roll. A Unit that is contacted by the Target Unit also receives 1 point of Damage with no Defense Roll. ',
-        formatter: numberFormater,
+        formatter: xFormater,
     },
     [WEAPON_TRAIT.DRAG]: {
         display_name: 'Drag',
@@ -116,7 +114,7 @@ export const WEAPON_TRAITS: Readonly<Record<WEAPON_TRAIT, WeaponTraitDef>> = mak
     [WEAPON_TRAIT.REACH]: {
         display_name: 'Reach',
         description: 'When performing a SMASH Order using this Weapon, Units in Line of Sight and within (X)” of the Active Unit count as being in base contact for the purposes of this SMASH Order. In addition, while performing a SMASH Order, once the total Attack Pool has been determined, you may reduce the pool by 1 to nominate a secondary Unit in base contact and Line of Sight and divide the Attack Pool between the primary and secondary target. Defense Rolls are made as normal by the Target Units against those Attack Pools.',
-        formatter: numberFormater,
+        formatter: xFormater,
     },
     [WEAPON_TRAIT.STAGGER]: {
         display_name: 'Stagger',
@@ -130,9 +128,14 @@ export const WEAPON_TRAITS: Readonly<Record<WEAPON_TRAIT, WeaponTraitDef>> = mak
         display_name: 'Anti-Air',
         description: 'When this Weapon targets a Unit with the Flying Trait, the Target is at ‑2 to Defense Rolls (i.e., if the Target Unit would normally remove damage from the Attack Pool on a 2+, it avoids Damage from this Weapon on a 4+). If a Weapon with this trait destroys the Target Model in a Squadron, you may apply remaining damage to another Model of the Squadron as if the Squadron was not a Flying Squadron.',
     },
+    [WEAPON_TRAIT.SMASHER]: {
+        display_name: 'Smasher',
+        description: 'This Unit is permitted to make the SMASH Order, even if it has the Auxiliary Unit Trait. The Unit is considered of Weight Class X when making a SMASH Order. Add Y dice to the Attack Pool when performing a SMASH Order.',
+        formatter: xyFormater,
+    },
 });
 
-export function weaponTraitDisplayName({ id, number, type }: Trait): string {
+export function weaponTraitDisplayName({ id, X, Y }: Trait<WEAPON_TRAIT>): string {
 
     const trait = WEAPON_TRAITS[id as WEAPON_TRAIT];
 
@@ -140,19 +143,16 @@ export function weaponTraitDisplayName({ id, number, type }: Trait): string {
         throw new Error('trait not found: ' + id);
     }
     if (trait.formatter) {
-        return trait.formatter(trait.display_name, number, type);
+        return trait.formatter(trait.display_name, X, Y);
     }
     return trait.display_name;
 }
 
-export function freshWeaponTrait(trait: Trait) {
-    const traitDef = WEAPON_TRAITS[trait.id as WEAPON_TRAIT];
-    return Object.assign(
-        {},
-        traitDef,
-        trait,
-        {
-            display_name: weaponTraitDisplayName(trait),
-        },
-    );
+export function weaponTraitInfo(trait: Trait<WEAPON_TRAIT>): TraitInfo<WEAPON_TRAIT> {
+    return {
+        dependent_trait_ids: [],
+        ...WEAPON_TRAITS[trait.id as WEAPON_TRAIT],
+        ...trait,
+        display_name: weaponTraitDisplayName(trait),
+    };
 }

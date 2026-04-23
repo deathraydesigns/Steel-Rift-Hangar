@@ -101,7 +101,7 @@ function selectOption(value: MECH_BODY_MOD) {
       </BDropdown>
       <IconNotAvailable
         btn-class="ms-1"
-        size="md"
+        size="sm"
         :valid="valid"
         :validation-message="validationMessage"
       />

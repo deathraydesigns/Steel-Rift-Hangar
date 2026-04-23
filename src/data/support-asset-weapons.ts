@@ -1,6 +1,7 @@
-import type { TeamPerk, Trait } from '../types';
+import type { Trait, TraitInfo } from '../types';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
 import type { FactionPerk } from './faction-perks';
+import type { TeamPerk } from './mech-team-perks';
 import { WEAPON_TRAIT } from './weapon-traits';
 
 export enum SUPPORT_ASSET_WEAPON {
@@ -16,7 +17,8 @@ export interface OffTableWeapon {
     damage_modifiers?: number[],
 }
 
-export interface OffTableWeaponInfo extends OffTableWeapon {
+export interface OffTableWeaponInfo extends Omit<OffTableWeapon, 'traits'> {
+    traits: TraitInfo<WEAPON_TRAIT>[],
     damage_modifiers: number[],
 }
 
@@ -42,9 +44,9 @@ export type SupportAssetWeaponInfoNote = {
 })
     )
 
-export interface SupportAssetWeaponInfo extends SupportAssetWeapon {
+export interface SupportAssetWeaponInfo extends Omit<SupportAssetWeapon, 'off_table_weapon'> {
     notes: SupportAssetWeaponInfoNote[],
-    damage_modifiers: number[],
+    off_table_weapon: OffTableWeaponInfo,
 }
 
 export const SUPPORT_ASSET_WEAPONS = makeFrozenStaticListIds<SupportAssetWeapon>({

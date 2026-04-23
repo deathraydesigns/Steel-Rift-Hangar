@@ -5,7 +5,7 @@ import { UPGRADE_TRAIT } from '../../../../data/upgrade-traits.js';
 import { WEAPON_TRAIT } from '../../../../data/weapon-traits.js';
 import { findBy } from '../../../../store/helpers/collection-helper';
 import { useMechStore } from '../../../../store/mech-store';
-import type { MechWeaponAttachmentInfo, Trait } from '../../../../types';
+import type { MechWeaponAttachmentInfo, Trait, TraitInfo } from '../../../../types';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
 import RangeFormatter from '../../../UI/RangeFormatter.vue';
 
@@ -28,7 +28,7 @@ const weapons = computed(() => {
 
 const hasUses = computed(() => weapons.value.find(weapon => !!weapon.max_uses));
 
-function filterTraits(traits: Trait[]) {
+function filterTraits(traits: TraitInfo<WEAPON_TRAIT>[]) {
   return traits.filter((trait) => trait.id !== WEAPON_TRAIT.LIMITED && trait.id !== WEAPON_TRAIT.SHORT);
 }
 </script>
