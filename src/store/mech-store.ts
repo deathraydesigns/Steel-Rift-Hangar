@@ -72,7 +72,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             size_id = size_id ?? SIZE.MEDIUM;
             structure_mod_id = structure_mod_id ?? MECH_BODY_MOD.STANDARD;
             armor_mod_id = armor_mod_id ?? MECH_BODY_MOD.STANDARD;
-            aux_armor_upgrade_id = aux_armor_upgrade_id ?? MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE;
+            aux_armor_upgrade_id = aux_armor_upgrade_id ?? MECH_ARMOR_UPGRADE.CERAMIC_ARMOR_UPGRADE;
             const maxArmorUpgrades = MECH_SIZES[size_id].max_armor_upgrades;
 
             const baseArmorUpgradeIds = new Array(maxArmorUpgrades).fill(MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE);
@@ -415,7 +415,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             return grantedOrders;
         }
 
-        function getWeaponInfo(mechId: number, weaponId: MECH_WEAPON): MechWeaponInfo | null {
+        function getWeaponInfo(mechId: number, weaponId: MECH_WEAPON, weaponAttachmentId?: number): MechWeaponInfo | null {
             const mech = getMech(mechId);
             if (!mech) return null;
             const size_id = mech.size_id;
@@ -453,7 +453,13 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             }
 
             if (valid) {
-                const prohibited = teamStore.getWeaponTraitIsProhibited(mechId, weaponId, traits);
+                const prohibited = teamStore.getWeaponTraitsProhibited(mechId, traits);
+                valid = prohibited.valid;
+                validation_message = prohibited.validation_message;
+            }
+
+            if (valid) {
+                const prohibited = teamStore.getWeaponProhibited(mechId, weaponId, weaponAttachmentId);
                 valid = prohibited.valid;
                 validation_message = prohibited.validation_message;
             }
@@ -557,7 +563,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             const weaponAttachment = findById(mech.weapons, mechWeaponAttachmentId);
             if (!weaponAttachment) return null;
             const weapon_id = weaponAttachment.weapon_id;
-            const weaponInfo = getWeaponInfo(mechId, weapon_id);
+            const weaponInfo = getWeaponInfo(mechId, weapon_id, mechWeaponAttachmentId);
             if (!weaponInfo) return null;
 
             const previousWeaponInstances = mech.weapons.filter((item) => {

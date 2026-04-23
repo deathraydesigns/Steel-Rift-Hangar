@@ -200,7 +200,37 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             };
         }
 
-        function getWeaponTraitIsProhibited(mechId: number, weaponId: string, traits: Trait<WEAPON_TRAIT>[]) {
+        function getWeaponProhibited(mechId: number, weaponId: MECH_WEAPON, weaponAttachmentId?: number) {
+            const { teamId, groupId } = getMechTeamAndGroupIds(mechId);
+            const groupDef = getTeamGroupDef(teamId, groupId);
+            const mech = mechStore.getMech(mechId);
+            if (!mech) return { valid: true, validation_message: null };
+
+            if (!groupDef.allow_duplicate_weapons) {
+                // ignore self
+                if (mech.weapons.some((item) => {
+                    if (weaponAttachmentId !== undefined && item.id === weaponAttachmentId) {
+                        return false;
+                    }
+
+                    return item.weapon_id === weaponId;
+                })) {
+                    const teamGroupDisplayName = getFullTeamGroupDisplayName(teamId, groupId);
+
+                    return {
+                        valid: false,
+                        validation_message: `${teamGroupDisplayName}: Cannot have weapon duplicates`,
+                    };
+                }
+            }
+
+            return {
+                valid: true,
+                validation_message: null,
+            };
+        }
+
+        function getWeaponTraitsProhibited(mechId: number, traits: Trait<WEAPON_TRAIT>[]) {
             const { teamId, groupId } = getMechTeamAndGroupIds(mechId);
             const groupDef = getTeamGroupDef(teamId, groupId);
 
@@ -848,7 +878,8 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             getAvailableMechSizes,
             getMechStructureModOptions,
             getMechArmorModOptions,
-            getWeaponTraitIsProhibited,
+            getWeaponProhibited,
+            getWeaponTraitsProhibited,
             getMechWeaponIsRequiredInfo,
             getTeamPerksInfoByMech,
             getTeamGroupPerksInfo,
