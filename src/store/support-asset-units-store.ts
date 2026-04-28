@@ -812,7 +812,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             const unitAttachment = getUnitAttachment(unitAttachmentId);
             if (unitAttachment) {
                 const index = findItemIndexById(unitAttachment.vehicles, vehicleAttachmentId);
-                if (index) {
+                if (index !== false) {
                     unitAttachment.vehicles.splice(index, 1);
                 }
             }
