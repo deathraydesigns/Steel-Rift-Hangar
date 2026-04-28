@@ -3,7 +3,7 @@
   margin-bottom: .5rem;
   --bs-card-box-shadow: #{$box-shadow-sm};
 
-  .card-header:last-child {
+  .card-header:has(+ .collapse:not(.show)) {
     border-bottom: 0;
     border-radius: $card-inner-border-radius;
   }
