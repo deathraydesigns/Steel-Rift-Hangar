@@ -40,11 +40,6 @@ const sizeDisplayNames = computed(() => (column: MechTeamPerkColumn) => {
     .map((sizeId) => MECH_SIZES[sizeId].display_name)
     .join('/');
 });
-const validationMessage = computed(() => {
-  if (!valid.value) {
-    return 'Team Not Valid';
-  }
-});
 
 function expandAll() {
   visible.value = true;
