@@ -13,6 +13,7 @@ const validationStore = useValidationStore();
 const { invalid_number_of_support_assets } = storeToRefs(validationStore);
 const {
   support_asset_units_info,
+  available_support_asset_units_info,
 } = storeToRefs(store);
 
 </script>
@@ -33,7 +34,10 @@ const {
                                :message="invalid_number_of_support_assets" />
         </div>
         <div class="flex-shrink-1 text-end">
-          <SupportAssetUnitAdd />
+          <SupportAssetUnitAdd
+            :available-support-asset-units-info="available_support_asset_units_info"
+            @selected="store.addSupportAsset($event)"
+          />
         </div>
       </div>
     </div>

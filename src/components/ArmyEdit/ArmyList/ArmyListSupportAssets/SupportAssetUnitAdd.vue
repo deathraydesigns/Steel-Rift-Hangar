@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
-import { storeToRefs } from 'pinia';
-import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
+import { SUPPORT_ASSET_UNIT, type SupportAssetUnitInfo } from '../../../../data/support-assets/_support-asset-types';
 import FormatNumber from '../../../functional/format-number.vue';
 
-const store = useSupportAssetUnitsStore();
+const emit = defineEmits<{
+  (e: 'selected', id: SUPPORT_ASSET_UNIT): void,
+}>();
 
-const {
-  available_support_asset_units_info,
-} = storeToRefs(store);
+const { availableSupportAssetUnitsInfo } = defineProps<{
+  availableSupportAssetUnitsInfo: SupportAssetUnitInfo[]
+}>();
 
 </script>
 <template>
@@ -36,8 +37,8 @@ const {
           :class="{
               'dropdown-row': true,
             }"
-          v-for="item in available_support_asset_units_info" :key="item.id"
-          @click="store.addSupportAsset(item.id)"
+          v-for="item in availableSupportAssetUnitsInfo" :key="item.id"
+          @click="emit('selected', item.id)"
         >
           <td class="text-nowrap">
             {{ item.display_name }}
