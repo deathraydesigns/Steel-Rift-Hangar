@@ -48,7 +48,7 @@ export const useSecondaryAgendaStore = defineScopeableStore('secondary-agenda', 
         }
 
         teamStore.teams.map((team) => {
-            if (teamStore.getTeamMechCount(team.id)) {
+            if (teamStore.getTeamUnitCount(team.id)) {
                 const agendaId = MECH_TEAMS[team.id].secondary_agenda_id;
                 if (agendaId) {
                     result.push(Object.assign({},

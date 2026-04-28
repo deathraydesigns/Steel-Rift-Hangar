@@ -12,7 +12,7 @@ import MechTeamGroup from '../MechTeam/MechTeamGroup.vue';
 const teamStore = useTeamStore();
 const { special_teams } = storeToRefs(teamStore);
 
-const baseMechCount = computed(() => teamStore.getTeamMechCount(MECH_TEAM.GENERAL) || teamStore.getTeamMechCount(MECH_TEAM.SHELF));
+const baseMechCount = computed(() => teamStore.getTeamUnitCount(MECH_TEAM.GENERAL) || teamStore.getTeamUnitCount(MECH_TEAM.SHELF));
 
 function addGeneralMech() {
   teamStore.addMechToTeamWithDefaults(MECH_TEAM.GENERAL, 'A');

@@ -49,7 +49,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
 
         const available_support_asset_units_info = computed(() => {
             let results = available_support_asset_unit_ids.value
-                .map((id) => _getUnitInfo(id));
+                .map((id) => getUnitInfo(id));
 
             return sortBy(results, ['display_name']);
         });
@@ -60,6 +60,10 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 .filter(v => !!v);
 
             return sortBy(results, ['display_name']);
+        });
+
+        const main_support_asset_units_info = computed(() => {
+            return support_asset_units_info.value.filter(v => !v?.is_coordinated_asset_team);
         });
 
         const used_tons = computed(() => sumBy(support_asset_units_info.value, (t) => t.cost));
@@ -87,6 +91,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 support_asset_unit_id,
                 vehicles,
                 upgrade_pod_id,
+                is_coordinated_asset_team,
             } = attachment;
 
             let {
@@ -101,7 +106,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 all_vehicle_must_be_the_same,
                 traits,
                 defense,
-            } = _getUnitInfo(support_asset_unit_id);
+            } = getUnitInfo(support_asset_unit_id);
 
             let vehicleInfos = vehicles.map(vehicleAttachment => getUnitAttachmentVehicleInfo(unitAttachmentId, vehicleAttachment.id))
                 .filter(v => !!v);
@@ -135,12 +140,13 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 traits,
                 defense,
                 all_vehicle_must_be_the_same,
+                is_coordinated_asset_team,
             };
 
             return readonly(result) as UnitAttachmentInfo;
         }
 
-        function _getUnitInfo(unitId: SUPPORT_ASSET_UNIT): SupportAssetUnitInfo {
+        function getUnitInfo(unitId: SUPPORT_ASSET_UNIT): SupportAssetUnitInfo {
             const asset = SUPPORT_ASSET_UNITS[unitId];
             return {
                 ...asset,
@@ -635,7 +641,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
         function getAvailableVehiclesInfo(unitAttachmentId: number): UnitVehicleInfo[] {
             const unit = getUnitAttachment(unitAttachmentId);
             if (!unit) return readonly([] as UnitVehicleInfo[]) as UnitVehicleInfo[];
-            const unitInfo = _getUnitInfo(unit.support_asset_unit_id);
+            const unitInfo = getUnitInfo(unit.support_asset_unit_id);
 
             const vehicles = { ...unitInfo.vehicles };
             const selectedVehicleIds = unit.vehicles.map(vehicle => vehicle.vehicle_id);
@@ -736,12 +742,14 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             support_asset_units.value.splice(index, 1);
         }
 
-        function addSupportAsset(unitId: SUPPORT_ASSET_UNIT) {
+        function addSupportAsset(unitId: SUPPORT_ASSET_UNIT, is_coordinated_asset_team = false) {
             const input: SupportAssetUnitAttachment = {
                 id: support_asset_units_id_increment.value++,
                 support_asset_unit_id: unitId,
                 vehicles_id_increment: 0,
                 vehicles: [],
+                is_coordinated_asset_team,
+                visible: true,
             };
 
             const unitDef = SUPPORT_ASSET_UNITS[unitId];
@@ -818,7 +826,26 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             }
         }
 
+        function getUnitVisibleComputed(unitAttachmentId: number) {
+            return computed({
+                get() {
+                    const target = getUnitAttachment(unitAttachmentId);
+                    return target ? target.visible : false;
+                },
+                set(newVal: boolean) {
+                    const target = getUnitAttachment(unitAttachmentId);
+                    if (target) target.visible = newVal;
+                },
+            });
+        }
+
+        function setUnitVisible(unitAttachmentId: number, newVal: boolean) {
+            const target = getUnitAttachment(unitAttachmentId);
+            if (target) target.visible = newVal;
+        }
+
         return {
+            main_support_asset_units_info,
             support_asset_units,
             support_asset_units_id_increment,
 
@@ -829,6 +856,8 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             available_support_asset_units_info,
             support_asset_units_info,
             validation_messages,
+
+            getUnitInfo,
 
             getAvailableVehiclesInfo,
             getUnitVehicleCount,
@@ -857,6 +886,8 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             getAllUnitTraits,
             getAllWeaponTraitsCollection,
             isSquadron,
+            getUnitVisibleComputed,
+            setUnitVisible,
 
             setUnitVehicleGarrisonChoice,
             setUnitUpgradePod,

@@ -6,7 +6,7 @@ import { useTeamStore } from '../../../store/team-store';
 const teamStore = useTeamStore();
 const teamPerks = computed(() => {
   return teamStore.teams
-    .filter((team) => teamStore.isSpecialTeam(team.id) && teamStore.getTeamMechCount(team.id))
+    .filter((team) => teamStore.isSpecialTeam(team.id) && teamStore.getTeamUnitCount(team.id))
     .map((team) => {
       return {
         ...MECH_TEAMS[team.id],

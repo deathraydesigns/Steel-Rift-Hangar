@@ -3,7 +3,13 @@ import { defineScopeableStore } from 'pinia-scope';
 import { computed, ref } from 'vue';
 import { GAME_SIZES } from '../data/game-sizes';
 import { MECH_TEAM_PERKS, perkIdsToInfo, TEAM_PERK } from '../data/mech-team-perks';
-import { MECH_TEAM, MECH_TEAM_SIZE, MECH_TEAM_SIZES, MECH_TEAMS } from '../data/mech-teams';
+import {
+    MECH_TEAM,
+    MECH_TEAM_SIZE,
+    MECH_TEAM_SIZES,
+    MECH_TEAMS,
+    SUPPORT_ASSET_UNITS_GROUP_ID,
+} from '../data/mech-teams';
 import type { MECH_UPGRADE } from '../data/mech-upgrades';
 import { type MECH_WEAPON, MECH_WEAPONS, weaponHasTrait } from '../data/mech-weapons';
 import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
@@ -13,11 +19,13 @@ import { useArmyListStore } from './army-list-store';
 import { findBy, findById, findItemIndexById, move, setDisplayOrders } from './helpers/collection-helper';
 import { ifEmptyString, makeUniqueItemIdCollection } from './helpers/helpers';
 import { type AddMechOptions, useMechStore } from './mech-store';
+import { useSupportAssetUnitsStore } from './support-asset-units-store';
 
 export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: string }) => {
 
         const mechStore = useMechStore(scope);
         const armyListStore = useArmyListStore(scope);
+        const supportAssetUnitStore = useSupportAssetUnitsStore(scope);
 
         const teams = ref<MechTeamInstance[]>([makeGeneralTeam(), makeShelfTeam()]);
 
@@ -85,7 +93,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
 
             team.groups.forEach(group => {
                 const min = getTeamGroupDef(teamId, group.id).min_count;
-                if (typeof min === 'number' && min > 0) {
+                if (typeof min === 'number' && min > 0 && group.id !== SUPPORT_ASSET_UNITS_GROUP_ID) {
                     addMechToTeamWithDefaults(teamId, group.id);
                 }
             });
@@ -348,14 +356,27 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             });
         }
 
-        function getTeamMechCount(teamId: MECH_TEAM) {
+        function getTeamUnitCount(teamId: MECH_TEAM) {
             const team = findById(teams.value, teamId);
-            return team ? sumBy(team.groups, (group) => group.mechs.length) : 0;
+            const mechCount = team ? sumBy(team.groups, (group) => group.mechs.length) : 0;
+            const def = getTeamDef(teamId);
+            if (def.support_asset_units) {
+                return mechCount + coordinatedAssetsTeamUnitsInfo.value.length;
+            }
+
+            return mechCount;
         }
 
-        function getTeamGroupMechCount(teamId: MECH_TEAM, groupId: string) {
+        const coordinatedAssetsTeamUnitsInfo = computed(() => supportAssetUnitStore.support_asset_units_info.filter(v => v.is_coordinated_asset_team));
+
+        function getTeamGroupUnitCount(teamId: MECH_TEAM, groupId: string) {
             const group = findGroup(teamId, groupId);
-            return group ? group.mechs.length : 0;
+            const def = getTeamDef(teamId);
+            if (def.support_asset_units && groupId === SUPPORT_ASSET_UNITS_GROUP_ID) {
+                return coordinatedAssetsTeamUnitsInfo.value.length;
+            }
+
+            return group?.mechs.length ?? 0;
         }
 
         function getTeamMechIds(teamId: MECH_TEAM) {
@@ -499,7 +520,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
 
             if (!indexes.length) return [];
 
-            const teamSize = getTeamMechCount(teamId);
+            const teamSize = getTeamUnitCount(teamId);
 
             let perkIds: TEAM_PERK[] = [];
 
@@ -672,6 +693,14 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             mechIds.forEach((mechId) => mechStore.removeMech(mechId));
             let index = findItemIndexById(teams.value, teamId);
             if (index !== false) teams.value.splice(index, 1);
+
+            const def = getTeamDef(teamId);
+            if (def.support_asset_units) {
+                coordinatedAssetsTeamUnitsInfo.value.forEach((v) => {
+                    supportAssetUnitStore.removeSupportAssetId(v.id);
+                });
+            }
+
         }
 
         function moveGroupMech(teamId: MECH_TEAM, groupId: string, mechId: number, toIndex: number) {
@@ -735,7 +764,13 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             getTeamMechIds(teamId).forEach((mechId) => mechStore.setMechVisible(mechId, visible));
         }
 
-        function setMechsOfGroupVisible(teamId: MECH_TEAM, groupId: string, visible: boolean) {
+        function setUnitsOfGroupVisible(teamId: MECH_TEAM, groupId: string, visible: boolean) {
+            const def = getTeamDef(teamId);
+            if (def.support_asset_units && groupId === SUPPORT_ASSET_UNITS_GROUP_ID) {
+                coordinatedAssetsTeamUnitsInfo.value.forEach((v) => {
+                    supportAssetUnitStore.setUnitVisible(v.id, visible);
+                });
+            }
             getTeamGroupMechIds(teamId, groupId).forEach((mechId) => mechStore.setMechVisible(mechId, visible));
         }
 
@@ -747,6 +782,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             max_teams_count,
             special_teams,
             non_shelf_teams,
+            coordinatedAssetsTeamUnitsInfo,
 
             allUsedTeamAbilityPerkIds,
 
@@ -754,8 +790,8 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
 
             findTeam,
             findGroup,
-            getTeamMechCount,
-            getTeamGroupMechCount,
+            getTeamUnitCount,
+            getTeamGroupUnitCount,
             getTeamDef,
             getTeamDisplayName,
             getTeamGroupDisplayName,
@@ -783,7 +819,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
 
             setGroupsOfTeamVisible,
             setMechsOfTeamVisible,
-            setMechsOfGroupVisible,
+            setUnitsOfGroupVisible,
 
             normalizePreferredTeamId,
             afterHydrate,

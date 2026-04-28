@@ -12,7 +12,7 @@ import MechTeamList from './ArmyEdit/Mech/MechTeamList.vue';
 import SecondaryAgendas from './ArmyEdit/SecondaryAgendas.vue';
 import UnitItem from './ArmyEdit/Units/UnitItem.vue';
 
-const { support_asset_units } = storeToRefs(useSupportAssetUnitsStore());
+const { main_support_asset_units_info } = storeToRefs(useSupportAssetUnitsStore());
 
 const router = useRouter();
 const route = useRoute();
@@ -40,12 +40,11 @@ onMounted(() => {
       });
   }
 });
-
 </script>
 <template>
   <div class="container-lg pb-2">
     <ArmyList />
-    <UnitItem v-for="unit in support_asset_units" :key="unit.id" :support-asset-attachment-id="unit.id" />
+    <UnitItem v-for="unit in main_support_asset_units_info" :key="unit.id" :support-asset-attachment-id="unit.id" />
     <MechTeamList />
     <SecondaryAgendas />
   </div>

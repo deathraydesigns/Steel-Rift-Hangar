@@ -12,7 +12,7 @@ const validationStore = useValidationStore();
 
 const { invalid_number_of_support_assets } = storeToRefs(validationStore);
 const {
-  support_asset_units_info,
+  main_support_asset_units_info,
   available_support_asset_units_info,
 } = storeToRefs(store);
 
@@ -41,7 +41,7 @@ const {
         </div>
       </div>
     </div>
-    <div class="card-body p-2" v-if="support_asset_units_info.length">
+    <div class="card-body p-2" v-if="main_support_asset_units_info.length">
       <table class="table table-btn-sm m-0">
         <thead>
         <tr class="table-tinted">
@@ -51,7 +51,7 @@ const {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in support_asset_units_info" :key="item.id">
+        <tr v-for="item in main_support_asset_units_info" :key="item.id">
           <td>
             {{ item.display_name }}
           </td>

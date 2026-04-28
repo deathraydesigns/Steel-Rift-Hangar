@@ -68,7 +68,13 @@ export interface MechTeam {
     groups: Record<string, MechTeamGroup>,
     team_size_perk_columns?: MechTeamPerkColumn[],
     team_size_perk_rows?: Record<number, TEAM_PERK[][]>,
+    support_asset_units?: {
+        support_asset_unit_ids: SUPPORT_ASSET_UNIT[]
+        max_support_asset_units: number,
+    }
 }
+
+export const SUPPORT_ASSET_UNITS_GROUP_ID = 'SUPPORT_ASSET_UNITS_GROUP'
 
 export const MECH_TEAM_SIZES: Readonly<Record<MECH_TEAM_SIZE, MechTeamSize>> = makeFrozenStaticListIds<MechTeamSize>({
     [MECH_TEAM_SIZE.SMALL]: {
@@ -558,7 +564,17 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                 size_ids: [SIZE.LIGHT, SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
                 prohibited_weapons_with_trait_ids: [WEAPON_TRAIT.BLAST],
             }),
+            [SUPPORT_ASSET_UNITS_GROUP_ID]: makeGroup({
+                size_ids: [],
+                min_count: 1,
+                max_count: 1,
+                display_name: 'Support Asset Units'
+            }),
         }),
+        support_asset_units: {
+            support_asset_unit_ids: [SUPPORT_ASSET_UNIT.ULTRA_LIGHT_HEV_SQUADRON, SUPPORT_ASSET_UNIT.ASSAULT_VEHICLE_SQUADRON],
+            max_support_asset_units: 1,
+        },
         team_size_perk_columns: [
             [SIZE.LIGHT, SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
             {
@@ -605,9 +621,23 @@ function makeGroup(obj: Partial<MechTeamGroup> & { size_ids: MechSizeId[] }): Om
     const result = Object.assign(defaults, obj);
 
     if (!obj.display_name) {
-        result.display_name = obj.size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name)
-            .join(' & ');
+        if (hasAllHevSizes(obj.size_ids)) {
+            result.display_name = 'All';
+        } else {
+            result.display_name = obj.size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name)
+                .join(' & ');
+        }
     }
 
     return result as Omit<MechTeamGroup, 'id'>;
+}
+
+function hasAllHevSizes(sizeIds: MechSizeId[]): boolean {
+    return (
+        sizeIds.length === 4 &&
+        sizeIds.includes(SIZE.LIGHT) &&
+        sizeIds.includes(SIZE.MEDIUM) &&
+        sizeIds.includes(SIZE.HEAVY) &&
+        sizeIds.includes(SIZE.ULTRA)
+    );
 }

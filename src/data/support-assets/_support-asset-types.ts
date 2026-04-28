@@ -22,6 +22,8 @@ export interface SupportAssetUnitAttachment {
     vehicles_id_increment: number,
     vehicles: VehicleAttachment[],
     upgrade_pod_id?: UpgradePodId,
+    is_coordinated_asset_team: boolean,
+    visible: boolean,
 }
 
 export interface UpgradePod {
@@ -70,6 +72,7 @@ export interface UnitAttachmentInfo extends Omit<SupportAssetUnitInfo, 'id' | 'v
     support_asset_unit_id: SUPPORT_ASSET_UNIT,
     upgrade_pod_id?: UpgradePodId,
     vehicles: UnitAttachmentVehicleInfo[],
+    is_coordinated_asset_team: boolean,
 }
 
 export interface UnitWeaponInfo extends UnitWeapon {

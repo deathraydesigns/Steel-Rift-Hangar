@@ -21,7 +21,7 @@ const { teamId, groupId } = defineProps<{
 
 const visible = teamStore.getTeamGroupVisibleComputed(teamId, groupId);
 const team = computed(() => teamStore.getTeamDef(teamId));
-const groupCount = computed(() => teamStore.getTeamGroupMechCount(teamId, groupId));
+const groupCount = computed(() => teamStore.getTeamGroupUnitCount(teamId, groupId));
 const group = computed(() => teamStore.getTeamGroupDef(teamId, groupId));
 const mechIds = computed(() => teamStore.getTeamGroupMechIds(teamId, groupId));
 const size = computed(() => validationStore.getTeamGroupSizeValidation(teamId, groupId));
@@ -42,11 +42,11 @@ const collapsing = ref(false);
 
 function expandAll() {
   visible.value = true;
-  teamStore.setMechsOfGroupVisible(teamId, groupId, true);
+  teamStore.setUnitsOfGroupVisible(teamId, groupId, true);
 }
 
 function collapseAll() {
-  teamStore.setMechsOfGroupVisible(teamId, groupId, false);
+  teamStore.setUnitsOfGroupVisible(teamId, groupId, false);
 }
 
 function getChildPayload(index: number) {
@@ -230,7 +230,7 @@ const placeholder = ref({
       </div>
     </div>
     <BCollapse
-      :id="'collapse-' + teamId"
+      :id="'collapse-' + teamId + '-' + groupId"
       v-model="visible"
       @hide="collapsing = true"
       @hidden="collapsing = false"

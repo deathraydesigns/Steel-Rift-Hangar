@@ -98,7 +98,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         if (gameSizeId === GAME_SIZE.DUEL) {
             return messageValid;
         }
-        const teamCounts = teamStore.special_teams.map((team) => teamStore.getTeamMechCount(team.id));
+        const teamCounts = teamStore.special_teams.map((team) => teamStore.getTeamUnitCount(team.id));
         const smallestTeamCount = (Math.min(...teamCounts) ?? 0) as number;
         const largestTeamCount = (Math.max(...teamCounts) ?? 0) as number;
 
@@ -348,23 +348,27 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     }
 
     function getTeamGroupSizeValidation(teamId: MECH_TEAM, groupId: string) {
-        const { min_count, max_count } = MECH_TEAMS[teamId].groups[groupId];
-        const group = teamStore.findGroup(teamId, groupId);
-        const mechCount = group ? group.mechs.length : 0;
+        const teamDef = MECH_TEAMS[teamId];
+        const { min_count, max_count } = teamDef.groups[groupId];
+        const count = teamStore.getTeamGroupUnitCount(teamId, groupId);
+        let entity = 'HE-Vs';
+        if (teamDef.support_asset_units) {
+            entity = 'Units';
+        }
 
         let size_valid = true;
         let size_validation_message = 'Valid Group Size';
         if (typeof min_count === 'number') {
-            if (min_count > mechCount) {
+            if (min_count > count) {
                 size_valid = false;
-                size_validation_message = 'Group has less than the minimum number of HE-V: ' + min_count;
+                size_validation_message = `Group has less than the minimum number of ${entity}: ${min_count}`;
             }
         }
 
         if (typeof max_count === 'number') {
-            if (max_count < mechCount) {
+            if (max_count < count) {
                 size_valid = false;
-                size_validation_message = 'Group has more than the maximum number of HE-V: ' + max_count;
+                size_validation_message = `Group has more than the maximum number of ${entity}: ${max_count}`;
             }
         }
 
@@ -600,8 +604,8 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
             groups: [],
         };
 
-        const { display_name, icon } = teamStore.getTeamDef(team.id);
-        const groups = team.groups.map(group => getTeamGroupValidation(teamId, group.id))
+        const { display_name, icon, groups: teamGroups } = teamStore.getTeamDef(team.id);
+        const groups = Object.values(teamGroups).map(group => getTeamGroupValidation(teamId, group.id))
             .filter(i => !i.valid);
 
         return {
@@ -626,7 +630,6 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
             };
         }
         const { size_valid, size_validation_message } = getTeamGroupSizeValidation(teamId, groupId);
-
         if (!size_valid) {
             validation_messages.push(size_validation_message);
         }

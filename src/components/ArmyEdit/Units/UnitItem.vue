@@ -19,7 +19,8 @@ const { supportAssetAttachmentId } = defineProps<{
 
 const unitStore = useSupportAssetUnitsStore();
 
-const visible = ref(false);
+const visible = unitStore.getUnitVisibleComputed(supportAssetAttachmentId);
+
 const info = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachmentId));
 const options = computed(() => unitStore.getAvailableVehiclesInfo(supportAssetAttachmentId));
 const upgrade_pod_choices = computed(() => unitStore.getUnitUpgradePodChoicesInfo(supportAssetAttachmentId));
@@ -50,9 +51,10 @@ const unitTypeTrait = computed(() => {
 const traits = computed(() => {
   return info.value?.traits.filter((trait) => trait.id !== UNIT_TRAIT.AUXILIARY_UNIT) ?? [];
 });
+
 </script>
 <template>
-  <div class="card card-dark-border" v-if="info">
+  <div class="card card-dark-border" :class="{'border-danger': !unit_points_valid}" v-if="info">
     <div class="card-header d-flex text-bg-primary">
       <div class="flex-grow-1">
         <span class="d-inline-block py-1 ps-3 pe-1 fw-bold">

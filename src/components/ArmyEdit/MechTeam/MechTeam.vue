@@ -2,7 +2,7 @@
 import { BButton, BCollapse, BOffcanvas } from 'bootstrap-vue-next';
 import { computed, ref } from 'vue';
 import { MECH_TEAM_PERKS, TEAM_PERK } from '../../../data/mech-team-perks';
-import type { MECH_TEAM, MechTeamPerkColumn } from '../../../data/mech-teams';
+import { type MECH_TEAM, type MechTeamPerkColumn, SUPPORT_ASSET_UNITS_GROUP_ID } from '../../../data/mech-teams';
 import { MECH_SIZES } from '../../../data/unit-sizes.js';
 import { useTeamStore } from '../../../store/team-store';
 import { useValidationStore } from '../../../store/validation-store';
@@ -11,6 +11,7 @@ import SvgIcon from '../../UI/Icon.vue';
 import IconValidationError from '../../UI/IconValidationError.vue';
 import TeamGroupValidation from '../ArmyList/BtnArmyListValidation/TeamGroupValidation.vue';
 import MechTeamGroup from './MechTeamGroup.vue';
+import MechTeamSupportAssetGroup from './MechTeamSupportAssetGroup.vue';
 
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
@@ -22,10 +23,12 @@ const visible = teamStore.getTeamVisibleComputed(teamId);
 const collapsing = ref(false);
 const showTeamPerks = ref(false);
 const team = computed(() => teamStore.getTeamDef(teamId));
-const teamMechCount = computed(() => teamStore.getTeamMechCount(teamId));
+const teamMechCount = computed(() => teamStore.getTeamUnitCount(teamId));
 const teamPerkIdDef = computed(() => (perkId: TEAM_PERK) => MECH_TEAM_PERKS[perkId]);
 const validation = computed(() => validationStore.getTeamValidation(teamId));
 const valid = computed(() => validation.value.valid);
+const supportAssetUnits = computed(() => team.value.support_asset_units);
+const teamGroups = computed(() => Object.values(team.value.groups).filter(group => group.id !== SUPPORT_ASSET_UNITS_GROUP_ID));
 
 const sizeDisplayNames = computed(() => (column: MechTeamPerkColumn) => {
   if ('custom_perk_column' in column) {
@@ -81,6 +84,7 @@ function collapseAll() {
             Team Size
           </template>
         </BtnToolTip>
+
         <IconValidationError
           btn-class="ms-1"
           size="sm"
@@ -147,11 +151,15 @@ function collapseAll() {
     >
       <div class="card-body">
         <MechTeamGroup
-          v-for="group in team.groups"
+          v-for="group in teamGroups"
           :key="group.id"
           :team-id="teamId"
           :group-id="group.id"
         />
+
+        <div v-if="supportAssetUnits">
+          <MechTeamSupportAssetGroup :team-id="team.id" :group-id="SUPPORT_ASSET_UNITS_GROUP_ID" />
+        </div>
       </div>
     </BCollapse>
   </div>
