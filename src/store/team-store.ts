@@ -2,7 +2,6 @@ import { difference, sumBy } from 'es-toolkit';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, ref } from 'vue';
 import { GAME_SIZES } from '../data/game-sizes';
-import { MECH_BODY_MODS, MECH_BODY_MODS_DROP_DOWN } from '../data/mech-body';
 import { MECH_TEAM_PERKS, perkIdsToInfo, TEAM_PERK } from '../data/mech-team-perks';
 import { MECH_TEAM, MECH_TEAM_SIZE, MECH_TEAM_SIZES, MECH_TEAMS } from '../data/mech-teams';
 import type { MECH_UPGRADE } from '../data/mech-upgrades';
@@ -349,93 +348,6 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             });
         }
 
-        // internal
-        function getMechStructureModValid(mechId: number, modId: string) {
-            const mech = mechStore.getMech(mechId);
-            if (!mech) return { valid: true, validation_message: null };
-            const { teamId, groupId } = getMechTeamAndGroupIds(mechId);
-            const teamDisplayName = getTeamDisplayName(teamId);
-            const groupDef = getTeamGroupDef(teamId, groupId);
-
-            if (!getBodyModValid(groupDef.limited_structure_mod_ids, modId)) {
-                return {
-                    valid: false,
-                    validation_message: `Not available to ${teamDisplayName} ${groupDef.display_name}`,
-                };
-            }
-
-            const requiredId = groupDef.required_armor_or_structure_mod_id_once;
-            if (requiredId) {
-                if (!requiredStructureOrArmorModValid(
-                    mech.structure_mod_id,
-                    mech.armor_mod_id,
-                    requiredId,
-                    modId,
-                )) {
-                    const requiredDisplayName = MECH_BODY_MODS[requiredId].display_name;
-                    return {
-                        valid: false,
-                        validation_message: `${teamDisplayName} requires ${groupDef.display_name} structure or armor to be ${requiredDisplayName}`,
-                    };
-                }
-            }
-
-            return {
-                valid: true,
-                validation_message: null,
-            };
-        }
-
-        // internal
-        function getMechArmorModValid(mechId: number, modId: string) {
-            const mech = mechStore.getMech(mechId);
-            if (!mech) return { valid: true, validation_message: null };
-            const { teamId, groupId } = getMechTeamAndGroupIds(mechId);
-            const teamDisplayName = getTeamDisplayName(teamId);
-            const groupDef = getTeamGroupDef(teamId, groupId);
-
-            if (!getBodyModValid(groupDef.limited_armor_mod_ids, modId)) {
-                return {
-                    valid: false,
-                    validation_message: `Not available to ${teamDisplayName} ${groupDef.display_name}`,
-                };
-            }
-
-            const requiredId = groupDef.required_armor_or_structure_mod_id_once;
-            if (requiredId) {
-                if (!requiredStructureOrArmorModValid(
-                    mech.armor_mod_id,
-                    mech.structure_mod_id,
-                    requiredId,
-                    modId,
-                )) {
-                    return {
-                        valid: false,
-                        validation_message: `${teamDisplayName} requires ${groupDef.display_name} structure or armor to be Reinforced`,
-                    };
-                }
-            }
-
-            return {
-                valid: true,
-                validation_message: null,
-            };
-        }
-
-        function requiredStructureOrArmorModValid(currentModId: string, otherModId: string, requiredId: string, modId: string) {
-            return !(otherModId !== requiredId &&
-                currentModId === requiredId &&
-                modId !== requiredId);
-        }
-
-        function getBodyModValid(limitedModIds: string[], modId: string) {
-            if (!limitedModIds || !limitedModIds.length) {
-                return true;
-            }
-
-            return limitedModIds.includes(modId);
-        }
-
         function getTeamMechCount(teamId: MECH_TEAM) {
             const team = findById(teams.value, teamId);
             return team ? sumBy(team.groups, (group) => group.mechs.length) : 0;
@@ -488,28 +400,6 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             }
 
             return Object.keys(teamDef.groups)[0];
-        }
-
-        function getMechStructureModOptions(mechId: number) {
-            return MECH_BODY_MODS_DROP_DOWN.map((item) => {
-                const { valid, validation_message } = getMechStructureModValid(mechId, item.id);
-                return {
-                    ...item,
-                    valid,
-                    validation_message,
-                };
-            });
-        }
-
-        function getMechArmorModOptions(mechId: number) {
-            return MECH_BODY_MODS_DROP_DOWN.map((item) => {
-                const { valid, validation_message } = getMechArmorModValid(mechId, item.id);
-                return {
-                    ...item,
-                    valid,
-                    validation_message,
-                };
-            });
         }
 
         function getMechHasTeamPerkId(mechId: number, perkId: TEAM_PERK) {
@@ -876,8 +766,6 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             getMechUpgradeIsRequired,
             getMechTeamAndGroupIds,
             getAvailableMechSizes,
-            getMechStructureModOptions,
-            getMechArmorModOptions,
             getWeaponProhibited,
             getWeaponTraitsProhibited,
             getMechWeaponIsRequiredInfo,

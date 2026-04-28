@@ -1,6 +1,6 @@
 import { deepFreeze, makeFrozenStaticListIds, makeStaticListIds } from './data-helpers';
 import { MECH_ARMOR_UPGRADE } from './mech-armor-upgrades';
-import { MECH_BODY_MOD } from './mech-body';
+import { MECH_BODY_MOD } from './mech-body-mod';
 import { TEAM_PERK } from './mech-team-perks';
 import { MECH_UPGRADE } from './mech-upgrades';
 import { MECH_WEAPON } from './mech-weapons';

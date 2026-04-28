@@ -1,4 +1,5 @@
-import { listToDropDown, makeFrozenStaticListIds } from './data-helpers';
+import { listToDropDown, makeStaticListIds } from './data-helpers';
+import type { FactionPerk } from './faction-perks';
 
 export enum MECH_BODY_MOD {
     STRIPPED = 'MOD_STRIPPED',
@@ -6,14 +7,20 @@ export enum MECH_BODY_MOD {
     REINFORCED = 'MOD_REINFORCED',
 }
 
-export interface MechBody {
-    id: MECH_BODY_MOD;
-    display_name: string;
-    modifier: number;
-    max_tons: number;
+export interface MechBodyMod {
+    id: MECH_BODY_MOD,
+    display_name: string,
+    modifier: number,
+    max_tons: number,
 }
 
-export const MECH_BODY_MODS: Readonly<Record<MECH_BODY_MOD, MechBody>> = makeFrozenStaticListIds<MechBody>({
+export interface MechBodyModInfo extends MechBodyMod {
+    faction_perks: FactionPerk[],
+    valid: boolean,
+    validation_message: null | string,
+}
+
+export const MECH_BODY_MODS = makeStaticListIds<MechBodyMod>({
     [MECH_BODY_MOD.STRIPPED]: {
         display_name: 'Stripped',
         modifier: -2,

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import { type MECH_BODY_MOD, MECH_BODY_MODS } from '../../../../data/mech-body';
+import type { FactionPerk, FactionPerkInfo } from '../../../../data/faction-perks';
+import { type MECH_BODY_MOD, MECH_BODY_MODS, type MechBodyModInfo } from '../../../../data/mech-body-mod';
 import FormatNumber from '../../../functional/format-number.vue';
+import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 
 const {
@@ -14,6 +16,7 @@ const {
   options,
   valid,
   validationMessage,
+  factionPerks,
 } = defineProps<{
   formId: string,
   label: string,
@@ -21,14 +24,8 @@ const {
   tonnage: number,
   armor: number | null,
   structure: number | null,
-  options: {
-    value: MECH_BODY_MOD,
-    text: string,
-    modifier: number,
-    max_tons: number,
-    valid: boolean,
-    validation_message: string | null,
-  }[],
+  factionPerks: FactionPerk[],
+  options: MechBodyModInfo[],
   valid: boolean,
   validationMessage: string,
 }>();
@@ -72,16 +69,16 @@ function selectOption(value: MECH_BODY_MOD) {
           </thead>
           <tbody>
           <tr
-            v-for="item in options" :key="item.value"
+            v-for="item in options" :key="item.id"
             :class="{
               'disabled': !item.valid,
               'dropdown-row': true,
-              'table-selected':   (item.value === model)
+              'table-selected':   (item.id === model)
             }"
-            @click="selectOption(item.value)"
+            @click="selectOption(item.id)"
           >
             <td>
-              {{ item.text }}
+              {{ item.display_name }}
             </td>
             <td class="text-end">
               <format-number :val="item.modifier" />
@@ -94,6 +91,11 @@ function selectOption(value: MECH_BODY_MOD) {
                 :valid="item.valid"
                 :validation-message="item.validation_message"
               />
+              <IconFactionPerks
+                size="sm"
+                btn-class="ms-1"
+                :perks="item.faction_perks"
+              />
             </td>
           </tr>
           </tbody>
@@ -105,6 +107,12 @@ function selectOption(value: MECH_BODY_MOD) {
         :valid="valid"
         :validation-message="validationMessage"
       />
+      <IconFactionPerks
+        size="md"
+        btn-class="ms-1"
+        :perks="factionPerks"
+      />
+      <slot name="after"></slot>
     </td>
     <td class="text-end">
       <div class="col-form-label">
@@ -113,7 +121,6 @@ function selectOption(value: MECH_BODY_MOD) {
     </td>
     <td class="text-end">
       <div class="col-form-label">
-
         <format-number :val="structure" v-if="structure !== null" />
       </div>
     </td>

@@ -2,9 +2,9 @@
 import { BFormInput } from 'bootstrap-vue-next';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { MECH_ARMOR_UPGRADE } from '../../../data/mech-armor-upgrades';
 import { TEAM_PERK } from '../../../data/mech-team-perks';
 import { useFactionStore } from '../../../store/faction-store';
+import { useMechArmorStore } from '../../../store/mech-armor-store';
 import { useMechStore } from '../../../store/mech-store';
 import { useTeamStore } from '../../../store/team-store';
 import { useValidationStore } from '../../../store/validation-store';
@@ -21,6 +21,7 @@ const mechStore = useMechStore();
 const factionStore = useFactionStore();
 const teamStore = useTeamStore();
 const validationStore = useValidationStore();
+const mechArmorStore = useMechArmorStore();
 
 const { mechId } = defineProps<{
   mechId: number
@@ -40,8 +41,8 @@ const {
 
 } = storeToRefs(factionStore);
 
-const structureModOptions = computed(() => teamStore.getMechStructureModOptions(mechId)!);
-const armorModOptions = computed(() => teamStore.getMechArmorModOptions(mechId)!);
+const structureModOptions = computed(() => mechArmorStore.getMechStructureModOptions(mechId)!);
+const armorModOptions = computed(() => mechArmorStore.getMechArmorModOptions(mechId)!);
 const structureModValid = computed(() => !validationStore.teamGroupMechStructureInvalid(mechId));
 const armorModValid = computed(() => !validationStore.teamGroupMechArmorInvalid(mechId));
 const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeamGroupMessage(mechId));
@@ -88,22 +89,23 @@ const hasAuxArmorUpgradePerk = computed(() => teamStore.getMechHasTeamPerkId(mec
         modifier-label="Armor Stat"
         v-model="mech.armor_mod_id"
         :form-id="'mech-input-armor-mod-' + mechId"
-        :tonnage="info.armor_mod.modifier"
+        :tonnage="-info.armor_mod.max_tons"
         :armor="info.armor_mod.modifier"
         :structure="null"
         :options="armorModOptions"
         :valid="armorModValid"
+        :faction-perks="info.armor_mod.faction_perks"
         :validation-message="notAvailableMessage"
-
       />
       <MechBodyMods
         label="Structure Type"
         modifier-label="Structure Stat"
         v-model="mech.structure_mod_id"
         :form-id="'mech-input-structure-mod-' + mechId"
-        :tonnage="info.structure_mod.modifier"
+        :tonnage="-info.structure_mod.max_tons"
         :armor="null"
         :structure="info.structure_mod.modifier"
+        :faction-perks="info.structure_mod.faction_perks"
         :options="structureModOptions"
         :valid="structureModValid"
         :validation-message="notAvailableMessage"

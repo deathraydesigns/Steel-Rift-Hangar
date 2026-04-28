@@ -5,7 +5,7 @@ import { updateObject } from '../data/data-helpers';
 import type { FactionPerk } from '../data/faction-perks';
 import { DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS } from '../data/factions';
 import { MECH_ARMOR_UPGRADE, MECH_ARMOR_UPGRADES } from '../data/mech-armor-upgrades';
-import { MECH_BODY_MOD, MECH_BODY_MODS } from '../data/mech-body';
+import { MECH_BODY_MOD } from '../data/mech-body-mod';
 import { MECH_MOBILITIES, MECH_MOBILITY } from '../data/mech-mobility';
 import { MECH_TEAM_PERKS, TEAM_PERK, type TeamPerkInfo } from '../data/mech-team-perks';
 import { MECH_TEAM } from '../data/mech-teams';
@@ -31,6 +31,7 @@ import {
 import { useFactionStore } from './faction-store';
 import { deleteItemById, findBy, findById, findItemIndex, moveItem } from './helpers/collection-helper';
 import { type GrantedOrderCollection, makeGrantedOrderCollection } from './helpers/helpers';
+import { useMechArmorStore } from './mech-armor-store';
 import { useTeamStore } from './team-store';
 import { useValidationStore } from './validation-store';
 
@@ -48,6 +49,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
         const teamStore = useTeamStore(scope);
         const validationStore = useValidationStore(scope);
         const factionStore = useFactionStore(scope);
+        const mechArmorStore = useMechArmorStore(scope);
 
         const mechs = ref<Mech[]>([]);
         const mechs_id_increment = ref(1);
@@ -307,8 +309,9 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             const armorUpgradesInfo = armor_upgrade_ids.map(id => getMechArmorUpgradeInfo(mechId, id)).filter(v => !!v);
 
             const size = MECH_SIZES[size_id];
-            const structure_mod = MECH_BODY_MODS[structure_mod_id];
-            const armor_mod = MECH_BODY_MODS[armor_mod_id];
+
+            const structure_mod = mechArmorStore.getStructureBodyModInfo(mechId, structure_mod_id);
+            const armor_mod = mechArmorStore.getArmorBodyModInfo(mechId, armor_mod_id);
             const mobility = MECH_MOBILITIES[mobility_id];
 
             let {
@@ -337,8 +340,10 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
             let used_tons = weapon_used_tons +
                 upgrade_used_tons +
-                armor_stat +
-                structure_stat +
+                // armor stat tons
+                size.armor + armor_mod.max_tons +
+                // structure stat tons
+                size.structure + structure_mod.max_tons +
                 sumBy(armorUpgradesInfo, (v) => v.cost ?? 0);
 
             if (factionStore.hasTopEndHardware) {
@@ -361,7 +366,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
             armor_stat += sumBy(armorUpgradesInfo, (v) => v.armor_mod ?? 0);
 
-            let tonnage_stat = (MECH_SIZES)[size_id].max_tons;
+            let tonnage_stat = MECH_SIZES[size_id].max_tons;
             const extraTonnage = teamStore.getMechHasTeamPerkId(mechId, TEAM_PERK.EXTRA_TONNAGE);
             if (extraTonnage) {
                 tonnage_stat += 5;
@@ -643,16 +648,6 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                     if (traitLimited) {
                         (traitLimited.X as number) += 1;
                         used_team_perks.push(perk);
-                    }
-                }
-            }
-
-            if (upgradeId === MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM) {
-                const materielPerk = factionStore.hasMaterielStockpilesInfo;
-                if (materielPerk) {
-                    if (traitLimited) {
-                        (traitLimited.X as number) += 1;
-                        faction_perks.push(materielPerk);
                     }
                 }
             }

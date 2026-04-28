@@ -1,5 +1,5 @@
 import { MECH_ARMOR_UPGRADE } from '../mech-armor-upgrades';
-import { MECH_BODY_MOD } from '../mech-body';
+import { MECH_BODY_MOD } from '../mech-body-mod';
 import { MECH_MOBILITY } from '../mech-mobility';
 import { MECH_TEAM } from '../mech-teams';
 import { MECH_UPGRADE } from '../mech-upgrades';

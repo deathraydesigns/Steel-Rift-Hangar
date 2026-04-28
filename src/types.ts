@@ -1,6 +1,6 @@
 import type { FactionPerk } from './data/faction-perks';
 import type { MECH_ARMOR_UPGRADE } from './data/mech-armor-upgrades';
-import type { MECH_BODY_MOD, MechBody } from './data/mech-body';
+import type { MECH_BODY_MOD, MechBodyModInfo } from './data/mech-body-mod';
 import type { MECH_MOBILITY, MechMobility } from './data/mech-mobility';
 import type { TeamPerkInfo } from './data/mech-team-perks';
 import type { MECH_TEAM } from './data/mech-teams';
@@ -141,8 +141,8 @@ export interface MechInfo {
     display_name: string,
     placeholder_name: string,
     size: MechSize,
-    structure_mod: MechBody,
-    armor_mod: MechBody,
+    structure_mod: MechBodyModInfo,
+    armor_mod: MechBodyModInfo,
     max_tons: number,
     used_tons: number,
     max_slots: number,

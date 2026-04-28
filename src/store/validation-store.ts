@@ -3,7 +3,7 @@ import { defineScopeableStore } from 'pinia-scope';
 import { computed } from 'vue';
 import { GAME_SIZE } from '../data/game-sizes';
 import { type MECH_ARMOR_UPGRADE, MECH_ARMOR_UPGRADES } from '../data/mech-armor-upgrades';
-import { MECH_BODY_MODS } from '../data/mech-body';
+import { MECH_BODY_MODS } from '../data/mech-body-mod';
 import { TEAM_PERK } from '../data/mech-team-perks';
 import { MECH_TEAM, MECH_TEAMS } from '../data/mech-teams';
 import { MECH_UPGRADE, MECH_UPGRADES } from '../data/mech-upgrades';
