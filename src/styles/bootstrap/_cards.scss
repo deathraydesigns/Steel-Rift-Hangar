@@ -3,6 +3,10 @@
   margin-bottom: .5rem;
   --bs-card-box-shadow: #{$box-shadow-sm};
 
+  .card-header:first-child:last-child {
+    border-radius: $card-inner-border-radius;
+  }
+
   .card-header:has(+ .collapse:not(.show)) {
     border-bottom: 0;
     border-radius: $card-inner-border-radius;
