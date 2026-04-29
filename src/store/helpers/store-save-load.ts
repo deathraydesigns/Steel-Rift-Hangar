@@ -40,7 +40,7 @@ export function disposeStores(scope = '') {
 export function makeSaveFileData() {
 
     const result: any = {
-        save_schema_version: 3,
+        save_schema_version: 4,
     };
 
     getStores().forEach((store: any) => {

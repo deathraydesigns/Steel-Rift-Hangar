@@ -34,6 +34,9 @@ function onSortableChange(event: {
   mechStore.moveMechUpgradeAttachment(mechId, moved.element, moved.newIndex);
 }
 
+const hasDroneUpgrade = computed(() => mechStore.getMechUpgradesAttachmentInfo(mechId).some(v => !!v.drone_attach_type));
+const upgradeOptions = computed(() => mechStore.getMechAvailableUpgradesInfo(mechId).filter(v => !v.drone_attach_type));
+const droneUpgradeOptions = computed(() => mechStore.getMechAvailableUpgradesInfo(mechId).filter(v => !!v.drone_attach_type));
 </script>
 <template>
   <thead :class="{
@@ -51,13 +54,24 @@ function onSortableChange(event: {
     <th>
       Upgrades
     </th>
-    <th colspan="3">
-      Traits
+    <template v-if="hasDroneUpgrade">
+      <th colspan="2">
+        Traits
+      </th>
+      <th>
+        Drone Targets
+      </th>
+    </template>
+    <template v-else>
+      <th colspan="3">
+        Traits
+      </th>
+    </template>
+    <th class="table-btn-cell">
+      <MechUpgradeAdd text="Add" type="Upgrades" :mech-id="mechId" :options="upgradeOptions" />
     </th>
-    <td class="table-btn-cell">
-      <MechUpgradeAdd :mech-id="mechId" />
-    </td>
-    <th>
+    <th class="table-btn-cell">
+      <MechUpgradeAdd text="Drones" type="Drones" :mech-id="mechId" :options="droneUpgradeOptions" />
     </th>
     <th class="fw-medium text-end">
       Slots

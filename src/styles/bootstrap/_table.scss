@@ -74,4 +74,7 @@ $table-danger-subtle: lighten(map.get($table-variants, 'danger'), 6%);
 @include color-mode(dark) {
   @include table-variant('tinted', lighten($dark, 7%));
   @include table-variant('selected', lighten($dark, 7%));
+
+  $table-danger-subtle: darken(map.get($table-variants, 'danger'), 78%);
+  @include table-variant('danger-subtle', $table-danger-subtle);
 }

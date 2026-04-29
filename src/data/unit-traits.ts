@@ -1,5 +1,5 @@
 import type { Trait, TraitFormatter, TraitInfo } from '../types';
-import { MINE_LAYER } from './_mine-layer';
+import { MINE_LAYER } from './_shared';
 import { xFormater, xyFormater } from './data-formatters';
 import { makeTraits, type TraitDef } from './data-helpers';
 import { MECH_UPGRADE, MECH_UPGRADES } from './mech-upgrades';

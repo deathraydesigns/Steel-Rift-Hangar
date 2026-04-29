@@ -3,6 +3,7 @@ import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
 import type { MECH_UPGRADE } from '../../../../data/mech-upgrades';
 import { useMechStore } from '../../../../store/mech-store';
+import type { MechUpgradeInfo } from '../../../../types';
 import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
@@ -11,12 +12,14 @@ import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
 import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
 import TraitList from '../../../UI/TraitList.vue';
 
-const { mechId } = defineProps<{
-  mechId: number
+const { mechId, options, text, type } = defineProps<{
+  mechId: number,
+  options: MechUpgradeInfo[],
+  text: string,
+  type: string,
 }>();
 
 const mechStore = useMechStore();
-const options = computed(() => mechStore.getMechAvailableUpgradesInfo(mechId));
 
 function addUpgrade(upgradeId: MECH_UPGRADE) {
   mechStore.addMechUpgradeAttachment(mechId, upgradeId);
@@ -26,7 +29,7 @@ function addUpgrade(upgradeId: MECH_UPGRADE) {
   <BDropdown
     :id="'mech-input-upgrades-add-' + mechId"
     class="dropdown-table"
-    text="Add"
+    :text="text"
     size="sm"
     variant="secondary"
     lazy
@@ -36,7 +39,7 @@ function addUpgrade(upgradeId: MECH_UPGRADE) {
         <thead class="sticky-top top-0 shadow">
         <tr>
           <td>
-            Upgrade
+            {{ type }}
           </td>
           <td class="text-end">
             Slots
@@ -79,7 +82,7 @@ function addUpgrade(upgradeId: MECH_UPGRADE) {
           <td class="text-end">
             <format-number :val="item.cost" :invert-color="true" />
           </td>
-          <td class="notes">
+          <td>
             <TraitList :traits="item.traits" />
           </td>
           <td class="notes">

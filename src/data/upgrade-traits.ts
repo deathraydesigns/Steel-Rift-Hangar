@@ -1,5 +1,5 @@
 import type { Trait, TraitInfo } from '../types';
-import { MINE_LAYER } from './_mine-layer';
+import { DRONE_MINE_DIRECTOR, MINE_LAYER } from './_shared';
 import { inchFormater, xFormater } from './data-formatters';
 import { makeTraits, type TraitDef } from './data-helpers';
 import { ORDER } from './orders';
@@ -9,6 +9,7 @@ export enum UPGRADE_TRAIT {
     DASH = 'TRAIT_DASH',
     LIMITED = 'TRAIT_UPGRADE_LIMITED',
     MINELAYER = 'TRAIT_MINELAYER',
+    DRONE_MINE_DIRECTOR_ATTACHED = 'TRAIT_DRONE_DIRECTOR_ATTACHED',
 }
 
 export interface UpgradeTraitDef extends TraitDef<UPGRADE_TRAIT> {
@@ -32,6 +33,10 @@ export const UPGRADE_TRAITS: Readonly<Record<UPGRADE_TRAIT, UpgradeTraitDef>> = 
     },
     [UPGRADE_TRAIT.MINELAYER]: {
         ...MINE_LAYER,
+    },
+    [UPGRADE_TRAIT.DRONE_MINE_DIRECTOR_ATTACHED]: {
+        display_name: DRONE_MINE_DIRECTOR.display_name,
+        description: DRONE_MINE_DIRECTOR.description,
     },
 });
 

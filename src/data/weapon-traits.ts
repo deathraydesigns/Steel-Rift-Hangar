@@ -1,4 +1,5 @@
 import type { Trait, TraitInfo } from '../types';
+import { DRONE_TACTICAL_AWARENESS, DRONE_TARGETING_SUPPORT } from './_shared';
 import { inchFormater, xFormater, xyFormater } from './data-formatters';
 import { makeTraits, type TraitDef } from './data-helpers';
 
@@ -25,6 +26,9 @@ export enum WEAPON_TRAIT {
     TETHER = 'TRAIT_TETHER',
     ANTI_AIR = 'TRAIT_ANTI_AIR',
     SMASHER = 'TRAIT_SMASHER',
+
+    DRONE_TACTICAL_AWARENESS_ATTACHED = 'TRAIT_DRONE_TACTICAL_AWARENESS_ATTACHED',
+    DRONE_TARGETING_SUPPORT_ATTACHED = 'TRAIT_DRONE_TARGETING_SUPPORT_ATTACHED',
 }
 
 export interface WeaponTraitDef extends TraitDef<WEAPON_TRAIT> {
@@ -133,6 +137,14 @@ export const WEAPON_TRAITS: Readonly<Record<WEAPON_TRAIT, WeaponTraitDef>> = mak
         description: 'This Unit is permitted to make the SMASH Order, even if it has the Auxiliary Unit Trait. The Unit is considered of Weight Class X when making a SMASH Order. Add Y dice to the Attack Pool when performing a SMASH Order.',
         formatter: xyFormater,
     },
+    [WEAPON_TRAIT.DRONE_TACTICAL_AWARENESS_ATTACHED]: {
+        display_name: DRONE_TACTICAL_AWARENESS.display_name,
+        description: DRONE_TACTICAL_AWARENESS.description,
+    },
+    [WEAPON_TRAIT.DRONE_TARGETING_SUPPORT_ATTACHED]: {
+        display_name: DRONE_TARGETING_SUPPORT.display_name,
+        description: DRONE_TARGETING_SUPPORT.description,
+    },
 });
 
 export function weaponTraitDisplayName({ id, X, Y }: Trait<WEAPON_TRAIT>): string {
@@ -151,7 +163,7 @@ export function weaponTraitDisplayName({ id, X, Y }: Trait<WEAPON_TRAIT>): strin
 export function weaponTraitInfo(trait: Trait<WEAPON_TRAIT>): TraitInfo<WEAPON_TRAIT> {
     return {
         dependent_trait_ids: [],
-        ...WEAPON_TRAITS[trait.id as WEAPON_TRAIT],
+        ...WEAPON_TRAITS[trait.id],
         ...trait,
         display_name: weaponTraitDisplayName(trait),
     };

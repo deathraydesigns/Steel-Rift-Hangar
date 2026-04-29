@@ -5,7 +5,7 @@ import { UPGRADE_TRAIT } from '../../../../data/upgrade-traits.js';
 import { WEAPON_TRAIT } from '../../../../data/weapon-traits.js';
 import { findBy } from '../../../../store/helpers/collection-helper';
 import { useMechStore } from '../../../../store/mech-store';
-import type { MechWeaponAttachmentInfo, Trait, TraitInfo } from '../../../../types';
+import type { MechWeaponAttachmentInfo, TraitInfo } from '../../../../types';
 import DamageFormatter from '../../../UI/DamageFormatter.vue';
 import RangeFormatter from '../../../UI/RangeFormatter.vue';
 
@@ -18,9 +18,17 @@ const weapons = computed(() => {
   let mineDroneUpgrade = findBy(mechStore.getMechUpgradesAttachmentInfo(mechId), 'upgrade_id', MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM);
 
   if (mineDroneUpgrade) {
-    mineDroneUpgrade.display_name = 'Mine Drones';
-    mineDroneUpgrade.traits = mineDroneUpgrade.traits.filter(trait => trait.id !== UPGRADE_TRAIT.LIMITED);
-    results.push(mineDroneUpgrade as unknown as MechWeaponAttachmentInfo);
+    const mineDroneWeapon: MechWeaponAttachmentInfo = {
+      ...mineDroneUpgrade,
+      display_name: 'Mine Drones',
+      traits: mineDroneUpgrade.traits.filter(trait => trait.id !== UPGRADE_TRAIT.LIMITED) as unknown as TraitInfo<WEAPON_TRAIT>[],
+      range: null,
+      range_modifier: 0,
+      range_total: 0,
+      damage: null,
+    } as unknown as MechWeaponAttachmentInfo;
+
+    results.push(mineDroneWeapon as unknown as MechWeaponAttachmentInfo);
   }
 
   return results;

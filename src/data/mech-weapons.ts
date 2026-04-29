@@ -8,28 +8,31 @@ import { type MechSizeId, SIZE } from './unit-sizes';
 import { WEAPON_TRAIT } from './weapon-traits';
 
 export enum MECH_WEAPON {
-    AUTO_CANNON = 'AUTO_CANNON',
-    HOWITZER = 'HOWITZER',
-    LASER = 'LASER',
-    MELEE_WEAPON = 'MELEE_WEAPON',
-    MISSILES = 'MISSILES',
-    PARTICLE_CANNON = 'PARTICLE_CANNON',
-    RAIL_GUN = 'RAIL_GUN',
-    ROCKET_PACK = 'ROCKET_PACK',
-    ROTARY_CANNON = 'ROTARY_CANNON',
-    SHOT_CANNON = 'SHOT_CANNON',
-    SUBMUNITIONS = 'SUBMUNITIONS',
+    AA_CANNON = 'AA_CANNON',
+    AA_MISSILES = 'AA_MISSILES',
     ARC_GUN = 'ARC_GUN',
+    AUTO_CANNON = 'AUTO_CANNON',
+    CLUSTER_ROCKETS = 'CLUSTER_ROCKETS',
     COMBAT_BLADE = 'COMBAT_BLADE',
     DEMOLITION_CUTTER = 'DEMOLITION_CUTTER',
     HARPOON_GUN = 'HARPOON_GUN',
+    HOWITZER = 'HOWITZER',
     IMPACT_HAMMER = 'IMPACT_HAMMER',
+    LASER = 'LASER',
     MAG_TETHER = 'MAG_TETHER',
     MASS_TETSUBO = 'MASS_TETSUBO',
     MEGA_GLAIVE = 'MEGA_GLAIVE',
+    MELEE_WEAPON = 'MELEE_WEAPON',
+    MISSILES = 'MISSILES',
+    PARTICLE_CANNON = 'PARTICLE_CANNON',
     PLASMA_BLADE = 'PLASMA_BLADE',
     PULSE_SALVO = 'PULSE_SALVO',
+    RAIL_GUN = 'RAIL_GUN',
+    ROCKET_PACK = 'ROCKET_PACK',
+    ROTARY_CANNON = 'ROTARY_CANNON',
     SHOCK_NET = 'SHOCK_NET',
+    SHOT_CANNON = 'SHOT_CANNON',
+    SUBMUNITIONS = 'SUBMUNITIONS',
 }
 
 export interface MechWeapon {
@@ -76,6 +79,48 @@ export interface MechWeaponInfo {
 }
 
 export const MECH_WEAPONS: Readonly<Record<string, MechWeapon>> = makeFrozenStaticListIds<MechWeapon>({
+    [MECH_WEAPON.AA_CANNON]: makeWeapon({
+        display_name: 'AA Cannon',
+        damage_by_size: {
+            [SIZE.LIGHT]: 5,
+            [SIZE.MEDIUM]: 8,
+            [SIZE.HEAVY]: 11,
+            [SIZE.ULTRA]: 13,
+        },
+        traits: [
+            trait(WEAPON_TRAIT.ANTI_AIR),
+            trait(WEAPON_TRAIT.FLAK),
+            trait(WEAPON_TRAIT.LIGHT),
+            trait(WEAPON_TRAIT.SHORT, 24),
+        ],
+        cost_by_size: {
+            [SIZE.LIGHT]: 3,
+            [SIZE.MEDIUM]: 5,
+            [SIZE.HEAVY]: 6,
+            [SIZE.ULTRA]: 8,
+        },
+    }),
+    [MECH_WEAPON.AA_MISSILES]: makeWeapon({
+        display_name: 'AA Missiles',
+        damage_by_size: {
+            [SIZE.LIGHT]: 3,
+            [SIZE.MEDIUM]: 5,
+            [SIZE.HEAVY]: 7,
+            [SIZE.ULTRA]: 9,
+        },
+        traits: [
+            trait(WEAPON_TRAIT.ANTI_AIR),
+            trait(WEAPON_TRAIT.LIGHT),
+            trait(WEAPON_TRAIT.SMART),
+            trait(WEAPON_TRAIT.LIMITED, 2),
+        ],
+        cost_by_size: {
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 3,
+            [SIZE.HEAVY]: 4,
+            [SIZE.ULTRA]: 5,
+        },
+    }),
     [MECH_WEAPON.AUTO_CANNON]: makeWeapon({
         display_name: 'Auto-Cannon',
         damage_by_size: {
@@ -92,6 +137,26 @@ export const MECH_WEAPONS: Readonly<Record<string, MechWeapon>> = makeFrozenStat
             [SIZE.MEDIUM]: 4,
             [SIZE.HEAVY]: 5,
             [SIZE.ULTRA]: 6,
+        },
+    }),
+    [MECH_WEAPON.CLUSTER_ROCKETS]: makeWeapon({
+        display_name: 'Cluster Rockets',
+        damage_by_size: {
+            [SIZE.LIGHT]: 4,
+            [SIZE.MEDIUM]: 8,
+            [SIZE.HEAVY]: 11,
+            [SIZE.ULTRA]: 15,
+        },
+        traits: [
+            trait(WEAPON_TRAIT.BLAST, 3),
+            trait(WEAPON_TRAIT.LIGHT),
+            trait(WEAPON_TRAIT.LIMITED, 2),
+        ],
+        cost_by_size: {
+            [SIZE.LIGHT]: 2,
+            [SIZE.MEDIUM]: 4,
+            [SIZE.HEAVY]: 6,
+            [SIZE.ULTRA]: 8,
         },
     }),
     [MECH_WEAPON.HOWITZER]: makeWeapon({

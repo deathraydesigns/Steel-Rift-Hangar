@@ -3,7 +3,6 @@ import { chunk, sumBy } from 'es-toolkit';
 import { computed } from 'vue';
 import { FACTION_PERK } from '../../../../data/faction-perks.js';
 import { MECH_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
-import { SIZE } from '../../../../data/unit-sizes.js';
 import { useFactionStore } from '../../../../store/faction-store';
 import { useMechStore } from '../../../../store/mech-store';
 
@@ -17,10 +16,10 @@ const { mechId } = defineProps<{
 const info = computed(() => mechStore.getMechInfo(mechId)!);
 
 const structureSystem = computed(() => {
-  if (info.value.size.id === SIZE.LIGHT) {
+  if (info.value.has_fragile_internals) {
     return 'Fragile Internals';
   }
-  if (info.value.size.id === SIZE.ULTRA) {
+  if (info.value.has_backup_systems) {
     return 'Backup Systems';
   }
 });

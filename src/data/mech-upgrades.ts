@@ -1,8 +1,10 @@
 import type { Optional } from '../_helpers';
 import { type NumberBySize, type Trait, type TraitInfo, type TraitsBySize } from '../types';
+import { DRONE_MINE_DIRECTOR, DRONE_TACTICAL_AWARENESS, DRONE_TARGETING_SUPPORT } from './_shared';
 import { makeFrozenStaticListIds, trait } from './data-helpers';
 import { type MechSizeId, SIZE } from './unit-sizes';
 import { UPGRADE_TRAIT, UPGRADE_TRAITS, upgradeTraitDisplayName } from './upgrade-traits';
+import { WEAPON_TRAIT } from './weapon-traits';
 
 export enum MECH_UPGRADE {
     ANTI_MISSILE_SYSTEM = 'ANTI_MISSILE_SYSTEM',
@@ -31,7 +33,7 @@ export enum MechDroneUpgradeAttachType {
     MINE_DRONE_CARRIER = 'MINE_DRONE_CARRIER'
 }
 
-export interface MechUpgrade {
+export type MechUpgrade = {
     id: MECH_UPGRADE,
     display_name: string,
     description: string,
@@ -40,11 +42,25 @@ export interface MechUpgrade {
     traits_by_size: Partial<TraitsBySize<UPGRADE_TRAIT>>,
     limited_size_ids: MechSizeId[],
     slots: number,
-    drone_attach_type: MechDroneUpgradeAttachType | null,
-}
+} & ({
+    drone_attach_type: MechDroneUpgradeAttachType.MINE_DRONE_CARRIER,
+    drone_attached_trait_id: UPGRADE_TRAIT,
+} | {
+    drone_attach_type: MechDroneUpgradeAttachType.WEAPON,
+    drone_attached_trait_id: WEAPON_TRAIT,
+} | {
+    drone_attach_type: null,
+    drone_attached_trait_id: null,
+})
 
 type InputOmit = 'id' | 'cost' | 'cost_by_size'
-type InputOptional = 'drone_attach_type' | 'traits' | 'slots' | 'traits_by_size' | 'limited_size_ids';
+type InputOptional =
+    'drone_attach_type'
+    | 'traits'
+    | 'slots'
+    | 'traits_by_size'
+    | 'limited_size_ids'
+    | 'drone_attached_trait_id';
 
 type MakeUpgradeInput =
     Omit<
@@ -79,6 +95,7 @@ function makeUpgrade(item: MakeUpgradeInput): Omit<MechUpgrade, 'id'> {
         limited_size_ids,
         slots,
         drone_attach_type: item.drone_attach_type ?? null,
+        drone_attached_trait_id: item.drone_attached_trait_id ?? null,
     };
 }
 
@@ -262,31 +279,37 @@ export const MECH_UPGRADES: Record<MECH_UPGRADE, MechUpgrade> = makeFrozenStatic
         limited_size_ids: [SIZE.HEAVY, SIZE.ULTRA],
     }),
     [MECH_UPGRADE.DRONE_TARGETING_SUPPORT]: makeUpgrade({
-        display_name: 'Targeting Support Drone',
-        description: 'When using the Weapon in an ENGAGE Order, this Weapon gains the benefits of having been preceded by a LOCK ON Order. If the Target has Electronic Countermeasures, they prevent the LOCK ON Order benefits.',
+        display_name: DRONE_TARGETING_SUPPORT.display_name,
+        description: DRONE_TARGETING_SUPPORT.description,
         drone_attach_type: MechDroneUpgradeAttachType.WEAPON,
+        drone_attached_trait_id: WEAPON_TRAIT.DRONE_TARGETING_SUPPORT_ATTACHED,
         cost: 1,
         traits: [
             trait(UPGRADE_TRAIT.COMPACT),
         ],
     }),
     [MECH_UPGRADE.DRONE_TACTICAL_AWARENESS]: makeUpgrade({
-        display_name: 'Tactical Awareness Drone',
-        description: 'When selecting a Unit as a Target with the Weapon, Line of Sight may be drawn from any part of your silhouette, not just the nearest point on the front 180° Arc. This Weapon does not suffer the Secondary Target or Bypass Shot penalties.',
+        display_name: DRONE_TACTICAL_AWARENESS.display_name,
+        description: DRONE_TACTICAL_AWARENESS.description,
         drone_attach_type: MechDroneUpgradeAttachType.WEAPON,
+        drone_attached_trait_id: WEAPON_TRAIT.DRONE_TACTICAL_AWARENESS_ATTACHED,
         cost: 1,
         traits: [
             trait(UPGRADE_TRAIT.COMPACT),
         ],
+
     }),
     [MECH_UPGRADE.DRONE_MINE_DIRECTOR]: makeUpgrade({
-        display_name: 'Mine Director Drone',
-        description: 'Once per turn during this HE-V’s Activation, one Mine Drone Token within 12” of this HE-V may be placed within 6” of its current position. These abilities may not be used while this HE-V has a Redline Marker.',
+        display_name: DRONE_MINE_DIRECTOR.display_name,
+        description: DRONE_MINE_DIRECTOR.description,
         drone_attach_type: MechDroneUpgradeAttachType.MINE_DRONE_CARRIER,
+        drone_attached_trait_id: UPGRADE_TRAIT.DRONE_MINE_DIRECTOR_ATTACHED,
         cost: 1,
+        limited_size_ids: [SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
         traits: [
             trait(UPGRADE_TRAIT.COMPACT),
         ],
+
     }),
 });
 

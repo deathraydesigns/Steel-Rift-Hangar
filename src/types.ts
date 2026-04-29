@@ -4,7 +4,7 @@ import type { MECH_BODY_MOD, MechBodyModInfo } from './data/mech-body-mod';
 import type { MECH_MOBILITY, MechMobility } from './data/mech-mobility';
 import type { TeamPerkInfo } from './data/mech-team-perks';
 import type { MECH_TEAM } from './data/mech-teams';
-import type { MECH_UPGRADE } from './data/mech-upgrades';
+import { type MECH_UPGRADE, MechDroneUpgradeAttachType, type MechUpgrade } from './data/mech-upgrades';
 import type { MECH_WEAPON, MechWeaponInfo } from './data/mech-weapons';
 import type { ORDER } from './data/orders';
 import type { InfantrySquadInfo } from './data/support-assets/_support-asset-types';
@@ -34,19 +34,22 @@ export interface MechWeaponAttachmentInfo extends MechWeaponInfo {
     max_uses: number | null,
 }
 
-export interface MechUpgradeAttachment {
+export type MechUpgradeAttachment = {
     id: number,
     upgrade_id: MECH_UPGRADE,
     display_order: number | null,
+    drone_attachment_target_id: number | null,
 }
 
-export interface MechUpgradeInfo {
+type DistributiveOmit<T, K extends keyof any> =
+    T extends unknown ? Omit<T, K> : never;
+
+export type MechUpgradeInfo =
+    DistributiveOmit<MechUpgrade, 'id' | 'cost_by_size' | 'traits_by_size' | 'limited_size_ids' | 'traits'>
+    & {
     upgrade_id: MECH_UPGRADE,
-    display_name: string,
-    description: string,
     valid: boolean,
     validation_message: string | null,
-    slots: number,
     cost: number | null,
     team_perks: TeamPerkInfo[],
     faction_perks: FactionPerk[],
@@ -55,10 +58,8 @@ export interface MechUpgradeInfo {
     required_by_group: boolean,
 }
 
-export interface MechUpgradeAttachmentInfo extends MechUpgradeInfo {
-    id: number,
-    upgrade_id: MECH_UPGRADE,
-}
+export type MechUpgradeAttachmentInfo = MechUpgradeAttachment & MechUpgradeInfo
+
 
 export interface MechUpgradeTraitsInfo {
     used_team_perks: TeamPerkInfo[],
@@ -161,6 +162,8 @@ export interface MechInfo {
     defense: number,
     smash_damage: number,
     preferred_team_id: MECH_TEAM,
+    has_fragile_internals: boolean,
+    has_backup_systems: boolean,
 }
 
 export interface MechArmorUpgradeInfo {
