@@ -43,6 +43,7 @@ export interface MechTeamGroup {
     max_count: number | boolean,
     size_ids: MechSizeId[],
     default_armor_upgrade_ids?: MECH_ARMOR_UPGRADE[],
+    default_aux_armor_upgrade_id?: MECH_ARMOR_UPGRADE,
     required_weapon_ids: MECH_WEAPON[],
     required_upgrade_ids: MECH_UPGRADE[],
     required_at_least_one_of_upgrade_ids: MECH_UPGRADE[],
@@ -268,6 +269,7 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                     MECH_ARMOR_UPGRADE.ABLATIVE_ARMOR_UPGRADE,
                     MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE,
                 ],
+                default_aux_armor_upgrade_id: MECH_ARMOR_UPGRADE.CERAMIC_ARMOR_UPGRADE,
             }),
         }),
         team_size_perk_columns: [

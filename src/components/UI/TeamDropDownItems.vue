@@ -21,7 +21,7 @@ const existingTeams = computed(() => {
   return [
     MECH_TEAMS[MECH_TEAM.GENERAL],
     MECH_TEAMS[MECH_TEAM.SHELF],
-    ...sortBy(specialTeamTypes.value.existing, [sortTeamsByOriginalIndex]),
+    ...sortBy(specialTeamTypes.value.existing ?? [], [sortTeamsByOriginalIndex]),
   ];
 });
 const notExistingTeams = computed(() => sortBy(specialTeamTypes.value.notExisting, [sortTeamsByOriginalIndex]));

@@ -659,6 +659,10 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 mechOptions.structure_mod_id = groupDef.required_armor_or_structure_mod_id_once;
             }
 
+            if (groupDef?.default_aux_armor_upgrade_id) {
+                mechOptions.aux_armor_upgrade_id = groupDef.default_aux_armor_upgrade_id;
+            }
+
             const weaponIds = [
                 ...groupDef.required_weapon_ids,
             ];
