@@ -235,6 +235,7 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                 required_armor_or_structure_mod_id_once: MECH_BODY_MOD.REINFORCED,
                 limited_structure_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
                 limited_armor_mod_ids: [MECH_BODY_MOD.STANDARD, MECH_BODY_MOD.REINFORCED],
+                default_aux_armor_upgrade_id: MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE,
             }),
             'B': makeGroup({
                 min_count: 1,
