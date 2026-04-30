@@ -522,10 +522,12 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         const mech = mechStore.getMech(mechId);
         if (!mech) return [];
 
-        return [
-            ...mech.armor_upgrade_ids.map(id => teamGroupMechArmorUpgradeInvalid(mechId, id)),
-            teamGroupMechArmorUpgradeInvalid(mechId, mech.aux_armor_upgrade_id),
-        ].filter(v => !!v) as string[];
+        const results = mech.armor_upgrade_ids.map(id => teamGroupMechArmorUpgradeInvalid(mechId, id));
+
+        if (teamStore.getMechHasTeamPerkId(mechId, TEAM_PERK.AUX_DEFENSE_CONFIG)) {
+            results.push(teamGroupMechArmorUpgradeInvalid(mechId, mech.aux_armor_upgrade_id));
+        }
+        return results.filter(v => !!v) as string[];
     }
 
     function teamGroupMechArmorUpgradeInvalid(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE) {
