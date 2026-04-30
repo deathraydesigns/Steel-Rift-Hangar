@@ -4,7 +4,7 @@ import { computed, readonly, ref, toRaw } from 'vue';
 import { trait, updateObject } from '../data/data-helpers';
 import type { FactionPerk } from '../data/faction-perks';
 import { DWC_TOP_END_HARDWARE_BONUS_TONS, RD_ADVANCED_HARDPOINT_DESIGN_BONUS_SLOTS } from '../data/factions';
-import { MECH_ARMOR_UPGRADE, MECH_ARMOR_UPGRADES } from '../data/mech-armor-upgrades';
+import { MECH_ARMOR_UPGRADE, MECH_ARMOR_UPGRADES, type MechArmorUpgradeInfo } from '../data/mech-armor-upgrades';
 import { MECH_BODY_MOD } from '../data/mech-body-mod';
 import { MECH_MOBILITIES, MECH_MOBILITY } from '../data/mech-mobility';
 import { MECH_TEAM_PERKS, TEAM_PERK, type TeamPerkInfo } from '../data/mech-team-perks';
@@ -22,7 +22,7 @@ import { UNIT_TYPE } from '../data/unit-types';
 import { UPGRADE_TRAIT, UPGRADE_TRAITS, upgradeTraitDisplayName } from '../data/upgrade-traits';
 import { WEAPON_TRAIT, weaponTraitInfo } from '../data/weapon-traits';
 import { toaster } from '../toaster';
-import type { MechArmorUpgradeInfo, MechUpgradeInfo, TraitInfo } from '../types';
+import type { MechUpgradeInfo, TraitInfo } from '../types';
 import {
     type Mech,
     type MechInfo,
@@ -1010,6 +1010,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 cost_by_size,
                 display_name,
                 card_upgrade_display_name,
+                card_upgrade_solo_display_name,
                 armor_mod,
                 description,
             } = MECH_ARMOR_UPGRADES[armorUpgradeId];
@@ -1076,6 +1077,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 slots,
                 display_name,
                 card_upgrade_display_name,
+                card_upgrade_solo_display_name,
                 description,
                 valid,
                 validation_message,

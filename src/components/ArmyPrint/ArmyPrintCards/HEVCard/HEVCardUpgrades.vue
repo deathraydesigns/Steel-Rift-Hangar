@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { MECH_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
+import { MECH_ARMOR_UPGRADE, type MechArmorUpgradeInfo } from '../../../../data/mech-armor-upgrades';
 import { MECH_MOBILITIES, MECH_MOBILITY } from '../../../../data/mech-mobility';
 import { MECH_UPGRADE } from '../../../../data/mech-upgrades.js';
 import { UPGRADE_TRAIT } from '../../../../data/upgrade-traits.js';
@@ -24,21 +24,24 @@ type UpgradeItem = {
   max_uses?: number,
 }
 
+const armorUpgrades = computed((): MechArmorUpgradeInfo[] => {
+  return mechStore.getMechAllArmorUpgradesInfo(mechId).filter(v => v.id !== MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE);
+});
+
+const armorUpgradesList = computed((): string[] => {
+  if (armorUpgrades.value.length === 1) return [];
+  return armorUpgrades.value.map(v => v.card_upgrade_display_name);
+});
+
 const upgrades = computed((): UpgradeItem[] => {
-  const armorUpgrades = mechStore.getMechAllArmorUpgradesInfo(mechId)!;
-  const armorUpgradeArray: { display_name?: string }[] = [];
-
-  for (const armorUpgrade of armorUpgrades) {
-    if (armorUpgrade.id !== MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE) {
-      armorUpgradeArray.push({
-        display_name: armorUpgrade.card_upgrade_display_name,
-      });
-    }
+  const soloArmorUpgrade: UpgradeItem[] = [];
+  if (armorUpgrades.value.length === 1) {
+    soloArmorUpgrade.push({
+      display_name: armorUpgrades.value[0].card_upgrade_solo_display_name,
+    });
   }
-
   const upgradesAttachments = mechStore.getMechUpgradesAttachmentInfo(mechId)
     .map(item => {
-
       if (item.traits) {
         item.traits = item.traits
           .filter(trait => trait.id !== UPGRADE_TRAIT.COMPACT && trait.id !== UPGRADE_TRAIT.LIMITED);
@@ -47,20 +50,21 @@ const upgrades = computed((): UpgradeItem[] => {
       return item;
     })
     // shown in weapons row instead
-    .filter(item => item.upgrade_id !== MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM);
+    .filter(item => item.upgrade_id !== MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM) as UpgradeItem[];
 
-  const teamPerks = teamStore.getTeamPerksInfoByMech(mechId).filter(({ visible_on_card }) => visible_on_card);
-  teamPerks.forEach(item => (item as any).is_team_perk = true);
+  const teamPerks = teamStore.getTeamPerksInfoByMech(mechId).filter(({ visible_on_card }) => visible_on_card) as UpgradeItem[];
+  teamPerks.forEach(item => item.is_team_perk = true);
 
-  const mobility = [];
+  const mobility: UpgradeItem[] = [];
   const mech = mechStore.getMech(mechId)!;
   if (mech.mobility_id !== MECH_MOBILITY.BI_PEDAL) {
     mobility.push({
       display_name: MECH_MOBILITIES[mech.mobility_id].display_name,
     });
   }
+
   return [
-    ...armorUpgradeArray,
+    ...soloArmorUpgrade,
     ...upgradesAttachments,
     ...teamPerks,
     ...mobility,
@@ -69,19 +73,18 @@ const upgrades = computed((): UpgradeItem[] => {
 
 const orders = computed(() => {
   const grantedOrders = mechStore.getMechGrantedOrdersCollection(mechId);
-
   return grantedOrders.all();
 });
 </script>
 <template>
-
-  <div v-if="upgrades.length">
+  <div v-if="upgrades.length || armorUpgrades.length">
     <div class="section-heading">
       Upgrades
     </div>
     <div class="upgrades">
       <span v-for="(upgrade, index) in upgrades">
-        {{ upgrade.display_name }}<small v-if="upgrade.card_note"> ({{ upgrade.card_note }})</small>
+
+        {{ upgrade.display_name }}<small v-if="upgrade.card_note"> ({{ upgrade.card_note }}) </small>
         <SvgIcon v-if="upgrade.is_team_perk" name="team-perk" size="18px" />
         <template v-if="upgrade.max_uses">&nbsp;</template>
         <span
@@ -94,6 +97,10 @@ const orders = computed(() => {
           {{ trait.display_name }}
         </template>
         <span v-if="index !== upgrades.length -1">, </span>
+      </span>
+
+      <span v-if="armorUpgradesList.length > 1">
+        <span class="fw-bold"> Armor:</span> {{ armorUpgradesList.join(', ') }}
       </span>
       <span v-if="orders.length">
         <span class="fw-bold"> Special Orders: </span>

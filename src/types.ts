@@ -4,7 +4,7 @@ import type { MECH_BODY_MOD, MechBodyModInfo } from './data/mech-body-mod';
 import type { MECH_MOBILITY, MechMobility } from './data/mech-mobility';
 import type { TeamPerkInfo } from './data/mech-team-perks';
 import type { MECH_TEAM } from './data/mech-teams';
-import { type MECH_UPGRADE, MechDroneUpgradeAttachType, type MechUpgrade } from './data/mech-upgrades';
+import { type MECH_UPGRADE, type MechUpgrade } from './data/mech-upgrades';
 import type { MECH_WEAPON, MechWeaponInfo } from './data/mech-weapons';
 import type { ORDER } from './data/orders';
 import type { InfantrySquadInfo } from './data/support-assets/_support-asset-types';
@@ -59,7 +59,6 @@ export type MechUpgradeInfo =
 }
 
 export type MechUpgradeAttachmentInfo = MechUpgradeAttachment & MechUpgradeInfo
-
 
 export interface MechUpgradeTraitsInfo {
     used_team_perks: TeamPerkInfo[],
@@ -164,17 +163,4 @@ export interface MechInfo {
     preferred_team_id: MECH_TEAM,
     has_fragile_internals: boolean,
     has_backup_systems: boolean,
-}
-
-export interface MechArmorUpgradeInfo {
-    id: MECH_ARMOR_UPGRADE,
-    valid: boolean,
-    validation_message: string,
-    cost: number | null,
-    slots: number,
-    display_name: string,
-    card_upgrade_display_name?: string,
-    description: string,
-    team_perks: TeamPerkInfo[],
-    armor_mod: number | null,
 }
