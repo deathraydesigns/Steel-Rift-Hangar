@@ -957,7 +957,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             const result: MechArmorUpgradeInfo[] = [];
             if (!mech) return result;
 
-            result.push(...getMechAvailableArmorUpgrades(mechId));
+            result.push(...getMechArmorUpgradesInfo(mechId));
             const aux = getMechAuxArmorUpgradeInfo(mechId);
             if (aux) {
                 result.push(aux);
