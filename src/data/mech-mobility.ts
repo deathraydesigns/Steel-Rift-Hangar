@@ -17,7 +17,7 @@ export interface MechMobility {
 export const MECH_MOBILITIES = makeFrozenStaticListIds<MechMobility>({
     [MECH_MOBILITY.BI_PEDAL]: {
         display_name: 'Bi-Pedal',
-        slots: 1,
+        slots: 0,
         granted_order_ids: [],
     },
     [MECH_MOBILITY.TRACKED]: {
