@@ -10,8 +10,8 @@ export enum MECH_BODY_MOD {
 export interface MechBodyMod {
     id: MECH_BODY_MOD,
     display_name: string,
-    modifier: number,
-    max_tons: number,
+    stat_modifier: number,
+    tons: number,
 }
 
 export interface MechBodyModInfo extends MechBodyMod {
@@ -23,18 +23,18 @@ export interface MechBodyModInfo extends MechBodyMod {
 export const MECH_BODY_MODS = makeStaticListIds<MechBodyMod>({
     [MECH_BODY_MOD.STRIPPED]: {
         display_name: 'Stripped',
-        modifier: -2,
-        max_tons: 2,
+        stat_modifier: -2,
+        tons: -2,
     },
     [MECH_BODY_MOD.STANDARD]: {
         display_name: 'Standard',
-        modifier: 0,
-        max_tons: 0,
+        stat_modifier: 0,
+        tons: 0,
     },
     [MECH_BODY_MOD.REINFORCED]: {
         display_name: 'Reinforced',
-        modifier: 2,
-        max_tons: -2,
+        stat_modifier: 2,
+        tons: 2,
     },
 });
 

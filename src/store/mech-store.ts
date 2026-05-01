@@ -406,8 +406,8 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 smash_damage,
             } = size;
 
-            let armor_stat = size.armor + armor_mod.modifier;
-            const structure_stat = size.structure + structure_mod.modifier;
+            let armor_stat = size.armor + armor_mod.stat_modifier;
+            const structure_stat = size.structure + structure_mod.stat_modifier;
 
             const weapon_used_slots = sumBy(weaponsInfo, v => v.slots);
             const weapon_used_tons = sumBy(weaponsInfo, v => v.cost);
@@ -427,9 +427,9 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             let used_tons = weapon_used_tons +
                 upgrade_used_tons +
                 // armor stat tons
-                size.armor + armor_mod.max_tons +
+                size.armor + armor_mod.tons +
                 // structure stat tons
-                size.structure + structure_mod.max_tons +
+                size.structure + structure_mod.tons +
                 sumBy(armorUpgradesInfo, (v) => v.cost ?? 0);
 
             if (factionStore.hasTopEndHardware) {

@@ -16,15 +16,15 @@ export function useMechArmorStore(scope?: string) {
         const faction_perks: FactionPerk[] = [];
 
         const stockpilesPerk = factionStore.hasMaterielStockpilesInfo;
-        let max_tons = bodyMod.max_tons;
+        let tons = bodyMod.tons;
         if (stockpilesPerk && bodyModId === MECH_BODY_MOD.REINFORCED) {
             faction_perks.push(FACTION_PERKS[FACTION_PERK.OI_MATERIEL_STOCKPILES]);
-            max_tons += 1;
+            tons -= 1;
         }
 
         return {
             ...bodyMod,
-            max_tons,
+            tons,
             faction_perks,
             ...validator(mechId, bodyModId),
         };

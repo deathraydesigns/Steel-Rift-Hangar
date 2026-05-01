@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
 import { computed } from 'vue';
-import type { FactionPerk, FactionPerkInfo } from '../../../../data/faction-perks';
+import type { FactionPerk } from '../../../../data/faction-perks';
 import { type MECH_BODY_MOD, MECH_BODY_MODS, type MechBodyModInfo } from '../../../../data/mech-body-mod';
 import FormatNumber from '../../../functional/format-number.vue';
 import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
@@ -81,10 +81,10 @@ function selectOption(value: MECH_BODY_MOD) {
               {{ item.display_name }}
             </td>
             <td class="text-end">
-              <format-number :val="item.modifier" />
+              <format-number :val="item.stat_modifier" />
             </td>
             <td class="text-end">
-              <format-number :val="item.max_tons" invert invert-color />
+              <format-number :val="item.tons" invert-color />
             </td>
             <td class="notes">
               <IconNotAvailable
@@ -127,7 +127,7 @@ function selectOption(value: MECH_BODY_MOD) {
     <td></td>
     <td class="text-end">
       <div class="col-form-label">
-        <format-number :val="tonnage" :invert-color="true" />
+        <format-number :val="tonnage" invert :invert-color="true" />
       </div>
     </td>
     <td></td>
