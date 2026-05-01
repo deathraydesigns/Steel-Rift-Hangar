@@ -117,7 +117,7 @@ const armorUpgrades = computed(() => {
         <template v-if="armorUpgrades.length === 1">
           ({{ armorUpgrades[0].display_name }})
         </template>
-        <template v-else>
+        <template v-else-if="armorUpgrades.length > 1">
           Multiple ({{armorUpgrades.length}})
         </template>
       </small>
