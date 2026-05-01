@@ -580,6 +580,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             weaponIds.forEach((weaponId) => mechStore.addMechWeaponAttachment(mechId, weaponId));
             upgradeIds.forEach((upgradeId) => mechStore.addMechUpgradeAttachment(mechId, upgradeId));
 
+            mechStore.removeInvalidArmorUpgrades(mechId)
             return mechId;
         }
 
@@ -651,7 +652,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 mechOptions.armor_mod_id = groupDef.limited_armor_mod_ids[0];
             }
             if (groupDef?.default_armor_upgrade_ids?.length) {
-                mechOptions.armor_upgrade_ids = [...groupDef.default_armor_upgrade_ids];
+                // mechOptions.armor_upgrade_ids = [...groupDef.default_armor_upgrade_ids];
             } else if (groupDef?.limited_armor_upgrade_ids?.length) {
                 mechOptions.armor_upgrade_ids = [groupDef.limited_armor_upgrade_ids[0]];
             }
@@ -660,7 +661,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             }
 
             if (groupDef?.default_aux_armor_upgrade_id) {
-                mechOptions.aux_armor_upgrade_id = groupDef.default_aux_armor_upgrade_id;
+                // mechOptions.aux_armor_upgrade_id = groupDef.default_aux_armor_upgrade_id;
             }
 
             const weaponIds = [
@@ -691,6 +692,9 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
                 const index = group.mechs.findIndex(mech => mech.mech_id === mechId);
                 group.mechs.splice(index, 1);
             }
+            getTeamMechIds(teamId).forEach(mechId => {
+                mechStore.removeInvalidArmorUpgrades(mechId);
+            });
         }
 
         function removeTeam(teamId: MECH_TEAM) {

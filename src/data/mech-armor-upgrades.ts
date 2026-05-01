@@ -1,6 +1,7 @@
 import type { Optional } from '../_helpers';
 import type { NumberBySize } from '../types';
 import { makeFrozenStaticListIds } from './data-helpers';
+import type { TeamPerkInfo } from './mech-team-perks';
 import { type MechSizeId, SIZE } from './unit-sizes';
 
 export enum MECH_ARMOR_UPGRADE {
@@ -18,15 +19,32 @@ export interface MechArmorUpgrade {
     id: MECH_ARMOR_UPGRADE,
     display_name: string,
     slots: number,
-    card_upgrade_display_name?: string,
+    card_upgrade_display_name: string,
+    // used when there is only one armor upgrade on HE-V
+    card_upgrade_solo_display_name: string,
     description: string,
     cost_by_size: NumberBySize,
     limited_size_ids?: MechSizeId[],
     armor_mod: number | null,
 }
 
+export interface MechArmorUpgradeInfo extends Omit<MechArmorUpgrade, 'cost_by_size' | 'limited_size_ids'> {
+    valid: boolean,
+    validation_message: string,
+    cost: number | null,
+    team_perks: TeamPerkInfo[],
+}
+
+type InputOptional =
+    | 'slots'
+    | 'cost_by_size'
+    | 'limited_size_ids'
+    | 'armor_mod'
+    | 'card_upgrade_solo_display_name'
+    | 'card_upgrade_display_name'
+
 type MakeArmorUpgradeInput =
-    Omit<Optional<MechArmorUpgrade, | 'slots' | 'cost_by_size' | 'limited_size_ids' | 'armor_mod'>, 'id'>
+    Omit<Optional<MechArmorUpgrade, InputOptional>, 'id'>
     & ({
     cost: number,
     cost_by_size?: undefined
@@ -43,10 +61,14 @@ function makeArmorUpgrade(item: MakeArmorUpgradeInput): Omit<MechArmorUpgrade, '
         [SIZE.ULTRA]: item.cost ?? 0,
     };
 
+    const card_upgrade_display_name = item.card_upgrade_display_name ?? item.display_name;
+    const card_upgrade_solo_display_name = item.card_upgrade_solo_display_name ?? card_upgrade_display_name;
+
     return {
         display_name: item.display_name,
         slots: 0,
-        card_upgrade_display_name: item.card_upgrade_display_name,
+        card_upgrade_display_name,
+        card_upgrade_solo_display_name,
         description: item.description,
         cost_by_size,
         limited_size_ids: item.limited_size_ids ?? [],
@@ -62,7 +84,7 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
     }),
     [MECH_ARMOR_UPGRADE.ABLATIVE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Ablative',
-        card_upgrade_display_name: 'Ablative Armor',
+        card_upgrade_solo_display_name: 'Ablative Armor',
         cost_by_size: {
             [SIZE.LIGHT]: 1,
             [SIZE.MEDIUM]: 1,
@@ -73,13 +95,13 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
     }),
     [MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Reactive',
-        card_upgrade_display_name: 'Reactive Armor',
+        card_upgrade_solo_display_name: 'Reactive Armor',
         cost: 1,
         description: 'Reduce the Attack Pool of Weapons with “Missile” or "Rocket” in the name Targeting this Unit by 1, to a minimum of 1.',
     }),
     [MECH_ARMOR_UPGRADE.CERAMIC_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Ceramic',
-        card_upgrade_display_name: 'Ceramic Armor',
+        card_upgrade_solo_display_name: 'Ceramic Armor',
         cost_by_size: {
             [SIZE.LIGHT]: 2,
             [SIZE.MEDIUM]: 2,
@@ -90,7 +112,7 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
     }),
     [MECH_ARMOR_UPGRADE.CLAYMORE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Claymore',
-        card_upgrade_display_name: 'Claymore Armor',
+        card_upgrade_solo_display_name: 'Claymore Armor',
         description: 'Reduce the Attack Pool of incoming SMASH Orders by 1 to a minimum of 1.If a Unit equipped with Claymore Armor takes Structure Damage from a SMASH Order, the Active Unit is immediately targeted by an ENGAGE Order with a damage value of (2/2/3/3) and the Frag trait.',
         cost: 1,
     }),

@@ -113,8 +113,13 @@ const armorUpgrades = computed(() => {
   <div class="row g-1 row-damage">
     <div class="col-5">
       <div class="hp-heading">
-        ARMOR <small class="fw-light" v-if="armorUpgrades && armorUpgrades.length === 1">
-        ({{ armorUpgrades[0].display_name }})
+        ARMOR <small class="fw-light" v-if="armorUpgrades">
+        <template v-if="armorUpgrades.length === 1">
+          ({{ armorUpgrades[0].display_name }})
+        </template>
+        <template v-else>
+          Multiple ({{armorUpgrades.length}})
+        </template>
       </small>
       </div>
       <div class="hp-container">
