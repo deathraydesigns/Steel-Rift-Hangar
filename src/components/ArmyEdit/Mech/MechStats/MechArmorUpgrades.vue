@@ -4,12 +4,16 @@ import { computed } from 'vue';
 import type { MECH_ARMOR_UPGRADE } from '../../../../data/mech-armor-upgrades';
 import { TEAM_PERK } from '../../../../data/mech-team-perks';
 import { useMechStore } from '../../../../store/mech-store';
+import { useValidationStore } from '../../../../store/validation-store';
 import FormatNumber from '../../../functional/format-number.vue';
 import BtnToolTip from '../../../UI/BtnToolTip.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
+import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
 import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
+import IconValidationError from '../../../UI/IconValidationError.vue';
 
 const mechStore = useMechStore();
+const validationStore = useValidationStore();
 
 const {
   label,
@@ -24,6 +28,7 @@ const {
 const model = defineModel<MECH_ARMOR_UPGRADE>({ required: true });
 const options = computed(() => mechStore.getMechAvailableArmorUpgrades(mechId, isAuxInput));
 const info = computed(() => mechStore.getMechArmorUpgradeInfo(mechId, model.value, isAuxInput)!);
+const validationMessages = computed(() => validationStore.mechTeamGroupArmorMessages(mechId));
 
 function selectOption(value: MECH_ARMOR_UPGRADE) {
   model.value = value;
@@ -31,7 +36,10 @@ function selectOption(value: MECH_ARMOR_UPGRADE) {
 </script>
 <template>
   <tr>
-    <td></td>
+    <td><IconValidationError
+      size="sm"
+      :message-array="validationMessages"
+    /></td>
     <td>
       <label class="col-form-label" :for="'mech-input-armor-upgrade-' + mechId">{{ label }}</label>
     </td>
@@ -100,6 +108,11 @@ function selectOption(value: MECH_ARMOR_UPGRADE) {
                 :valid="item.valid"
                 :validation-message="item.validation_message"
               />
+              <IconRequiredByGroup
+                :required="item.required_by_group"
+                :reason="item.required_by_group_reason"
+                size="sm"
+              />
             </td>
           </tr>
           </tbody>
@@ -115,6 +128,11 @@ function selectOption(value: MECH_ARMOR_UPGRADE) {
         size="md"
         btn-class="ms-1"
         :perks="info.team_perks"
+      />
+      <IconRequiredByGroup
+        :required="info.required_by_group"
+        :reason="info.required_by_group_reason"
+        btn-class="ms-1"
       />
       <BtnToolTip :enabled="!!info.description">
         <template #target>

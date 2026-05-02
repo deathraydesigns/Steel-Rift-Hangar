@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { BPopover } from 'bootstrap-vue-next';
+import { BButton, BPopover } from 'bootstrap-vue-next';
 import { computed } from 'vue';
 
 const {
   required,
   reason = '',
   btnClass = '',
+  size = 'md',
 } = defineProps<{
   required: boolean;
   reason?: string | null;
   btnClass?: string;
+  size?: string;
 }>();
 
 const requiredReason = computed(() => {
@@ -22,12 +24,14 @@ const requiredReason = computed(() => {
 <template>
   <BPopover>
     <template #target>
-      <button
-        :class="`btn btn-sm btn-default btn-danger-light ${btnClass}`"
+      <BButton
+        :size="size as any"
+        variant="default"
+        :class="btnClass"
         v-show="required"
       >
         <span class="material-symbols-outlined">lock</span>
-      </button>
+      </BButton>
     </template>
 
     {{ requiredReason }}

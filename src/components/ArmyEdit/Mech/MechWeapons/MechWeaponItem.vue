@@ -79,6 +79,7 @@ function remove() {
         btn-class="me-1"
         :required="weapon.required_by_group"
         :reason="weapon.required_by_group_reason"
+        size="sm"
       />
       <IconTeamGroupPerks
         :perks="weapon.team_perks"

@@ -33,6 +33,8 @@ export interface MechArmorUpgradeInfo extends Omit<MechArmorUpgrade, 'cost_by_si
     validation_message: string,
     cost: number | null,
     team_perks: TeamPerkInfo[],
+    required_by_group: boolean,
+    required_by_group_reason: null | string,
 }
 
 type InputOptional =

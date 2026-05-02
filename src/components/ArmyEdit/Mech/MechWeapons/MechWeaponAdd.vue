@@ -94,6 +94,7 @@ function addWeapon(id: MECH_WEAPON) {
             <IconRequiredByGroup
               :required="item.meets_requirements"
               :reason="item.meets_requirements_reason"
+              size="sm"
               btn-class="ms-1"
             />
           </td>

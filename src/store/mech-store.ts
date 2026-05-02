@@ -1071,6 +1071,20 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 }
             }
 
+            let required_by_group = false;
+            let required_by_group_reason = null as null | string;
+
+            const { teamId, groupId } = teamStore.getMechTeamAndGroupIds(mechId);
+
+            let {
+                required,
+                required_reason,
+            } = teamStore.getArmorUpgradeIsRequired(teamId, groupId, armorUpgradeId);
+            if (required) {
+                required_by_group = true;
+                required_by_group_reason = required_reason;
+            }
+
             return {
                 id: armorUpgradeId,
                 cost,
@@ -1083,6 +1097,8 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 validation_message,
                 team_perks,
                 armor_mod,
+                required_by_group,
+                required_by_group_reason,
             };
         }
 

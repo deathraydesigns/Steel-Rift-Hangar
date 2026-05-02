@@ -2,6 +2,7 @@ import { difference, sumBy } from 'es-toolkit';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, ref } from 'vue';
 import { GAME_SIZES } from '../data/game-sizes';
+import type { MECH_ARMOR_UPGRADE } from '../data/mech-armor-upgrades';
 import { MECH_TEAM_PERKS, perkIdsToInfo, TEAM_PERK } from '../data/mech-team-perks';
 import {
     MECH_TEAM,
@@ -146,6 +147,25 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
         const getTeamDef = (teamId: MECH_TEAM) => MECH_TEAMS[teamId];
 
         const getTeamGroupDef = (teamId: MECH_TEAM, groupId: string) => MECH_TEAMS[teamId].groups[groupId];
+
+        function getArmorUpgradeIsRequired(teamId: MECH_TEAM, groupId: string, armorUpgradeId: MECH_ARMOR_UPGRADE) {
+            const groupDef = getTeamGroupDef(teamId, groupId);
+            const teamGroupDisplayName = getFullTeamGroupDisplayName(teamId, groupId);
+
+            if (groupDef.required_armor_upgrade_ids.length) {
+                if (groupDef.required_armor_upgrade_ids.includes(armorUpgradeId)) {
+                    return {
+                        required: true,
+                        required_reason: `Required by ${teamGroupDisplayName}`,
+                    };
+                }
+            }
+
+            return {
+                required: false,
+                required_reason: null,
+            };
+        }
 
         function getWeaponAttachmentIsRequired(teamId: MECH_TEAM, groupId: string, weaponAttachment: MechWeaponAttachment, mech: Mech) {
             const groupDef = getTeamGroupDef(teamId, groupId);
@@ -580,7 +600,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             weaponIds.forEach((weaponId) => mechStore.addMechWeaponAttachment(mechId, weaponId));
             upgradeIds.forEach((upgradeId) => mechStore.addMechUpgradeAttachment(mechId, upgradeId));
 
-            mechStore.removeInvalidArmorUpgrades(mechId)
+            mechStore.removeInvalidArmorUpgrades(mechId);
             return mechId;
         }
 
@@ -850,6 +870,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             getTeamGroupDef,
             getTeamGroupMechIds,
             getWeaponAttachmentIsRequired,
+            getArmorUpgradeIsRequired,
             getMechUpgradeIsRequired,
             getMechTeamAndGroupIds,
             getAvailableMechSizes,

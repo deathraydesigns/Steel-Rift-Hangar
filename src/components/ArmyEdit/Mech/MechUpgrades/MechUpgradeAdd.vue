@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { BDropdown } from 'bootstrap-vue-next';
-import { computed } from 'vue';
 import type { MECH_UPGRADE } from '../../../../data/mech-upgrades';
 import { useMechStore } from '../../../../store/mech-store';
 import type { MechUpgradeInfo } from '../../../../types';
@@ -88,6 +87,7 @@ function addUpgrade(upgradeId: MECH_UPGRADE) {
           <td class="notes">
             <IconRequiredByGroup
               :required="item.required_by_group"
+              size="sm"
               btn-class="ms-1"
             />
           </td>

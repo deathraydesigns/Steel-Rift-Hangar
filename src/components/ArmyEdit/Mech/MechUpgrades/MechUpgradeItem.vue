@@ -164,6 +164,7 @@ function setTarget(targetId: number) {
       />
       <IconRequiredByGroup
         :required="upgrade.required_by_group"
+        size="sm"
         btn-class="me-1"
       />
       <IconTeamGroupPerks

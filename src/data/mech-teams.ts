@@ -55,6 +55,7 @@ export interface MechTeamGroup {
     limited_structure_mod_ids: MECH_BODY_MOD[],
     limited_armor_mod_ids: MECH_BODY_MOD[],
     limited_armor_upgrade_ids: MECH_ARMOR_UPGRADE[],
+    required_armor_upgrade_ids: MECH_ARMOR_UPGRADE[],
     allow_duplicate_weapons: boolean,
 }
 
@@ -374,7 +375,7 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                 min_count: 0,
                 max_count: 1,
                 size_ids: [SIZE.ULTRA],
-                limited_armor_upgrade_ids: [MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE],
+                required_armor_upgrade_ids: [MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE],
                 required_upgrade_ids: [MECH_UPGRADE.NITRO_BOOST],
             }),
         }),
@@ -621,6 +622,7 @@ function makeGroup(obj: Partial<MechTeamGroup> & { size_ids: MechSizeId[] }): Om
         limited_armor_upgrade_ids: [],
         allow_duplicate_weapons: true,
         required_at_least_one_of_upgrade_ids: [],
+        required_armor_upgrade_ids: [],
     };
     const result = Object.assign(defaults, obj);
 
