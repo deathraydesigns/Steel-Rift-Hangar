@@ -138,7 +138,6 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
         card_upgrade_display_name: 'Redundant Internals (Fragile Int. Removed)',
         description: 'This Unit no longer has the "Fragile Internals" rule applied when damaged.',
         cost: 1,
-        armor_mod: 4,
         limited_size_ids: [SIZE.LIGHT],
     }),
 });
