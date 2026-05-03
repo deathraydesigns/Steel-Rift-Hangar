@@ -24,7 +24,7 @@ const existingTeams = computed(() => {
     ...sortBy(specialTeamTypes.value.existing ?? [], [sortTeamsByOriginalIndex]),
   ];
 });
-const notExistingTeams = computed(() => sortBy(specialTeamTypes.value.notExisting, [sortTeamsByOriginalIndex]));
+const notExistingTeams = computed(() => sortBy(specialTeamTypes.value.notExisting ?? [], [sortTeamsByOriginalIndex]));
 
 function selectTeam(teamId: MECH_TEAM) {
   selectedTeamId.value = teamId;
