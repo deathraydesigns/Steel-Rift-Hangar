@@ -43,8 +43,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
         });
 
         const available_support_asset_unit_ids = computed(() => {
-            const keys = Object.keys(SUPPORT_ASSET_UNITS) as SUPPORT_ASSET_UNIT[];
-            return keys.filter(id => !support_asset_unit_ids.value.includes(id));
+            return Object.keys(SUPPORT_ASSET_UNITS) as SUPPORT_ASSET_UNIT[];
         });
 
         const available_support_asset_units_info = computed(() => {
@@ -63,7 +62,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
         });
 
         const main_support_asset_units_info = computed(() => {
-            return support_asset_units_info.value.filter(v => !v?.is_coordinated_asset_team);
+            return support_asset_units_info.value.filter(v => !v.is_coordinated_asset_team);
         });
 
         const used_tons = computed(() => sumBy(support_asset_units_info.value, (t) => t.cost));
@@ -92,6 +91,8 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 vehicles,
                 upgrade_pod_id,
                 is_coordinated_asset_team,
+                visible,
+                vehicles_id_increment,
             } = attachment;
 
             let {
@@ -141,6 +142,8 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 defense,
                 all_vehicle_must_be_the_same,
                 is_coordinated_asset_team,
+                visible,
+                vehicles_id_increment,
             };
 
             return readonly(result) as UnitAttachmentInfo;
@@ -516,6 +519,31 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             return used === max;
         }
 
+        function getUnitAttachmentInvalidMessages(unitAttachmentId: number) {
+            let attachment = findById(support_asset_units.value, unitAttachmentId);
+            if (!attachment) return [];
+            const messages: string[] = [];
+
+            const allOtherUnits = support_asset_units.value.filter(v => v.id !== unitAttachmentId);
+            const otherCATeamUnits = allOtherUnits.filter(v => v.is_coordinated_asset_team);
+            const otherUnits = allOtherUnits.filter(v => !v.is_coordinated_asset_team);
+
+            if (!attachment.is_coordinated_asset_team) {
+                const coordinatedAssetDuplicate = otherCATeamUnits.some(v => v.support_asset_unit_id === attachment.support_asset_unit_id);
+                if (coordinatedAssetDuplicate) {
+                    const unitDisplayName = SUPPORT_ASSET_UNITS[attachment.support_asset_unit_id].display_name;
+                    messages.push(`Coordinated Assets Team already contains ${unitDisplayName}`);
+                }
+            }
+            const otherUnitsDuplicate = otherUnits.some(v => v.support_asset_unit_id === attachment.support_asset_unit_id);
+            if (otherUnitsDuplicate) {
+                const unitDisplayName = SUPPORT_ASSET_UNITS[attachment.support_asset_unit_id].display_name;
+                messages.push(`List already contains ${unitDisplayName}`);
+            }
+
+            return messages;
+        }
+
         const hasUnitId = (unitId: SUPPORT_ASSET_UNIT) => support_asset_unit_ids.value.includes(unitId);
         const getUnitVehicleCount = (unitAttachmentId: number) => {
             const attachment = getUnitAttachment(unitAttachmentId);
@@ -848,6 +876,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             main_support_asset_units_info,
             support_asset_units,
             support_asset_units_id_increment,
+            support_asset_unit_ids,
 
             has_mine_drones,
             used_tons,
@@ -883,6 +912,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             getUnitAttachmentGrantedOrdersCollection,
             getAllGrantedOrdersCollection,
             getUnitAttachmentGarrisonGrantedOrdersCollection,
+            getUnitAttachmentInvalidMessages,
             getAllUnitTraits,
             getAllWeaponTraitsCollection,
             isSquadron,

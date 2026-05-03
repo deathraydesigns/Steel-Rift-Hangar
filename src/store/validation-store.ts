@@ -5,9 +5,11 @@ import { GAME_SIZE } from '../data/game-sizes';
 import { MECH_ARMOR_UPGRADE, MECH_ARMOR_UPGRADES } from '../data/mech-armor-upgrades';
 import { MECH_BODY_MODS } from '../data/mech-body-mod';
 import { TEAM_PERK } from '../data/mech-team-perks';
-import { MECH_TEAM, MECH_TEAMS } from '../data/mech-teams';
+import { MECH_TEAM, MECH_TEAMS, SUPPORT_ASSET_UNITS_GROUP_ID } from '../data/mech-teams';
 import { MECH_UPGRADE, MECH_UPGRADES } from '../data/mech-upgrades';
 import { MECH_WEAPONS } from '../data/mech-weapons';
+import { SUPPORT_ASSET_UNITS } from '../data/support-asset-units';
+import { type SUPPORT_ASSET_UNIT } from '../data/support-assets/_support-asset-types';
 import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
 import { WEAPON_TRAITS } from '../data/weapon-traits';
 import type { MechInfo } from '../types';
@@ -46,7 +48,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
             messages.push(sizeValidation.validation_message + ' for this game size');
         }
 
-        messages = messages.concat(supportAssetUnitsStore.validation_messages);
+        messages = messages.concat(supportAssetUnitsStore.validation_messages, supportAssetUnitUniquenessInvalidMessages());
         return messages.filter(i => i);
     });
 
@@ -98,7 +100,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         if (gameSizeId === GAME_SIZE.DUEL) {
             return messageValid;
         }
-        const teamCounts = teamStore.special_teams.map((team) => teamStore.getTeamUnitCount(team.id));
+        const teamCounts = teamStore.special_teams.map((team) => teamStore.getTeamMechCount(team.id));
         const smallestTeamCount = (Math.min(...teamCounts) ?? 0) as number;
         const largestTeamCount = (Math.max(...teamCounts) ?? 0) as number;
 
@@ -356,7 +358,8 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
     function getTeamGroupSizeValidation(teamId: MECH_TEAM, groupId: string) {
         const teamDef = MECH_TEAMS[teamId];
-        const { min_count, max_count } = teamDef.groups[groupId];
+        const { min_count, max_count } = teamStore.getTeamGroupMinMaxCount(teamId, groupId);
+
         const count = teamStore.getTeamGroupUnitCount(teamId, groupId);
         let entity = 'HE-Vs';
         if (teamDef.support_asset_units) {
@@ -693,6 +696,38 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         };
     }
 
+    function supportAssetUnitUniquenessInvalidMessages() {
+        return supportAssetUnitsStore.support_asset_units.flatMap(v => {
+            return supportAssetUnitsStore.getUnitAttachmentInvalidMessages(v.id).map(msg => {
+                const unitDisplayName = SUPPORT_ASSET_UNITS[v.support_asset_unit_id].display_name;
+                return `${unitDisplayName}: ${msg}`;
+            });
+        }).filter(v => !!v);
+    }
+
+    function addSupportAssetUnitInvalid(supportAssetUnitId: SUPPORT_ASSET_UNIT, is_coordinated_asset_team: boolean) {
+        let existingUnits = supportAssetUnitsStore.support_asset_units;
+
+        if (is_coordinated_asset_team) {
+            existingUnits = supportAssetUnitsStore.support_asset_units.filter(v => !v.is_coordinated_asset_team);
+            const teamId = MECH_TEAM.COORDINATED_ASSETS;
+            const groupId = SUPPORT_ASSET_UNITS_GROUP_ID;
+            const { max_count } = teamStore.getTeamGroupMinMaxCount(teamId, groupId);
+            const count = teamStore.getTeamGroupUnitCount(teamId, groupId);
+            if (count + 1 > (max_count as number)) {
+                const teamDisplayName = teamStore.getTeamDisplayName(teamId);
+                return `Team ${teamDisplayName} already has the maximum number of units (${max_count})`;
+            }
+        }
+
+        if (existingUnits.some(v => v.support_asset_unit_id === supportAssetUnitId)) {
+            const unitDisplayName = SUPPORT_ASSET_UNITS[supportAssetUnitId].display_name;
+            return `This force already contains ${unitDisplayName}.`;
+        }
+
+        return null;
+    }
+
     return {
         list_validation,
         list_is_valid,
@@ -724,6 +759,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         teamGroupMechArmorUpgradeInvalid,
 
         getNotAvailableToTeamGroupMessage,
+        addSupportAssetUnitInvalid,
 
         $reset,
     };

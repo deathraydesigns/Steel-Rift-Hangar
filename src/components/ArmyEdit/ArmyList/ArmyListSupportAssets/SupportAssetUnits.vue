@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { BButton } from 'bootstrap-vue-next';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import { useSupportAssetUnitsStore } from '../../../../store/support-asset-units-store';
 import { useValidationStore } from '../../../../store/validation-store';
 import FormatNumber from '../../../functional/format-number.vue';
@@ -13,8 +14,14 @@ const validationStore = useValidationStore();
 const { invalid_number_of_support_assets } = storeToRefs(validationStore);
 const {
   main_support_asset_units_info,
-  available_support_asset_units_info,
 } = storeToRefs(store);
+
+const supportAssetUnits = computed(() => {
+  return store.available_support_asset_units_info.map(v => ({
+    ...v,
+    validation_message: validationStore.addSupportAssetUnitInvalid(v.id, false),
+  }));
+});
 
 </script>
 <template>
@@ -35,7 +42,7 @@ const {
         </div>
         <div class="flex-shrink-1 text-end">
           <SupportAssetUnitAdd
-            :available-support-asset-units-info="available_support_asset_units_info"
+            :available-support-asset-units-info="supportAssetUnits"
             @selected="store.addSupportAsset($event)"
           />
         </div>

@@ -3,9 +3,10 @@ import { BButton, BCollapse } from 'bootstrap-vue-next';
 import { computed, ref } from 'vue';
 import { MECH_TEAM_PERKS, TEAM_PERK } from '../../../data/mech-team-perks';
 import { MECH_TEAM } from '../../../data/mech-teams.js';
-import type { SUPPORT_ASSET_UNIT } from '../../../data/support-assets/_support-asset-types';
+import { type SUPPORT_ASSET_UNIT } from '../../../data/support-assets/_support-asset-types';
 import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
 import { useTeamStore } from '../../../store/team-store';
+import { useValidationStore } from '../../../store/validation-store';
 import BtnToolTip from '../../UI/BtnToolTip.vue';
 import SvgIcon from '../../UI/Icon.vue';
 import IconValidationError from '../../UI/IconValidationError.vue';
@@ -14,7 +15,7 @@ import UnitItem from '../Units/UnitItem.vue';
 
 const supportAssetUnitStore = useSupportAssetUnitsStore();
 const teamStore = useTeamStore();
-
+const validationStore = useValidationStore();
 const { teamId, groupId } = defineProps<{
   teamId: MECH_TEAM,
   groupId: string,
@@ -24,43 +25,19 @@ const visible = teamStore.getTeamGroupVisibleComputed(teamId, groupId);
 const team = computed(() => teamStore.getTeamDef(teamId));
 
 const supportAssetUnitsCount = computed(() => teamStore.coordinatedAssetsTeamUnitsInfo.length);
-
-const size = computed(() => {
-  const count = teamStore.getTeamUnitCount(teamId);
-  const min_count = 1;
-  let max_count = 1;
-  if (count >= 3) {
-    max_count = 2;
-  }
-
-  let size_valid = true;
-  let size_validation_message = 'Valid Group Size';
-  if (supportAssetUnitsCount.value > max_count) {
-    size_valid = false;
-    size_validation_message = `Max Group Size is ${max_count}`;
-  }
-  if (supportAssetUnitsCount.value < min_count) {
-    size_valid = false;
-    size_validation_message = `Min Group Size is ${min_count}`;
-  }
-
-  return {
-    min_count,
-    max_count,
-    size_valid,
-    size_validation_message,
-  };
-});
+const size = computed(() => validationStore.getTeamGroupSizeValidation(teamId, groupId));
 
 const availableUnitCount = computed(() => {
-  return size.value.max_count - supportAssetUnitsCount.value;
+  return (size.value.max_count as number) - supportAssetUnitsCount.value;
 });
 
 const availableSupportAssetUnitsInfo = computed(() => {
   if (availableUnitCount.value <= 0) [];
   const ids = team.value.support_asset_units?.support_asset_unit_ids ?? [];
-
-  return ids.map(id => supportAssetUnitStore.getUnitInfo(id));
+  return ids.map(id => ({
+    ...supportAssetUnitStore.getUnitInfo(id),
+    validation_message: validationStore.addSupportAssetUnitInvalid(id, false),
+  }));
 });
 
 const teamGroupPerks = computed(() => {

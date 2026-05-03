@@ -28,6 +28,13 @@ const infantryWeapons = computed(() => store.getUnitAttachmentVehicleGarrisonWea
 const infantryTraits = computed(() => store.getUnitAttachmentGarrisonUnitTraitsCardInfo(unitAttachmentId));
 const hasGarrison = computed(() => !!store.getUnitAttachmentGarrisonUnitsInfo(unitAttachmentId).length);
 const infantryOrders = computed(() => store.getUnitAttachmentGarrisonGrantedOrdersCollection(unitAttachmentId).all());
+
+const subType = computed(() => {
+  if (info.value.is_coordinated_asset_team) {
+    return ' Coordinated Asset Team';
+  }
+});
+
 </script>
 <template>
   <div
@@ -41,7 +48,7 @@ const infantryOrders = computed(() => store.getUnitAttachmentGarrisonGrantedOrde
 
       <CardHeader
         :title="info.display_name"
-        :sub-title="`(Support Asset ${info.cost} Tons)`"
+        :sub-title="`(Support Asset ${info.cost} Tons${subType})`"
       />
 
       <template v-if="hasGarrison">

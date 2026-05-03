@@ -377,9 +377,13 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             });
         }
 
-        function getTeamUnitCount(teamId: MECH_TEAM) {
+        function getTeamMechCount(teamId: MECH_TEAM) {
             const team = findById(teams.value, teamId);
-            const mechCount = team ? sumBy(team.groups, (group) => group.mechs.length) : 0;
+            return team ? sumBy(team.groups, (group) => group.mechs.length) : 0;
+        }
+
+        function getTeamUnitCount(teamId: MECH_TEAM) {
+            const mechCount = getTeamMechCount(teamId);
             const def = getTeamDef(teamId);
             if (def.support_asset_units) {
                 return mechCount + coordinatedAssetsTeamUnitsInfo.value.length;
@@ -388,7 +392,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             return mechCount;
         }
 
-        const coordinatedAssetsTeamUnitsInfo = computed(() => supportAssetUnitStore.support_asset_units_info.filter(v => v.is_coordinated_asset_team));
+        const coordinatedAssetsTeamUnitsInfo = computed(() => supportAssetUnitStore.support_asset_units_info.filter(v => v?.is_coordinated_asset_team));
 
         function getTeamGroupUnitCount(teamId: MECH_TEAM, groupId: string) {
             const group = findGroup(teamId, groupId);
@@ -845,6 +849,22 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             return traits;
         }
 
+        function getTeamGroupMinMaxCount(teamId: MECH_TEAM, groupId: string) {
+            const teamDef = MECH_TEAMS[teamId];
+            const { min_count, max_count } = teamDef.groups[groupId];
+
+            if (teamId === MECH_TEAM.COORDINATED_ASSETS && groupId === SUPPORT_ASSET_UNITS_GROUP_ID) {
+                if (getTeamUnitCount(teamId) >= 3) {
+                    return {
+                        min_count,
+                        max_count: 2,
+                    };
+                }
+            }
+
+            return { min_count, max_count };
+        }
+
         return {
             teams,
             addable_teams,
@@ -862,6 +882,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             findTeam,
             findGroup,
             getTeamUnitCount,
+            getTeamMechCount,
             getTeamGroupUnitCount,
             getTeamDef,
             getTeamDisplayName,
@@ -883,6 +904,7 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             getUsedTeamAbilityPerksInfo,
             getMechTeamGroupDef,
             getTeamMechIds,
+            getTeamGroupMinMaxCount,
             moveMechToTeam,
             moveMechToTeamGroup,
 

@@ -67,12 +67,8 @@ export interface SupportAssetUnitInfo extends Omit<SupportAssetUnitDef, 'size_id
     size: UnitSize,
 }
 
-export interface UnitAttachmentInfo extends Omit<SupportAssetUnitInfo, 'id' | 'vehicles' | 'upgrade_pods'> {
-    id: number,
-    support_asset_unit_id: SUPPORT_ASSET_UNIT,
-    upgrade_pod_id?: UpgradePodId,
+export interface UnitAttachmentInfo extends Omit<SupportAssetUnitAttachment, 'vehicles'>, Omit<SupportAssetUnitInfo, 'id' | 'vehicles' | 'upgrade_pods'> {
     vehicles: UnitAttachmentVehicleInfo[],
-    is_coordinated_asset_team: boolean,
 }
 
 export interface UnitWeaponInfo extends UnitWeapon {

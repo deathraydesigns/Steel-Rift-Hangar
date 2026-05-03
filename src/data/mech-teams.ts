@@ -72,11 +72,10 @@ export interface MechTeam {
     team_size_perk_rows?: Record<number, TEAM_PERK[][]>,
     support_asset_units?: {
         support_asset_unit_ids: SUPPORT_ASSET_UNIT[]
-        max_support_asset_units: number,
     }
 }
 
-export const SUPPORT_ASSET_UNITS_GROUP_ID = 'SUPPORT_ASSET_UNITS_GROUP'
+export const SUPPORT_ASSET_UNITS_GROUP_ID = 'SUPPORT_ASSET_UNITS_GROUP';
 
 export const MECH_TEAM_SIZES: Readonly<Record<MECH_TEAM_SIZE, MechTeamSize>> = makeFrozenStaticListIds<MechTeamSize>({
     [MECH_TEAM_SIZE.SMALL]: {
@@ -573,12 +572,11 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                 size_ids: [],
                 min_count: 1,
                 max_count: 1,
-                display_name: 'Support Asset Units'
+                display_name: 'Support Asset Units',
             }),
         }),
         support_asset_units: {
             support_asset_unit_ids: [SUPPORT_ASSET_UNIT.ULTRA_LIGHT_HEV_SQUADRON, SUPPORT_ASSET_UNIT.ASSAULT_VEHICLE_SQUADRON],
-            max_support_asset_units: 1,
         },
         team_size_perk_columns: [
             [SIZE.LIGHT, SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],

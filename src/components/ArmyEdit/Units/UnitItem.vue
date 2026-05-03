@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BButton, BCollapse, BFormFloatingLabel, BFormSelect } from 'bootstrap-vue-next';
-import { computed, provide, ref } from 'vue';
+import { computed, provide } from 'vue';
 import type { UnitVehicleId } from '../../../data/support-assets/_support-asset-types';
 import { ULTRA_LIGHT_HEV_SQUADRON, type UpgradePodId } from '../../../data/support-assets/ultra-light-hev-squadron';
 import { UNIT_TRAIT } from '../../../data/unit-traits.js';
@@ -52,6 +52,8 @@ const traits = computed(() => {
   return info.value?.traits.filter((trait) => trait.id !== UNIT_TRAIT.AUXILIARY_UNIT) ?? [];
 });
 
+const validationMessages = computed(() => unitStore.getUnitAttachmentInvalidMessages(supportAssetAttachmentId));
+
 </script>
 <template>
   <div class="card card-dark-border" :class="{'border-danger': !unit_points_valid}" v-if="info">
@@ -80,6 +82,28 @@ const traits = computed(() => {
           </template>
           <template #content>
             {{ info.unit_points_description || `This unit must have a total of ${max_points} models` }}
+          </template>
+        </BtnToolTip>
+        <BtnToolTip>
+          <template #target>
+            <span
+              v-show="validationMessages.length"
+              :class="{
+                  'btn btn-sm btn-danger mx-1': true,
+                }"
+            >
+              <span class="material-symbols-outlined" v-if="validationMessages.length">warning</span>
+            </span>
+          </template>
+          <template #content>
+            <template v-if="validationMessages.length === 1">
+              {{ validationMessages[0] }}
+            </template>
+            <ul v-else class="m-0">
+              <li v-for="item in validationMessages">
+                {{ item }}
+              </li>
+            </ul>
           </template>
         </BtnToolTip>
       </div>

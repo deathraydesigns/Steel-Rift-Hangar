@@ -2,13 +2,16 @@
 import { BDropdown } from 'bootstrap-vue-next';
 import { SUPPORT_ASSET_UNIT, type SupportAssetUnitInfo } from '../../../../data/support-assets/_support-asset-types';
 import FormatNumber from '../../../functional/format-number.vue';
+import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 
 const emit = defineEmits<{
   (e: 'selected', id: SUPPORT_ASSET_UNIT): void,
 }>();
 
 const { availableSupportAssetUnitsInfo } = defineProps<{
-  availableSupportAssetUnitsInfo: SupportAssetUnitInfo[]
+  availableSupportAssetUnitsInfo: (SupportAssetUnitInfo & {
+    validation_message: string | null
+  })[]
 }>();
 
 </script>
@@ -30,6 +33,7 @@ const { availableSupportAssetUnitsInfo } = defineProps<{
           <td class="text-end">
             Tons
           </td>
+          <td></td>
         </tr>
         </thead>
         <tbody>
@@ -46,6 +50,13 @@ const { availableSupportAssetUnitsInfo } = defineProps<{
 
           <td class="text-end">
             <format-number :val="item.cost" :invert-color="true" />
+          </td>
+          <td class="notes">
+            <IconNotAvailable
+              :valid="!item.validation_message"
+              :validation-message="item.validation_message"
+              btn-class="ms-1"
+            />
           </td>
         </tr>
         </tbody>
