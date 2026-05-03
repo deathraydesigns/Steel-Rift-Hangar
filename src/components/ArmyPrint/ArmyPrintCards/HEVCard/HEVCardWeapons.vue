@@ -32,10 +32,22 @@ const weapons = computed(() => {
     results.push(mineDroneWeapon as unknown as MechWeaponAttachmentInfo);
   }
 
+  const excludeTraitIds = [
+    WEAPON_TRAIT.LIMITED,
+    WEAPON_TRAIT.SHORT,
+  ];
+  const droneTraitIds = [
+    WEAPON_TRAIT.DRONE_TACTICAL_AWARENESS_ATTACHED,
+    WEAPON_TRAIT.DRONE_TARGETING_SUPPORT_ATTACHED,
+    UPGRADE_TRAIT.DRONE_MINE_DIRECTOR_ATTACHED,
+  ];
+
   return results.map(item => {
+    const traits = item.traits.filter((trait) => !excludeTraitIds.includes(trait.id));
     return {
       ...item,
-      traits: item.traits.filter((trait) => trait.id !== WEAPON_TRAIT.LIMITED && trait.id !== WEAPON_TRAIT.SHORT),
+      shouldShrinkTraits: traits.length > 3 || traits.some(t => droneTraitIds.includes(t.id)),
+      traits,
     };
   });
 });
@@ -81,13 +93,10 @@ const hasUses = computed(() => weapons.value.find(weapon => !!weapon.max_uses));
           :total="weapon.range_total"
         />
       </td>
-      <td class="text-start">
-        <div v-if="weapon.traits.length < 4" v-for="(trait, index) in weapon.traits">
+      <td class="text-start" :class="weapon.shouldShrinkTraits ? 'small-traits' : ''">
+        <div v-for="(trait, index) in weapon.traits">
           {{ trait.card_display_name ?? trait.display_name }}<span v-if="index !== weapon.traits.length - 1">, </span>
         </div>
-        <span v-else v-for="(trait, index) in weapon.traits" class="small">
-          {{ trait.card_display_name ?? trait.display_name }}<span v-if="index !== weapon.traits.length - 1">, </span>
-        </span>
       </td>
     </tr>
     </tbody>

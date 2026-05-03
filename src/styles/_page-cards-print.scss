@@ -308,6 +308,13 @@ $import-card-height: $card-height * 1.4;
 
         vertical-align: top;
 
+        &.small-traits {
+          font-size: 60%;
+          > div {
+            display: inline;
+          }
+        }
+
         &.small {
           font-size: 60%;
         }
