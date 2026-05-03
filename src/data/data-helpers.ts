@@ -3,7 +3,6 @@ import type { Trait, TraitFormatter } from '../types';
 import type { MECH_UPGRADE } from './mech-upgrades';
 import type { ORDER } from './orders';
 import { UNIT_TRAIT } from './unit-traits';
-import type { UNIT_WEAPON } from './unit-weapons';
 import { weaponTraitDisplayName } from './weapon-traits';
 
 export interface DisplayNameItem {
@@ -77,6 +76,7 @@ export function deepFreeze<T extends object>(object: T, depth = 0): Readonly<T> 
 export interface TraitDef<ID extends string> {
     id: ID,
     display_name: string,
+    card_display_name: string,
     description: string,
     description_html?: string,
     granted_order_ids: ORDER[],
@@ -90,6 +90,7 @@ type TraitDefOptional =
     | 'referenced_upgrade_ids'
     | 'referenced_trait_ids'
     | 'granted_order_ids'
+    | 'card_display_name'
 
 export function makeTraits<T extends TraitDef<ID>, ID extends string = T['id']>(
     items: Record<T['id'], Omit<Optional<T, TraitDefOptional>, 'id'>>,
@@ -105,6 +106,7 @@ export function makeTraits<T extends TraitDef<ID>, ID extends string = T['id']>(
 
         result[id as T['id']] = {
             ...rest,
+            card_display_name: rest.card_display_name ?? null,
             granted_order_ids,
             referenced_trait_ids,
             referenced_upgrade_ids,

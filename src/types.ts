@@ -126,6 +126,7 @@ export interface Trait<ID extends string> {
 
 export interface TraitInfo<ID extends string> extends Trait<ID> {
     display_name: string,
+    card_display_name: null | string,
     description: string,
     dependent_trait_ids: string[],
     granted_order_ids: ORDER[],

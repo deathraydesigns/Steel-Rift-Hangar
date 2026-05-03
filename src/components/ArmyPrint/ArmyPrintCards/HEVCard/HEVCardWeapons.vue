@@ -13,6 +13,7 @@ const mechStore = useMechStore();
 const { mechId } = defineProps<{
   mechId: number,
 }>();
+
 const weapons = computed(() => {
   let results: MechWeaponAttachmentInfo[] = mechStore.getMechWeaponsAttachmentInfo(mechId);
   let mineDroneUpgrade = findBy(mechStore.getMechUpgradesAttachmentInfo(mechId), 'upgrade_id', MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM);
@@ -31,14 +32,16 @@ const weapons = computed(() => {
     results.push(mineDroneWeapon as unknown as MechWeaponAttachmentInfo);
   }
 
-  return results;
+  return results.map(item => {
+    return {
+      ...item,
+      traits: item.traits.filter((trait) => trait.id !== WEAPON_TRAIT.LIMITED && trait.id !== WEAPON_TRAIT.SHORT),
+    };
+  });
 });
 
 const hasUses = computed(() => weapons.value.find(weapon => !!weapon.max_uses));
 
-function filterTraits(traits: TraitInfo<WEAPON_TRAIT>[]) {
-  return traits.filter((trait) => trait.id !== WEAPON_TRAIT.LIMITED && trait.id !== WEAPON_TRAIT.SHORT);
-}
 </script>
 <template>
   <table class="table-stats">
@@ -79,9 +82,12 @@ function filterTraits(traits: TraitInfo<WEAPON_TRAIT>[]) {
         />
       </td>
       <td class="text-start">
-        <div v-for="(trait, index) in filterTraits(weapon.traits)">
-          {{ trait.display_name }}<span v-if="index !== filterTraits(weapon.traits).length - 1">, </span>
+        <div v-if="weapon.traits.length < 4" v-for="(trait, index) in weapon.traits">
+          {{ trait.card_display_name ?? trait.display_name }}<span v-if="index !== weapon.traits.length - 1">, </span>
         </div>
+        <span v-else v-for="(trait, index) in weapon.traits" class="small">
+          {{ trait.card_display_name ?? trait.display_name }}<span v-if="index !== weapon.traits.length - 1">, </span>
+        </span>
       </td>
     </tr>
     </tbody>

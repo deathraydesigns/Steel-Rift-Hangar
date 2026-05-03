@@ -138,12 +138,10 @@ export const WEAPON_TRAITS: Readonly<Record<WEAPON_TRAIT, WeaponTraitDef>> = mak
         formatter: xyFormater,
     },
     [WEAPON_TRAIT.DRONE_TACTICAL_AWARENESS_ATTACHED]: {
-        display_name: DRONE_TACTICAL_AWARENESS.display_name,
-        description: DRONE_TACTICAL_AWARENESS.description,
+        ...DRONE_TACTICAL_AWARENESS
     },
     [WEAPON_TRAIT.DRONE_TARGETING_SUPPORT_ATTACHED]: {
-        display_name: DRONE_TARGETING_SUPPORT.display_name,
-        description: DRONE_TARGETING_SUPPORT.description,
+        ...DRONE_TARGETING_SUPPORT,
     },
 });
 

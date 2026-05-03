@@ -35,8 +35,7 @@ export const UPGRADE_TRAITS: Readonly<Record<UPGRADE_TRAIT, UpgradeTraitDef>> = 
         ...MINE_LAYER,
     },
     [UPGRADE_TRAIT.DRONE_MINE_DIRECTOR_ATTACHED]: {
-        display_name: DRONE_MINE_DIRECTOR.display_name,
-        description: DRONE_MINE_DIRECTOR.description,
+        ...DRONE_MINE_DIRECTOR,
     },
 });
 

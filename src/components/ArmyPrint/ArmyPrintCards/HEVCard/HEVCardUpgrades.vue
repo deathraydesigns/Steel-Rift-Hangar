@@ -40,17 +40,27 @@ const upgrades = computed((): UpgradeItem[] => {
       display_name: armorUpgrades.value[0].card_upgrade_solo_display_name,
     });
   }
+  const excludeUpgradeTraitIds = [
+    UPGRADE_TRAIT.COMPACT,
+    UPGRADE_TRAIT.LIMITED,
+  ];
+  const excludeUpgradeIds = [
+    MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM,
+    MECH_UPGRADE.DRONE_MINE_DIRECTOR,
+    MECH_UPGRADE.DRONE_TACTICAL_AWARENESS,
+    MECH_UPGRADE.DRONE_TARGETING_SUPPORT,
+  ];
   const upgradesAttachments = mechStore.getMechUpgradesAttachmentInfo(mechId)
     .map(item => {
       if (item.traits) {
         item.traits = item.traits
-          .filter(trait => trait.id !== UPGRADE_TRAIT.COMPACT && trait.id !== UPGRADE_TRAIT.LIMITED);
+          .filter(trait => !excludeUpgradeTraitIds.includes(trait.id));
       }
 
       return item;
     })
     // shown in weapons row instead
-    .filter(item => item.upgrade_id !== MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM) as UpgradeItem[];
+    .filter(item => !excludeUpgradeIds.includes(item.upgrade_id)) as UpgradeItem[];
 
   const teamPerks = teamStore.getTeamPerksInfoByMech(mechId).filter(({ visible_on_card }) => visible_on_card) as UpgradeItem[];
   teamPerks.forEach(item => item.is_team_perk = true);
