@@ -209,7 +209,6 @@ export const UNIT_WEAPONS = makeFrozenStaticListIds<UnitWeaponInput>({
         display_name: 'Rocket Pack',
         damage: 3,
         traits: [
-            trait(WEAPON_TRAIT.SMART),
             trait(WEAPON_TRAIT.BLAST, 3),
             trait(WEAPON_TRAIT.LIMITED, 3),
         ],

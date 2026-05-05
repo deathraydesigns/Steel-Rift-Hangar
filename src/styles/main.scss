@@ -58,6 +58,8 @@ $dropdown-link-active-color: #000;
 // #f8f9fa = $light
 $dropdown-link-active-bg: darken(#f8f9fa, 7%);
 
+$table-group-separator-color: color-mix(in srgb, currentColor 50%, transparent);
+
 @import '../../node_modules/bootstrap/scss/bootstrap';
 @import '../../node_modules/bootstrap-vue-next/src/styles/styles';
 

@@ -48,7 +48,7 @@ provide('has_garrison', has_garrison);
       </th>
     </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
     <UnitVehicleItem
       v-for="item in unit.vehicles" :key="item.id"
       :support-asset-attachment-id="supportAssetAttachmentId"

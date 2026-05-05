@@ -37,7 +37,7 @@ const garrisonUnitChoices = computed(() => unitStore.getUnitAttachmentAllGarriso
       </th>
     </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
     <tr v-for="unitInfo in garrisonUnitChoices" :key="unitInfo.id">
       <td class="text-nowrap">
         {{ unitInfo.display_name }}

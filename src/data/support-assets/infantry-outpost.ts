@@ -17,13 +17,15 @@ export const INFANTRY_OUTPOST_DATA: Omit<SupportAssetUnitDef, 'id'> = {
     traits: [
         trait(UNIT_TRAIT.AUXILIARY_UNIT, UNIT_SIZES[SIZE.ULTRA].display_name),
         trait(UNIT_TRAIT.ASSET_COMMAND),
-        trait(UNIT_TRAIT.FORTIFICATION)
+        trait(UNIT_TRAIT.FORTIFICATION),
+        trait(UNIT_TRAIT.GARRISON, 6, 'Infantry Squads'),
+        trait(UNIT_TRAIT.MINELAYER, 'ENGAGE', 3),
     ],
     vehicles: makeStaticListIds<SupportAssetUnitVehicleDef>({
         BUNKER: {
             display_name: 'Bunker',
-            armor: 0,
-            structure: 10,
+            armor: 2,
+            structure: 8,
             move: 0,
             jump: 0,
             weapon_choice_ids: {
@@ -33,10 +35,6 @@ export const INFANTRY_OUTPOST_DATA: Omit<SupportAssetUnitDef, 'id'> = {
                     UNIT_WEAPON.BUNKER_ROCKET_PACK,
                 ],
             },
-            traits: [
-                trait(UNIT_TRAIT.GARRISON, 6, 'Infantry Squads'),
-                trait(UNIT_TRAIT.MINELAYER, 'ENGAGE', 3),
-            ],
             garrison_choice_unit_ids: [
                 INFANTRY.RIFLE_SQUAD,
                 INFANTRY.ANTI_TANK_SQUAD,

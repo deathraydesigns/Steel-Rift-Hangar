@@ -54,6 +54,14 @@ const traits = computed(() => {
 
 const validationMessages = computed(() => unitStore.getUnitAttachmentInvalidMessages(supportAssetAttachmentId));
 
+const DAMAGE_SUFFIX = ` x (X)`;
+const unitWeapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttachmentId));
+const unitDamageSuffix = computed(() => {
+  if (unitStore.isSquadron(supportAssetAttachmentId)) {
+    return DAMAGE_SUFFIX;
+  }
+});
+const garrisonWeapons = computed(() => unitStore.getUnitAllGarrisonWeaponsInfo(supportAssetAttachmentId));
 </script>
 <template>
   <div class="card card-dark-border" :class="{'border-danger': !unit_points_valid}" v-if="info">
@@ -182,7 +190,11 @@ const validationMessages = computed(() => unitStore.getUnitAttachmentInvalidMess
         </div>
 
         <UnitVehicles :support-asset-attachment-id="supportAssetAttachmentId" v-if="info.vehicles.length" />
-        <UnitWeapons :support-asset-attachment-id="supportAssetAttachmentId" />
+        <table class="table table-striped">
+          <UnitWeapons title="Unit Weapons Reference" :weapons="unitWeapons" :damage-suffix="unitDamageSuffix" />
+          <UnitWeapons title="Garrison Weapons Reference" :weapons="garrisonWeapons" :damage-suffix="DAMAGE_SUFFIX" />
+
+        </table>
         <UnitGarrisonUnits :support-asset-attachment-id="supportAssetAttachmentId" v-if="garrisonUnitChoices.length" />
       </div>
     </BCollapse>

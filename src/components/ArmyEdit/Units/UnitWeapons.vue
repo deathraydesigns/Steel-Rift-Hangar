@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useSupportAssetUnitsStore } from '../../../store/support-asset-units-store';
+import type { UnitWeaponInfo } from '../../../data/support-assets/_support-asset-types';
 import FormatInches from '../../functional/format-inches.vue';
 import TraitList from '../../UI/TraitList.vue';
 
-const { supportAssetAttachmentId } = defineProps<{
-  supportAssetAttachmentId: number
+const {
+  weapons,
+  damageSuffix = '',
+  title,
+} = defineProps<{
+  weapons: UnitWeaponInfo[],
+  title: string,
+  damageSuffix?: string
 }>();
-
-const unitStore = useSupportAssetUnitsStore();
-const weapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttachmentId));
-
 </script>
 <template>
-  <table class="table table-striped">
     <thead>
     <tr>
       <th>
-        Weapons Reference
+        {{ title }}
       </th>
       <th class="text-end">
         Rng
@@ -30,7 +30,7 @@ const weapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttac
       </th>
     </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
     <tr
       v-for="item in weapons" :key="item.id"
     >
@@ -42,7 +42,7 @@ const weapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttac
       </td>
       <td class="text-end">
         <template v-if="item.damage">
-          {{ item.damage }} x (X)
+          {{ item.damage }}{{ damageSuffix }}
         </template>
       </td>
       <td>
@@ -50,5 +50,4 @@ const weapons = computed(() => unitStore.getUnitAllWeaponsInfo(supportAssetAttac
       </td>
     </tr>
     </tbody>
-  </table>
 </template>

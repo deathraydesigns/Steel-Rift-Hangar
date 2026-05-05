@@ -608,7 +608,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             return SUPPORT_ASSET_UNITS[unitAttachment.support_asset_unit_id].vehicles[vehicleAttachment.vehicle_id];
         }
 
-        function getUnitAllWeaponsInfo(unitAttachmentId: number) {
+        function getUnitAllWeaponsInfo(unitAttachmentId: number): UnitWeaponInfo[] {
             const unitDef = getUnitAttachmentDef(unitAttachmentId);
             if (!unitDef) return [];
             const vehicleDefs = unitDef.vehicles;
@@ -616,19 +616,12 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             const weaponIdMap = new Set<UNIT_WEAPON>();
             Object.values(vehicleDefs).forEach((vehicleDef) => {
                 vehicleDef.weapon_ids?.forEach((weaponId) => {
-
                     weaponIdMap.add(weaponId);
                 });
 
                 Object.values(vehicleDef.weapon_choice_ids || {}).forEach((weaponIds) => {
                     weaponIds.forEach(weaponId => weaponIdMap.add(weaponId));
                 });
-
-                if (vehicleDef.garrison_choice_unit_ids) {
-                    vehicleDef.garrison_choice_unit_ids.forEach((squadId) => {
-                        INFANTRY_SQUADS[squadId].weapon_ids.forEach((weaponId) => weaponIdMap.add(weaponId));
-                    });
-                }
             });
 
             if (unitDef.upgrade_pods) {
@@ -639,7 +632,24 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
                 });
             }
 
-            return weaponIdMap.values().map(weaponId => _getWeaponInfo(weaponId));
+            return [...weaponIdMap.values()].map(weaponId => _getWeaponInfo(weaponId));
+        }
+
+        function getUnitAllGarrisonWeaponsInfo(unitAttachmentId: number): UnitWeaponInfo[] {
+            const unitDef = getUnitAttachmentDef(unitAttachmentId);
+            if (!unitDef) return [];
+            const vehicleDefs = unitDef.vehicles;
+
+            const weaponIdMap = new Set<UNIT_WEAPON>();
+            Object.values(vehicleDefs).forEach((vehicleDef) => {
+                if (vehicleDef.garrison_choice_unit_ids) {
+                    vehicleDef.garrison_choice_unit_ids.forEach((squadId) => {
+                        INFANTRY_SQUADS[squadId].weapon_ids.forEach((weaponId) => weaponIdMap.add(weaponId));
+                    });
+                }
+            });
+
+            return [...weaponIdMap.values()].map(weaponId => _getWeaponInfo(weaponId));
         }
 
         const validation_messages = computed(() => {
@@ -892,6 +902,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
             getUnitVehicleCount,
             getUnitVehicleAttachment,
             getUnitAllWeaponsInfo,
+            getUnitAllGarrisonWeaponsInfo,
             getUnitAttachmentInfo,
             getUnitAttachmentVehicleInfo,
             getUnitAttachmentVehicleWeaponsCardInfo,
