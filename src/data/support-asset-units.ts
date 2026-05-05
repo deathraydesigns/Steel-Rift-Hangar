@@ -1,7 +1,7 @@
 import { makeFrozenStaticListIds } from './data-helpers';
 import { SUPPORT_ASSET_UNIT, type SupportAssetUnitDef } from './support-assets/_support-asset-types';
 import { ASSAULT_VEHICLE_SQUADRON_DATA } from './support-assets/assault-vehicle-squadron';
-import { HEAVY_TANK_SQUADRON_DATA } from './support-assets/heavy-tank-squadron';
+import { HEAVY_TANK_SQUADRON_DATA } from './support-assets/heavy-tank-troop';
 import { INFANTRY_OUTPOST_DATA } from './support-assets/infantry-outpost';
 import { LAS_WING_ATTACK_SQUADRON_DATA } from './support-assets/las-wing-attack-squadron';
 import { LAS_WING_TRANSPORT_SQUADRON_DATA } from './support-assets/las-wing-transport-squadron';
