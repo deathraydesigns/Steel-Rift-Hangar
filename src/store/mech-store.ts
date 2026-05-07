@@ -1020,17 +1020,6 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             let validation_message: string = '';
 
             const {
-                valid: armorValid,
-                teamDisplayName,
-                groupDisplayName,
-            } = validationStore.getMechTeamGroupArmorUpgradeValidation(mechId, armorUpgradeId);
-
-            if (!armorValid) {
-                valid = false;
-                validation_message = `Not available to ${teamDisplayName} ${groupDisplayName}`;
-            }
-
-            const {
                 valid: armorSizeValid,
                 validSizeDisplayNames,
             } = validationStore.getMechArmorUpgradeSizeValidation(mechId, armorUpgradeId);

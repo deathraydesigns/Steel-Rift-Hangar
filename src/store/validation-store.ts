@@ -139,19 +139,22 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         return [
             teamGroupRequiredUpgradesInvalid(mechId),
             teamGroupMechSizeInvalid(mechId),
-            ...teamGroupMechArmorUpgradeInvalidMessages(mechId),
+            ...mechTeamGroupArmorUpgradeMessages(mechId),
             teamGroupMechStructureModInvalid(mechId),
             teamGroupMechArmorModInvalid(mechId),
             ...mechTeamGroupWeaponMessages(mechId),
             ...mechTeamGroupUpgradeMessages(mechId),
-            teamGroupRequiredArmorUpgradeInvalid(mechId),
         ].filter(i => i) as string[];
     }
 
-    function mechTeamGroupArmorMessages(mechId: number) {
+    function mechTeamGroupArmorUpgradeMessages(mechId: number) {
+        const mech = mechStore.getMech(mechId);
+        if (!mech) return [];
+
         return [
-            teamGroupRequiredArmorUpgradeInvalid(mechId),
-        ].filter(i => i) as string[];
+            teamGroupMechArmorUpgradeRequireAtLeastOneInvalid(mechId)
+        ]
+            .filter(v => !!v) as string[];
     }
 
     function mechTeamGroupWeaponMessages(mechId: number) {
@@ -390,27 +393,6 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         };
     }
 
-    function teamGroupRequiredArmorUpgradeInvalid(mechId: number) {
-        const mech = mechStore.getMech(mechId);
-        if (!mech) return false;
-        const groupDef = teamStore.getMechTeamGroupDef(mechId);
-
-        const requiredIds = groupDef.required_armor_upgrade_ids;
-        if (requiredIds) {
-            const armorIds = [...mech.armor_upgrade_ids, mech.aux_armor_upgrade_id];
-
-            for (const requiredId of requiredIds) {
-                const found = armorIds.includes(requiredId);
-                if (!found) {
-                    const armorDisplayName = MECH_ARMOR_UPGRADES[requiredId].display_name;
-                    return `Team group requires the ${armorDisplayName} Defense Configuration.`;
-                }
-            }
-        }
-
-        return false;
-    }
-
     function teamGroupAtLeastOneWeaponWithTraitInvalid(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return false;
@@ -525,10 +507,16 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     function getMechTeamGroupArmorUpgradeValidation(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE) {
         const { teamId, groupId } = teamStore.getMechTeamAndGroupIds(mechId);
         const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
-        const validIds = groupDef.limited_armor_upgrade_ids;
+        const validIds = groupDef.required_at_least_one_of_armor_upgrade_ids;
+        const mech = mechStore.getMech(mechId)!;
+        const mechArmorUpgradeIds = [mech.armor_upgrade_ids, mech.aux_armor_upgrade_id];
 
         if (validIds?.length) {
-            if (!validIds.includes(armorUpgradeId)) {
+            const hasOne = validIds.some(validId => {
+                return mechArmorUpgradeIds.includes(validId);
+            });
+
+            if (!hasOne) {
                 return {
                     valid: false,
                     armorUpgradeDisplayName: MECH_ARMOR_UPGRADES[armorUpgradeId].display_name,
@@ -549,33 +537,25 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         };
     }
 
-    function teamGroupMechArmorUpgradeInvalidMessages(mechId: number): string[] {
-        const mech = mechStore.getMech(mechId);
-        if (!mech) return [];
+    function teamGroupMechArmorUpgradeRequireAtLeastOneInvalid(mechId: number) {
+        const { teamId, groupId } = teamStore.getMechTeamAndGroupIds(mechId);
+        const groupDef = teamStore.getTeamGroupDef(teamId, groupId);
+        const validIds = groupDef.required_at_least_one_of_armor_upgrade_ids;
+        const mech = mechStore.getMech(mechId)!;
+        const mechArmorUpgradeIds = [...mech.armor_upgrade_ids, mech.aux_armor_upgrade_id];
 
-        const results = mech.armor_upgrade_ids.map(id => teamGroupMechArmorUpgradeInvalid(mechId, id));
+        if (validIds?.length) {
+            const hasOne = validIds.some(validId => {
+                return mechArmorUpgradeIds.includes(validId);
+            });
 
-        if (teamStore.getMechHasTeamPerkId(mechId, TEAM_PERK.AUX_DEFENSE_CONFIG)) {
-            results.push(teamGroupMechArmorUpgradeInvalid(mechId, mech.aux_armor_upgrade_id));
+            if (!hasOne) {
+                const validArmorUpgradeDisplayNames = validIds.map(id => MECH_ARMOR_UPGRADES[id].display_name);
+                return `Must have at least one of the following Defense Configurations: ${validArmorUpgradeDisplayNames.join(', ')}`;
+            }
+
+            return false;
         }
-
-        return results.filter(v => !!v) as string[];
-    }
-
-    function teamGroupMechArmorUpgradeInvalid(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE) {
-        const mech = mechStore.getMech(mechId);
-        if (!mech) return false;
-        const {
-            valid,
-            armorUpgradeDisplayName,
-            validArmorUpgradeDisplayNames,
-        } = getMechTeamGroupArmorUpgradeValidation(mechId, armorUpgradeId);
-
-        if (!valid) {
-            return `Invalid Armor Upgrade: ${armorUpgradeDisplayName}. Valid values: ${validArmorUpgradeDisplayNames.join(', ')}`;
-        }
-
-        return false;
     }
 
     function teamGroupMechStructureModInvalid(mechId: number) {
@@ -742,7 +722,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         mechTeamGroupMessages,
         mechTeamGroupWeaponMessages,
         mechTeamGroupUpgradeMessages,
-        mechTeamGroupArmorMessages,
+        mechTeamGroupArmorUpgradeMessages,
 
         getTeamValidation,
         getTeamGroupValidation,
@@ -756,7 +736,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         teamGroupMechSizeInvalid,
         teamGroupMechStructureModInvalid,
         teamGroupMechArmorModInvalid,
-        teamGroupMechArmorUpgradeInvalid,
+        teamGroupMechArmorUpgradeRequireAtLeastOneInvalid,
 
         getNotAvailableToTeamGroupMessage,
         addSupportAssetUnitInvalid,

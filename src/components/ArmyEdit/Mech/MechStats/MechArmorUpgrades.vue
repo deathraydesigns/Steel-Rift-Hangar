@@ -28,7 +28,7 @@ const {
 const model = defineModel<MECH_ARMOR_UPGRADE>({ required: true });
 const options = computed(() => mechStore.getMechAvailableArmorUpgrades(mechId, isAuxInput));
 const info = computed(() => mechStore.getMechArmorUpgradeInfo(mechId, model.value, isAuxInput)!);
-const validationMessages = computed(() => validationStore.mechTeamGroupArmorMessages(mechId));
+const validationMessages = computed(() => validationStore.mechTeamGroupArmorUpgradeMessages(mechId));
 
 function selectOption(value: MECH_ARMOR_UPGRADE) {
   model.value = value;
@@ -107,11 +107,6 @@ function selectOption(value: MECH_ARMOR_UPGRADE) {
               <IconNotAvailable
                 :valid="item.valid"
                 :validation-message="item.validation_message"
-              />
-              <IconRequiredByGroup
-                :required="item.required_by_group"
-                :reason="item.required_by_group_reason"
-                size="sm"
               />
             </td>
           </tr>

@@ -2,7 +2,7 @@ import { difference, sumBy } from 'es-toolkit';
 import { defineScopeableStore } from 'pinia-scope';
 import { computed, ref } from 'vue';
 import { GAME_SIZES } from '../data/game-sizes';
-import type { MECH_ARMOR_UPGRADE } from '../data/mech-armor-upgrades';
+import { type MECH_ARMOR_UPGRADE, MECH_ARMOR_UPGRADES } from '../data/mech-armor-upgrades';
 import { MECH_TEAM_PERKS, perkIdsToInfo, TEAM_PERK } from '../data/mech-team-perks';
 import {
     MECH_TEAM,
@@ -151,12 +151,15 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
         function getArmorUpgradeIsRequired(teamId: MECH_TEAM, groupId: string, armorUpgradeId: MECH_ARMOR_UPGRADE) {
             const groupDef = getTeamGroupDef(teamId, groupId);
             const teamGroupDisplayName = getFullTeamGroupDisplayName(teamId, groupId);
+            const validIds = groupDef.required_at_least_one_of_armor_upgrade_ids;
 
-            if (groupDef.required_armor_upgrade_ids.length) {
-                if (groupDef.required_armor_upgrade_ids.includes(armorUpgradeId)) {
+            if (validIds.length) {
+                if (validIds.includes(armorUpgradeId)) {
+                    const validArmorUpgradeDisplayNames = validIds.map(id => MECH_ARMOR_UPGRADES[id].display_name);
+
                     return {
                         required: true,
-                        required_reason: `Required by ${teamGroupDisplayName}`,
+                        required_reason: `${teamGroupDisplayName} requires at least one of the following: ${validArmorUpgradeDisplayNames.join(', ')}`,
                     };
                 }
             }
@@ -677,8 +680,8 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             }
             if (groupDef?.default_armor_upgrade_ids?.length) {
                 // mechOptions.armor_upgrade_ids = [...groupDef.default_armor_upgrade_ids];
-            } else if (groupDef?.limited_armor_upgrade_ids?.length) {
-                mechOptions.armor_upgrade_ids = [groupDef.limited_armor_upgrade_ids[0]];
+            } else if (groupDef?.required_at_least_one_of_armor_upgrade_ids?.length) {
+                mechOptions.armor_upgrade_ids = [groupDef.required_at_least_one_of_armor_upgrade_ids[0]];
             }
             if (groupDef?.required_armor_or_structure_mod_id_once) {
                 mechOptions.structure_mod_id = groupDef.required_armor_or_structure_mod_id_once;
