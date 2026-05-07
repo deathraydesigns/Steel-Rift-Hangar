@@ -43,8 +43,8 @@ const {
 
 const structureModOptions = computed(() => mechArmorStore.getMechStructureModOptions(mechId)!);
 const armorModOptions = computed(() => mechArmorStore.getMechArmorModOptions(mechId)!);
-const structureModValid = computed(() => !validationStore.teamGroupMechStructureInvalid(mechId));
-const armorModValid = computed(() => !validationStore.teamGroupMechArmorInvalid(mechId));
+const structureModValid = computed(() => !validationStore.teamGroupMechStructureModInvalid(mechId));
+const armorModValid = computed(() => !validationStore.teamGroupMechArmorModInvalid(mechId));
 const notAvailableMessage = computed(() => validationStore.getNotAvailableToTeamGroupMessage(mechId));
 const hasAuxArmorUpgradePerk = computed(() => teamStore.getMechHasTeamPerkId(mechId, TEAM_PERK.AUX_DEFENSE_CONFIG));
 

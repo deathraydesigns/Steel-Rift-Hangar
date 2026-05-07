@@ -140,8 +140,8 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
             teamGroupRequiredUpgradesInvalid(mechId),
             teamGroupMechSizeInvalid(mechId),
             ...teamGroupMechArmorUpgradeInvalidMessages(mechId),
-            teamGroupMechStructureInvalid(mechId),
-            teamGroupMechArmorInvalid(mechId),
+            teamGroupMechStructureModInvalid(mechId),
+            teamGroupMechArmorModInvalid(mechId),
             ...mechTeamGroupWeaponMessages(mechId),
             ...mechTeamGroupUpgradeMessages(mechId),
             teamGroupRequiredArmorUpgradeInvalid(mechId),
@@ -578,7 +578,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         return false;
     }
 
-    function teamGroupMechStructureInvalid(mechId: number) {
+    function teamGroupMechStructureModInvalid(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return false;
         const groupDef = teamStore.getMechTeamGroupDef(mechId);
@@ -594,7 +594,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         return false;
     }
 
-    function teamGroupMechArmorInvalid(mechId: number) {
+    function teamGroupMechArmorModInvalid(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return false;
         const groupDef = teamStore.getMechTeamGroupDef(mechId);
@@ -754,8 +754,8 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         getMechUpgradeSizeValidation,
 
         teamGroupMechSizeInvalid,
-        teamGroupMechStructureInvalid,
-        teamGroupMechArmorInvalid,
+        teamGroupMechStructureModInvalid,
+        teamGroupMechArmorModInvalid,
         teamGroupMechArmorUpgradeInvalid,
 
         getNotAvailableToTeamGroupMessage,
