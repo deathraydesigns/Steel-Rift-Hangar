@@ -158,7 +158,6 @@ export const MECH_UPGRADES: Record<MECH_UPGRADE, MechUpgrade> = makeFrozenStatic
             [SIZE.HEAVY]: [trait(UPGRADE_TRAIT.LIMITED, 3)],
             [SIZE.ULTRA]: [trait(UPGRADE_TRAIT.LIMITED, 3)],
         },
-        limited_size_ids: [SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
     }),
     [MECH_UPGRADE.MINEFIELD_DRONE_TRACKING_SYSTEM]: makeUpgrade({
         display_name: 'Mine Drone Tracking Munitions',
