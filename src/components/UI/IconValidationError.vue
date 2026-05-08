@@ -50,10 +50,13 @@ const isVisible = computed(() => {
       </span>
     </template>
 
-    <template v-if="messageArray">
-      <template v-for="message in messageArray">
+    <ul v-if="(messageArray?.length ?? 0) > 1">
+      <li v-for="message in messageArray">
         {{ message }}<br>
-      </template>
+      </li>
+    </ul>
+    <template v-else-if="messageArray?.length === 1">
+      {{ messageArray[0] }}
     </template>
 
     {{ message }}
