@@ -146,8 +146,8 @@ export const MECH_UPGRADES: Record<MECH_UPGRADE, MechUpgrade> = makeFrozenStatic
         cost_by_size: {
             [SIZE.LIGHT]: 2,
             [SIZE.MEDIUM]: 3,
-            [SIZE.HEAVY]: 6,
-            [SIZE.ULTRA]: 6,
+            [SIZE.HEAVY]: 5,
+            [SIZE.ULTRA]: 5,
         },
         traits: [
             trait(UPGRADE_TRAIT.MINELAYER, 'MOVE'),
