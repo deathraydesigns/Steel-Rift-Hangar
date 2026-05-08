@@ -19,7 +19,7 @@ import {
 import { MECH_WEAPON, MECH_WEAPONS, MECH_WEAPONS_BY_TYPE, type MechWeaponInfo } from '../data/mech-weapons';
 import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
 import { UNIT_TYPE } from '../data/unit-types';
-import { UPGRADE_TRAIT, UPGRADE_TRAITS, upgradeTraitDisplayName } from '../data/upgrade-traits';
+import { UPGRADE_TRAIT, UPGRADE_TRAITS, upgradeTraitDisplayName, upgradeTraitInfo } from '../data/upgrade-traits';
 import { WEAPON_TRAIT, weaponTraitInfo } from '../data/weapon-traits';
 import { toaster } from '../toaster';
 import type { MechUpgradeInfo, TraitInfo } from '../types';
@@ -640,8 +640,20 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
             const droneSharingPerk = findById(perks, TEAM_PERK.DRONE_SHARING);
             if (droneSharingPerk) {
-                traits = [...traits, ...teamStore.getDroneSharedWeaponTraits(mechId, weaponId)];
+                const { teamId } = teamStore.getMechTeamAndGroupIds(mechId);
+                const teamSharedTraits = teamStore.getTeamMechIds(teamId)
+                    .flatMap(mechId => getWeaponDroneAttachedTraits(mechId, weaponId));
+
+                traits = [...traits, ...teamSharedTraits];
                 team_perks.push(droneSharingPerk);
+            }
+
+            const droneAttachTraits = getWeaponDroneAttachedTraits(mechId, weaponId);
+            for (const droneAttachTrait of droneAttachTraits) {
+                const exists = traits.some(trait => trait.id === droneAttachTrait.id);
+                if (!exists) {
+                    traits.push(droneAttachTrait);
+                }
             }
 
             return {
@@ -650,6 +662,37 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 faction_perks,
                 range_modifier,
             };
+        }
+
+        function getWeaponDroneAttachedTraits(mechId: number, weaponId: MECH_WEAPON) {
+            const traits: Trait<WEAPON_TRAIT>[] = [];
+
+            const upgrades = getMechUpgradeAttachments(mechId);
+            for (const upgrade of upgrades) {
+                const def = MECH_UPGRADES[upgrade.upgrade_id];
+                if (def.drone_attach_type !== MechDroneUpgradeAttachType.WEAPON) continue;
+                const targetId = upgrade.drone_attachment_target_id;
+                if (targetId === null) continue;
+                const targetWeaponId = getMechWeaponAttachmentWeaponId(mechId, targetId);
+                if (targetWeaponId === weaponId) {
+                    traits.push(trait(def.drone_attached_trait_id!));
+                }
+            }
+
+            return traits;
+        }
+
+        function getUpgradeDroneAttachedTraits(mechId: number, upgradeId: MECH_UPGRADE): Trait<UPGRADE_TRAIT>[] {
+            if (upgradeId !== MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM) return [];
+            const hasDroneUpgrade = getMechUpgradeAttachments(mechId)
+                .some(v => v.upgrade_id === MECH_UPGRADE.DRONE_MINE_DIRECTOR);
+            if (!hasDroneUpgrade) return [];
+
+            return [
+                {
+                    ...UPGRADE_TRAITS[UPGRADE_TRAIT.DRONE_MINE_DIRECTOR_ATTACHED],
+                },
+            ];
         }
 
         function getMechWeaponsAttachmentInfo(mechId: number) {
@@ -757,11 +800,32 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 }
             }
 
-            if (MECH_UPGRADES[upgradeId].drone_attach_type) {
+            const droneAttachType = MECH_UPGRADES[upgradeId].drone_attach_type;
+            if (droneAttachType) {
                 let perk = findById(teamPerks, TEAM_PERK.DRONE_RACK);
                 if (perk) {
                     traits = traits.filter(v => v.id !== UPGRADE_TRAIT.COMPACT);
                     used_team_perks.push(perk);
+                }
+            } else {
+                const perk = findById(teamPerks, TEAM_PERK.DRONE_SHARING)!;
+                if (perk) {
+                    const { teamId } = teamStore.getMechTeamAndGroupIds(mechId);
+                    const shared = teamStore.getTeamMechIds(teamId)
+                        .flatMap(mechId => getUpgradeDroneAttachedTraits(mechId, upgradeId));
+
+                    if (shared.length) {
+                        used_team_perks.push(perk);
+                        traits = [...traits, ...shared.map(v => upgradeTraitInfo(v))];
+                    }
+                }
+            }
+
+            const droneAttachTraits = getUpgradeDroneAttachedTraits(mechId, upgradeId);
+            for (const droneAttachTrait of droneAttachTraits) {
+                const exists = traits.some(trait => trait.id === droneAttachTrait.id);
+                if (!exists) {
+                    traits.push(upgradeTraitInfo(droneAttachTrait));
                 }
             }
 
@@ -875,15 +939,6 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 if (perk) {
                     cost = 0;
                     used_team_perks.push(perk);
-                }
-            }
-
-            if (drone_attach_type === null) {
-                const shared = teamStore.getDroneSharedUpgradeTraits(mechId, upgradeId);
-                if (shared.length) {
-                    const perk = findById(teamPerks, TEAM_PERK.DRONE_SHARING)!;
-                    used_team_perks.push(perk);
-                    traits = [...traits, ...shared];
                 }
             }
 
@@ -1224,6 +1279,8 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             moveMechWeaponAttachment,
             moveMechUpgradeAttachment,
             getMechWeaponAttachmentWeaponId,
+            getWeaponDroneAttachedTraits,
+            getUpgradeDroneAttachedTraits,
             $reset,
         };
     }, {

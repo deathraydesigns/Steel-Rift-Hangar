@@ -11,12 +11,11 @@ import {
     MECH_TEAMS,
     SUPPORT_ASSET_UNITS_GROUP_ID,
 } from '../data/mech-teams';
-import { MECH_UPGRADE, MECH_UPGRADES, MechDroneUpgradeAttachType } from '../data/mech-upgrades';
+import { MECH_UPGRADE } from '../data/mech-upgrades';
 import { type MECH_WEAPON, MECH_WEAPONS, weaponHasTrait } from '../data/mech-weapons';
 import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
-import { UPGRADE_TRAIT, UPGRADE_TRAITS } from '../data/upgrade-traits';
-import { WEAPON_TRAIT, WEAPON_TRAITS, weaponTraitInfo } from '../data/weapon-traits';
-import type { Mech, MechGroupInstance, MechTeamInstance, MechWeaponAttachment, Trait, TraitInfo } from '../types';
+import { WEAPON_TRAIT, WEAPON_TRAITS } from '../data/weapon-traits';
+import type { Mech, MechGroupInstance, MechTeamInstance, MechWeaponAttachment, Trait } from '../types';
 import { useArmyListStore } from './army-list-store';
 import { findBy, findById, findItemIndexById, move, setDisplayOrders } from './helpers/collection-helper';
 import { ifEmptyString, makeUniqueItemIdCollection } from './helpers/helpers';
@@ -810,48 +809,6 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             getTeamGroupMechIds(teamId, groupId).forEach((mechId) => mechStore.setMechVisible(mechId, visible));
         }
 
-        function getDroneSharedUpgradeTraits(mechId: number, upgradeId: MECH_UPGRADE): TraitInfo<UPGRADE_TRAIT>[] {
-            const { teamId } = getMechTeamAndGroupIds(mechId);
-            if (teamId !== MECH_TEAM.NETWORKED_AI) return [];
-            if (!getMechHasTeamPerkId(mechId, TEAM_PERK.DRONE_SHARING)) return [];
-            if (upgradeId !== MECH_UPGRADE.MINEFIELD_DRONE_CARRIER_SYSTEM) return [];
-            const hasDroneUpgrade = getTeamMechIds(teamId).some(mechId => {
-                return mechStore.getMechUpgradeAttachments(mechId)
-                    .some(v => v.upgrade_id === MECH_UPGRADE.DRONE_MINE_DIRECTOR);
-            });
-            if (!hasDroneUpgrade) return [];
-
-            return [
-                {
-                    dependent_trait_ids: [],
-                    ...UPGRADE_TRAITS[UPGRADE_TRAIT.DRONE_MINE_DIRECTOR_ATTACHED],
-                },
-            ];
-        }
-
-        function getDroneSharedWeaponTraits(mechId: number, weaponId: MECH_WEAPON): TraitInfo<WEAPON_TRAIT>[] {
-            const { teamId } = getMechTeamAndGroupIds(mechId);
-            if (teamId !== MECH_TEAM.NETWORKED_AI) return [];
-            const traits: TraitInfo<WEAPON_TRAIT>[] = [];
-
-            getTeamMechIds(teamId).forEach(mechId => {
-                return mechStore.getMechUpgradeAttachments(mechId)
-                    .forEach(v => {
-                        const def = MECH_UPGRADES[v.upgrade_id];
-                        if (def.drone_attach_type !== MechDroneUpgradeAttachType.WEAPON) return;
-                        const targetId = v.drone_attachment_target_id;
-                        if (targetId === null) return;
-                        const targetWeaponId = mechStore.getMechWeaponAttachmentWeaponId(mechId, targetId);
-                        if (targetWeaponId === weaponId) {
-                            const trait = weaponTraitInfo({ id: def.drone_attached_trait_id! });
-                            traits.push(trait);
-                        }
-                    });
-            });
-
-            return traits;
-        }
-
         function getTeamGroupMinMaxCount(teamId: MECH_TEAM, groupId: string) {
             const teamDef = MECH_TEAMS[teamId];
             const { min_count, max_count } = teamDef.groups[groupId];
@@ -921,8 +878,6 @@ export const useTeamStore = defineScopeableStore('team', ({ scope }: { scope: st
             normalizePreferredTeamId,
             afterHydrate,
 
-            getDroneSharedUpgradeTraits,
-            getDroneSharedWeaponTraits,
             addMechToTeamFromLoadedFile,
             addMechToTeam,
             addMechToTeamWithDefaults,
