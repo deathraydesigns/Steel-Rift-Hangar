@@ -166,6 +166,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     function mechTeamGroupUpgradeMessages(mechId: number) {
         return [
             teamGroupRequiredUpgradesInvalid(mechId),
+            teamGroupRequiredOneOfUpgradesInvalid(mechId),
         ].filter(i => i) as string[];
     }
 
@@ -319,6 +320,26 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
 
                 return `Team group requires at least one weapon with the ${traitDisplayName} trait.`;
             }
+        }
+
+        return false;
+    }
+
+    function teamGroupRequiredOneOfUpgradesInvalid(mechId: number) {
+        const mech = mechStore.getMech(mechId);
+        if (!mech) return false;
+        const weaponIds = mech.upgrades.map((upgrade) => upgrade.upgrade_id);
+        const groupDef = teamStore.getMechTeamGroupDef(mechId);
+
+        if (!groupDef.required_at_least_one_of_upgrade_ids?.length) return false;
+
+        const match = groupDef.required_at_least_one_of_upgrade_ids.some(requiredWeaponId => {
+            return weaponIds.includes(requiredWeaponId);
+        });
+
+        if (!match) {
+            const upgrades = groupDef.required_at_least_one_of_upgrade_ids.map(upgradeId => MECH_UPGRADES[upgradeId].display_name);
+            return `Team Group requires at least one of the following upgrades(s): ${upgrades.join(', ')}`;
         }
 
         return false;
