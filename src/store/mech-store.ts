@@ -257,7 +257,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             const type = upgrade.drone_attach_type;
             if (!type) return;
 
-            if (targetId) {
+            if (targetId !== null) {
                 if (type === MechDroneUpgradeAttachType.WEAPON) {
                     const weapon = getMechWeaponAttachmentInfo(mechId, targetId);
                     if (!weapon) return;
@@ -281,7 +281,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 getMechUpgradesAttachmentInfo(mechId).forEach(v => {
                     if (v.drone_attach_type === MechDroneUpgradeAttachType.MINE_DRONE_CARRIER) {
                         if (v.drone_attachment_target_id === mechUpgradeAttachmentId) {
-                            setMechDroneUpgradeAttachmentTarget(mechId, mechUpgradeAttachmentId, null);
+                            setMechDroneUpgradeAttachmentTarget(mechId, v.id, null);
                         }
                     }
                 });
