@@ -49,7 +49,9 @@ export type MechUpgradeInfo =
     & {
     upgrade_id: MECH_UPGRADE,
     valid: boolean,
-    validation_message: string | null,
+    validation_messages: string[],
+    availability_valid: boolean,
+    availability_validation_message: string | null,
     cost: number | null,
     team_perks: TeamPerkInfo[],
     faction_perks: FactionPerk[],

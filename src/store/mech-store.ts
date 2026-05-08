@@ -38,7 +38,6 @@ import { deleteItemById, findBy, findById, findItemIndex, moveItem } from './hel
 import { type GrantedOrderCollection, makeGrantedOrderCollection } from './helpers/helpers';
 import { useMechArmorStore } from './mech-armor-store';
 import { useTeamStore } from './team-store';
-import { useValidationStore } from './validation-store';
 
 export type AddMechOptions = {
     size_id?: MechSizeId,
@@ -50,9 +49,9 @@ export type AddMechOptions = {
     preferred_team_id?: MECH_TEAM,
     name?: string,
 };
+
 export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: string }) => {
         const teamStore = useTeamStore(scope);
-        const validationStore = useValidationStore(scope);
         const factionStore = useFactionStore(scope);
         const mechArmorStore = useMechArmorStore(scope);
 
@@ -304,7 +303,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 const info = getMechUpgradeAttachmentInfo(mechId, upgradeAttachment.id);
                 if (info && !info.valid) {
                     toaster().info(`${mechInfo.size.display_name} HE-V (${mechInfo.display_name})`,
-                        `${info.display_name} removed: (${info.validation_message})`);
+                        `${info.display_name} removed: (${info.availability_validation_message})`);
                     removeMechUpgradeAttachment(mechId, upgradeAttachment.id);
                 }
             });
@@ -540,7 +539,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             const {
                 valid: sizeValid,
                 validSizeDisplayNames,
-            } = validationStore.getMechWeaponSizeValidation(mechId, weaponId);
+            } = _getMechWeaponSizeValidation(mechId, weaponId);
 
             if (!sizeValid) {
                 valid = false;
@@ -867,24 +866,19 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
             let cost = cost_by_size[size_id];
 
-            let validation_message: string | null = null;
+            const validation_messages: string[] = [];
             let valid = true;
 
             const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
 
             const {
-                valid: sizeValid,
-                validSizeDisplayNames,
+                availability_valid,
+                availability_validation_message,
                 sizeTeamPerk,
-            } = validationStore.getMechUpgradeSizeValidation(mechId, upgradeId);
+            } = _getMechUpgradeSizeValidation(mechId, upgradeId);
 
             if (sizeTeamPerk) {
                 used_team_perks.push(sizeTeamPerk);
-            }
-
-            if (!sizeValid) {
-                valid = false;
-                validation_message = `Only available for ${validSizeDisplayNames.join('/')} HE-Vs`;
             }
 
             const traitCompact = findById(traits, UPGRADE_TRAIT.COMPACT);
@@ -894,7 +888,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                         return false;
                     }
                     const t = getUpgradeTraitsInfo(mechId, upgrade.upgrade_id);
-                    if (!t) return;
+                    if (!t) return false;
 
                     return !!findById(t.traits, UPGRADE_TRAIT.COMPACT);
                 });
@@ -902,7 +896,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 if (otherCompact.length) {
                     const otherCompatDisplayNames = otherCompact.map(v => MECH_UPGRADES[v.upgrade_id].display_name);
                     valid = false;
-                    validation_message = `Only one Upgrade with the ${(UPGRADE_TRAITS)[UPGRADE_TRAIT.COMPACT].display_name} trait may be selected. Other Compact Upgrades: ${otherCompatDisplayNames.join(', ')}`;
+                    validation_messages.push(`Only one Upgrade with the ${UPGRADE_TRAITS[UPGRADE_TRAIT.COMPACT].display_name} trait may be selected. Other Compact Upgrades: ${otherCompatDisplayNames.join(', ')}`);
                 }
             }
 
@@ -947,7 +941,9 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 display_name,
                 description,
                 valid,
-                validation_message,
+                validation_messages,
+                availability_valid,
+                availability_validation_message,
                 slots,
                 cost,
                 team_perks: used_team_perks,
@@ -991,7 +987,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 info = {
                     ...info,
                     valid: false,
-                    validation_message: 'Drone must have target',
+                    validation_messages: ['Drone must have target', ...info.validation_messages],
                 };
             }
 
@@ -1077,7 +1073,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             const {
                 valid: armorSizeValid,
                 validSizeDisplayNames,
-            } = validationStore.getMechArmorUpgradeSizeValidation(mechId, armorUpgradeId);
+            } = _getMechArmorUpgradeSizeValidation(mechId, armorUpgradeId);
 
             if (!armorSizeValid) {
                 valid = false;
@@ -1233,6 +1229,90 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
 
             return sortBy(results, ['display_name']);
         });
+
+        function _getMechArmorUpgradeSizeValidation(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE) {
+            let mech = getMech(mechId);
+            if (!mech) return { valid: true, armorUpgradeDisplayName: null, validSizeDisplayNames: [] };
+            let {
+                size_id,
+            } = mech;
+
+            const { limited_size_ids, display_name } = MECH_ARMOR_UPGRADES[armorUpgradeId];
+            if (limited_size_ids?.length && !limited_size_ids.includes(size_id)) {
+                return {
+                    valid: false,
+                    armorUpgradeDisplayName: display_name,
+                    validSizeDisplayNames: limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name),
+                };
+            }
+
+            return {
+                valid: true,
+                armorUpgradeDisplayName: null,
+                validSizeDisplayNames: [],
+            };
+        }
+
+        function _getMechUpgradeSizeValidation(mechId: number, upgradeId: MECH_UPGRADE) {
+            const mech = getMech(mechId);
+            if (!mech) return { availability_valid: true, availability_validation_message: null, sizeTeamPerk: null };
+            let limited_size_ids = MECH_UPGRADES[upgradeId].limited_size_ids || [];
+            let sizeTeamPerk = null;
+            let valid = true;
+
+            if (upgradeId === MECH_UPGRADE.COMBAT_SHIELD) {
+                const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
+                let combatBuckler = findById(teamPerks, TEAM_PERK.COMBAT_BUCKLER);
+                if (combatBuckler) {
+                    limited_size_ids = [...limited_size_ids, SIZE.MEDIUM];
+
+                    if (mech.size_id === SIZE.MEDIUM) {
+                        sizeTeamPerk = combatBuckler;
+                    }
+                }
+            }
+
+            if (limited_size_ids.length) {
+                valid = limited_size_ids.includes(mech.size_id);
+            }
+            const validSizeDisplayNames = limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name);
+
+            let availability_validation_message = null;
+            if (!valid) {
+                availability_validation_message = `Only available for ${validSizeDisplayNames.join('/')} HE-Vs`;
+            }
+
+            return {
+                availability_valid: valid,
+                availability_validation_message,
+                sizeTeamPerk,
+            };
+        }
+
+        function _getMechWeaponSizeValidation(mechId: number, weaponId: string): {
+            valid: boolean,
+            validSizeDisplayNames: string[],
+        } {
+            const mech = getMech(mechId);
+            if (!mech) return {
+                valid: true,
+                validSizeDisplayNames: [],
+            };
+            const size_id = mech.size_id;
+            const weapon = MECH_WEAPONS[weaponId];
+            const limited_size_ids = weapon.limited_size_ids;
+
+            if (limited_size_ids.length) {
+                return {
+                    valid: limited_size_ids.includes(size_id),
+                    validSizeDisplayNames: limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name),
+                };
+            }
+            return {
+                valid: true,
+                validSizeDisplayNames: [],
+            };
+        }
 
         return {
             mechs,

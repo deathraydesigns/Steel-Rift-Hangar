@@ -9,6 +9,7 @@ import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
 import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
+import IconValidationError from '../../../UI/IconValidationError.vue';
 import TraitList from '../../../UI/TraitList.vue';
 
 const mechStore = useMechStore();
@@ -159,8 +160,14 @@ function setTarget(targetId: number) {
       </BButton>
       <IconNotAvailable
         btn-class="me-1"
+        :valid="upgrade.availability_valid"
+        :validation-message="upgrade.availability_validation_message ?? ''"
+      />
+      <IconValidationError
+        btn-class="me-1"
+        size="sm"
         :valid="upgrade.valid"
-        :validation-message="upgrade.validation_message ?? ''"
+        :message-array="upgrade.validation_messages"
       />
       <IconRequiredByGroup
         :required="upgrade.required_by_group"

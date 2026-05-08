@@ -9,6 +9,7 @@ import IconFactionPerks from '../../../UI/IconFactionPerks.vue';
 import IconNotAvailable from '../../../UI/IconNotAvailable.vue';
 import IconRequiredByGroup from '../../../UI/IconRequiredByGroup.vue';
 import IconTeamGroupPerks from '../../../UI/IconTeamGroupPerks.vue';
+import IconValidationError from '../../../UI/IconValidationError.vue';
 import TraitList from '../../../UI/TraitList.vue';
 
 const { mechId, options, text, type } = defineProps<{
@@ -93,8 +94,15 @@ function addUpgrade(upgradeId: MECH_UPGRADE) {
           </td>
           <td class="notes">
             <IconNotAvailable
+              :valid="!!item?.availability_valid"
+              :validation-message="item?.availability_validation_message ?? ''"
+            />
+          </td>
+          <td class="notes">
+            <IconValidationError
+              size="sm"
               :valid="!!item?.valid"
-              :validation-message="item?.validation_message ?? ''"
+              :message-array="item?.validation_messages"
             />
           </td>
           <td class="notes">

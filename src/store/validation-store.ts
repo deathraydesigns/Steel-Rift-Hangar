@@ -4,17 +4,15 @@ import { computed } from 'vue';
 import { GAME_SIZE } from '../data/game-sizes';
 import { MECH_ARMOR_UPGRADE, MECH_ARMOR_UPGRADES } from '../data/mech-armor-upgrades';
 import { MECH_BODY_MODS } from '../data/mech-body-mod';
-import { TEAM_PERK } from '../data/mech-team-perks';
 import { MECH_TEAM, MECH_TEAMS, SUPPORT_ASSET_UNITS_GROUP_ID } from '../data/mech-teams';
-import { MECH_UPGRADE, MECH_UPGRADES } from '../data/mech-upgrades';
+import { MECH_UPGRADES } from '../data/mech-upgrades';
 import { MECH_WEAPONS } from '../data/mech-weapons';
 import { SUPPORT_ASSET_UNITS } from '../data/support-asset-units';
 import { type SUPPORT_ASSET_UNIT } from '../data/support-assets/_support-asset-types';
-import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
+import { MECH_SIZES, type MechSizeId } from '../data/unit-sizes';
 import { WEAPON_TRAITS } from '../data/weapon-traits';
 import type { MechInfo } from '../types';
 import { useArmyListStore } from './army-list-store';
-import { findById } from './helpers/collection-helper';
 import { useMechStore } from './mech-store';
 import { useSupportAssetCountsStore } from './support-asset-count-store';
 import { useSupportAssetUnitsStore } from './support-asset-units-store';
@@ -152,9 +150,8 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         if (!mech) return [];
 
         return [
-            teamGroupMechArmorUpgradeRequireAtLeastOneInvalid(mechId)
-        ]
-            .filter(v => !!v) as string[];
+            teamGroupMechArmorUpgradeRequireAtLeastOneInvalid(mechId),
+        ].filter(v => !!v) as string[];
     }
 
     function mechTeamGroupWeaponMessages(mechId: number) {
@@ -199,14 +196,14 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     function getInvalidMechWeaponMessages(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return [];
-        return mech.weapons.map((weapon) => {
+        return mech.weapons.flatMap((weapon) => {
             const {
                 valid,
-                validSizeDisplayNames,
-            } = getMechWeaponSizeValidation(mechId, weapon.weapon_id);
+                validation_message,
+            } = mechStore.getMechWeaponAttachmentInfo(mechId, weapon.id)!;
             if (!valid) {
                 const displayName = MECH_WEAPONS[weapon.weapon_id].display_name;
-                return `${displayName} is only available for ${validSizeDisplayNames.join('/')} HE-Vs`;
+                return displayName + ': ' + validation_message;
             }
             return '';
         }).filter(i => i);
@@ -215,17 +212,20 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
     function getInvalidMechUpgradeMessages(mechId: number) {
         const mech = mechStore.getMech(mechId);
         if (!mech) return [];
-        return mech.upgrades.map((upgrade) => {
+        return mech.upgrades.flatMap((upgrade) => {
             const {
-                valid,
-                validSizeDisplayNames,
-                upgradeDisplayName,
-            } = getMechUpgradeSizeValidation(mechId, upgrade.upgrade_id);
-            if (!valid) {
-                return `${upgradeDisplayName} is only available for ${validSizeDisplayNames.join('/')} HE-Vs`;
-            }
-            return null;
-        }).filter(Boolean);
+                availability_validation_message,
+                validation_messages,
+                display_name,
+            } = mechStore.getMechUpgradeAttachmentInfo(mechId, upgrade.id)!;
+
+            return [
+                availability_validation_message,
+                ...validation_messages,
+            ].filter(i => i).map((message) => {
+                return display_name + ': ' + message;
+            });
+        });
     }
 
     function mechTonsInvalid(mechId: number) {
@@ -266,97 +266,7 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         const mech = mechStore.getMech(mechId);
         if (!mech) return [];
 
-        return mech.armor_upgrade_ids.map(id => mechArmorUpgradeSizeInvalid(mechId, id)).filter(v => !!v) as string[];
-    }
-
-    function mechArmorUpgradeSizeInvalid(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE) {
-        let mech = mechStore.getMech(mechId);
-        if (!mech) return false;
-
-        const {
-            valid,
-            armorUpgradeDisplayName,
-            validSizeDisplayNames,
-        } = getMechArmorUpgradeSizeValidation(mechId, armorUpgradeId);
-
-        if (!valid) {
-            return `Invalid Armor Upgrade: ${armorUpgradeDisplayName}. Only available to HE-V size(s): ${validSizeDisplayNames}`;
-        }
-
-        return false;
-    }
-
-    function getMechWeaponSizeValidation(mechId: number, weaponId: string): MechSizeValidation {
-        const mech = mechStore.getMech(mechId);
-        if (!mech) return { valid: true, validSizeDisplayNames: [] };
-        const size_id = mech.size_id;
-        const weapon = MECH_WEAPONS[weaponId];
-        const limited_size_ids = weapon.limited_size_ids;
-
-        if (limited_size_ids.length) {
-            return {
-                valid: limited_size_ids.includes(size_id),
-                validSizeDisplayNames: limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name),
-            };
-        }
-        return {
-            valid: true,
-            validSizeDisplayNames: [],
-        };
-    }
-
-    function getMechUpgradeSizeValidation(mechId: number, upgradeId: MECH_UPGRADE) {
-        const mech = mechStore.getMech(mechId);
-        if (!mech) return { valid: true, upgradeDisplayName: '', validSizeDisplayNames: [], sizeTeamPerk: null };
-        let limited_size_ids = MECH_UPGRADES[upgradeId].limited_size_ids || [];
-        let sizeTeamPerk = null;
-        let valid = true;
-
-        if (upgradeId === MECH_UPGRADE.COMBAT_SHIELD) {
-            const teamPerks = teamStore.getTeamPerksInfoByMech(mechId);
-            let combatBuckler = findById(teamPerks, TEAM_PERK.COMBAT_BUCKLER);
-            if (combatBuckler) {
-                limited_size_ids = [...limited_size_ids, SIZE.MEDIUM];
-
-                if (mech.size_id === SIZE.MEDIUM) {
-                    sizeTeamPerk = combatBuckler;
-                }
-            }
-        }
-
-        if (limited_size_ids.length) {
-            valid = limited_size_ids.includes(mech.size_id);
-        }
-
-        return {
-            valid,
-            upgradeDisplayName: MECH_UPGRADES[upgradeId].display_name,
-            validSizeDisplayNames: limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name),
-            sizeTeamPerk,
-        };
-    }
-
-    function getMechArmorUpgradeSizeValidation(mechId: number, armorUpgradeId: MECH_ARMOR_UPGRADE) {
-        let mech = mechStore.getMech(mechId);
-        if (!mech) return { valid: true, armorUpgradeDisplayName: null, validSizeDisplayNames: [] };
-        let {
-            size_id,
-        } = mech;
-
-        const { limited_size_ids, display_name } = MECH_ARMOR_UPGRADES[armorUpgradeId];
-        if (limited_size_ids?.length && !limited_size_ids.includes(size_id)) {
-            return {
-                valid: false,
-                armorUpgradeDisplayName: display_name,
-                validSizeDisplayNames: limited_size_ids.map((sizeId) => MECH_SIZES[sizeId].display_name),
-            };
-        }
-
-        return {
-            valid: true,
-            armorUpgradeDisplayName: null,
-            validSizeDisplayNames: [],
-        };
+        return mechStore.getMechAllArmorUpgradesInfo(mechId).filter(v => !v.valid).map(v => v.validation_message);
     }
 
     function getTeamGroupSizeValidation(teamId: MECH_TEAM, groupId: string) {
@@ -729,10 +639,6 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         getTeamGroupSizeValidation,
         getMechTeamGroupArmorUpgradeValidation,
 
-        getMechArmorUpgradeSizeValidation,
-        getMechWeaponSizeValidation,
-        getMechUpgradeSizeValidation,
-
         teamGroupMechSizeInvalid,
         teamGroupMechStructureModInvalid,
         teamGroupMechArmorModInvalid,
@@ -751,11 +657,6 @@ export interface TeamGroupValidation {
     display_name: string,
     validation_messages: string[],
     mechs: MechValidationInfo[],
-}
-
-export interface MechSizeValidation {
-    valid: boolean,
-    validSizeDisplayNames: string[],
 }
 
 export interface MechValidationInfo {
