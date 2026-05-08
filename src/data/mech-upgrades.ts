@@ -307,7 +307,6 @@ export const MECH_UPGRADES: Record<MECH_UPGRADE, MechUpgrade> = makeFrozenStatic
         drone_attached_trait_id: UPGRADE_TRAIT.DRONE_MINE_DIRECTOR_ATTACHED,
         cost: 1,
         slots: 0,
-        limited_size_ids: [SIZE.MEDIUM, SIZE.HEAVY, SIZE.ULTRA],
         traits: [
             trait(UPGRADE_TRAIT.COMPACT),
         ],
