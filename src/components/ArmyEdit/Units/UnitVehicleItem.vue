@@ -17,7 +17,9 @@ const { supportAssetAttachmentId, supportAssetVehicleAttachmentId } = defineProp
 
 const unitStore = useSupportAssetUnitsStore();
 const vehicleAttachment = computed(() => unitStore.getUnitVehicleAttachment(supportAssetAttachmentId, supportAssetVehicleAttachmentId)!);
-const unitInfo = computed(() => unitStore.getUnitAttachmentVehicleInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId)!);
+const unitInfo = computed(() => unitStore.getUnitAttachmentInfo(supportAssetAttachmentId)!);
+
+const vehicleInfo = computed(() => unitStore.getUnitAttachmentVehicleInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId)!);
 const weaponChoices = computed(() => unitStore.getUnitVehicleAttachmentAvailableWeaponChoicesInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 const requiredWeapons = computed(() => unitStore.getUnitVehicleAttachmentRequiredWeaponsInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
 const garrisonUnitChoices = computed(() => unitStore.getUnitVehicleAttachmentAvailableGarrisonChoicesInfo(supportAssetAttachmentId, supportAssetVehicleAttachmentId));
@@ -25,10 +27,10 @@ const garrisonUnitsMax = computed(() => unitStore.getUnitVehicleAttachmentGarris
 
 const canDuplicate = computed(() => {
   const vehicleId = vehicleAttachment.value.vehicle_id;
-  const vehicles = unitStore.getAvailableVehiclesInfo(supportAssetAttachmentId)
+  const vehicles = unitStore.getAvailableVehiclesInfo(supportAssetAttachmentId);
 
-  return vehicles.find((vehicle) => vehicle.id === vehicleId)!.valid
-})
+  return vehicles.find((vehicle) => vehicle.id === vehicleId)!.valid;
+});
 const add_disabled = inject<boolean>('add_disabled');
 const has_armor = inject<boolean>('has_armor');
 const has_structure = inject('has_structure');
@@ -50,20 +52,21 @@ function addUlHev() {
 <template>
   <tr class="tr-btn">
     <td class="text-nowrap">
-      {{ unitInfo.display_name }}
+      {{ vehicleInfo.display_name }}
     </td>
     <td class="text-end">
-      <format-inches :value="unitInfo.move" />
+      <format-inches :value="vehicleInfo.move" />
     </td>
     <td class="text-end" v-if="has_jump">
-      <format-inches :value="unitInfo.jump" />
+      <format-inches :value="vehicleInfo.jump" />
     </td>
     <td class="text-end" v-if="has_armor">
-      {{ unitInfo.armor }}
+      {{ vehicleInfo.armor }}
     </td>
     <td class="text-end" v-if="has_structure">
-      {{ unitInfo.structure }}
+      {{ vehicleInfo.structure }}
     </td>
+    <th class="text-end" v-if="!!unitInfo.max_vehicle_tons">{{ vehicleInfo.tons }}</th>
     <td :class="{'table-btn-cell': weaponChoices.length}">
       <template v-if="requiredWeapons.length">
 
@@ -87,7 +90,7 @@ function addUlHev() {
       </template>
     </td>
     <td v-if="has_garrison">
-      <template v-if="unitInfo.garrison_ul_hev">
+      <template v-if="vehicleInfo.garrison_ul_hev">
         <template v-if="!unitStore.hasUnitId(SUPPORT_ASSET_UNIT.ULTRA_LIGHT_HEV_SQUADRON)">
           <BButton
             size="sm"
@@ -119,7 +122,7 @@ function addUlHev() {
       </template>
     </td>
     <td>
-      <TraitList :traits="unitInfo.traits" />
+      <TraitList :traits="vehicleInfo.traits" />
     </td>
     <td class="table-btn-cell text-nowrap">
       <BButton
@@ -127,7 +130,7 @@ function addUlHev() {
         class="ms-1"
         variant="secondary"
         :disabled="add_disabled || !canDuplicate"
-        @click="unitStore.addVehicle(supportAssetAttachmentId, unitInfo.vehicle_id)"
+        @click="unitStore.addVehicle(supportAssetAttachmentId, vehicleInfo.vehicle_id)"
       >
         <span class="material-symbols-outlined">content_copy</span>
       </BButton>
@@ -135,7 +138,7 @@ function addUlHev() {
         size="sm"
         class="ms-1"
         variant="danger"
-        @click="unitStore.removeVehicle(supportAssetAttachmentId, unitInfo.id)"
+        @click="unitStore.removeVehicle(supportAssetAttachmentId, vehicleInfo.id)"
       >
         <span class="material-symbols-outlined">delete</span>
       </BButton>

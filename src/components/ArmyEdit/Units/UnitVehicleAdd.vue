@@ -73,16 +73,16 @@ function select(id: UnitVehicleId, valid: boolean) {
           <td class="text-nowrap">
             {{ item.display_name }}
           </td>
-          <td>
+          <td class="text-end">
             <format-inches :value="item.move" />
           </td>
-          <td>
+          <td class="text-end">
             {{ item.armor }}
           </td>
-          <td>
+          <td class="text-end">
             {{ item.structure }}
           </td>
-          <td v-if="hasMaxTons">
+          <td v-if="hasMaxTons" class="text-end">
             {{ item.tons }}
           </td>
           <td>

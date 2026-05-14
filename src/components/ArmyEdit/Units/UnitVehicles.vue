@@ -37,6 +37,7 @@ provide('has_garrison', has_garrison);
       <th class="text-end" v-if="has_structure">
         Structure
       </th>
+      <th class="text-end" v-if="!!unit.max_vehicle_tons">Tons</th>
       <th>
         Weapons
       </th>
