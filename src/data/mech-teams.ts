@@ -155,7 +155,7 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
         ],
         team_size_perk_rows: {
             2: [
-                [TEAM_PERK._0_SLOT_TARGET_DESIGNATORS, TEAM_PERK.EXTRA_CLUSTER_ROCKET_AMMO],
+                [TEAM_PERK._0_SLOT_TARGET_DESIGNATORS],
                 [TEAM_PERK.GUIDED_ROCKETS],
             ],
             3: [
@@ -163,7 +163,7 @@ export const MECH_TEAMS: Readonly<Record<MECH_TEAM, MechTeam>> = makeFrozenStati
                 [TEAM_PERK.HOMING],
             ],
             4: [
-                [TEAM_PERK._0_TON_TARGET_DESIGNATORS],
+                [TEAM_PERK.EXTRA_CLUSTER_ROCKET_AMMO],
                 [],
             ],
         },
