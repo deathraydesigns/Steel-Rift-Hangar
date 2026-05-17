@@ -33,6 +33,7 @@ const subType = computed(() => {
   if (info.value.is_coordinated_asset_team) {
     return ' Coordinated Asset Team';
   }
+  return ''
 });
 
 </script>
