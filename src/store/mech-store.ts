@@ -34,7 +34,7 @@ import {
     type Trait,
 } from '../types';
 import { useFactionStore } from './faction-store';
-import { deleteItemById, findBy, findById, findItemIndex, moveItem } from './helpers/collection-helper';
+import { dedupeById, deleteItemById, findBy, findById, findItemIndex, moveItem } from './helpers/collection-helper';
 import { type GrantedOrderCollection, makeGrantedOrderCollection } from './helpers/helpers';
 import { useMechArmorStore } from './mech-armor-store';
 import { useTeamStore } from './team-store';
@@ -656,7 +656,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             }
 
             return {
-                traits: traits.map(weaponTraitInfo),
+                traits: dedupeById(traits).map(weaponTraitInfo),
                 team_perks,
                 faction_perks,
                 range_modifier,
@@ -836,7 +836,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             return {
                 used_team_perks,
                 faction_perks,
-                traits,
+                traits: dedupeById(traits),
                 max_uses,
             };
         }

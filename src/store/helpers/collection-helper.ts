@@ -84,3 +84,12 @@ export function findBy<Item extends {}, Key extends keyof Item>(
 ): Item | undefined {
     return collection.find((item) => value === item[key]);
 }
+
+export function dedupeById<T extends { id: string | number }>(arr: T[]): T[] {
+    const seen = new Set<T['id']>();
+    return arr.filter(item => {
+        if (seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+    });
+}
