@@ -188,7 +188,7 @@ export const useSupportAssetUnitsStore = defineScopeableStore('support-asset-uni
         function isSquadron(unitAttachmentId: number): boolean {
             const info = getUnitAttachmentInfo(unitAttachmentId);
             if (!info) return false;
-            return !!info.traits.find((trait) => trait.id === UNIT_TRAIT.SQUADRON);
+            return !!info.traits.find((trait) => trait.id === UNIT_TRAIT.SQUADRON || trait.id === UNIT_TRAIT.FLYING_SQUADRON);
         }
 
         function getAllUnitTraits() {

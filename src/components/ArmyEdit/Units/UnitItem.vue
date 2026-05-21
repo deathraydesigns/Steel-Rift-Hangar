@@ -193,7 +193,6 @@ const garrisonWeapons = computed(() => unitStore.getUnitAllGarrisonWeaponsInfo(s
         <table class="table table-striped">
           <UnitWeapons title="Unit Weapons Reference" :weapons="unitWeapons" :damage-suffix="unitDamageSuffix" />
           <UnitWeapons title="Garrison Weapons Reference" :weapons="garrisonWeapons" :damage-suffix="DAMAGE_SUFFIX" />
-
         </table>
         <UnitGarrisonUnits :support-asset-attachment-id="supportAssetAttachmentId" v-if="garrisonUnitChoices.length" />
       </div>
