@@ -98,7 +98,13 @@ export const useValidationStore = defineScopeableStore('validation', ({ scope }:
         if (gameSizeId === GAME_SIZE.DUEL) {
             return messageValid;
         }
-        const teamCounts = teamStore.special_teams.map((team) => teamStore.getTeamMechCount(team.id));
+        const teamCounts = teamStore.special_teams.map((team) => {
+            if (team.id === MECH_TEAM.COORDINATED_ASSETS) {
+                return teamStore.getTeamUnitCount(team.id);
+            }
+
+            return teamStore.getTeamMechCount(team.id);
+        });
         const smallestTeamCount = (Math.min(...teamCounts) ?? 0) as number;
         const largestTeamCount = (Math.max(...teamCounts) ?? 0) as number;
 
