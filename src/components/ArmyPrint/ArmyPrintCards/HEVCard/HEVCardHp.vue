@@ -36,7 +36,7 @@ const structure6PerRow = computed(() => {
 
 const armorHp = computed(() => {
   const armorStat = info.value.armor_stat;
-  const armorUpgrades = mechStore.getMechArmorUpgradesInfo(mechId);
+  const armorUpgrades = mechStore.getMechAllArmorUpgradesInfo(mechId);
   const extraArmor = sumBy(armorUpgrades, (v) => v.armor_mod ?? 0);
   const baseArmor = armorStat - extraArmor;
 
