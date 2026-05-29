@@ -636,7 +636,14 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                     team_perks.push(perk);
                 }
             }
-
+            const traitBlast = findById(traits, WEAPON_TRAIT.BLAST);
+            if (traitBlast) {
+                const perk = findById(perks, TEAM_PERK.AIR_BURST);
+                if (perk) {
+                  (traitBlast.X as number) += 1
+                    team_perks.push(perk);
+                }
+            }
             const droneSharingPerk = findById(perks, TEAM_PERK.DRONE_SHARING);
             if (droneSharingPerk) {
                 const { teamId } = teamStore.getMechTeamAndGroupIds(mechId);
