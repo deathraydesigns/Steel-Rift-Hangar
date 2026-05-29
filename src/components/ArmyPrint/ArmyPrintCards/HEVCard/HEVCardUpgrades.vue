@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
-import { MECH_ARMOR_UPGRADE, type MechArmorUpgradeInfo } from '../../../../data/mech-armor-upgrades';
+import { type MechArmorUpgradeInfo } from '../../../../data/mech-armor-upgrades';
 import { MECH_MOBILITIES, MECH_MOBILITY } from '../../../../data/mech-mobility';
 import { MECH_UPGRADE } from '../../../../data/mech-upgrades.js';
 import { UPGRADE_TRAIT } from '../../../../data/upgrade-traits.js';
@@ -29,7 +29,7 @@ type UpgradeItem = {
 }
 
 const armorUpgrades = computed((): MechArmorUpgradeInfo[] => {
-  return mechStore.getMechAllArmorUpgradesInfo(mechId).filter(v => v.id !== MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE);
+  return mechStore.getMechAllArmorUpgradesInfo(mechId).filter(v => v.visible_on_card);
 });
 
 const armorUpgradesList = computed((): MechArmorUpgradeInfo[] => {

@@ -12,7 +12,7 @@ export interface TeamPerk {
     display_order: number,
     display_name_short: string,
     visible_on_card: boolean,
-    card_note: string,
+    card_modifier_note: string,
     value: number | null,
     stackable: boolean,
     renderDisplayName?: (value: number, repeatCount?: number) => string,
@@ -31,7 +31,7 @@ type InputOptional =
     | 'display_name_short'
     | 'visible_on_card'
     | 'stackable'
-    | 'card_note'
+    | 'card_modifier_note'
     | 'value'
     | 'granted_unit_traits'
 
@@ -108,7 +108,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
         visible_on_card: true,
     },
     [TEAM_PERK.EXTRA_TONNAGE]: {
-        display_name: `Objective Tonnage (5)`,
+        display_name: `Objective Tonnage (+5)`,
         description: 'Team Units count as 5 Tons heavier for the purpose of the Security Objective.',
     },
     [TEAM_PERK.SIDE_DEFENSE]: {
@@ -158,17 +158,18 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
             let repeatStr = renderDescriptionRepeat(baseValue, repeatCount);
             return `Short(X) weapons gain +${baseValue}${repeatStr} to their range.`;
         },
-        card_note: '+2 applied',
+        card_modifier_note: '+2 applied',
         value: 2,
-        visible_on_card: true,
     },
     [TEAM_PERK.LIGHT_STABILIZER]: {
         display_name: 'Premium Light Weapons',
         description: `Light Weapons cause 1 Damage for every 2 damage not evaded, rounding up (instead of down).`,
+        visible_on_card: true,
     },
     [TEAM_PERK.DRAIN_RESISTANT]: {
         display_name: 'Drain Resistant',
         description: `When marking this Unit with a Redline Marker due to Draining, roll 1D6. On a 4+, do not mark this Unit.`,
+        visible_on_card: true,
     },
     [TEAM_PERK.AIR_BURST]: {
         display_name: 'Air Burst',
@@ -177,6 +178,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [TEAM_PERK.IMPACT_ROUNDS]: {
         display_name: 'Mass Driver',
         description: `Kinetic Weapons add +1 to the D6 to determine if the Target is rotated.`,
+        visible_on_card: true,
     },
     [TEAM_PERK.MELEE_SPECIALIST]: {
         display_name: 'Melee Specialist',
@@ -209,10 +211,12 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [TEAM_PERK.HOMING]: {
         display_name: 'Homing',
         description: 'Any Weapon with the SMART trait may select a Target that is not in LoS of the Active Unit. This Weapon has the Short (6”) trait when doing so. Attack Pools are not modified for Side or Rear Arc.',
+        visible_on_card: true,
     },
     [TEAM_PERK.RETURN_SMASH]: {
         display_name: 'Return Smash',
         description: 'When this Unit is Targeted by an ENGAGE or SMASH Order and does not have a Redline Marker, they may choose to declare “Return Smash”. Once the Active Unit’s ENGAGE or SMASH Order is complete, before it performs any further Orders, the Target Unit may immediately perform a SMASH Order. The SMASH Order must Target the interrupted Unit. Once this SMASH Order is complete, mark the Unit Returning Smash with a Redline Marker. If the interrupted Unit has Orders left to perform, they return to being the Active Unit, and play continues as normal.',
+        visible_on_card: true,
     },
     [TEAM_PERK.GRANTED_GUIDANCE_SUITE_MOVE]: {
         display_name: 'Granted Guidance Suite (MOVE)',
@@ -221,7 +225,8 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     },
     [TEAM_PERK.SQUEEZE]: {
         display_name: 'Squeeze',
-        description: 'Models in this team may move through other Models in this team. They may not end their movement on another Model’s base.'
+        description: 'Models in this team may move through other Models in this team. They may not end their movement on another Model’s base.',
+        visible_on_card: true,
     },
     [TEAM_PERK.CONVOY]: {
         display_name: 'Convoy',
@@ -230,6 +235,7 @@ export const MECH_TEAM_PERKS = makeTeamPerks({
     [TEAM_PERK.SYNCHRONIZED_STRIKE]: {
         display_name: 'Synchronized Strike',
         description: 'Once per game, immediately after Activating a member Unit of this team, nominate another member Unit of this team that does not have an Activation Marker. If the Activated Unit was an HE-V, you must nominate a Support Asset. If the Activated Unit was a Support Asset, you must nominate an HE-V. The nominated Unit may Activate immediately. Play then passes as normal.',
+        visible_on_card: true,
     },
 });
 
@@ -279,7 +285,7 @@ function makeTeamPerks(perks: Record<TEAM_PERK, TeamPerkInput>): Readonly<Record
             display_name_short: '',
             description: '',
             visible_on_card: false,
-            card_note: '',
+            card_modifier_note: '',
             value: null,
             stackable: false,
             granted_unit_traits: [],
@@ -305,7 +311,6 @@ function makeTeamPerks(perks: Record<TEAM_PERK, TeamPerkInput>): Readonly<Record
 
 export function perkIdsToInfo(perkIds: TEAM_PERK[]): TeamPerkInfo[] {
     const grouped = countBy(perkIds, (perkId) => perkId);
-
     const result = Object.entries(grouped).map(([perkId, repeatCount]): TeamPerkInfo => {
         const perkInfo = MECH_TEAM_PERKS[perkId as TEAM_PERK];
         let {

@@ -26,6 +26,8 @@ export interface MechArmorUpgrade {
     cost_by_size: NumberBySize,
     limited_size_ids?: MechSizeId[],
     armor_mod: number | null,
+    card_modifier_note: string,
+    visible_on_card: boolean
 }
 
 export interface MechArmorUpgradeInfo extends Omit<MechArmorUpgrade, 'cost_by_size' | 'limited_size_ids'> {
@@ -44,6 +46,8 @@ type InputOptional =
     | 'armor_mod'
     | 'card_upgrade_solo_display_name'
     | 'card_upgrade_display_name'
+    | 'card_modifier_note'
+    | 'visible_on_card'
 
 type MakeArmorUpgradeInput =
     Omit<Optional<MechArmorUpgrade, InputOptional>, 'id'>
@@ -75,6 +79,8 @@ function makeArmorUpgrade(item: MakeArmorUpgradeInput): Omit<MechArmorUpgrade, '
         cost_by_size,
         limited_size_ids: item.limited_size_ids ?? [],
         armor_mod: item.armor_mod ?? null,
+        card_modifier_note: item.card_modifier_note ?? '',
+        visible_on_card: item.visible_on_card ?? false,
     };
 }
 
@@ -94,12 +100,14 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
             [SIZE.ULTRA]: 2,
         },
         description: 'This Unit may re‑roll any failed Defense Rolls caused by the Blast effect.',
+        visible_on_card: true,
     }),
     [MECH_ARMOR_UPGRADE.REACTIVE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Reactive',
         card_upgrade_solo_display_name: 'Reactive Armor',
         cost: 1,
         description: 'Reduce the Attack Pool of Weapons with “Missile” or "Rocket” in the name Targeting this Unit by 1, to a minimum of 1.',
+        visible_on_card: true,
     }),
     [MECH_ARMOR_UPGRADE.CERAMIC_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Ceramic',
@@ -111,23 +119,27 @@ export const MECH_ARMOR_UPGRADES: Readonly<Record<MECH_ARMOR_UPGRADE, MechArmorU
             [SIZE.ULTRA]: 1,
         },
         description: 'Each time this Unit would take Damage from the AP trait, roll a D6. On a 4+, ignore that Damage.',
+        visible_on_card: true,
     }),
     [MECH_ARMOR_UPGRADE.CLAYMORE_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Claymore',
         card_upgrade_solo_display_name: 'Claymore Armor',
         description: 'Reduce the Attack Pool of incoming SMASH Orders by 1 to a minimum of 1.If a Unit equipped with Claymore Armor takes Structure Damage from a SMASH Order, the Active Unit is immediately targeted by an ENGAGE Order with a damage value of (2/2/3/3) and the Frag trait.',
         cost: 1,
+        visible_on_card: true,
     }),
     [MECH_ARMOR_UPGRADE.EXTRA_PLATING_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Extra Plating',
-        card_upgrade_display_name: 'Extra Plating (+2 applied)',
+        card_upgrade_display_name: 'Extra Plating',
+        card_modifier_note: '+2 applied',
         description: 'This Unit gains 2 additional Armor.',
         cost: 1,
         armor_mod: 2,
     }),
     [MECH_ARMOR_UPGRADE.HEAVY_PLATING_ARMOR_UPGRADE]: makeArmorUpgrade({
         display_name: 'Heavy Plating',
-        card_upgrade_display_name: 'Heavy Plating (+4 applied)',
+        card_upgrade_display_name: 'Heavy Plating',
+        card_modifier_note: '+4 applied',
         description: 'This Unit gains 4 additional Armor.',
         cost: 2,
         armor_mod: 4,

@@ -640,7 +640,7 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             if (traitBlast) {
                 const perk = findById(perks, TEAM_PERK.AIR_BURST);
                 if (perk) {
-                  (traitBlast.X as number) += 1
+                    (traitBlast.X as number) += 1;
                     team_perks.push(perk);
                 }
             }
@@ -659,6 +659,15 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 const exists = traits.some(trait => trait.id === droneAttachTrait.id);
                 if (!exists) {
                     traits.push(droneAttachTrait);
+                }
+            }
+
+            const traitMelee = findById(traits, WEAPON_TRAIT.MELEE);
+            if (traitMelee) {
+                const perk = findById(perks, TEAM_PERK.MELEE_SPECIALIST);
+                if (perk) {
+                    (traitMelee.X as number) += 1;
+                    team_perks.push(perk);
                 }
             }
 
@@ -1071,6 +1080,8 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 card_upgrade_solo_display_name,
                 armor_mod,
                 description,
+                card_modifier_note,
+                visible_on_card,
             } = MECH_ARMOR_UPGRADES[armorUpgradeId];
 
             let cost = cost_by_size[size_id];
@@ -1139,6 +1150,8 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
                 display_name,
                 card_upgrade_display_name,
                 card_upgrade_solo_display_name,
+                card_modifier_note,
+                visible_on_card,
                 description,
                 valid,
                 validation_message,
