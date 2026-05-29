@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { MECH_UPGRADE } from '../../../../data/mech-upgrades.js';
 import { UPGRADE_TRAIT } from '../../../../data/upgrade-traits.js';
 import { WEAPON_TRAIT } from '../../../../data/weapon-traits.js';
@@ -10,6 +10,9 @@ import DamageFormatter from '../../../UI/DamageFormatter.vue';
 import RangeFormatter from '../../../UI/RangeFormatter.vue';
 
 const mechStore = useMechStore();
+const emit = defineEmits<{
+  (e: 'contentChanged'): void,
+}>();
 const { mechId } = defineProps<{
   mechId: number,
 }>();
@@ -54,6 +57,7 @@ const weapons = computed(() => {
 
 const hasUses = computed(() => weapons.value.find(weapon => !!weapon.max_uses));
 
+watch([hasUses, weapons], () => emit('contentChanged'), { flush: 'post' });
 </script>
 <template>
   <table class="table-stats">

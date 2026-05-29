@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { MECH_ARMOR_UPGRADE, type MechArmorUpgradeInfo } from '../../../../data/mech-armor-upgrades';
 import { MECH_MOBILITIES, MECH_MOBILITY } from '../../../../data/mech-mobility';
 import { MECH_UPGRADE } from '../../../../data/mech-upgrades.js';
@@ -12,13 +12,17 @@ import SvgIcon from '../../../UI/Icon.vue';
 const mechStore = useMechStore();
 const teamStore = useTeamStore();
 
+const emit = defineEmits<{
+  (e: 'contentChanged'): void,
+}>();
+
 const { mechId } = defineProps<{
   mechId: number
 }>();
 
 type UpgradeItem = {
   display_name?: string,
-  card_note?: string,
+  card_modifier_note?: string,
   traits?: TraitInfo<UPGRADE_TRAIT>[],
   is_team_perk?: boolean,
   max_uses?: number,
@@ -28,16 +32,24 @@ const armorUpgrades = computed((): MechArmorUpgradeInfo[] => {
   return mechStore.getMechAllArmorUpgradesInfo(mechId).filter(v => v.id !== MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE);
 });
 
-const armorUpgradesList = computed((): string[] => {
+const armorUpgradesList = computed((): MechArmorUpgradeInfo[] => {
   if (armorUpgrades.value.length === 1) return [];
-  return armorUpgrades.value.map(v => v.card_upgrade_display_name);
+  return armorUpgrades.value;
+});
+
+const teamPerks = computed(() => {
+  const perks = teamStore.getTeamPerksInfoByMech(mechId).filter(({ visible_on_card }) => visible_on_card) as UpgradeItem[];
+  perks.forEach(item => item.is_team_perk = true);
+  return perks;
 });
 
 const upgrades = computed((): UpgradeItem[] => {
   const soloArmorUpgrade: UpgradeItem[] = [];
   if (armorUpgrades.value.length === 1) {
+    const mechArmorUpgradeInfo = armorUpgrades.value[0];
     soloArmorUpgrade.push({
-      display_name: armorUpgrades.value[0].card_upgrade_solo_display_name,
+      ...mechArmorUpgradeInfo,
+      display_name: mechArmorUpgradeInfo.card_upgrade_solo_display_name,
     });
   }
   const excludeUpgradeTraitIds = [
@@ -62,9 +74,6 @@ const upgrades = computed((): UpgradeItem[] => {
     // shown in weapons row instead
     .filter(item => !excludeUpgradeIds.includes(item.upgrade_id)) as UpgradeItem[];
 
-  const teamPerks = teamStore.getTeamPerksInfoByMech(mechId).filter(({ visible_on_card }) => visible_on_card) as UpgradeItem[];
-  teamPerks.forEach(item => item.is_team_perk = true);
-
   const mobility: UpgradeItem[] = [];
   const mech = mechStore.getMech(mechId)!;
   if (mech.mobility_id !== MECH_MOBILITY.BI_PEDAL) {
@@ -76,7 +85,7 @@ const upgrades = computed((): UpgradeItem[] => {
   return [
     ...soloArmorUpgrade,
     ...upgradesAttachments,
-    ...teamPerks,
+    ...teamPerks.value,
     ...mobility,
   ];
 });
@@ -85,32 +94,44 @@ const orders = computed(() => {
   const grantedOrders = mechStore.getMechGrantedOrdersCollection(mechId);
   return grantedOrders.all();
 });
+
+watch([upgrades, orders, armorUpgradesList], () => emit('contentChanged'), { flush: 'post' });
 </script>
 <template>
   <div v-if="upgrades.length || armorUpgrades.length">
     <div class="section-heading">
-      Upgrades
+      Upgrades <template v-if="teamPerks.length">+ Team Perks <SvgIcon name="team-perk" size="1.3em" /></template>
     </div>
     <div class="upgrades">
       <span v-for="(upgrade, index) in upgrades">
-
-        {{ upgrade.display_name }}<small v-if="upgrade.card_note"> ({{ upgrade.card_note }}) </small>
-        <SvgIcon v-if="upgrade.is_team_perk" name="team-perk" size="18px" />
-        <template v-if="upgrade.max_uses">&nbsp;</template>
-        <span
-          v-if="upgrade.max_uses"
-          v-for="i in Array(upgrade.max_uses)"
-          class="upgrade-use"
-        >&nbsp;</span>
-        <template v-if="upgrade.traits?.length">:</template>
-        <template v-for="trait in upgrade.traits">
-          {{ trait.display_name }}
+        {{ upgrade.display_name }}<small v-if="upgrade.card_modifier_note"> ({{ upgrade.card_modifier_note }}) </small>
+        <template v-if="upgrade.is_team_perk">
+          <span>
+            <SvgIcon name="team-perk" size="1.3em" />
+            <template v-if="index !== upgrades.length -1">,</template>
+          </span>
         </template>
-        <span v-if="index !== upgrades.length -1">, </span>
+        <template v-else>
+          <template v-if="upgrade.max_uses">&nbsp;</template>
+          <span
+            v-if="upgrade.max_uses"
+            v-for="i in Array(upgrade.max_uses)"
+            class="upgrade-use"
+          >&nbsp;</span>
+          <template v-if="upgrade.traits?.length">:</template>
+          <template v-for="trait in upgrade.traits">
+            {{ trait.display_name }}
+          </template>
+          <template v-if="index !== upgrades.length -1">,</template>
+        </template>
       </span>
 
       <span v-if="armorUpgradesList.length > 1">
-        <span class="fw-bold"> Armor:</span> {{ armorUpgradesList.join(', ') }}
+        <span class="fw-bold"> Armor: </span>
+        <template v-for="(armor, index) in armorUpgradesList">
+          {{ armor.display_name }}<small v-if="armor.card_modifier_note"> ({{ armor.card_modifier_note }}) </small>
+          <span v-if="index !== armorUpgradesList.length -1">, </span>
+        </template>
       </span>
       <span v-if="orders.length">
         <span class="fw-bold"> Special Orders: </span>
