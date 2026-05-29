@@ -100,7 +100,10 @@ watch([upgrades, orders, armorUpgradesList], () => emit('contentChanged'), { flu
 <template>
   <div v-if="upgrades.length || armorUpgrades.length">
     <div class="section-heading">
-      Upgrades <template v-if="teamPerks.length">+ Team Perks <SvgIcon name="team-perk" size="1.3em" /></template>
+      Upgrades
+      <template v-if="teamPerks.length">+ Team Perks
+        <SvgIcon name="team-perk" size="1.3em" />
+      </template>
     </div>
     <div class="upgrades">
       <span v-for="(upgrade, index) in upgrades">
@@ -108,7 +111,7 @@ watch([upgrades, orders, armorUpgradesList], () => emit('contentChanged'), { flu
         <template v-if="upgrade.is_team_perk">
           <span>
             <SvgIcon name="team-perk" size="1.3em" />
-            <template v-if="index !== upgrades.length -1">,</template>
+            <span v-if="index !== upgrades.length -1">, </span>
           </span>
         </template>
         <template v-else>
@@ -122,7 +125,7 @@ watch([upgrades, orders, armorUpgradesList], () => emit('contentChanged'), { flu
           <template v-for="trait in upgrade.traits">
             {{ trait.display_name }}
           </template>
-          <template v-if="index !== upgrades.length -1">,</template>
+          <span v-if="index !== upgrades.length -1">, </span>
         </template>
       </span>
 
