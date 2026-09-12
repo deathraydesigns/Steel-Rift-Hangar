@@ -17,7 +17,7 @@ import {
     type MechUpgrade,
 } from '../data/mech-upgrades';
 import { MECH_WEAPON, MECH_WEAPONS, MECH_WEAPONS_BY_TYPE, type MechWeaponInfo } from '../data/mech-weapons';
-import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes';
+import { MECH_SIZES, type MechSizeId, SIZE } from '../data/unit-sizes'
 import { UNIT_TYPE } from '../data/unit-types';
 import { UPGRADE_TRAIT, UPGRADE_TRAITS, upgradeTraitDisplayName, upgradeTraitInfo } from '../data/upgrade-traits';
 import { WEAPON_TRAIT, weaponTraitInfo } from '../data/weapon-traits';
@@ -35,7 +35,7 @@ import {
 } from '../types';
 import { useFactionStore } from './faction-store';
 import { dedupeById, deleteItemById, findBy, findById, findItemIndex, moveItem } from './helpers/collection-helper';
-import { type GrantedOrderCollection, makeGrantedOrderCollection } from './helpers/helpers';
+import { type GrantedOrderCollection, makeGrantedOrderCollection, normalizeArmorUpgrades } from './helpers/helpers'
 import { useMechArmorStore } from './mech-armor-store';
 import { useTeamStore } from './team-store';
 
@@ -79,14 +79,8 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
             structure_mod_id = structure_mod_id ?? MECH_BODY_MOD.STANDARD;
             armor_mod_id = armor_mod_id ?? MECH_BODY_MOD.STANDARD;
             aux_armor_upgrade_id = aux_armor_upgrade_id ?? MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE;
-            const maxArmorUpgrades = MECH_SIZES[size_id].max_armor_upgrades;
 
-            const baseArmorUpgradeIds = new Array(maxArmorUpgrades).fill(MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE);
-            if (!armor_upgrade_ids?.length) {
-                armor_upgrade_ids = baseArmorUpgradeIds;
-            } else if (armor_upgrade_ids?.length !== maxArmorUpgrades) {
-                armor_upgrade_ids = [...armor_upgrade_ids, ...baseArmorUpgradeIds].slice(0, maxArmorUpgrades);
-            }
+            armor_upgrade_ids = normalizeArmorUpgrades(size_id, armor_upgrade_ids ?? [])
             mobility_id = mobility_id ?? MECH_MOBILITY.BI_PEDAL;
             preferred_team_id = teamStore.normalizePreferredTeamId(preferred_team_id ?? MECH_TEAM.GENERAL);
 
@@ -118,6 +112,10 @@ export const useMechStore = defineScopeableStore('mech', ({ scope }: { scope: st
         function updateMech(mechId: number, data: Partial<Mech>) {
             let mech = findById(mechs.value, mechId);
             if (!mech) return;
+
+            if (data.size_id) {
+                data.armor_upgrade_ids = normalizeArmorUpgrades(data.size_id, data.armor_upgrade_ids ?? mech.armor_upgrade_ids)
+            }
             updateObject(mech, data, [
                 'name',
                 'size_id',

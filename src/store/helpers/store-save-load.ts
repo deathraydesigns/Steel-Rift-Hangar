@@ -10,6 +10,7 @@ import { useSupportAssetCountsStore } from '../support-asset-count-store';
 import { useSupportAssetUnitsStore } from '../support-asset-units-store';
 import { useSupportAssetWeaponsStore } from '../support-asset-weapons-store';
 import { makeShelfTeam, useTeamStore } from '../team-store';
+import { normalizeArmorUpgrades } from './helpers'
 
 function getStores(scope = '') {
     return [
@@ -40,7 +41,7 @@ export function disposeStores(scope = '') {
 export function makeSaveFileData() {
 
     const result: any = {
-        save_schema_version: 4,
+        save_schema_version: 5,
     };
 
     getStores().forEach((store: any) => {
@@ -103,6 +104,12 @@ export function migrateLoadData(data: any) {
 
         data?.mech?.mechs?.forEach((mech: any) => {
             mech.armor_upgrade_ids = [mech.armor_upgrade_id];
+        });
+    }
+
+    if (data.save_schema_version < 5) {
+        data?.mech?.mechs?.forEach((mech: any) => {
+            mech.armor_upgrade_ids = normalizeArmorUpgrades(mech.size_id, mech.armor_upgrade_ids);
         });
     }
 

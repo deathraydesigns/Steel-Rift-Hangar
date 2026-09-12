@@ -1,4 +1,6 @@
+import { MECH_ARMOR_UPGRADE } from '../../data/mech-armor-upgrades'
 import { type ORDER, ORDERS } from '../../data/orders';
+import { MECH_SIZES, type MechSizeId } from '../../data/unit-sizes'
 
 export type GrantedOrderCollection = ReturnType<typeof makeGrantedOrderCollection>
 
@@ -100,4 +102,16 @@ export function ifEmptyString<T>(val: any, result: T): T | false {
         return result;
     }
     return false;
+}
+
+export function normalizeArmorUpgrades(size_id: MechSizeId, armor_upgrade_ids:  MECH_ARMOR_UPGRADE[]){
+    const maxArmorUpgrades = MECH_SIZES[size_id].max_armor_upgrades;
+    const baseArmorUpgradeIds = new Array(maxArmorUpgrades).fill(MECH_ARMOR_UPGRADE.NO_ARMOR_UPGRADE);
+    if (!armor_upgrade_ids?.length) {
+        armor_upgrade_ids = baseArmorUpgradeIds;
+    } else if (armor_upgrade_ids?.length !== maxArmorUpgrades) {
+        armor_upgrade_ids = [...armor_upgrade_ids, ...baseArmorUpgradeIds].slice(0, maxArmorUpgrades);
+    }
+
+    return armor_upgrade_ids
 }
